@@ -16,6 +16,10 @@ class EmergencyCard(models.Model):
         ('ALL', 'Wheat/Gluten Allergy'),
     ]
 
+        # core fields
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
     condition = models.CharField(
         max_length=3,
         choices= SEVERITY_CHOICES,
@@ -27,27 +31,26 @@ class EmergencyCard(models.Model):
         choices=LANGUAGE_CHOICES,
         default='EN'
     )
-    # Medical Info (gluten related) >>>
-is_celiac = models.BooleanField(default=False)
-is_gluten_sensitive = models.BooleanField(default=False)
-has_wheat_allergy = models.BooleanField(default=False)
-    # Additional medical info >>>
-additional_allergies = models.TextField(
-    blank=True,
-    help_text="List any additional allergies or medical conditions")
-    # emergency contact info >>>
-emergency_contact_name = models.CharField(
-    max_length=100,
-    help_text= "Name of Emergency Contact"
+
+    # emergency contact information
+emergency_contact_name = models.CharField(max_length=100)
+emergency_contact_phone = models.CharField(max_length=20)
+emergency_contact_relationship = models.CharField(max_length=50)
+    # custom message (optional)
+customer_message = models.TextField(
+    blank=True, # makes this an optional choice
+    help_text="Add any specific instructions or notes regarding your condition",
+    max_length=200,
 )
-emergency_contact_phone = models.CharField(
-    max_length=20,
-    help_text= "Emergency contact phone number"
-)
-emergency_contact_relationship = models.CharField(
-    max_length=50,
-    help_text="Relationship of emergency contact (e.g. Parent, Spouse, Sibling)"
-)
+
+# time stamps
+created_at = models.DateTimeField(auto_now_add=True)
+updated_at = models.DateTimeField(auto_now_add=True)
+
+def __str__(self):
+    return f"{self.get_language_display()} card for {self.user.username}"
+
+
 
 
 
