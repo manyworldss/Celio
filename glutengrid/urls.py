@@ -24,5 +24,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core.urls')),
     path('accounts/', include('accounts.urls')),
-    path('emergency-cards/', include('emergency_cards.urls')),
+    path('emergency-cards/', include('emergency_cards.urls')), # this will handle all card - related URLs
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -1,6 +1,5 @@
 from django import template
-
-register = template.library()
+register = template.Library()
 
 @register.filter(name='addclass')
 def addclass(field, css):
