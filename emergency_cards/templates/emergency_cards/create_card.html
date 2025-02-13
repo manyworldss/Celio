@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-800">
+    <!-- Decorative circles in background -->
+    <div class="absolute inset-0 overflow-hidden opacity-20">
+        <div class="absolute inset-0">
+            <!-- Circle pattern will be added via CSS -->
+        </div>
+    </div>
+
+    <!-- Form Container -->
+    <div class="relative max-w-2xl mx-auto px-4 py-16">
+        <div class="bg-gray-900 rounded-2xl shadow-xl border border-gray-700 overflow-hidden">
+            <!-- Header -->
+            <div class="p-6 border-b border-gray-700">
+                <h1 class="text-3xl font-bold text-white" style="font-family: 'Press Start 2P', monospace;">
+                    CREATE E-CARD
+                </h1>
+                <p class="text-gray-400 mt-2">Fill in your emergency card details</p>
+            </div>
+
+            <form method="post" class="p-6 space-y-6">
+                {% csrf_token %}
+
+                <!-- Language Selection -->
+                <div class="bg-gray-800/50 rounded-xl p-4">
+                    <label class="block text-lg text-purple-300 mb-2">
+                        LANGUAGE
+                    </label>
+                    {{ form.language }}
+                    {% if form.language.errors %}
+                    <p class="text-red-400 text-sm mt-2">{{ form.language.errors|join:", " }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Condition Selection -->
+                <div class="bg-gray-800/50 rounded-xl p-4">
+                    <label class="block text-lg text-purple-300 mb-2">
+                        CONDITION
+                    </label>
+                    {{ form.condition }}
+                    {% if form.condition.errors %}
+                    <p class="text-red-400 text-sm mt-2">{{ form.condition.errors|join:", " }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Emergency Contact -->
+                <div class="bg-gray-800/50 rounded-xl p-4 space-y-4">
+                    <h3 class="text-lg text-purple-300">EMERGENCY CONTACT</h3>
+
+                    <div>
+                        <label class="block text-gray-300 mb-2">Name</label>
+                        {{ form.emergency_contact_name }}
+                        {% if form.emergency_contact_name.errors %}
+                        <p class="text-red-400 text-sm mt-2">{{ form.emergency_contact_name.errors|join:", " }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-300 mb-2">Phone</label>
+                        {{ form.emergency_contact_phone }}
+                        {% if form.emergency_contact_phone.errors %}
+                        <p class="text-red-400 text-sm mt-2">{{ form.emergency_contact_phone.errors|join:", " }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-300 mb-2">Relationship</label>
+                        {{ form.emergency_contact_relationship }}
+                        {% if form.emergency_contact_relationship.errors %}
+                        <p class="text-red-400 text-sm mt-2">{{ form.emergency_contact_relationship.errors|join:", " }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Custom Message -->
+                <div class="bg-gray-800/50 rounded-xl p-4">
+                    <label class="block text-lg text-purple-300 mb-2">
+                        ADDITIONAL INFO
+                    </label>
+                    {{ form.custom_message }}
+                    {% if form.custom_message.errors %}
+                    <p class="text-red-400 text-sm mt-2">{{ form.custom_message.errors|join:", " }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Submit Button -->
+                <div class="pt-4">
+                    <button type="submit" class="w-full bg-purple-500 text-white px-6 py-3 rounded-lg hover:bg-purple-400 transition-colors text-lg font-semibold">
+                        GENERATE CARD
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+    /* Style form inputs */
+    input, select, textarea {
+        @apply w-full rounded-lg bg-gray-700 border-gray-600 text-white px-4 py-2.5 focus:ring-purple-500 focus:border-purple-500;
+    }
+</style>
+{% endblock %}

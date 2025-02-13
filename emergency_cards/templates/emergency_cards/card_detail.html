@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-800">
+    <!-- Decorative circles pattern -->
+    <div class="absolute inset-0 overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <!-- We'll add the bubble pattern with CSS -->
+        </div>
+    </div>
+
+    <!-- Card Content -->
+    <div class="relative max-w-lg mx-auto px-4 py-16">
+        <div class="bg-gray-900 rounded-2xl shadow-xl border border-gray-700 overflow-hidden">
+            <!-- Header -->
+            <div class="p-6 border-b border-gray-700">
+                <h1 class="text-3xl font-bold text-white" style="font-family: 'Press Start 2P', monospace;">
+                    EMERGENCY CARD
+                </h1>
+                <p class="text-gray-400 mt-2">{{ card.get_language_display }}</p>
+            </div>
+
+            <!-- Medical Info -->
+            <div class="p-6 space-y-6">
+                <div class="bg-gray-800/50 rounded-xl p-4">
+                    <h2 class="text-xl text-white mb-2">{{ card.get_condition_display }}</h2>
+                </div>
+
+                <!-- Emergency Contact -->
+                <div class="bg-gray-800/50 rounded-xl p-4">
+                    <h3 class="text-lg text-purple-300 mb-2">EMERGENCY CONTACT</h3>
+                    <div class="space-y-2 text-gray-300">
+                        <p>{{ card.emergency_contact_name }}</p>
+                        <p>{{ card.emergency_contact_phone }}</p>
+                        <p>{{ card.emergency_contact_relationship }}</p>
+                    </div>
+                </div>
+
+                {% if card.custom_message %}
+                <div class="bg-gray-800/50 rounded-xl p-4">
+                    <p class="text-gray-300">{{ card.custom_message }}</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Actions -->
+            <div class="p-6 bg-gray-800/50 border-t border-gray-700">
+                <div class="flex gap-4">
+                    <button class="flex-1 bg-purple-500 text-white px-6 py-3 rounded-lg hover:bg-purple-400 transition-colors">
+                        DOWNLOAD
+                    </button>
+                    <button class="flex-1 bg-gray-700 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition-colors">
+                        SHARE
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+    .bubble-pattern {
+        background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.1) 0%, transparent 50%);
+    }
+</style>
+{% endblock %}
