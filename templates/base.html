@@ -1,4 +1,13 @@
 <!DOCTYPE html>
+
+{% extends 'base.html' %}
+{% load static %}
+{% load form_tags %}
+
+{% block extra_head %}
+<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+{% endblock %}
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">

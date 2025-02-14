@@ -2,7 +2,7 @@ from django import forms
 from .models import EmergencyCard
 import re
 
-class EmergencyCard(forms.ModelForm):
+class EmergencyCardForm(forms.ModelForm):
     class Meta:
         model = EmergencyCard
         fields = [
