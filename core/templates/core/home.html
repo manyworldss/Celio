@@ -1,73 +1,81 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% load static %}
 
-{% block title %}GlutenGrid - Navigate gluten-free life with confidence{% endblock %}
+{% block title %}GlutenGrid - Home{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-gray-900">
-  <!-- Hero Section -->
-  <div class="relative overflow-hidden">
-    <!-- Background pattern -->
-    <div class="absolute inset-0 bg-gradient-to-br from-gray-900 to-gray-800">
-      <div class="absolute inset-0 bg-[linear-gradient(30deg,#ffffff12_1px,transparent_1px)] bg-[length:20px_20px]"></div>
+<div class="max-w-4xl mx-auto">
+    <!-- Welcome Section -->
+    <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">Welcome to GlutenGrid</h1>
+        <p class="text-xl text-gray-600">Communicate your dietary needs confidently.</p>
     </div>
 
-    <div class="relative max-w-6xl mx-auto px-4 pt-16 pb-24">
-      <div class="text-center">
-        <div class="flex justify-center mb-6">
-          <svg class="w-16 h-16 text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-          </svg>
-        </div>
-        <h1 class="text-5xl font-bold text-white mb-6">
-          Welcome to GlutenGrid
-        </h1>
-        <p class="text-xl text-gray-300 mb-8">
-          Navigate gluten-free life with confidence in your city
-        </p>
-        <div class="flex justify-center gap-4">
-          <a href="{% url 'accounts:signup' %}" class="bg-amber-500 text-gray-900 px-8 py-3 rounded-lg font-semibold hover:bg-amber-400 transition-colors">
-            Get Started
-          </a>
-          <a href="#features" class="border border-gray-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors">
-            Learn More
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
+    {% if user.is_authenticated %}
+        <!-- User Dashboard -->
+        <div class="grid gap-6 mb-8">
+            <!-- Create Card CTA -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-900 mb-2">Emergency Cards</h2>
+                        <p class="text-gray-600">Create and manage your dietary emergency cards.</p>
+                    </div>
+                    <a href="{% url 'emergency_cards:create_card' %}"
+                       class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors">
+                        Create New Card
+                    </a>
+                </div>
+            </div>
 
-  <!-- Features Grid -->
-  <div id="features" class="bg-gray-800 py-24">
-    <div class="max-w-6xl mx-auto px-4">
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- Feature cards -->
-        {% for feature in features %}
-        <div class="bg-gray-900 p-6 rounded-xl border border-gray-700">
-          <div class="bg-amber-500/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-            <img src="{% static feature.icon %}" class="text-amber-500 w-6 h-6" alt="{{ feature.name }}"/>
-          </div>
-          <h3 class="text-white text-xl font-semibold mb-3">{{ feature.name }}</h3>
-          <p class="text-gray-400">{{ feature.description }}</p>
+            <!-- Feature Preview -->
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Multiple Languages</h3>
+                    <p class="text-gray-600">Create cards in different languages to communicate effectively anywhere.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Emergency Information</h3>
+                    <p class="text-gray-600">Include crucial medical and contact information for emergencies.</p>
+                </div>
+            </div>
         </div>
-        {% endfor %}
-      </div>
-    </div>
-  </div>
 
-  <!-- CTA Section -->
-  <div class="bg-gray-900 py-24">
-    <div class="max-w-4xl mx-auto text-center px-4">
-      <h2 class="text-3xl font-bold text-white mb-6">
-        Ready to explore your city with confidence?
-      </h2>
-      <p class="text-gray-400 mb-8">
-        Join GlutenGrid today and discover a safer, easier way to navigate gluten-free living in your city.
-      </p>
-      <a href="{% url 'accounts:signup' %}" class="bg-amber-500 text-gray-900 px-8 py-3 rounded-lg font-semibold hover:bg-amber-400 transition-colors">
-        Sign Up Now
-      </a>
-    </div>
-  </div>
+    {% else %}
+        <!-- Guest Landing -->
+        <div class="grid gap-6">
+            <!-- Hero CTA -->
+            <div class="bg-white p-8 rounded-lg shadow-sm border border-gray-100 text-center">
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">Ready to Get Started?</h2>
+                <p class="text-gray-600 mb-6">Create your free account to manage your dietary emergency cards.</p>
+                <div class="space-x-4">
+                    <a href="{% url 'accounts:signup' %}"
+                       class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors">
+                        Sign Up Free
+                    </a>
+                    <a href="{% url 'accounts:login' %}"
+                       class="text-gray-700 hover:text-gray-900">
+                        Already have an account?
+                    </a>
+                </div>
+            </div>
+
+            <!-- Features Grid -->
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Emergency Cards</h3>
+                    <p class="text-gray-600">Create custom cards to communicate your dietary needs.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Multiple Languages</h3>
+                    <p class="text-gray-600">Communicate effectively in different languages.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Medical Info</h3>
+                    <p class="text-gray-600">Include important medical details and emergency contacts.</p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 </div>
 {% endblock %}
