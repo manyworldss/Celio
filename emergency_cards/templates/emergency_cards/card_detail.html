@@ -1,72 +1,151 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load form_tags %}
+
+{% block title %}Emergency Card Details - GlutenGrid{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-gray-800">
-    <!-- Decorative circles pattern -->
-    <div class="absolute inset-0 overflow-hidden">
-        <div class="absolute inset-0 opacity-10">
-            <!-- We'll add the bubble pattern with CSS -->
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Back Navigation -->
+    <div class="mb-6">
+        <a href="{% url 'emergency_cards:card_list' %}"
+           class="inline-flex items-center text-sm text-gray-600 hover:text-gray-900">
+            <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+            Back to Cards
+        </a>
+    </div>
+
+    <!-- Card Header -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+        <div>
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-900">Emergency Card</h1>
+            <p class="mt-1 text-gray-600">
+                {% if card.condition == 'CEL' %}
+                    Celiac Disease
+                {% elif card.condition == 'SEN' %}
+                    Gluten Sensitivity
+                {% else %}
+                    Wheat/Gluten Allergy
+                {% endif %}
+            </p>
+        </div>
+
+        <!-- Language Switcher -->
+        <div class="mt-4 md:mt-0 w-full md:w-auto">
+            <select class="w-full md:w-auto rounded-lg border border-gray-300 px-4 py-2 focus:border-purple-500 focus:ring-purple-500"
+                    hx-get="{% url 'emergency_cards:switch_language' card.id %}"
+                    hx-target="#message-content"
+                    hx-trigger="change">
+                {% for lang_code, lang_name in card.LANGUAGE_CHOICES %}
+                <option value="{{ lang_code }}"
+                        {% if lang_code == current_language %}selected{% endif %}>
+                    {{ lang_name }}
+                </option>
+                {% endfor %}
+            </select>
         </div>
     </div>
 
     <!-- Card Content -->
-    <div class="relative max-w-lg mx-auto px-4 py-16">
-        <div class="bg-gray-900 rounded-2xl shadow-xl border border-gray-700 overflow-hidden">
-            <!-- Header -->
-            <div class="p-6 border-b border-gray-700">
-                <h1 class="text-3xl font-bold text-white" style="font-family: 'Press Start 2P', monospace;">
-                    EMERGENCY CARD
-                </h1>
-                <p class="text-gray-400 mt-2">{{ card.get_language_display }}</p>
+    <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+        <!-- Medical Information -->
+        <div class="p-6 border-b border-gray-100">
+            <div class="flex items-start gap-4">
+                <span class="inline-flex px-3 py-1 rounded-full text-sm font-medium
+                            {% if card.condition == 'CEL' %}bg-red-100 text-red-800
+                            {% elif card.condition == 'SEN' %}bg-yellow-100 text-yellow-800
+                            {% else %}bg-orange-100 text-orange-800{% endif %}">
+                    {{ card.get_condition_display }}
+                </span>
             </div>
+        </div>
 
-            <!-- Medical Info -->
-            <div class="p-6 space-y-6">
-                <div class="bg-gray-800/50 rounded-xl p-4">
-                    <h2 class="text-xl text-white mb-2">{{ card.get_condition_display }}</h2>
+        <!-- Translated Message -->
+        <div class="p-6" id="message-content">
+            {% if card.translations %}
+                <div class="prose prose-sm max-w-none">
+                    {{ card.get_message }}
                 </div>
+            {% else %}
+                <p class="text-gray-500 italic">No message available in this language.</p>
+            {% endif %}
+        </div>
 
-                <!-- Emergency Contact -->
-                <div class="bg-gray-800/50 rounded-xl p-4">
-                    <h3 class="text-lg text-purple-300 mb-2">EMERGENCY CONTACT</h3>
-                    <div class="space-y-2 text-gray-300">
-                        <p>{{ card.emergency_contact_name }}</p>
-                        <p>{{ card.emergency_contact_phone }}</p>
-                        <p>{{ card.emergency_contact_relationship }}</p>
-                    </div>
+        <!-- Emergency Contact -->
+        <div class="p-6 border-t border-gray-100 bg-gray-50">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Emergency Contact</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <p class="text-sm text-gray-600">Name</p>
+                    <p class="text-gray-900">{{ card.emergency_contact_name }}</p>
                 </div>
-
-                {% if card.custom_message %}
-                <div class="bg-gray-800/50 rounded-xl p-4">
-                    <p class="text-gray-300">{{ card.custom_message }}</p>
+                <div>
+                    <p class="text-sm text-gray-600">Relationship</p>
+                    <p class="text-gray-900">{{ card.emergency_contact_relationship }}</p>
                 </div>
-                {% endif %}
+                <div>
+                    <p class="text-sm text-gray-600">Phone</p>
+                    <p class="text-gray-900">{{ card.emergency_contact_phone }}</p>
+                </div>
             </div>
+        </div>
 
-            <!-- Actions -->
-            <div class="p-6 bg-gray-800/50 border-t border-gray-700">
-                <div class="flex gap-4">
-                    <button class="flex-1 bg-purple-500 text-white px-6 py-3 rounded-lg hover:bg-purple-400 transition-colors">
-                        DOWNLOAD
-                    </button>
-                    <button class="flex-1 bg-gray-700 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition-colors">
-                        SHARE
-                    </button>
+        <!-- Card Information -->
+        <div class="px-6 py-4 border-t border-gray-100 bg-gray-50">
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+                <div>
+                    <p class="text-gray-600">Created</p>
+                    <p class="text-gray-900">{{ card.created_at|date:"M j, Y" }}</p>
+                </div>
+                <div>
+                    <p class="text-gray-600">Last Updated</p>
+                    <p class="text-gray-900">{{ card.updated_at|date:"M j, Y" }}</p>
+                </div>
+                <div>
+                    <p class="text-gray-600">Available Languages</p>
+                    <p class="text-gray-900">
+                        {% for lang in card.translations.keys %}
+                            <span class="inline-block px-2 py-1 text-xs font-medium bg-purple-100 text-purple-800 rounded mr-1">
+                                {{ lang }}
+                            </span>
+                        {% endfor %}
+                    </p>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Action Buttons -->
+    <div class="mt-6 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+        <div class="flex space-x-4">
+            <button onclick="showModal('shareModal')"
+                    class="inline-flex items-center text-purple-600 hover:text-purple-700">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+                </svg>
+                Share Card
+            </button>
+            <button onclick="showModal('downloadModal')"
+                    class="inline-flex items-center text-purple-600 hover:text-purple-700">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                </svg>
+                Download
+            </button>
+        </div>
+        <button onclick="showModal('deleteModal')"
+                class="inline-flex items-center text-red-600 hover:text-red-700">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+            </svg>
+            Delete Card
+        </button>
+    </div>
 </div>
-{% endblock %}
 
-{% block extra_css %}
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-
-    .bubble-pattern {
-        background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.1) 0%, transparent 50%);
-    }
-</style>
+<!-- Include your modal templates here -->
 {% endblock %}

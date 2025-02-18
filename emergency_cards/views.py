@@ -20,6 +20,19 @@ def create_card(request):
     # This should be outside the if-else blocks
     return render(request, 'emergency_cards/create_card.html', {'form': form})
 
+@login_required()
+def switch_language(request, card_id):
+    card = get_object_or_404(EmergencyCard, id=card_id, user=request.user)
+    language = request.GET.get('lang','EN') # default to english if no language specified
+
+    # get message in requested language
+    message = card.get_message(language)
+    if request.headers.get('HX-Request'): # if it's an HTMX request
+        return HttpResponse(message)
+    # for regular requests, redirect to card detail
+    return redirect("emergency_cards:card_detail", card.id)
+
+
 
 @login_required # make sure only logged-in users can access this view
 def validate_field(request):
@@ -45,6 +58,10 @@ def card_detail(request, card_id):
     card = get_object_or_404(EmergencyCard, id=card_id, user=request.user)
     return render(request, 'emergency_cards/card_detail.html', {'card': card})
 
+@login_required
+def card_list(request):
+    cards = EmergencyCard.objects.filter(user=request.user).order_by('-updated_at')
+    return render(request, 'emergency_cards/card_list.html', {'cards': cards})
 
 def home(request):
     return render(request, 'core/home.html')
