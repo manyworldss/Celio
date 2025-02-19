@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.templatetags.i18n import language
+
 
 
 class EmergencyCard(models.Model):
@@ -20,7 +20,7 @@ class EmergencyCard(models.Model):
 
     # core fields
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     language = models.CharField(max_length=2, choices=LANGUAGE_CHOICES, default='EN')
     condition = models.CharField(max_length=3, choices=SEVERITY_CHOICES)
     emergency_contact_name = models.CharField(max_length=100)

@@ -6,19 +6,34 @@ from .models import EmergencyCard  # Import the model
 
 
 @login_required # make sure only logged-in users can access this view
-def create_card(request):
+def create_card_or_edit(request):
+    try:     # trying to get users existing card
+        card = EmergencyCard.objects.get(user=request.user)
+            # if card exists, we'll use it to populate the form
+    except EmergencyCard.DoesNotExist:
+        card = None
     if request.method == 'POST':
-        form = EmergencyCardForm(request.POST)
+        if card:  # if card exists, update it
+            form = EmergencyCardForm(request.POST, instance=card)
+        else:
+            form = EmergencyCardForm(request.POST)
         if form.is_valid():
             card = form.save(commit=False)
             card.user = request.user
             card.save()
-            return redirect("emergency_cards:card_detail", card.id)
-    else:  # Move this outside the if-else block
-        form = EmergencyCardForm()
+            return redirect('emergency_cards:card_detail', card.id)
+    else: # GET request
+            if card: # if card exists, populate from card
+                form = EmergencyCardForm(instance=card)
+            else: # if no card, show empty form
+                form = EmergencyCardForm()
+            return render(request, 'emergency_cards/create_card_or_edit.html', {'form': form,'is_edit': card is not None})
 
-    # This should be outside the if-else blocks
-    return render(request, 'emergency_cards/create_card.html', {'form': form})
+
+
+
+
+
 
 @login_required()
 def switch_language(request, card_id):
