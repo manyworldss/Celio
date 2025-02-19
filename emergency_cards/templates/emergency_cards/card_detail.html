@@ -3,12 +3,15 @@
 
 {% block title %}Emergency Card Details - GlutenGrid{% endblock %}
 
+{% block extra_head %}
+<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+{% endblock %}
+
 {% block content %}
 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <!-- Back Navigation -->
     <div class="mb-6">
-        <a href="{% url 'emergency_cards:card_list' %}"
-           class="inline-flex items-center text-sm text-gray-600 hover:text-gray-900">
+        <a href="{% url 'emergency_cards:card_list' %}" class="inline-flex items-center text-sm text-gray-600 hover:text-gray-900">
             <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
             </svg>
@@ -19,27 +22,25 @@
     <!-- Card Header -->
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
         <div>
-            <h1 class="text-2xl md:text-3xl font-bold text-gray-900">Emergency Card</h1>
-            <p class="mt-1 text-gray-600">
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-900">
                 {% if card.condition == 'CEL' %}
-                    Celiac Disease
+                    Celiac Disease Card
                 {% elif card.condition == 'SEN' %}
-                    Gluten Sensitivity
+                    Gluten Sensitivity Card
                 {% else %}
-                    Wheat/Gluten Allergy
+                    Wheat/Gluten Allergy Card
                 {% endif %}
-            </p>
+            </h1>
         </div>
 
         <!-- Language Switcher -->
         <div class="mt-4 md:mt-0 w-full md:w-auto">
-            <select class="w-full md:w-auto rounded-lg border border-gray-300 px-4 py-2 focus:border-purple-500 focus:ring-purple-500"
+            <select class="w-full md:w-auto rounded-lg border border-gray-300 px-4 py-2"
                     hx-get="{% url 'emergency_cards:switch_language' card.id %}"
                     hx-target="#message-content"
                     hx-trigger="change">
                 {% for lang_code, lang_name in card.LANGUAGE_CHOICES %}
-                <option value="{{ lang_code }}"
-                        {% if lang_code == current_language %}selected{% endif %}>
+                <option value="{{ lang_code }}" {% if lang_code in card.translations %}selected{% endif %}>
                     {{ lang_name }}
                 </option>
                 {% endfor %}
@@ -47,105 +48,138 @@
         </div>
     </div>
 
-    <!-- Card Content -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
-        <!-- Medical Information -->
+    <!-- Card Preview -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden mb-8">
         <div class="p-6 border-b border-gray-100">
-            <div class="flex items-start gap-4">
-                <span class="inline-flex px-3 py-1 rounded-full text-sm font-medium
-                            {% if card.condition == 'CEL' %}bg-red-100 text-red-800
-                            {% elif card.condition == 'SEN' %}bg-yellow-100 text-yellow-800
-                            {% else %}bg-orange-100 text-orange-800{% endif %}">
-                    {{ card.get_condition_display }}
-                </span>
-            </div>
+            <span class="inline-flex px-3 py-1 rounded-full text-sm font-medium {% if card.condition == 'CEL' %}bg-red-100 text-red-800{% elif card.condition == 'SEN' %}bg-yellow-100 text-yellow-800{% else %}bg-orange-100 text-orange-800{% endif %}">
+                {{ card.get_condition_display }}
+            </span>
         </div>
 
-        <!-- Translated Message -->
-        <div class="p-6" id="message-content">
-            {% if card.translations %}
-                <div class="prose prose-sm max-w-none">
+        <div class="p-6 space-y-6">
+            <!-- Message Content -->
+            <div>
+                <h3 class="text-lg font-medium text-gray-900 mb-3">Medical Information</h3>
+                <div id="message-content" class="prose prose-sm max-w-none">
                     {{ card.get_message }}
                 </div>
-            {% else %}
-                <p class="text-gray-500 italic">No message available in this language.</p>
-            {% endif %}
-        </div>
+            </div>
 
-        <!-- Emergency Contact -->
-        <div class="p-6 border-t border-gray-100 bg-gray-50">
-            <h3 class="text-lg font-medium text-gray-900 mb-4">Emergency Contact</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <p class="text-sm text-gray-600">Name</p>
-                    <p class="text-gray-900">{{ card.emergency_contact_name }}</p>
-                </div>
-                <div>
-                    <p class="text-sm text-gray-600">Relationship</p>
-                    <p class="text-gray-900">{{ card.emergency_contact_relationship }}</p>
-                </div>
-                <div>
-                    <p class="text-sm text-gray-600">Phone</p>
-                    <p class="text-gray-900">{{ card.emergency_contact_phone }}</p>
+            <!-- Emergency Contact -->
+            <div>
+                <h3 class="text-lg font-medium text-gray-900 mb-3">Emergency Contact</h3>
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-sm text-gray-600">Name</p>
+                            <p class="text-gray-900">{{ card.emergency_contact_name }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">Relationship</p>
+                            <p class="text-gray-900">{{ card.emergency_contact_relationship }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">Phone Number</p>
+                            <p class="text-gray-900">{{ card.emergency_contact_phone }}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Card Information -->
-        <div class="px-6 py-4 border-t border-gray-100 bg-gray-50">
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
-                <div>
-                    <p class="text-gray-600">Created</p>
-                    <p class="text-gray-900">{{ card.created_at|date:"M j, Y" }}</p>
-                </div>
-                <div>
-                    <p class="text-gray-600">Last Updated</p>
-                    <p class="text-gray-900">{{ card.updated_at|date:"M j, Y" }}</p>
-                </div>
-                <div>
-                    <p class="text-gray-600">Available Languages</p>
-                    <p class="text-gray-900">
-                        {% for lang in card.translations.keys %}
-                            <span class="inline-block px-2 py-1 text-xs font-medium bg-purple-100 text-purple-800 rounded mr-1">
+            <!-- Card Information -->
+            <div class="pt-6 border-t border-gray-100">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    <div>
+                        <p class="text-gray-600">Created</p>
+                        <p class="text-gray-900">{{ card.created_at|date:"M j, Y" }}</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-600">Last Updated</p>
+                        <p class="text-gray-900">{{ card.updated_at|date:"M j, Y" }}</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-600">Available Languages</p>
+                        <div class="flex flex-wrap gap-2">
+                            {% for lang in card.translations.keys %}
+                            <span class="inline-block px-2 py-1 text-xs font-medium bg-purple-100 text-purple-800 rounded">
                                 {{ lang }}
                             </span>
-                        {% endfor %}
-                    </p>
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Action Buttons -->
-    <div class="mt-6 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+    <div class="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
         <div class="flex space-x-4">
-            <button onclick="showModal('shareModal')"
-                    class="inline-flex items-center text-purple-600 hover:text-purple-700">
+            <button onclick="showModal('shareModal')" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
                 </svg>
-                Share Card
+                Share
             </button>
-            <button onclick="showModal('downloadModal')"
-                    class="inline-flex items-center text-purple-600 hover:text-purple-700">
+            <button onclick="showModal('downloadModal')" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                 </svg>
                 Download
             </button>
         </div>
-        <button onclick="showModal('deleteModal')"
-                class="inline-flex items-center text-red-600 hover:text-red-700">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-            </svg>
+        <button onclick="showModal('deleteModal')" class="text-red-600 hover:text-red-700 font-medium">
             Delete Card
         </button>
     </div>
 </div>
 
-<!-- Include your modal templates here -->
+<!-- Modals -->
+{% include 'emergency_cards/modals/share_modal.html' %}
+{% include 'emergency_cards/modals/download_modal.html' %}
+{% include 'emergency_cards/modals/delete_modal.html' %}
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+function showModal(modalId) {
+    document.getElementById(modalId).classList.remove('hidden');
+}
+
+function closeModal(modalId) {
+    document.getElementById(modalId).classList.add('hidden');
+}
+
+function copyShareLink() {
+    const shareLink = document.getElementById('shareLink');
+    shareLink.select();
+    document.execCommand('copy');
+
+    const button = event.currentTarget;
+    const originalText = button.innerText;
+    button.innerText = 'Copied!';
+    setTimeout(() => {
+        button.innerText = originalText;
+    }, 2000);
+}
+
+function downloadFormat(format) {
+    const button = event.currentTarget;
+    const originalContent = button.innerHTML;
+    button.innerHTML = `<span class="flex items-center justify-center">
+        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-purple-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        Preparing download...
+    </span>`;
+
+    setTimeout(() => {
+        button.innerHTML = originalContent;
+        closeModal('downloadModal');
+        alert(`Downloading ${format} version...`);
+    }, 1500);
+}
+</script>
 {% endblock %}

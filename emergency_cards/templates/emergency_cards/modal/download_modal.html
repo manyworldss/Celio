@@ -1,0 +1,53 @@
+<!-- emergency_cards/templates/emergency_cards/modals/download_modal.html -->
+<div id="downloadModal" class="hidden fixed inset-0 bg-gray-500 bg-opacity-75 overflow-y-auto">
+    <div class="flex min-h-full items-center justify-center p-4">
+        <div class="relative bg-white rounded-lg shadow-xl w-full max-w-md">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-gray-100">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-semibold text-gray-900">Download Card</h3>
+                    <button type="button" class="text-gray-400 hover:text-gray-500" onclick="closeModal('downloadModal')">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Download Options -->
+            <div class="px-6 py-4">
+                <div class="space-y-4">
+                    <!-- PDF Option -->
+                    <button onclick="downloadFormat('pdf')" class="w-full flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50">
+                        <div class="flex items-center">
+                            <div class="bg-red-100 p-2 rounded-lg mr-3">
+                                <svg class="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                            <div class="text-left">
+                                <h4 class="text-sm font-medium text-gray-900">PDF Version</h4>
+                                <p class="text-sm text-gray-500">Download as PDF document</p>
+                            </div>
+                        </div>
+                    </button>
+
+                    <!-- Digital Wallet Option -->
+                    <button onclick="downloadFormat('wallet')" class="w-full flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50">
+                        <div class="flex items-center">
+                            <div class="bg-purple-100 p-2 rounded-lg mr-3">
+                                <svg class="w-6 h-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                            <div class="text-left">
+                                <h4 class="text-sm font-medium text-gray-900">Digital Wallet</h4>
+                                <p class="text-sm text-gray-500">Add to Apple/Google Wallet</p>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
