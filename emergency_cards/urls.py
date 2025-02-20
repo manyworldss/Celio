@@ -4,9 +4,12 @@ from . import views
 app_name = 'emergency_cards'
 
 urlpatterns = [
-    path('create/', views.create_card, name='create_card'),
-    path('card/<int:card_id>/', views.card_detail, name='card_detail'),
+    path('create/', views.create_card_or_edit, name='create_card'), # create or edit card
+    path('card/detail/', views.card_detail, name='card_detail'), # view card details
+    path('card/delete/', views.delete_card, name='delete_card'), # delete the card
+    path('card/switch-language/', views.switch_language, name='switch_language'), # new language route
     path('validate-field/', views.validate_field, name='validate_field'),
-    path('cards/', views.card_list, name='card_list'),
+    path('card/download/', views.download_card, name='download_card'),
+    path('card/share/', views.share_card, name='share_card'),
+    path('card/preview/', views.preview_card, name='preview_card'),
 ]
-

@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from .forms import EmergencyCardForm  # Note: Your form should be EmergencyCardForm, not EmergencyCard
-from .models import EmergencyCard  # Import the model
+from django.urls import reverse
+from .models import EmergencyCard
+from .forms import EmergencyCardForm
+
+
 
 
 @login_required # make sure only logged-in users can access this view
@@ -30,14 +33,21 @@ def create_card_or_edit(request):
             return render(request, 'emergency_cards/create_card_or_edit.html', {'form': form,'is_edit': card is not None})
 
 
+@login_required
+def delete_card(request):
+    card = get_object_or_404(EmergencyCard, user=request.user)
 
+    if request.method == 'POST':
+        card.delete()
+        return redirect('core:home') # redirect home after deletion
+    return render(request, 'emergency_cards/delete_card.html', {'card': card})
 
 
 
 
 @login_required()
-def switch_language(request, card_id):
-    card = get_object_or_404(EmergencyCard, id=card_id, user=request.user)
+def switch_language(request):
+    card = get_object_or_404(EmergencyCard, user=request.user)
     language = request.GET.get('lang','EN') # default to english if no language specified
 
     # get message in requested language
@@ -45,7 +55,7 @@ def switch_language(request, card_id):
     if request.headers.get('HX-Request'): # if it's an HTMX request
         return HttpResponse(message)
     # for regular requests, redirect to card detail
-    return redirect("emergency_cards:card_detail", card.id)
+    return redirect("emergency_cards:card_detail")
 
 
 
@@ -69,14 +79,47 @@ def validate_field(request):
 
 
 @login_required
-def card_detail(request, card_id):
-    card = get_object_or_404(EmergencyCard, id=card_id, user=request.user)
+def card_detail(request):
+    card = get_object_or_404(EmergencyCard, user=request.user)
     return render(request, 'emergency_cards/card_detail.html', {'card': card})
 
+
 @login_required
-def card_list(request):
-    cards = EmergencyCard.objects.filter(user=request.user).order_by('-updated_at')
-    return render(request, 'emergency_cards/card_list.html', {'cards': cards})
+def preview_card(request):
+    card = get_object_or_404(EmergencyCard, user=request.user)
+    language = request.GET.get('lang', 'EN')  # Get preferred language
+
+    return render(request, 'emergency_cards/preview_card.html', {
+        'card': card,
+        'current_language': language
+    })
+
+
+@login_required
+def download_card(request):
+    card = get_object_or_404(EmergencyCard, user=request.user)
+    format_type = request.GET.get('format', 'pdf')  # pdf or wallet
+    language = request.GET.get('lang', 'EN')
+
+    # For now, just return a template - will add actual download logic later
+    return render(request, 'emergency_cards/download_card.html', {
+        'card': card,
+        'format': format_type,
+        'language': language
+    })
+
+
+@login_required
+def share_card(request):
+    card = get_object_or_404(EmergencyCard, user=request.user)
+    share_url = request.build_absolute_uri(
+        reverse('emergency_cards:card_detail')
+    )
+
+    return render(request, 'emergency_cards/download_card.html', {
+        'card': card,
+        'share_url': share_url,
+    })
 
 def home(request):
     return render(request, 'core/home.html')
