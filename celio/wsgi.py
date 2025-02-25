@@ -1,5 +1,5 @@
 """
-WSGI config for glutengrid project.
+WSGI config for celio project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'glutengrid.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'celio.settings')
 
 application = get_wsgi_application()

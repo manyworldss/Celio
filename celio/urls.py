@@ -1,5 +1,5 @@
 """
-URL configuration for glutengrid project.
+URL configuration for celio project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.1/topics/http/urls/
@@ -24,5 +24,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core.urls')),
     path('accounts/', include('accounts.urls')),
-    path('emergency-cards/', include('emergency_cards.urls')), # this will handle all card - related URLs
+    path('emergency_cards/', include('emergency_cards.urls')), # this will handle all card - related URLs
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
