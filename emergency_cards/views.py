@@ -5,7 +5,17 @@ from django.urls import reverse
 from .models import EmergencyCard
 from .forms import EmergencyCardForm
 
-
+@login_required
+def switch_language(request):
+    # get the card
+    card = get_object_or_404(EmergencyCard, user=request.user)
+    language = request.GET.get('lang','EN') # default to english if no language specified
+    # get message in requested language
+    message = card.get_message(language)
+    if request.headers.get('HX-Request'): # if it's an HTMX request return just the message
+        return HttpResponse(message)
+    # for regular requests, redirect to card detail
+    return redirect("emergency_cards:card_detail")
 
 
 @login_required # make sure only logged-in users can access this view
