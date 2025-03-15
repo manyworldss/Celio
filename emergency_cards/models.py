@@ -35,20 +35,20 @@ class EmergencyCard(models.Model):
     # core fields
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    preferred_language = models.CharField(max_length=2, choices=LANGUAGE_CHOICES, default='EN')
-    condition = models.CharField(max_length=3, choices=SEVERITY_CHOICES)
-    emergency_contact_name = models.CharField(max_length=100)
-    emergency_contact_phone = models.CharField(max_length=20)
-    emergency_contact_relationship = models.CharField(max_length=50)
+    preferred_language = models.CharField(max_length=2, choices=LANGUAGE_CHOICES, default='EN', verbose_name='Preferred Language', help_text='The primary language for your card interface. You can still add translations in other languages')
+    condition = models.CharField(max_length=3, choices=SEVERITY_CHOICES, verbose_name='Condition', help_text='Select the option that best describes your dietary restriction')
+    emergency_contact_name = models.CharField(max_length=100, verbose_name='Emergency Contact Name', help_text='Person to contact in case of an emergency')
+    emergency_contact_phone = models.CharField(max_length=20, verbose_name='Emergency Contact Phone', help_text='Include country code if traveling internationally (e.g., +1 555-123-4567).')
+    emergency_contact_relationship = models.CharField(max_length=50, verbose_name='Emergency Contact Relationship')
    
     # storing languages and translations
-    translations = models.JSONField(default=dict)
+    translations = models.JSONField(default=dict, verbose_name=('Translations'), help_text='Stores the card content in multiple languages. At least English  (EN) is required.')
     # timestamps  # This will store all language versions
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     # theme selection
-    theme = models.CharField(max_length=20, choices=THEME_CHOICES, default=THEME_CLASSIC, verbose_name='Theme')
+    theme = models.CharField(max_length=20, choices=THEME_CHOICES, default=THEME_CLASSIC, verbose_name='Theme', help_text='Select the theme for your card')
 
 def get_message(self, language='EN'):
     """Get the message in the specified language"""
