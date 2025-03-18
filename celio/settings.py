@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     'emergency_cards',
 
     # Third party
-    'django_htmx',
+    'django_htmx', 
+    'onboarding.apps.OnboardingConfig',
 ]
 
 MIDDLEWARE = [

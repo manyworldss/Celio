@@ -7,6 +7,11 @@ from .models import OnboardingStatus
 def create_onboarding_status(sender, instance, created, **kwargs):
     if created:
         OnboardingStatus.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def create_onboarding_status(sender, instance, created, **kwargs):
+    if created:
+        OnboardingStatus.objects.create(user=instance)
     instance.onboarding_status.save()
 
 
