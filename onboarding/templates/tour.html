@@ -1,0 +1,125 @@
+<!-- onboarding/templates/onboarding/tour.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Celio - Tour{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/css/shepherd.css"/>
+<script src="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/js/shepherd.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="tour-container max-w-4xl mx-auto">
+    <!-- Tour elements -->
+    <div class="my-8 p-6">
+        <h1 class="text-3xl font-bold text-gray-900 mb-6 text-center" id="welcome-element">Welcome to Celio!</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 create-card-section">
+                <h2 class="text-xl font-bold text-gray-900 mb-2">Create Your Card</h2>
+                <p class="text-gray-600">Set up your emergency card with personal information and medical details.</p>
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 languages-section">
+                <h2 class="text-xl font-bold text-gray-900 mb-2">Multiple Languages</h2>
+                <p class="text-gray-600">Add translations to make your card useful in different countries.</p>
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 theme-selector">
+                <h2 class="text-xl font-bold text-gray-900 mb-2">Choose a Theme</h2>
+                <p class="text-gray-600">Select from different visual styles for your emergency card.</p>
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 share-options">
+                <h2 class="text-xl font-bold text-gray-900 mb-2">Share Your Card</h2>
+                <p class="text-gray-600">Generate QR codes and links to share with restaurants or medical staff.</p>
+            </div>
+        </div>
+        
+        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 mb-8 sage-container">
+            <h2 class="text-xl font-bold text-gray-900 mb-2">Sage Assistant</h2>
+            <p class="text-gray-600">Get help and advice about celiac disease and gluten-free options when traveling.</p>
+        </div>
+        
+        <div class="flex justify-between mt-8">
+            <a href="{% url 'home' %}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition">Skip tour</a>
+            <button id="start-tour-btn" class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition">Start tour</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const tour = new Shepherd.Tour({
+            defaultStepOptions: {
+                cancelIcon: {
+                    enabled: true
+                },
+                classes: 'shadow-md bg-white',
+                scrollTo: { behavior: 'smooth', block: 'center' }
+            },
+            useModalOverlay: true
+        });
+
+        // Tour steps remain largely the same but with URL adjustments
+        tour.addStep({
+            id: 'welcome',
+            title: 'Welcome to Celio!',
+            text: 'This tour will guide you through the features of our emergency card system for people with celiac disease and gluten sensitivities.',
+            attachTo: {
+                element: '#welcome-element',
+                on: 'bottom'
+            },
+            buttons: [
+                {
+                    action() {
+                        return this.next();
+                    },
+                    text: 'Next'
+                }
+            ]
+        });
+
+        // ... other steps ...
+
+        tour.addStep({
+            id: 'tour-complete',
+            title: 'Tour Complete!',
+            text: 'You\'re all set! Now you can create and manage your celiac emergency card with confidence.',
+            buttons: [
+                {
+                    action() {
+                        window.location.href = '{% url "home" %}';
+                        return this.complete();
+                    },
+                    text: 'Go to Home'
+                }
+            ]
+        });
+
+        // Helper function to get CSRF token
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // Start tour button
+        document.getElementById('start-tour-btn').addEventListener('click', function() {
+            tour.start();
+        });
+    });
+</script>
+{% endblock %}

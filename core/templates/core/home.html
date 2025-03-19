@@ -12,6 +12,7 @@
     </div>
 
     {% if user.is_authenticated %}
+        {% include 'onboarding/tour_prompt.html' %}
         <!-- User Dashboard -->
         <div class="grid gap-6 mb-8">
             <!-- Create Card CTA -->
