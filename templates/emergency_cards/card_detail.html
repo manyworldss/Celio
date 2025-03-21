@@ -1,3 +1,4 @@
+
 {% extends 'base.html' %}
 {% load static %}
 
@@ -46,32 +47,34 @@
                             class="flex items-center px-4 py-2 text-sm font-medium border {% if current_lang == lang_code %}bg-purple-100 text-purple-700 border-purple-300 z-10{% else %}bg-white text-gray-700 border-gray-300 hover:bg-gray-50{% endif %} {% if forloop.first %}rounded-l-lg{% elif forloop.last %}rounded-r-lg{% endif %}"
                             {% if current_lang == lang_code %}aria-current="true"{% endif %}
                             aria-label="{{ lang_name }}">
-                            <span class="language-flag mr-2">{{ lang_code|upper }}</span>
+                            <span class="language-flag mr-2">{{ lang_code }}</span>
                             <span>{{ lang_name }}</span>
                         </button>
                     {% endif %}
                 {% endfor %}
             </div>
-          <!-- Mobile Language Selector (Dropdown) -->
-    <div class="sm:hidden">
-        <label for="language-select" class="sr-only">Select Language</label>
-        <select id="language-select" 
-                name="language" 
-                class="block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
-                hx-get="{% url 'emergency_cards:switch_language' %}"
-                hx-target="#message-content"
-                hx-swap="innerHTML"
-                hx-trigger="change">
-            {% for lang_code, lang_name in card.LANGUAGE_CHOICES %}
-                {% if lang_code in card.translations %}
-                    <option value="{{ lang_code }}" {% if current_lang == lang_code %}selected{% endif %}>
-                        {{ lang_name }}
-                    </option>
-                {% endif %}
-            {% endfor %}
-        </select>
+            
+            <!-- Mobile Language Selector (Dropdown) -->
+            <div class="sm:hidden">
+                <label for="language-select" class="sr-only">Select Language</label>
+                <select id="language-select" 
+                        name="language" 
+                        class="block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
+                        hx-get="{% url 'emergency_cards:switch_language' %}"
+                        hx-target="#message-content"
+                        hx-swap="innerHTML"
+                        hx-trigger="change">
+                    {% for lang_code, lang_name in card.LANGUAGE_CHOICES %}
+                        {% if lang_code in card.translations %}
+                            <option value="{{ lang_code }}" {% if current_lang == lang_code %}selected{% endif %}>
+                                {{ lang_name }}
+                            </option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
     </div>
-</div>   
 
     <!-- Card Preview - With theme styling -->
     <div class="rounded-lg shadow-lg overflow-hidden border mb-8
@@ -99,8 +102,8 @@
                 <h3 class="text-lg font-medium mb-3 {% if card.theme == 'modern' %}text-white{% else %}text-gray-900{% endif %}">Medical Information</h3>
                 <div id="message-content" class="prose prose-sm max-w-none {% if card.theme == 'modern' %}text-white{% else %}text-gray-900{% endif %}">
                     {{ card.get_message }}
-    </div>
-</div>
+                </div>
+            </div>
 
             <!-- Emergency Contact -->
             <div>
@@ -151,25 +154,26 @@
     </div>
 
     <!-- Action Buttons -->
-<!--Share button -->
-<a href="{% url 'emergency_cards:share_card' %}" 
-   class="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
-   hx-get="{% url 'emergency_cards:share_card' %}"
-   hx-target="body"
-   hx-swap="beforeend">
-    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
-    </svg>
-    Share
-</a>
-<a href="{% url 'emergency_cards:download_card' %}"
-class="inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-hx-get="{% url 'emergency_cards:download_card' %}"
-hx-target="body"
-hx-swap="beforeend">
- <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
- </svg>
+    <div class="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+        <div class="flex space-x-4">
+            <a href="{% url 'emergency_cards:share_card' %}"
+               class="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+               hx-get="{% url 'emergency_cards:share_card' %}"
+               hx-target="body"
+               hx-swap="beforeend">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+                </svg>
+                Share
+            </a>
+            <a href="{% url 'emergency_cards:download_card' %}"
+               class="inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+               hx-get="{% url 'emergency_cards:download_card' %}"
+               hx-target="body"
+               hx-swap="beforeend">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                </svg>
                 Download
             </a>
         </div>
@@ -177,12 +181,17 @@ hx-swap="beforeend">
             <a href="{% url 'emergency_cards:create_card' %}" class="text-purple-600 hover:text-purple-700 font-medium">
                 Edit Card
             </a>
-            <a href="{% url 'emergency_cards:delete_card' %}" class="text-red-600 hover:text-red-700 font-medium">
+            <button onclick="showModal('deleteModal')" class="text-red-600 hover:text-red-700 font-medium">
                 Delete Card
-            </a>
+            </button>
         </div>
     </div>
 </div>
+
+<!-- Include modal templates -->
+{% include 'emergency_cards/modals/delete_modal.html' %}
+{% include 'emergency_cards/modals/share_modal.html' %}
+{% include 'emergency_cards/modals/download_modal.html' %}
 
 {% endblock %}
 

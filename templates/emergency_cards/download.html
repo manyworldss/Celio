@@ -1,0 +1,130 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Download Emergency Card - Celio{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Back Navigation -->
+    <div class="mb-6">
+        <a href="{% url 'emergency_cards:card_detail' %}" class="inline-flex items-center text-sm text-gray-600 hover:text-gray-900">
+            <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+            Back to Card
+        </a>
+    </div>
+    
+    <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
+        <h1 class="text-2xl font-bold text-gray-900 mb-6">Download Your Emergency Card</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- PDF Option -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="flex items-center mb-4">
+                    <div class="bg-red-100 p-2 rounded-lg mr-3">
+                        <svg class="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-xl font-semibold text-gray-900">PDF Version</h2>
+                </div>
+                
+                <p class="text-gray-600 mb-6">
+                    Download your emergency card as a PDF document that can be printed or shared digitally.
+                </p>
+                
+                <form action="{% url 'emergency_cards:download_card' %}" method="GET" class="space-y-4">
+                    <input type="hidden" name="format" value="pdf">
+                    
+                    <div>
+                        <label for="pdf-language" class="block text-sm font-medium text-gray-700 mb-1">Language</label>
+                        <select id="pdf-language" name="lang" class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-purple-500 focus:border-purple-500">
+                            {% for lang_code, lang_name in card.LANGUAGE_CHOICES %}
+                                {% if lang_code in card.translations %}
+                                    <option value="{{ lang_code }}" {% if card.language == lang_code %}selected{% endif %}>{{ lang_name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="pdf-size" class="block text-sm font-medium text-gray-700 mb-1">Page Size</label>
+                        <select id="pdf-size" name="size" class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-purple-500 focus:border-purple-500">
+                            <option value="letter">Letter (US)</option>
+                            <option value="a4">A4 (International)</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="w-full flex justify-center items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                        </svg>
+                        Download PDF
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Wallet Card Option -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="flex items-center mb-4">
+                    <div class="bg-purple-100 p-2 rounded-lg mr-3">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-xl font-semibold text-gray-900">Wallet Card</h2>
+                </div>
+                
+                <p class="text-gray-600 mb-6">
+                    Download a compact wallet-sized version of your emergency card to carry with you.
+                </p>
+                
+                <form action="{% url 'emergency_cards:download_card' %}" method="GET" class="space-y-4">
+                    <input type="hidden" name="format" value="wallet">
+                    
+                    <div>
+                        <label for="wallet-language" class="block text-sm font-medium text-gray-700 mb-1">Language</label>
+                        <select id="wallet-language" name="lang" class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-purple-500 focus:border-purple-500">
+                            {% for lang_code, lang_name in card.LANGUAGE_CHOICES %}
+                                {% if lang_code in card.translations %}
+                                    <option value="{{ lang_code }}" {% if card.language == lang_code %}selected{% endif %}>{{ lang_name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <div class="relative flex items-start">
+                            <div class="flex items-center h-5">
+                                <input id="include-qr" name="include_qr" type="checkbox" checked class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                            </div>
+                            <div class="ml-3 text-sm">
+                                <label for="include-qr" class="font-medium text-gray-700">Include QR Code</label>
+                                <p class="text-gray-500">Adds a QR code that links to your digital card</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="w-full flex justify-center items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                        </svg>
+                        Download Wallet Card
+                    </button>
+                </form>
+                
+                <div class="mt-4 p-3 bg-yellow-50 rounded-md">
+                    <p class="text-sm text-yellow-700">
+                        <svg class="inline w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Premium feature: Coming soon! This feature will be available with Celio Premium.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
