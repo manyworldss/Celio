@@ -16,6 +16,33 @@
 
             <!-- Download Options -->
             <div class="px-6 py-4">
+                <!-- Language Selector -->
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Language</label>
+                    <select id="download-language" class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-purple-500 focus:border-purple-500">
+                        {% for lang_code, lang_name in card.LANGUAGE_CHOICES %}
+                            {% if lang_code in card.translations %}
+                                <option value="{{ lang_code }}">{{ lang_name }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <!-- Size option for PDF -->
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Page Size</label>
+                    <select id="page-size" class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-purple-500 focus:border-purple-500">
+                        <option value="letter">Letter (US)</option>
+                        <option value="a4">A4 (International)</option>
+                    </select>
+                </div>
+
+                {% if error %}
+                <div class="mb-4 p-3 bg-red-50 text-red-700 rounded-lg">
+                    {{ error }}
+                </div>
+                {% endif %}
+
                 <div class="space-y-4">
                     <!-- PDF Option -->
                     <button onclick="downloadFormat('pdf')" class="w-full flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50">
@@ -51,3 +78,24 @@
         </div>
     </div>
 </div>
+
+<script>
+function downloadFormat(format) {
+    const language = document.getElementById('download-language').value;
+    const pageSize = document.getElementById('page-size').value;
+    const url = `{% url 'emergency_cards:download_card' %}?format=${format}&lang=${language}&size=${pageSize}`;
+    
+    if (format === 'pdf') {
+        window.location.href = url;
+    } else {
+        // For now, reload the modal with the wallet format
+        // This will show "coming soon" message
+        htmx.ajax('GET', url, '#downloadModal');
+    }
+    
+    // Close modal after initiating download
+    setTimeout(() => {
+        closeModal('downloadModal');
+    }, 500);
+}
+</script>

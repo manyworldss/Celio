@@ -12,4 +12,5 @@ urlpatterns = [
     path('card/download/', views.download_card, name='download_card'),
     path('card/share/', views.share_card, name='share_card'),
     path('card/preview/', views.preview_card, name='preview_card'),
+    path('public-card/<int:card_id>/', views.public_card, name='public_card'),
 ]
