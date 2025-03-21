@@ -4,7 +4,9 @@ from django.utils import timezone
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from .models import EmergencyCard
-
+import qrcode
+import base64
+from django.urls import reverse
 # For PDF generation
 from reportlab.lib.pagesizes import letter, A4
 from reportlab.lib import colors
@@ -23,7 +25,10 @@ def switch_language(request):
     message = card.get_message(language)
     if request.headers.get('HX-Request'): # if it's an HTMX request return just the message
      # return formatted message content
-        return render(request, 'emergency_cards/card_detail.html', {'message': message, 'card': card, 'theme': card.theme})
+        return render(request, 'emergency_cards/partials/message_content.html', {
+            'message': message, 'card': card, 
+            'theme': card.theme
+        })
     # for regular requests, redirect to card detail with language parameter
     return redirect(f"emergency_cards:card_detail?lang={language}")
 
@@ -86,15 +91,17 @@ def validate_field(request):
 @login_required
 def card_detail(request):
     card = get_object_or_404(EmergencyCard, user=request.user)
-    return render(request, 'emergency_cards/card_detail.html', {'card': card})
-
+    
     # get the current language from request or default to card language
     current_lang = request.GET.get('lang', card.language)
 
     if current_lang not in card.translations and card.translations:
         current_lang = next(iter(card.translations))
 
-    return render(request, 'emergency_cards/card_detail.html', {'card': card, 'current_language': current_lang})
+    return render(request, 'emergency_cards/card_detail.html', {
+        'card': card, 
+        'current_lang': current_lang
+    })
 
 @login_required
 def preview_card(request):
@@ -116,14 +123,14 @@ def download_card(request):
     # For wallet cards, will implement this later
     if format_type == 'wallet':
         # Placeholder for wallet card functionality
-        return render(request, 'emergency_cards/modals/download_modal.html', {
+        return render(request, 'emergency_cards/download.html', {
             'card': card,
             'error': 'Wallet card format is coming soon!'
         })
     
     # For showing the modal via HTMX
     if request.headers.get('HX-Request') and not request.GET.get('download', ''):
-        return render(request, 'emergency_cards/modals/download_modal.html', {'card': card})
+        return render(request, 'emergency_cards/download.html', {'card': card})
     
     # Get page size
     page_size_param = request.GET.get('size', 'letter')
@@ -332,7 +339,7 @@ def share_card(request):
     
     # Return modal template with context
     if request.headers.get('HX-Request'):
-        return render(request, 'emergency_cards/modals/share_modal.html', {
+        return render(request, 'emergency_cards/share.html', {
             'card': card,
             'share_url': share_url,
             'qr_code_url': qr_code_url,

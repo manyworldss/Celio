@@ -181,28 +181,13 @@
             <a href="{% url 'emergency_cards:create_card' %}" class="text-purple-600 hover:text-purple-700 font-medium">
                 Edit Card
             </a>
-            <button onclick="showModal('deleteModal')" class="text-red-600 hover:text-red-700 font-medium">
+            <a href="{% url 'emergency_cards:delete_card' %}" class="text-red-600 hover:text-red-700 font-medium">
                 Delete Card
-            </button>
+            </a>
         </div>
     </div>
 </div>
 
-<!-- Include modal templates -->
-{% include 'emergency_cards/modals/delete_modal.html' %}
-{% include 'emergency_cards/modals/share_modal.html' %}
-{% include 'emergency_cards/modals/download_modal.html' %}
 
 {% endblock %}
 
-{% block extra_scripts %}
-<script>
-function showModal(modalId) {
-    document.getElementById(modalId).classList.remove('hidden');
-}
-
-function closeModal(modalId) {
-    document.getElementById(modalId).classList.add('hidden');
-}
-</script>
-{% endblock %}
