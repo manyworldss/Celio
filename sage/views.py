@@ -71,21 +71,21 @@ def sage_assistant(request):
             'messages': messages,
             })
     
-    @login_required
-    def new_conversation(request):
-        # create new conversation
-        Conversation.objects.create(
-            user=request.user,
-            title="New Conversation"
-        )
+@login_required
+def new_conversation(request):
+# create new conversation
+    Conversation.objects.create(
+        user=request.user,
+        title="New Conversation"
+    )
 
-        # add welcome message
-        Message.objects.create(
-            conversation=Conversation,
-            role=Message.ROLE_ASSISTANT,
-            content="Hello! I'm Sage, your personal allergy assistant. How can I help you today?"
-        )
-        return redirect('sage:sage_assistant')
+    # add welcome message
+    Message.objects.create(
+        conversation=Conversation,
+        role=Message.ROLE_ASSISTANT,
+        content="Hello! I'm Sage, your personal allergy assistant. How can I help you today?"
+    )
+    return redirect('sage:sage_assistant')
 
 @login_required
 def delete_conversation(request, conversation_id):
