@@ -27,4 +27,5 @@ urlpatterns = [
     path('emergency_cards/', include('emergency_cards.urls')), # this will handle all card - related URLs
     path('onboarding/', include('onboarding.urls', namespace='onboarding')),
     path('sage/', include('sage.urls', namespace='sage')),
+    path('travel/', include('travel.urls', namespace='travel')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

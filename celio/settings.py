@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'core',
     'accounts',
     'emergency_cards',
+    'travel',
 
     # Third party
     'django_htmx', 
