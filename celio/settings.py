@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'accounts',
     'emergency_cards',
     'travel',
+    'rest_framework',
+    'subscription',
 
     # Third party
     'django_htmx', 
@@ -80,6 +82,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'subscription.context_processors.subscription_status',
             ],
         },
     },
