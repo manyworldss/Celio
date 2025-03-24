@@ -1,9 +1,13 @@
 # subscription/views.py
 from rest_framework import views, permissions, status
 from rest_framework.response import Response
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect 
 from django.contrib import messages
-from .models import Subscription
+#from subscription.models import Subscription
+
+
+
+
 
 class UpgradeSubscriptionView(views.APIView):
     """View for upgrading to premium subscription (DEMO VERSION)"""

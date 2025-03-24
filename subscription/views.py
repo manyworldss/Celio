@@ -1,8 +1,9 @@
 from rest_framework import views, permissions, status
 from rest_framework.response import Response
-from .models import Subscription
 from .serializers import SubscriptionSerializer
 from serializers import SubscriptionSerializer
+from subscription.models import Subscription
+
 
 class SubscriptionViewSet(viewsets.ModelViewSet):
     """View for getting current sub status"""
