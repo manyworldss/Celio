@@ -38,7 +38,7 @@ This project follows modern Django best practices:
 
 ## Screenshots
 
-![Card Creation](path/to/screenshot1.png)
+![Card Creation](path/to/screenshot1.png)  
 ![Language Switching](path/to/screenshot2.png)
 ![Travel Guides](path/to/screenshot3.png)
 
