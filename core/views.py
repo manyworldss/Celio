@@ -6,7 +6,23 @@ from django.contrib import messages
 #from subscription.models import Subscription
 
 
-
+def home(request):
+    # Get any needed context data
+    has_card = False
+    if request.user.is_authenticated:
+        has_card = hasattr(request.user, 'emergency_card')
+    
+    is_premium = False
+    if request.user.is_authenticated and hasattr(request.user, 'subscription'):
+        is_premium = request.user.subscription.is_premium
+    
+    context = {
+        'has_card': has_card,
+        'is_premium': is_premium,
+    }
+    
+    # Only render home.html (which will use base.html as its template)
+    return render(request, 'home.html', context)
 
 
 class UpgradeSubscriptionView(views.APIView):
@@ -51,7 +67,3 @@ def upgrade_page(request):
         'is_premium': is_premium,
         'demo_mode': True  # Flag to indicate demo mode in template
     })
-
-def home(request):
-    """View for the home page"""
-    return render(request, 'home.html')  

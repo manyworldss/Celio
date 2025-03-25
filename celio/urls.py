@@ -29,5 +29,5 @@ urlpatterns = [
     path('sage/', include('sage.urls', namespace='sage')),
     path('travel/', include('travel.urls', namespace='travel')),
     path('subscription/', include('subscription.urls', namespace='subscription')), # regular views
-    path('api/subscription/', include('subscription.urls', namespace='subscription')), # api endpoint
+    path('api/subscription/', include('subscription.urls', namespace='subscription_api')), # api endpoint
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -1,81 +1,187 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Celio - Home{% endblock %}
+{% block title %}Celio - Celiac Emergency Cards{% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto">
-    <!-- Welcome Section -->
-    <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold text-gray-900 mb-4">Welcome to Celio</h1>
-        <p class="text-xl text-gray-600">Communicate your dietary needs confidently.</p>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Hero Section -->
+    <div class="text-center mb-16">
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">Safe Dining, Anywhere in the World</h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">Celio helps you communicate your celiac or gluten-free needs in multiple languages, so you can travel with confidence.</p>
     </div>
 
     {% if user.is_authenticated %}
-        {% include 'onboarding/tour_prompt.html' %}
         <!-- User Dashboard -->
-        <div class="grid gap-6 mb-8">
-            <!-- Create Card CTA -->
-            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h2 class="text-2xl font-bold text-gray-900 mb-2">Emergency Cards</h2>
-                        <p class="text-gray-600">Create and manage your dietary emergency cards.</p>
+        <div class="mb-12">
+            <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100">
+                <div class="p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">Welcome Back{% if user.first_name %}, {{ user.first_name }}{% endif %}</h2>
+                    
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                        <p class="text-gray-600 mb-4 md:mb-0">Manage your emergency cards and access your travel guides.</p>
+                        
+                        <div class="flex space-x-4">
+                            {% if has_card %}
+                                <a href="{% url 'emergency_cards:card_detail' %}" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                                    <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                    View My Card
+                                </a>
+                            {% else %}
+                                <a href="{% url 'emergency_cards:create_card' %}" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                                    <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                    </svg>
+                                    Create Card
+                                </a>
+                            {% endif %}
+                            
+                            <a href="{% url 'travel:travel_guide_list' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                                <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                                </svg>
+                                Travel Guides
+                            </a>
+                        </div>
                     </div>
-                    <a href="{% url 'emergency_cards:create_card' %}"
-                       class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors">
-                        Create New Card
-                    </a>
-                </div>
-            </div>
-
-            <!-- Feature Preview -->
-            <div class="grid md:grid-cols-2 gap-6">
-                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                    <h3 class="text-lg font-bold text-gray-900 mb-2">Multiple Languages</h3>
-                    <p class="text-gray-600">Create cards in different languages to communicate effectively anywhere.</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                    <h3 class="text-lg font-bold text-gray-900 mb-2">Emergency Information</h3>
-                    <p class="text-gray-600">Include crucial medical and contact information for emergencies.</p>
                 </div>
             </div>
         </div>
-
+        
+        <!-- Features Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Emergency Card -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100">
+                <div class="p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-indigo-100 p-3 rounded-full mr-4">
+                            <svg class="w-6 h-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900">Emergency Card</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Create and customize your multilingual emergency card for safe dining anywhere.</p>
+                    {% if has_card %}
+                        <a href="{% url 'emergency_cards:card_detail' %}" class="text-indigo-600 hover:text-indigo-700 font-medium text-sm">Manage Your Card →</a>
+                    {% else %}
+                        <a href="{% url 'emergency_cards:create_card' %}" class="text-indigo-600 hover:text-indigo-700 font-medium text-sm">Create Your Card →</a>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Travel Guides -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100">
+                <div class="p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-indigo-100 p-3 rounded-full mr-4">
+                            <svg class="w-6 h-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900">Travel Guides</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Access country-specific guides with restaurant phrases and foods to avoid.</p>
+                    <a href="{% url 'travel:travel_guide_list' %}" class="text-indigo-600 hover:text-indigo-700 font-medium text-sm">Browse Travel Guides →</a>
+                </div>
+            </div>
+            
+            <!-- Sage Assistant -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100 {% if not is_premium %}opacity-75{% endif %}">
+                <div class="p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-indigo-100 p-3 rounded-full mr-4">
+                            <svg class="w-6 h-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900">Sage Assistant</h3>
+                        {% if not is_premium %}
+                            <span class="ml-2 bg-gray-100 text-gray-600 text-xs font-medium px-2 py-0.5 rounded">Premium</span>
+                        {% endif %}
+                    </div>
+                    <p class="text-gray-600 mb-4">Get AI-powered advice and answers about celiac disease and gluten-free dining.</p>
+                    {% if is_premium %}
+                        <a href="{% url 'sage:assistant' %}" class="text-indigo-600 hover:text-indigo-700 font-medium text-sm">Talk to Sage →</a>
+                    {% else %}
+                        <a href="{% url 'subscription:upgrade_page' %}" class="text-indigo-600 hover:text-indigo-700 font-medium text-sm">Upgrade to Premium →</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
     {% else %}
         <!-- Guest Landing -->
-        <div class="grid gap-6">
-            <!-- Hero CTA -->
-            <div class="bg-white p-8 rounded-lg shadow-sm border border-gray-100 text-center">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Ready to Get Started?</h2>
-                <p class="text-gray-600 mb-6">Create your free account to manage your dietary emergency cards.</p>
-                <div class="space-x-4">
-                    <a href="{% url 'accounts:signup' %}"
-                       class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors">
+        <div class="flex flex-col lg:flex-row items-center mb-16">
+            <div class="lg:w-1/2 lg:pr-8 mb-8 lg:mb-0">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">Communicate Your Dietary Needs Anywhere</h2>
+                <p class="text-lg text-gray-600 mb-6">Celio helps you create emergency cards in multiple languages so you can safely communicate your celiac disease or gluten sensitivity while traveling.</p>
+                <div class="flex space-x-4">
+                    <a href="{% url 'accounts:signup' %}" class="inline-flex items-center px-5 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors">
                         Sign Up Free
                     </a>
-                    <a href="{% url 'accounts:login' %}"
-                       class="text-gray-700 hover:text-gray-900">
-                        Already have an account?
+                    <a href="{% url 'accounts:login' %}" class="inline-flex items-center px-5 py-3 border border-gray-300 text-gray-700 bg-white font-medium rounded-lg hover:bg-gray-50 transition-colors">
+                        Log In
                     </a>
                 </div>
             </div>
-
-            <!-- Features Grid -->
-            <div class="grid md:grid-cols-3 gap-6">
-                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                    <h3 class="text-lg font-bold text-gray-900 mb-2">Emergency Cards</h3>
-                    <p class="text-gray-600">Create custom cards to communicate your dietary needs.</p>
+            <div class="lg:w-1/2">
+                <img src="{% static 'images/celio-hero-image.jpg' %}" alt="Celio App Screenshot" class="rounded-lg shadow-lg">
+            </div>
+        </div>
+        
+        <!-- Features -->
+        <div class="mb-16">
+            <h2 class="text-2xl font-bold text-gray-900 mb-8 text-center">Why Choose Celio?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-indigo-100 p-3 rounded-full mr-3">
+                            <svg class="w-6 h-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M3 8h12m-12 3h12m-12 3h12M9 4v16M14 4v16" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-medium text-gray-900">Multiple Languages</h3>
+                    </div>
+                    <p class="text-gray-600">Communicate effectively in 6+ languages including English, Spanish, French, Chinese, Japanese, and Portuguese.</p>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                    <h3 class="text-lg font-bold text-gray-900 mb-2">Multiple Languages</h3>
-                    <p class="text-gray-600">Communicate effectively in different languages.</p>
+                
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-indigo-100 p-3 rounded-full mr-3">
+                            <svg class="w-6 h-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-medium text-gray-900">Travel Guides</h3>
+                    </div>
+                    <p class="text-gray-600">Country-specific dining guides and restaurant phrase cards make traveling with celiac disease easier than ever.</p>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                    <h3 class="text-lg font-bold text-gray-900 mb-2">Medical Info</h3>
-                    <p class="text-gray-600">Include important medical details and emergency contacts.</p>
+                
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-indigo-100 p-3 rounded-full mr-3">
+                            <svg class="w-6 h-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-medium text-gray-900">Share & Download</h3>
+                    </div>
+                    <p class="text-gray-600">Share via QR codes or links and download printable wallet-sized cards for offline use when traveling.</p>
                 </div>
             </div>
+        </div>
+        
+        <!-- Call to Action -->
+        <div class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg shadow-lg p-8 text-center">
+            <h2 class="text-2xl font-bold text-white mb-4">Ready to Travel with Confidence?</h2>
+            <p class="text-white text-opacity-90 mb-6 max-w-3xl mx-auto">Join thousands of people with celiac disease who use Celio to communicate their dietary needs around the world.</p>
+            <a href="{% url 'accounts:signup' %}" class="inline-flex items-center px-6 py-3 bg-white text-indigo-600 font-medium rounded-lg hover:bg-gray-100 transition-colors">
+                Create Your Free Account
+            </a>
         </div>
     {% endif %}
 </div>
