@@ -1,7 +1,7 @@
 # subscription/views.py
 from rest_framework import views, permissions, status
 from rest_framework.response import Response
-from django.shortcuts import render, redirect 
+from django.shortcuts import render
 from django.contrib import messages
 #from subscription.models import Subscription
 
@@ -51,3 +51,7 @@ def upgrade_page(request):
         'is_premium': is_premium,
         'demo_mode': True  # Flag to indicate demo mode in template
     })
+
+def home(request):
+    """View for the home page"""
+    return render(request, 'home.html')  

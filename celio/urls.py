@@ -28,4 +28,6 @@ urlpatterns = [
     path('onboarding/', include('onboarding.urls', namespace='onboarding')),
     path('sage/', include('sage.urls', namespace='sage')),
     path('travel/', include('travel.urls', namespace='travel')),
+    path('subscription/', include('subscription.urls', namespace='subscription')), # regular views
+    path('api/subscription/', include('subscription.urls', namespace='subscription')), # api endpoint
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
