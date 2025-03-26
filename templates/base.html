@@ -104,4 +104,72 @@
             <!-- Mobile Navigation Menu -->
             <div class="sm:hidden hidden" id="mobile-menu">
                 <div class="pt-2 pb-3 space-y-1">
-                    <a href="/" class="block pl-3 pr-4 py-2 border-l-4 {% if request.path == '/' %}border-indigo-500 text-indigo-700 bg-indigo-50{% else %}border-transparent
+                    <a href="/" class="block pl-3 pr-4 py-2 border-l-4 {% if request.path == '/' %}border-indigo-500 text-indigo-700 bg-indigo-50{% else %}border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800{% endif %}">
+                        Home
+                    </a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'emergency_cards:card_detail' %}" class="block pl-3 pr-4 py-2 border-l-4 {% if 'emergency_cards' in request.path %}border-indigo-500 text-indigo-700 bg-indigo-50{% else %}border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800{% endif %}">
+                            My Card
+                        </a>
+                    {% endif %}
+                    <a href="{% url 'travel:travel_guide_list' %}" class="block pl-3 pr-4 py-2 border-l-4 {% if 'travel' in request.path %}border-indigo-500 text-indigo-700 bg-indigo-50{% else %}border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800{% endif %}">
+                        Travel Guides
+                    </a>
+                    {% if is_premium %}
+                        <a href="{% url 'sage:assistant' %}" class="block pl-3 pr-4 py-2 border-l-4 {% if 'sage' in request.path %}border-indigo-500 text-indigo-700 bg-indigo-50{% else %}border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800{% endif %}">
+                            Sage Assistant
+                        </a>
+                    {% endif %}
+                    {% if not user.is_authenticated %}
+                        <a href="{% url 'accounts:login' %}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800">
+                            Log in
+                        </a>
+                        <a href="{% url 'accounts:signup' %}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800">
+                            Sign up
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="flex-grow">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-auto">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <span class="text-lg font-semibold text-gradient">Celio</span>
+                    <p class="text-sm text-gray-500 mt-1">Safe dining, anywhere in the world.</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 hover:text-gray-700">About</a>
+                    <a href="#" class="text-gray-500 hover:text-gray-700">Privacy</a>
+                    <a href="#" class="text-gray-500 hover:text-gray-700">Terms</a>
+                    <a href="#" class="text-gray-500 hover:text-gray-700">Contact</a>
+                </div>
+            </div>
+            <div class="mt-4 text-center text-xs text-gray-500">
+                &copy; {% now "Y" %} Celio. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Alpine.js (for dropdowns) -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- Mobile menu toggle script -->
+    <script>
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+    
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

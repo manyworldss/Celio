@@ -10,7 +10,7 @@ class CustomUserCreationForm(UserCreationForm):
         # __init__ is a special Python method that initializes a new object
         # *args and **kwargs allow the method to accept any number of arguments
 
-        super().__init__(*args, *kwargs)
+        super().__init__(*args, **kwargs)
         # super() calls the parent class's (UserCreationForm) __init__ method
         # This ensures all the basic form setup is done before we make our customizations
 
@@ -21,13 +21,13 @@ class CustomUserCreationForm(UserCreationForm):
 
 def signup(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
             return redirect('core:home')
     else:
-        form = UserCreationForm()
+        form = CustomUserCreationForm()
     return render(request, 'accounts/signup.html', {'form': form})
 
 def login_view(request):

@@ -5,14 +5,14 @@ from .models import OnboardingStatus
 
 @receiver(post_save, sender=User)
 def create_onboarding_status(sender, instance, created, **kwargs):
+    """Create or update onboarding status when a user is created or saved"""
     if created:
         OnboardingStatus.objects.create(user=instance)
-
-@receiver(post_save, sender=User)
-def create_onboarding_status(sender, instance, created, **kwargs):
-    if created:
-        OnboardingStatus.objects.create(user=instance)
-    instance.onboarding_status.save()
-
-
-
+    else:
+        # Only try to save if the onboarding status already exists
+        try:
+            if hasattr(instance, 'onboarding_status'):
+                instance.onboarding_status.save()
+        except OnboardingStatus.DoesNotExist:
+            # If it doesn't exist for some reason, create it
+            OnboardingStatus.objects.create(user=instance)

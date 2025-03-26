@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 {% load static %}
 
@@ -101,7 +100,7 @@
             <div>
                 <h3 class="text-lg font-medium mb-3 {% if card.theme == 'modern' %}text-white{% else %}text-gray-900{% endif %}">Medical Information</h3>
                 <div id="message-content" class="prose prose-sm max-w-none {% if card.theme == 'modern' %}text-white{% else %}text-gray-900{% endif %}">
-                    {{ card.get_message }}
+                    {{ card.get_message|default:"No message available in this language." }}
                 </div>
             </div>
 
@@ -190,4 +189,3 @@
 
 
 {% endblock %}
-

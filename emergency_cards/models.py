@@ -50,27 +50,18 @@ class EmergencyCard(models.Model):
     # theme selection
     theme = models.CharField(max_length=20, choices=THEME_CHOICES, default=THEME_CLASSIC, verbose_name='Theme', help_text='Select the theme for your card')
 
-def get_message(self, language='EN'):
-    """Get the message in the specified language"""
-    return self.translations.get(language, self.translations.get( 'EN',''))
+    def get_message(self, language='EN'):
+        """Get the message in the specified language"""
+        return self.translations.get(language, self.translations.get('EN', ''))
 
-def set_message(self, language, message):
-    """Set the message in the specified language"""
-    if not self.translations:
-        self.translations = {}
-    self.translations[language] = message
-    self.save()
+    def set_message(self, language, message):
+        """Set the message in the specified language"""
+        if not self.translations:
+            self.translations = {}
+        self.translations[language] = message
+        self.save()
 
-def __str__(self):
-    available_languages = list(self.translations.keys())
-    languages_string = ",".join(available_languages) if available_languages else "No languages"
-    return f"Emergency card for {self.user.username} ({languages_string})"
-
-
-
-
-
-
-
-
-
+    def __str__(self):
+        available_languages = list(self.translations.keys())
+        languages_string = ",".join(available_languages) if available_languages else "No languages"
+        return f"Emergency card for {self.user.username} ({languages_string})"

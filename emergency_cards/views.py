@@ -49,13 +49,16 @@ def create_card_or_edit(request):
             card = form.save(commit=False)
             card.user = request.user
             card.save()
-            return redirect('emergency_cards:card_detail', card.id)
+            return redirect('emergency_cards:card_detail')
+        else:
+            # Return the form with errors if not valid
+            return render(request, 'emergency_cards/create_card_or_edit.html', {'form': form, 'is_edit': card is not None})
     else: # GET request
-            if card: # if card exists, populate from card
-                form = EmergencyCardForm(instance=card)
-            else: # if no card, show empty form
-                form = EmergencyCardForm()
-            return render(request, 'emergency_cards/create_card_or_edit.html', {'form': form,'is_edit': card is not None})
+        if card: # if card exists, populate from card
+            form = EmergencyCardForm(instance=card)
+        else: # if no card, show empty form
+            form = EmergencyCardForm()
+        return render(request, 'emergency_cards/create_card_or_edit.html', {'form': form,'is_edit': card is not None})
 
 
 @login_required
@@ -90,18 +93,24 @@ def validate_field(request):
 
 @login_required
 def card_detail(request):
-    card = get_object_or_404(EmergencyCard, user=request.user)
-    
-    # get the current language from request or default to card language
-    current_lang = request.GET.get('lang', card.language)
+    try:
+        card = EmergencyCard.objects.get(user=request.user)
+        
+        # get the current language from request or default to card's preferred language
+        current_lang = request.GET.get('lang', card.preferred_language)
 
-    if current_lang not in card.translations and card.translations:
-        current_lang = next(iter(card.translations))
+        # Safety check - if the requested language isn't in translations, use first available
+        if current_lang not in card.translations and card.translations:
+            current_lang = next(iter(card.translations))
 
-    return render(request, 'emergency_cards/card_detail.html', {
-        'card': card, 
-        'current_lang': current_lang
-    })
+        return render(request, 'emergency_cards/card_detail.html', {
+            'card': card, 
+            'current_lang': current_lang
+        })
+    except EmergencyCard.DoesNotExist:
+        # If user doesn't have a card yet, redirect them to create one
+        return redirect('emergency_cards:create_card')
+
 
 @login_required
 def preview_card(request):
@@ -118,7 +127,7 @@ def preview_card(request):
 def download_card(request):
     card = get_object_or_404(EmergencyCard, user=request.user)
     format_type = request.GET.get('format', 'pdf')
-    language = request.GET.get('lang', card.language)
+    language = request.GET.get('lang', card.preferred_language)
     
     # For wallet cards, will implement this later
     if format_type == 'wallet':
@@ -310,11 +319,14 @@ def public_card(request, card_id):
         'current_lang': language,
     })
 
+
+
 @login_required
 def share_card(request):
+    # Get the user's card
     card = get_object_or_404(EmergencyCard, user=request.user)
     
-    # Create a public shareable URL
+    # Create a shareable URL for the public view
     share_url = request.build_absolute_uri(
         reverse('emergency_cards:public_card', args=[card.id])
     )
@@ -337,13 +349,8 @@ def share_card(request):
     qr_code_data = base64.b64encode(buffer.getvalue()).decode('utf-8')
     qr_code_url = f"data:image/png;base64,{qr_code_data}"
     
-    # Return modal template with context
-    if request.headers.get('HX-Request'):
-        return render(request, 'emergency_cards/share.html', {
-            'card': card,
-            'share_url': share_url,
-            'qr_code_url': qr_code_url,
-        })
-    
-    # For non-HTMX requests, redirect to card detail
-    return redirect('emergency_cards:card_detail')
+    return render(request, 'emergency_cards/share.html', {
+        'card': card,
+        'share_url': share_url,
+        'qr_code_url': qr_code_url,
+    })

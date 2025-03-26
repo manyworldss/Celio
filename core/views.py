@@ -5,24 +5,25 @@ from django.shortcuts import render
 from django.contrib import messages
 #from subscription.models import Subscription
 
-
 def home(request):
-    # Get any needed context data
+    # Setup context variables
     has_card = False
-    if request.user.is_authenticated:
-        has_card = hasattr(request.user, 'emergency_card')
-    
     is_premium = False
-    if request.user.is_authenticated and hasattr(request.user, 'subscription'):
-        is_premium = request.user.subscription.is_premium
+    
+    if request.user.is_authenticated:
+        # Check if user has a card
+        has_card = hasattr(request.user, 'emergency_card')
+        
+        # Check premium status
+        if hasattr(request.user, 'subscription'):
+            is_premium = request.user.subscription.is_premium
     
     context = {
         'has_card': has_card,
         'is_premium': is_premium,
     }
     
-    # Only render home.html (which will use base.html as its template)
-    return render(request, 'home.html', context)
+    return render(request, 'core/home.html', context)
 
 
 class UpgradeSubscriptionView(views.APIView):

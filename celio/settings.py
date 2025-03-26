@@ -28,6 +28,15 @@ DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
 # Environment-based settings
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
+# Configure CSRF protection to work with browser previews
+CSRF_TRUSTED_ORIGINS = [
+    'http://127.0.0.1:8002',
+    'http://127.0.0.1:8001',
+    'http://localhost:8002',
+    'http://localhost:8001',
+    'http://127.0.0.1:*',  # Allow any port on 127.0.0.1 for development
+]
+
 # Secret key - using environment variable in production
 DEFAULT_SECRET_KEY = 'django-insecure-wp8+f+_i&5jljkhvd+z%9$95pkpy&0))2%996*kmx)9_t*^i4x'
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', DEFAULT_SECRET_KEY)
