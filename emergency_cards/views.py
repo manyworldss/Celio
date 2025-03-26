@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from .models import EmergencyCard
+from .forms import EmergencyCardForm
 import qrcode
 import base64
 from django.urls import reverse
@@ -20,17 +21,25 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, Tabl
 def switch_language(request):
     # get the card
     card = get_object_or_404(EmergencyCard, user=request.user)
-    language = request.GET.get('lang','EN') # default to english if no language specified
+    language = request.GET.get('lang', 'EN')  # default to english if no language specified
+    
+    # Make sure requested language exists in translations
+    if language not in card.translations and card.translations:
+        language = next(iter(card.translations))
+    
     # get message in requested language
     message = card.get_message(language)
-    if request.headers.get('HX-Request'): # if it's an HTMX request return just the message
-     # return formatted message content
+    
+    if request.headers.get('HX-Request'):  # if it's an HTMX request
+        # return formatted message content
         return render(request, 'emergency_cards/partials/message_content.html', {
-            'message': message, 'card': card, 
+            'message': message,
+            'card': card, 
             'theme': card.theme
         })
+    
     # for regular requests, redirect to card detail with language parameter
-    return redirect(f"emergency_cards:card_detail?lang={language}")
+    return redirect(f"/emergency_cards/card/detail/?lang={language}")
 
 
 @login_required # make sure only logged-in users can access this view
@@ -42,12 +51,23 @@ def create_card_or_edit(request):
         card = None
     if request.method == 'POST':
         if card:  # if card exists, update it
-            form = EmergencyCardForm(request.POST, instance=card)
+            form = EmergencyCardForm(request.POST, request.FILES, instance=card)
         else:
-            form = EmergencyCardForm(request.POST)
+            form = EmergencyCardForm(request.POST, request.FILES)
         if form.is_valid():
             card = form.save(commit=False)
             card.user = request.user
+            
+            # Make sure at least one language translation exists (English)
+            if not card.translations or 'EN' not in card.translations:
+                if not card.translations:
+                    card.translations = {}
+                # Default English message if none provided
+                if 'message_en' in form.cleaned_data and form.cleaned_data['message_en']:
+                    card.translations['EN'] = form.cleaned_data['message_en']
+                else:
+                    card.translations['EN'] = "I have celiac disease/gluten sensitivity and cannot consume any foods containing gluten."
+            
             card.save()
             return redirect('emergency_cards:card_detail')
         else:
@@ -95,20 +115,20 @@ def validate_field(request):
 def card_detail(request):
     try:
         card = EmergencyCard.objects.get(user=request.user)
+        # Get the current language from query parameter or default to English
+        current_lang = request.GET.get('lang', 'EN')
         
-        # get the current language from request or default to card's preferred language
-        current_lang = request.GET.get('lang', card.preferred_language)
-
-        # Safety check - if the requested language isn't in translations, use first available
-        if current_lang not in card.translations and card.translations:
-            current_lang = next(iter(card.translations))
-
-        return render(request, 'emergency_cards/card_detail.html', {
-            'card': card, 
-            'current_lang': current_lang
-        })
+        # Make sure the language exists in translations, otherwise default to English
+        if current_lang not in card.translations:
+            current_lang = 'EN'
+        
+        context = {
+            'card': card,
+            'current_lang': current_lang,
+            'message': card.get_message(current_lang)
+        }
+        return render(request, 'emergency_cards/card_detail.html', context)
     except EmergencyCard.DoesNotExist:
-        # If user doesn't have a card yet, redirect them to create one
         return redirect('emergency_cards:create_card')
 
 

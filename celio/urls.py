@@ -30,4 +30,11 @@ urlpatterns = [
     path('travel/', include('travel.urls', namespace='travel')),
     path('subscription/', include('subscription.urls', namespace='subscription')), # regular views
     path('api/subscription/', include('subscription.urls', namespace='subscription_api')), # api endpoint
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    path('demo/', include('demo.urls', namespace='demo')), # demo mode with guided tour
+]
+
+# Serve media files in development
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

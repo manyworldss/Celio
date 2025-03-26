@@ -1,53 +1,138 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Emergency Card Details - Celio{% endblock %}
+{% block title %}Your Emergency Card{% endblock %}
 
 {% block extra_head %}
-<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+<style>
+    .language-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+        padding-top: 0.25rem;
+        padding-bottom: 0.25rem;
+        border-radius: 0.375rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition-property: color, background-color, border-color;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+    }
+    .language-button.active {
+        background-color: var(--aline-green);
+        color: white;
+    }
+    .language-button:not(.active) {
+        background-color: var(--light-leaf);
+        color: var(--evergreen);
+    }
+    .language-button:not(.active):hover {
+        background-color: var(--leaf);
+        color: white;
+    }
+    
+    /* Card themes */
+    .card-classic {
+        background-color: #FFFFFF;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    .card-modern {
+        background: linear-gradient(135deg, var(--blue-spruce), var(--evergreen));
+        color: white;
+    }
+    .card-minimal {
+        background-color: #F9F9F9;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    /* Profile picture styles */
+    .profile-circle {
+        border-radius: 50%;
+        overflow: hidden;
+        border: 3px solid white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+</style>
 {% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <!-- Back Navigation -->
-    <div class="mb-6">
-        <a href="{% url 'core:home' %}" class="inline-flex items-center text-sm text-gray-600 hover:text-gray-900">
-            <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-            </svg>
-            Back to Home
-        </a>
-    </div>
-
-    <!-- Card Header -->
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- Title and Actions Bar -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
         <div>
-            <h1 class="text-2xl md:text-3xl font-bold text-gray-900">
-                {% if card.condition == 'CEL' %}
-                    Celiac Disease Card
-                {% elif card.condition == 'SEN' %}
-                    Gluten Sensitivity Card
-                {% else %}
-                    Wheat/Gluten Allergy Card
-                {% endif %}
-            </h1>
+            <h1 class="text-2xl font-bold text-gray-900 mb-2">My Emergency Card</h1>
+            <p class="text-gray-600">Share this card to communicate your dietary needs effectively.</p>
         </div>
-
-        <!-- Language Switcher -->
-        <div class="mt-4 md:mt-0 w-full md:w-auto">
-            <!-- Desktop Language Selector (Horizontal tabs with flags) -->
-            <div class="hidden sm:flex rounded-md shadow-sm" role="group">
+        
+        <div class="mt-4 sm:mt-0 flex flex-wrap gap-3">
+            <!-- Edit Button -->
+            <a href="{% url 'emergency_cards:edit_card' %}" class="tour-edit-button inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none">
+                <svg class="mr-2 -ml-1 h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+                Edit
+            </a>
+            
+            <!-- Share Button -->
+            <a href="#" class="tour-share-button inline-flex items-center px-4 py-2 primary-button rounded-md shadow-sm text-sm font-medium">
+                <svg class="mr-2 -ml-1 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                </svg>
+                Share
+            </a>
+            
+            <!-- Download Button -->
+            <a href="#" class="tour-download-button inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none">
+                <svg class="mr-2 -ml-1 h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Download
+            </a>
+        </div>
+    </div>
+    
+    <!-- Card Preview -->
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden mb-8 tour-card-preview">
+        <div class="p-6 {% if card.theme == 'modern' %}card-modern{% elif card.theme == 'minimal' %}card-minimal{% else %}card-classic{% endif %}">
+            
+            <!-- Card Header -->
+            <div class="flex items-start mb-6">
+                
+                {% if card.show_profile_pic and card.profile_pic %}
+                <div class="mr-4">
+                    <div class="profile-circle w-20 h-20">
+                        <img src="{{ card.profile_pic.url }}" alt="Profile Photo" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                {% endif %}
+                
+                <div>
+                    <h2 class="text-xl font-bold {% if card.theme == 'modern' %}text-white{% else %}text-gray-900{% endif %}">{{ card.name }}</h2>
+                    <p class="{% if card.theme == 'modern' %}text-white opacity-80{% else %}text-gray-600{% endif %}">
+                        <span class="font-medium">DOB:</span> {{ card.date_of_birth|date:"M d, Y" }}
+                    </p>
+                    {% if card.emergency_contact_name %}
+                    <p class="{% if card.theme == 'modern' %}text-white opacity-80{% else %}text-gray-600{% endif %}">
+                        <span class="font-medium">Emergency Contact:</span> {{ card.emergency_contact_name }}, {{ card.emergency_contact_phone }}
+                    </p>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Desktop Language Selector (Buttons) -->
+            <div class="hidden sm:flex sm:flex-wrap gap-2 mb-4 tour-language-selector">
                 {% for lang_code, lang_name in card.LANGUAGE_CHOICES %}
                     {% if lang_code in card.translations %}
-                        <button type="button"
+                        <button 
+                            class="language-button {% if current_lang == lang_code %}active{% endif %}"
                             hx-get="{% url 'emergency_cards:switch_language' %}?lang={{ lang_code }}"
                             hx-target="#message-content"
                             hx-swap="innerHTML"
-                            class="flex items-center px-4 py-2 text-sm font-medium border {% if current_lang == lang_code %}bg-purple-100 text-purple-700 border-purple-300 z-10{% else %}bg-white text-gray-700 border-gray-300 hover:bg-gray-50{% endif %} {% if forloop.first %}rounded-l-lg{% elif forloop.last %}rounded-r-lg{% endif %}"
-                            {% if current_lang == lang_code %}aria-current="true"{% endif %}
-                            aria-label="{{ lang_name }}">
-                            <span class="language-flag mr-2">{{ lang_code }}</span>
-                            <span>{{ lang_name }}</span>
+                        >
+                            {{ lang_name }}
                         </button>
                     {% endif %}
                 {% endfor %}
@@ -57,12 +142,13 @@
             <div class="sm:hidden">
                 <label for="language-select" class="sr-only">Select Language</label>
                 <select id="language-select" 
-                        name="language" 
-                        class="block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
+                        name="lang" 
+                        class="block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-aline-green focus:outline-none focus:ring-aline-green sm:text-sm"
                         hx-get="{% url 'emergency_cards:switch_language' %}"
                         hx-target="#message-content"
                         hx-swap="innerHTML"
-                        hx-trigger="change">
+                        hx-trigger="change"
+                        hx-include="this">
                     {% for lang_code, lang_name in card.LANGUAGE_CHOICES %}
                         {% if lang_code in card.translations %}
                             <option value="{{ lang_code }}" {% if current_lang == lang_code %}selected{% endif %}>
@@ -72,120 +158,262 @@
                     {% endfor %}
                 </select>
             </div>
-        </div>
-    </div>
-
-    <!-- Card Preview - With theme styling -->
-    <div class="rounded-lg shadow-lg overflow-hidden border mb-8
-                {% if card.theme == 'classic' %}bg-white border-gray-100{% endif %}
-                {% if card.theme == 'modern' %}bg-gradient-to-br from-purple-500 to-indigo-600 text-white border-purple-300{% endif %}
-                {% if card.theme == 'minimal' %}bg-gray-50 border-gray-200{% endif %}">
-        
-        <!-- Card Header with condition -->
-        <div class="p-6 {% if card.theme == 'modern' %}border-b border-white border-opacity-20{% else %}border-b border-gray-100{% endif %}">
-            <span class="inline-flex px-3 py-1 rounded-full text-sm font-medium 
-                         {% if card.condition == 'CEL' %}
-                             {% if card.theme == 'modern' %}bg-white bg-opacity-20 text-white{% else %}bg-red-100 text-red-800{% endif %}
-                         {% elif card.condition == 'SEN' %}
-                             {% if card.theme == 'modern' %}bg-white bg-opacity-20 text-white{% else %}bg-yellow-100 text-yellow-800{% endif %}
-                         {% else %}
-                             {% if card.theme == 'modern' %}bg-white bg-opacity-20 text-white{% else %}bg-orange-100 text-orange-800{% endif %}
-                         {% endif %}">
-                {{ card.get_condition_display }}
-            </span>
-        </div>
-
-        <div class="p-6 space-y-6">
+            
             <!-- Message Content with HTMX target -->
-            <div>
+            <div class="tour-message-content">
                 <h3 class="text-lg font-medium mb-3 {% if card.theme == 'modern' %}text-white{% else %}text-gray-900{% endif %}">Medical Information</h3>
                 <div id="message-content" class="prose prose-sm max-w-none {% if card.theme == 'modern' %}text-white{% else %}text-gray-900{% endif %}">
-                    {{ card.get_message|default:"No message available in this language." }}
-                </div>
-            </div>
-
-            <!-- Emergency Contact -->
-            <div>
-                <h3 class="text-lg font-medium mb-3 {% if card.theme == 'modern' %}text-white{% else %}text-gray-900{% endif %}">Emergency Contact</h3>
-                <div class="{% if card.theme == 'modern' %}bg-white bg-opacity-10{% else %}bg-gray-50{% endif %} rounded-lg p-4">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <p class="text-sm {% if card.theme == 'modern' %}text-white text-opacity-70{% else %}text-gray-600{% endif %}">Name</p>
-                            <p class="{% if card.theme == 'modern' %}text-white{% else %}text-gray-900{% endif %}">{{ card.emergency_contact_name }}</p>
-                        </div>
-                        <div>
-                            <p class="text-sm {% if card.theme == 'modern' %}text-white text-opacity-70{% else %}text-gray-600{% endif %}">Relationship</p>
-                            <p class="{% if card.theme == 'modern' %}text-white{% else %}text-gray-900{% endif %}">{{ card.emergency_contact_relationship }}</p>
-                        </div>
-                        <div>
-                            <p class="text-sm {% if card.theme == 'modern' %}text-white text-opacity-70{% else %}text-gray-600{% endif %}">Phone Number</p>
-                            <p class="{% if card.theme == 'modern' %}text-white{% else %}text-gray-900{% endif %}">{{ card.emergency_contact_phone }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card Information -->
-            <div class="pt-6 {% if card.theme == 'modern' %}border-t border-white border-opacity-20{% else %}border-t border-gray-100{% endif %}">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                    <div>
-                        <p class="{% if card.theme == 'modern' %}text-white text-opacity-70{% else %}text-gray-600{% endif %}">Created</p>
-                        <p class="{% if card.theme == 'modern' %}text-white{% else %}text-gray-900{% endif %}">{{ card.created_at|date:"M j, Y" }}</p>
-                    </div>
-                    <div>
-                        <p class="{% if card.theme == 'modern' %}text-white text-opacity-70{% else %}text-gray-600{% endif %}">Last Updated</p>
-                        <p class="{% if card.theme == 'modern' %}text-white{% else %}text-gray-900{% endif %}">{{ card.updated_at|date:"M j, Y" }}</p>
-                    </div>
-                    <div>
-                        <p class="{% if card.theme == 'modern' %}text-white text-opacity-70{% else %}text-gray-600{% endif %}">Available Languages</p>
-                        <div class="flex flex-wrap gap-2">
-                            {% for lang in card.translations.keys %}
-                            <span class="inline-block px-2 py-1 text-xs font-medium rounded
-                                       {% if card.theme == 'modern' %}bg-white bg-opacity-20 text-white{% else %}bg-purple-100 text-purple-800{% endif %}">
-                                {{ lang }}
-                            </span>
-                            {% endfor %}
-                        </div>
-                    </div>
+                    {{ message|default:"No message available in this language." }}
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Action Buttons -->
-    <div class="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
-        <div class="flex space-x-4">
-            <a href="{% url 'emergency_cards:share_card' %}"
-               class="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
-               hx-get="{% url 'emergency_cards:share_card' %}"
-               hx-target="body"
-               hx-swap="beforeend">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+    
+    {% if request.session.is_demo %}
+    <div class="bg-light-leaf text-aline-green p-4 rounded-lg mb-8">
+        <div class="flex items-center">
+            <svg class="w-6 h-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h3 class="font-medium">Demo Mode</h3>
+        </div>
+        <p class="mt-2">You're currently in demo mode. This is a sample emergency card to showcase the functionality.</p>
+        <div class="mt-4">
+            <a href="{% url 'demo:end' %}" class="text-sm inline-flex items-center font-medium">
+                Exit Demo
+                <svg class="ml-1 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                 </svg>
-                Share
-            </a>
-            <a href="{% url 'emergency_cards:download_card' %}"
-               class="inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-               hx-get="{% url 'emergency_cards:download_card' %}"
-               hx-target="body"
-               hx-swap="beforeend">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-                </svg>
-                Download
             </a>
         </div>
-        <div class="flex space-x-4">
-            <a href="{% url 'emergency_cards:create_card' %}" class="text-purple-600 hover:text-purple-700 font-medium">
-                Edit Card
-            </a>
-            <a href="{% url 'emergency_cards:delete_card' %}" class="text-red-600 hover:text-red-700 font-medium">
-                Delete Card
-            </a>
+    </div>
+    {% endif %}
+    
+    <!-- Additional Options -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        
+        <!-- Sharing Options -->
+        <div class="bg-white rounded-lg shadow-md p-6 card-bg tour-sharing-options">
+            <h3 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
+                <svg class="w-5 h-5 mr-2 text-aline-green" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                </svg>
+                Sharing Options
+            </h3>
+            <p class="text-gray-600 mb-4">Share your emergency card in multiple ways:</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <a href="#" class="inline-flex items-center px-3 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                    <svg class="mr-2 h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    Email
+                </a>
+                <a href="#" class="inline-flex items-center px-3 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                    <svg class="mr-2 h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                    </svg>
+                    Text Message
+                </a>
+                <a href="#" class="inline-flex items-center px-3 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                    <svg class="mr-2 h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                    Copy Link
+                </a>
+                <a href="#" class="inline-flex items-center px-3 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                    <svg class="mr-2 h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    QR Code
+                </a>
+            </div>
+        </div>
+        
+        <!-- Translation Info -->
+        <div class="bg-white rounded-lg shadow-md p-6 card-bg tour-translation-info">
+            <h3 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
+                <svg class="w-5 h-5 mr-2 text-aline-green" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                </svg>
+                Languages & Translation
+            </h3>
+            <p class="text-gray-600 mb-4">Your card is available in the following languages:</p>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                {% for lang_code, lang_name in card.LANGUAGE_CHOICES %}
+                    {% if lang_code in card.translations %}
+                        <div class="rounded-md bg-light-leaf px-3 py-2 text-sm text-evergreen">
+                            {{ lang_name }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            
+            {% if not is_premium %}
+            <div class="mt-4 p-4 bg-gray-50 rounded-md">
+                <p class="text-sm text-gray-600">Need more languages? <a href="{% url 'subscription:upgrade_page' %}" class="text-aline-green font-medium">Upgrade to Premium</a> for access to additional language translations.</p>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>
 
+{% if request.session.show_tour %}
+<div id="tour-container"></div>
+{% endif %}
+{% endblock %}
 
+{% block extra_scripts %}
+{% if request.session.show_tour %}
+<script>
+// Initialize the tour when the page is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    const tour = new Shepherd.Tour({
+        defaultStepOptions: {
+            cancelIcon: {
+                enabled: true
+            },
+            classes: 'shadow-lg bg-white rounded-lg',
+            scrollTo: { behavior: 'smooth', block: 'center' }
+        }
+    });
+    
+    // Welcome step
+    tour.addStep({
+        id: 'welcome',
+        text: 'Welcome to your Celio emergency card! This tour will guide you through the key features.',
+        attachTo: {
+            element: '.tour-card-preview',
+            on: 'top'
+        },
+        buttons: [
+            {
+                action: function() {
+                    return this.cancel();
+                },
+                text: 'Skip Tour'
+            },
+            {
+                action: function() {
+                    return this.next();
+                },
+                text: 'Next',
+                classes: 'bg-aline-green text-white px-4 py-2 rounded-md'
+            }
+        ]
+    });
+    
+    // Language selector step
+    tour.addStep({
+        id: 'language-selector',
+        text: 'These language buttons let you switch between different translations of your card. Try clicking one to see your message in a different language.',
+        attachTo: {
+            element: '.tour-language-selector',
+            on: 'bottom'
+        },
+        buttons: [
+            {
+                action: function() {
+                    return this.back();
+                },
+                text: 'Back'
+            },
+            {
+                action: function() {
+                    return this.next();
+                },
+                text: 'Next',
+                classes: 'bg-aline-green text-white px-4 py-2 rounded-md'
+            }
+        ]
+    });
+    
+    // Message content step
+    tour.addStep({
+        id: 'message-content',
+        text: 'This is your personalized message explaining your celiac disease and dietary needs. It automatically updates when you switch languages.',
+        attachTo: {
+            element: '.tour-message-content',
+            on: 'bottom'
+        },
+        buttons: [
+            {
+                action: function() {
+                    return this.back();
+                },
+                text: 'Back'
+            },
+            {
+                action: function() {
+                    return this.next();
+                },
+                text: 'Next',
+                classes: 'bg-aline-green text-white px-4 py-2 rounded-md'
+            }
+        ]
+    });
+    
+    // Sharing options step
+    tour.addStep({
+        id: 'sharing-options',
+        text: 'You can easily share your card with restaurants and dining companions using these options.',
+        attachTo: {
+            element: '.tour-sharing-options',
+            on: 'top'
+        },
+        buttons: [
+            {
+                action: function() {
+                    return this.back();
+                },
+                text: 'Back'
+            },
+            {
+                action: function() {
+                    return this.next();
+                },
+                text: 'Next',
+                classes: 'bg-aline-green text-white px-4 py-2 rounded-md'
+            }
+        ]
+    });
+    
+    // Translation info step
+    tour.addStep({
+        id: 'translation-info',
+        text: 'Your card is available in multiple languages, making it easy to communicate your needs anywhere in the world.',
+        attachTo: {
+            element: '.tour-translation-info',
+            on: 'top'
+        },
+        buttons: [
+            {
+                action: function() {
+                    return this.back();
+                },
+                text: 'Back'
+            },
+            {
+                action: function() {
+                    return this.complete();
+                },
+                text: 'Finish Tour',
+                classes: 'bg-aline-green text-white px-4 py-2 rounded-md'
+            }
+        ]
+    });
+    
+    // Start the tour
+    tour.start();
+    
+    // Mark the tour as viewed after starting it
+    fetch("{% url 'demo:end_tour' %}", {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'Content-Type': 'application/json'
+        }
+    });
+});
+</script>
+{% endif %}
 {% endblock %}

@@ -49,6 +49,10 @@ class EmergencyCard(models.Model):
 
     # theme selection
     theme = models.CharField(max_length=20, choices=THEME_CHOICES, default=THEME_CLASSIC, verbose_name='Theme', help_text='Select the theme for your card')
+    
+    # Optional profile picture
+    profile_pic = models.ImageField(upload_to='profile_pics/', blank=True, null=True, verbose_name='Profile Picture')
+    show_profile_pic = models.BooleanField(default=False, verbose_name='Show Profile Picture', help_text='Enable to display your profile picture on the card')
 
     def get_message(self, language='EN'):
         """Get the message in the specified language"""

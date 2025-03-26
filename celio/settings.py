@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'travel',
     'rest_framework',
     'subscription',
+    'demo',
 
     # Third party
     'django_htmx', 

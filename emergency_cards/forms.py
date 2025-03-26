@@ -18,6 +18,8 @@ class EmergencyCardForm(forms.ModelForm):
             'emergency_contact_name',
             'emergency_contact_phone',
             'emergency_contact_relationship',
+            'profile_pic',
+            'show_profile_pic',
         ]
         widgets = {
             'emergency_contact_relationship': forms.TextInput(attrs={
