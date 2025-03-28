@@ -6,6 +6,42 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/emergency_card_themes.css' %}">
 <link rel="stylesheet" href="{% static 'css/emergency_card_id.css' %}">
+<style>
+    /* Theme specific styles */
+    #card-preview .theme-modern .card-inner {
+        background-color: #1a1a2e;
+        color: white;
+    }
+    
+    #card-preview .theme-minimal .card-inner {
+        background-color: #f8f9fa;
+    }
+    
+    #card-preview .theme-dark .card-inner {
+        background-color: #121212;
+        color: white;
+    }
+    
+    #card-preview .theme-nature .card-inner {
+        background-color: #f0f8e6;
+    }
+    
+    #card-preview .theme-vintage .card-inner {
+        background-color: #f9f5eb;
+    }
+    
+    #card-preview .theme-pastel .card-inner {
+        background-color: #f8e8f8;
+    }
+    
+    /* Card-specific layout */
+    .emergency-card.card {
+        width: 100%;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -25,6 +61,12 @@
                 </svg>
                 Edit Card
             </a>
+            <a href="{% url 'emergency_cards:fullscreen_card' %}" class="tour-fullscreen-button inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none">
+                <svg class="mr-2 h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5" />
+                </svg>
+                Fullscreen View
+            </a>
             <a href="{% url 'emergency_cards:download_card' %}" class="tour-download-button inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none">
                 <svg class="mr-2 h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -35,117 +77,15 @@
     </div>
     
     <!-- Main Content Area -->
-    <div class="flex flex-col lg:flex-row gap-8">
-        
-        <!-- Card Display (Left Side on Desktop) -->
-        <div class="lg:w-2/3">
+    <div class="lg:flex lg:space-x-8">
+        <!-- Card Preview (Left Side) -->
+        <div class="lg:w-2/3 mb-6 lg:mb-0">
             <div class="bg-white shadow-md rounded-lg overflow-hidden">
-                <!-- Emergency Card -->
-                <div id="card-preview" class="emergency-card card theme-{{ card.theme }} rounded-none">
-                    <div class="card-inner">
-                        {% if card.theme == 'classic' %}
-                            <div class="card-header flex items-center justify-between p-4 bg-gradient-to-r from-teal-500 to-deep-teal">
-                                <div class="card-logo">
-                                    <img src="{% static 'images/emergency-card-logo.png' %}" alt="Emergency Card" class="h-10">
-                                </div>
-                                <div class="card-title">
-                                    <h2 class="text-white text-lg font-bold">Emergency Card</h2>
-                                </div>
-                                <div class="card-badge bg-white text-deep-teal px-2 py-1 rounded text-xs font-bold uppercase">
-                                    {{ card.get_condition_display }}
-                                </div>
-                            </div>
-                        {% elif card.theme == 'modern' %}
-                            <div class="card-header p-4 bg-gradient-to-r from-deep-teal to-teal-500">
-                                <div class="flex justify-between items-center">
-                                    <div class="card-logo">
-                                        <img src="{% static 'images/emergency-card-logo-white.png' %}" alt="Emergency Card" class="h-10">
-                                    </div>
-                                    <div class="card-badge bg-white text-deep-teal px-2 py-1 rounded text-xs font-bold uppercase">
-                                        {{ card.get_condition_display }}
-                                    </div>
-                                </div>
-                                <div class="card-title mt-2">
-                                    <h2 class="text-white text-2xl font-bold">Emergency Medical Card</h2>
-                                </div>
-                            </div>
-                        {% elif card.theme == 'minimal' %}
-                            <div class="card-header p-4 bg-white border-b-2 border-deep-teal">
-                                <div class="flex justify-between items-center">
-                                    <div class="card-title">
-                                        <h2 class="text-deep-teal text-lg font-bold">Emergency Medical Card</h2>
-                                    </div>
-                                    <div class="card-badge bg-deep-teal text-white px-2 py-1 rounded text-xs font-bold uppercase">
-                                        {{ card.get_condition_display }}
-                                    </div>
-                                </div>
-                            </div>
-                        {% else %}
-                            <!-- Include all other theme templates -->
-                            {% include 'emergency_cards/card_templates.html' %}
-                        {% endif %}
-                        
-                        <div class="card-body p-4">
-                            <!-- Personal Information Section -->
-                            <div class="flex items-start mb-4">
-                                {% if card.show_profile_pic and card.profile_picture %}
-                                    <div class="shrink-0 mr-4">
-                                        <div class="w-20 h-20 rounded-full overflow-hidden border-2 {% if card.theme == 'modern' %}border-white{% else %}border-deep-teal{% endif %}">
-                                            <img src="{{ card.profile_picture.url }}" alt="Profile Picture" class="w-full h-full object-cover">
-                                        </div>
-                                    </div>
-                                {% endif %}
-                                
-                                <div class="flex-1">
-                                    <div class="text-sm {% if card.theme == 'modern' %}text-white{% else %}text-gray-700{% endif %}">
-                                        <div class="mb-2">
-                                            <span class="font-bold text-lg">{{ request.user.get_full_name }}</span>
-                                        </div>
-                                        <div>
-                                            <span class="font-semibold">Condition:</span> {{ card.get_condition_display }}
-                                        </div>
-                                        <div>
-                                            <span class="font-semibold">Language:</span> {{ current_lang_display }}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Message Content -->
-                            <div class="card-message-section p-4 rounded-lg mb-4 {% if card.theme == 'modern' %}bg-deep-teal-2 text-white{% else %}bg-mint-lightest text-gray-700{% endif %}">
-                                <h3 class="text-md font-semibold mb-2 {% if card.theme == 'modern' %}text-white{% else %}text-deep-teal{% endif %}">Important Information</h3>
-                                <div id="card-message-content">
-                                    {% include 'emergency_cards/partials/message_content.html' %}
-                                </div>
-                            </div>
-                            
-                            <!-- Emergency Contact Section -->
-                            <div class="border-t py-4 {% if card.theme == 'modern' %}border-white/30{% else %}border-gray-200{% endif %}">
-                                <h3 class="text-md font-semibold mb-2 {% if card.theme == 'modern' %}text-white{% else %}text-deep-teal{% endif %}">Emergency Contact</h3>
-                                <div class="{% if card.theme == 'modern' %}text-white{% else %}text-gray-700{% endif %} text-sm">
-                                    <div class="grid grid-cols-1 gap-2">
-                                        <div class="flex">
-                                            <span class="font-semibold w-24">Name:</span>
-                                            <span>{{ card.emergency_contact_name }}</span>
-                                        </div>
-                                        <div class="flex">
-                                            <span class="font-semibold w-24">Relationship:</span>
-                                            <span>{{ card.emergency_contact_relationship }}</span>
-                                        </div>
-                                        <div class="flex">
-                                            <span class="font-semibold w-24">Phone:</span>
-                                            <span>{{ card.emergency_contact_phone }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Card Footer -->
-                            <div class="text-xs text-center mt-4 {% if card.theme == 'modern' %}text-white/70{% else %}text-gray-500{% endif %}">
-                                Created with Celio Emergency Card System
-                            </div>
-                        </div>
-                    </div>
+                <h2 class="text-xl font-bold text-gray-900 p-4 border-b">Card Preview</h2>
+                
+                <!-- Card Preview -->
+                <div id="card-preview" class="p-4">
+                    {% include 'emergency_cards/partials/card_preview.html' %}
                 </div>
             </div>
         </div>
@@ -274,7 +214,7 @@
         themeSelector.addEventListener('change', function() {
             const selectedTheme = this.value;
             // Use HTMX to fetch a preview of the theme
-            fetch(`/emergency-cards/apply-theme/${selectedTheme}/?preview=true`)
+            fetch(`{% url 'emergency_cards:apply_theme' 'placeholder' %}`.replace('placeholder', selectedTheme) + '?preview=true')
                 .then(response => response.text())
                 .then(html => {
                     cardPreviewContainer.innerHTML = html;
@@ -288,7 +228,7 @@
         saveThemeButton.addEventListener('click', function() {
             const selectedTheme = themeSelector.value;
             // Redirect to apply theme URL without preview parameter to save
-            window.location.href = `/emergency-cards/apply-theme/${selectedTheme}/`;
+            window.location.href = `{% url 'emergency_cards:apply_theme' 'placeholder' %}`.replace('placeholder', selectedTheme);
         });
         
         // Download link handling

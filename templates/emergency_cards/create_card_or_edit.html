@@ -1,6 +1,7 @@
 <!-- templates/emergency_cards/create_card_or_edit.html -->
 {% extends 'base.html' %}
 {% load static %}
+{% load emergency_card_filters %}
 
 {% block title %}
     {% if is_edit %}Edit{% else %}Create{% endif %} Emergency Card - Celio
@@ -29,6 +30,9 @@
         
         <form method="POST" class="space-y-6" enctype="multipart/form-data">
             {% csrf_token %}
+            
+            <!-- Hidden input to track active language -->
+            <input type="hidden" name="active_language" id="active_language" value="{{ current_lang|default:'EN' }}">
             
             <!-- Card Basic Information -->
             <div class="space-y-4">
@@ -108,57 +112,15 @@
                     </div>
                 </div>
                 
-                <!-- Theme Selection -->
-                <div>
-                    <label for="{{ form.theme.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
-                        Card Theme
-                    </label>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
-                        {% for value, text in form.theme.field.choices %}
-                            <div class="relative">
-                                <input type="radio" id="theme-{{ value }}" name="{{ form.theme.name }}" value="{{ value }}" 
-                                       class="absolute opacity-0 w-full h-full cursor-pointer z-10" 
-                                       {% if form.theme.value == value %}checked{% endif %}>
-                                <label for="theme-{{ value }}" 
-                                       class="block p-4 rounded-lg border-2 cursor-pointer
-                                              {% if form.theme.value == value %}border-deep-teal{% else %}border-gray-200{% endif %}
-                                              {% if value == 'classic' %}bg-white{% elif value == 'modern' %}bg-gradient-to-br from-deep-teal to-blue-green-dark text-white{% elif value == 'minimal' %}bg-gray-50{% endif %}">
-                                    <span class="font-medium {% if value == 'modern' %}text-white{% else %}text-gray-900{% endif %}">{{ text }}</span>
-                                    <p class="text-sm {% if value == 'modern' %}text-white text-opacity-80{% else %}text-gray-500{% endif %}">
-                                        {% if value == 'classic' %}
-                                            Traditional design with clear information
-                                        {% elif value == 'modern' %}
-                                            Bold, colorful design that stands out
-                                        {% elif value == 'minimal' %}
-                                            Clean, simple design with no distractions
-                                        {% endif %}
-                                    </p>
-                                </label>
-                            </div>
-                        {% endfor %}
-                    </div>
-                    {% if form.theme.errors %}
-                        <p class="mt-2 text-sm text-red-600">{{ form.theme.errors.0 }}</p>
-                    {% endif %}
-                </div>
+                <!-- Hidden theme field - theme selection is now on the main card page -->
+                <input type="hidden" name="{{ form.theme.name }}" value="{{ form.theme.value|default:'classic' }}">
                 
                 <!-- Language Selection - Primary -->
                 <div>
-                    <label for="{{ form.language.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">
                         Primary Language
                     </label>
-                    <select name="{{ form.language.name }}" id="{{ form.language.id_for_label }}" 
-                            class="block w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-deep-teal focus:border-deep-teal">
-                        {% for value, text in form.language.field.choices %}
-                            <option value="{{ value }}" {% if form.language.value == value %}selected{% endif %}>
-                                {{ text }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                    {% if form.language.errors %}
-                        <p class="mt-2 text-sm text-red-600">{{ form.language.errors.0 }}</p>
-                    {% endif %}
-                    <p class="mt-1 text-sm text-gray-500">This will be the primary language for your card. You can add more languages later.</p>
+                    <p class="text-sm text-gray-500 mb-3">The primary language will be set based on the active language tab in the Message section below.</p>
                 </div>
             </div>
             
@@ -169,12 +131,13 @@
                 
                 <!-- Language Tabs -->
                 <div class="border-b border-gray-200">
-                    <nav class="flex -mb-px" aria-label="Language tabs">
-                        {% for lang_code, lang_name in form.language.field.choices %}
+                    <nav class="flex -mb-px overflow-x-auto" aria-label="Language tabs">
+                        {% for lang_code, lang_name in language_choices %}
                             <button type="button" 
                                     data-target="card-message-{{ lang_code|lower }}" 
-                                    class="{% if forloop.first %}border-deep-teal text-deep-teal{% else %}border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300{% endif %} whitespace-nowrap py-2 px-4 border-b-2 font-medium text-sm mr-8"
-                                    aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                                    data-lang="{{ lang_code }}"
+                                    class="{% if current_lang == lang_code %}border-deep-teal text-deep-teal{% else %}border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300{% endif %} whitespace-nowrap py-2 px-4 border-b-2 font-medium text-sm mr-8 language-tab"
+                                    aria-selected="{% if current_lang == lang_code %}true{% else %}false{% endif %}"
                                     role="tab">
                                 {{ lang_name }}
                             </button>
@@ -183,16 +146,16 @@
                 </div>
                 
                 <!-- Message Content -->
-                {% for lang_code, lang_name in form.language.field.choices %}
+                {% for lang_code, lang_name in language_choices %}
                     <div id="card-message-{{ lang_code|lower }}" 
-                         class="tab-panel {% if not forloop.first %}hidden{% endif %}">
-                        <textarea name="message_{{ lang_code|lower }}" rows="6"
+                         class="tab-panel {% if current_lang == lang_code %}block{% else %}hidden{% endif %}">
+                        <textarea name="message_{{ lang_code|lower }}" id="message_{{ lang_code|lower }}" rows="6"
                                 class="block w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-deep-teal focus:border-deep-teal"
                                 hx-post="{% url 'emergency_cards:validate_field' %}"
                                 hx-trigger="blur"
                                 hx-target="#message_{{ lang_code|lower }}_error"
                                 hx-swap="innerHTML"
-                                hx-vals='{"field_name": "message_{{ lang_code|lower }}"}'>{% if form.instance.translations %}{{ form.instance.get_message_for_language|default:'' }}{% endif %}</textarea>
+                                hx-vals='{"field_name": "message_{{ lang_code|lower }}"}'>{% if form.instance.translations and lang_code in form.instance.translations %}{{ form.instance.translations|get_item:lang_code }}{% endif %}</textarea>
                         <div id="message_{{ lang_code|lower }}_error"></div>
                         <p class="mt-1 text-sm text-gray-500">Minimum 50 characters recommended for clarity.</p>
                     </div>
@@ -283,7 +246,6 @@
             
             <!-- Submit Button -->
             <div class="border-t border-gray-200 pt-6">
-                <input type="hidden" id="active_language" name="active_language" value="en">
                 <button type="submit" class="w-full md:w-auto px-6 py-3 bg-deep-teal text-white font-medium rounded-lg hover:bg-deep-teal-2 transition-colors">
                     {% if is_edit %}Update{% else %}Create{% endif %} Emergency Card
                 </button>
@@ -295,83 +257,80 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Tab functionality
-        const tabButtons = document.querySelectorAll('[data-target]');
+        const tabButtons = document.querySelectorAll('.language-tab');
         const tabPanels = document.querySelectorAll('.tab-panel');
         const activeLanguageInput = document.getElementById('active_language');
-        const cardMessageInput = document.getElementById('card_message');
         
-        // Helper function to sync the active language textarea with the hidden card_message field
-        function syncActiveLanguage(langCode) {
-            const textarea = document.querySelector(`textarea[name="message_${langCode}"]`);
-            if (textarea && cardMessageInput) {
-                cardMessageInput.value = textarea.value;
+        function activateTab(target) {
+            // Hide all panels
+            tabPanels.forEach(panel => {
+                panel.classList.add('hidden');
+                panel.classList.remove('block');
+            });
+            
+            // Show the target panel
+            const panel = document.getElementById(target);
+            if (panel) {
+                panel.classList.remove('hidden');
+                panel.classList.add('block');
             }
-        }
-        
-        // On form submission, make sure the card_message field contains the active language message
-        const form = document.querySelector('form');
-        if (form) {
-            form.addEventListener('submit', function(e) {
-                if (activeLanguageInput) {
-                    const activeLang = activeLanguageInput.value;
-                    syncActiveLanguage(activeLang);
+            
+            // Update tab styles
+            tabButtons.forEach(button => {
+                if (button.getAttribute('data-target') === target) {
+                    button.classList.add('border-deep-teal', 'text-deep-teal');
+                    button.classList.remove('border-transparent', 'text-gray-500');
+                    button.setAttribute('aria-selected', 'true');
+                    
+                    // Update the hidden active language input
+                    const lang = button.getAttribute('data-lang');
+                    if (activeLanguageInput && lang) {
+                        activeLanguageInput.value = lang;
+                    }
+                } else {
+                    button.classList.remove('border-deep-teal', 'text-deep-teal');
+                    button.classList.add('border-transparent', 'text-gray-500');
+                    button.setAttribute('aria-selected', 'false');
                 }
             });
         }
-        
-        // For each language textarea, set up an event listener to keep the hidden field updated
-        document.querySelectorAll('textarea[name^="message_"]').forEach(textarea => {
-            textarea.addEventListener('input', function() {
-                const langCode = this.name.split('_')[1]; // Extract language code from name="message_en"
-                if (activeLanguageInput && activeLanguageInput.value === langCode) {
-                    syncActiveLanguage(langCode);
-                }
-            });
-        });
         
         tabButtons.forEach(button => {
             button.addEventListener('click', function() {
-                const targetId = this.getAttribute('data-target');
-                const langCode = targetId.split('-').pop(); // Get language code from "card-message-en" -> "en"
-                
-                // Update active language hidden input
-                if (activeLanguageInput) {
-                    activeLanguageInput.value = langCode;
-                    
-                    // Also update the hidden card_message field with the current language content
-                    syncActiveLanguage(langCode);
-                }
-                
-                // Hide all panels
-                tabPanels.forEach(panel => {
-                    panel.classList.add('hidden');
-                    panel.classList.remove('block');
-                });
-                
-                // Show target panel
-                const targetPanel = document.getElementById(targetId);
-                if (targetPanel) {
-                    targetPanel.classList.remove('hidden');
-                    targetPanel.classList.add('block');
-                }
-                
-                // Update active tab styles
-                tabButtons.forEach(btn => {
-                    btn.classList.remove('border-deep-teal', 'text-deep-teal');
-                    btn.classList.add('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
-                    btn.setAttribute('aria-selected', 'false');
-                });
-                
-                this.classList.remove('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
-                this.classList.add('border-deep-teal', 'text-deep-teal');
-                this.setAttribute('aria-selected', 'true');
+                const target = this.getAttribute('data-target');
+                activateTab(target);
             });
         });
         
-        // Initialize by syncing the initial active language
-        if (activeLanguageInput) {
-            const initialLang = activeLanguageInput.value;
-            syncActiveLanguage(initialLang);
+        // Make sure the active language tab is shown initially
+        function initializeActiveLanguageTab() {
+            const activeLanguage = activeLanguageInput.value.toLowerCase();
+            const targetTab = `card-message-${activeLanguage}`;
+            
+            // Check if there's a matching tab for the active language
+            const matchingTabButton = document.querySelector(`.language-tab[data-target="${targetTab}"]`);
+            if (matchingTabButton) {
+                activateTab(targetTab);
+            } else {
+                // Default to the first tab if no matching tab found
+                const firstTabButton = tabButtons[0];
+                if (firstTabButton) {
+                    const firstTabTarget = firstTabButton.getAttribute('data-target');
+                    activateTab(firstTabTarget);
+                }
+            }
+        }
+        
+        // Initialize active tab
+        initializeActiveLanguageTab();
+        
+        // Form submission handler - ensure hidden fields are populated
+        const form = document.querySelector('form');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                // No need to manually handle the form submission
+                // The active_language field is updated automatically when tabs are clicked
+            });
         }
     });
 </script>

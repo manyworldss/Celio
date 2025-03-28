@@ -65,60 +65,12 @@ def switch_language(request):
 
 @login_required # make sure only logged-in users can access this view
 def create_card_or_edit(request):
-    try:     # trying to get users existing card
-        card = EmergencyCard.objects.get(user=request.user)
-            # if card exists, we'll use it to populate the form
-    except EmergencyCard.DoesNotExist:
-        card = None
-    
-    # Get the currently active language from the form
-    active_language = request.POST.get('active_language', 'en').upper()
-    
-    if request.method == 'POST':
-        if card:  # if card exists, update it
-            form = EmergencyCardForm(request.POST, request.FILES, instance=card)
-        else:
-            form = EmergencyCardForm(request.POST, request.FILES)
-        
-        if form.is_valid():
-            card = form.save(commit=False)
-            card.user = request.user
-            
-            # Get the message from the textarea
-            card_message = request.POST.get('card_message', '')
-            
-            # Initialize translations if needed
-            if not card.translations:
-                card.translations = {}
-            
-            # Update the message for the active language
-            if active_language and card_message:
-                card.translations[active_language] = card_message
-            
-            # Make sure at least one language translation exists (English)
-            if not card.translations or 'EN' not in card.translations:
-                if 'message_en' in form.cleaned_data and form.cleaned_data['message_en']:
-                    card.translations['EN'] = form.cleaned_data['message_en']
-                else:
-                    card.translations['EN'] = "I have celiac disease/gluten sensitivity and cannot consume any foods containing gluten."
-            
-            # Set preferred language if not already set
-            if not card.preferred_language and card.translations:
-                card.preferred_language = active_language
-            
-            card.save()
-            messages.success(request, "Emergency card successfully updated!" if card else "Emergency card successfully created!")
-            return redirect('emergency_cards:card_detail')
-        else:
-            # Return the form with errors if not valid
-            messages.error(request, "Please correct the errors below.")
-            return render(request, 'emergency_cards/create_card_or_edit.html', {'form': form, 'is_edit': card is not None})
-    else: # GET request
-        if card: # if card exists, populate from card
-            form = EmergencyCardForm(instance=card)
-        else: # if no card, show empty form
-            form = EmergencyCardForm()
-        return render(request, 'emergency_cards/create_card_or_edit.html', {'form': form,'is_edit': card is not None})
+    """
+    Legacy view for creating/editing emergency cards.
+    Now redirects to the unified card management page.
+    """
+    # Redirect to the unified card management view
+    return redirect('emergency_cards:unified_card_management')
 
 
 @login_required
@@ -129,7 +81,6 @@ def delete_card(request):
         card.delete()
         return redirect('core:home') # redirect home after deletion
     return render(request, 'emergency_cards/delete_card.html', {'card': card})
-
 
 
 @login_required # make sure only logged-in users can access this view
@@ -153,48 +104,12 @@ def validate_field(request):
 
 @login_required
 def card_detail(request):
-    try:
-        card = EmergencyCard.objects.get(user=request.user)
-        # Get the current language from query parameter, preferred language, or default to English
-        current_lang = request.GET.get('lang')
-        
-        if not current_lang:
-            # Use preferred language if available, otherwise default to English
-            current_lang = card.preferred_language if hasattr(card, 'preferred_language') and card.preferred_language else 'EN'
-        
-        # Make sure the language exists in translations, otherwise default to English
-        if current_lang.upper() not in card.translations:
-            if 'EN' in card.translations:
-                current_lang = 'EN'
-            elif card.translations:  # If there are translations but not the one we want
-                current_lang = next(iter(card.translations.keys()))  # Get the first available language
-            else:
-                # No translations available
-                return redirect('emergency_cards:create_card')
-        
-        # Get the language display name for the current language
-        current_lang_display = dict(EmergencyCard.LANGUAGE_CHOICES).get(current_lang.lower(), current_lang)
-        
-        # Create languages dictionary for the template
-        languages = {}
-        for lang_code in card.translations.keys():
-            lang_name = dict(EmergencyCard.LANGUAGE_CHOICES).get(lang_code.lower(), lang_code)
-            languages[lang_code] = lang_name
-        
-        context = {
-            'card': card,
-            'current_lang': current_lang,
-            'current_lang_display': current_lang_display,
-            'message': card.get_message(current_lang),
-            'languages': languages,
-            'is_premium': getattr(request, 'is_premium', True),  # Always allow access in demo mode
-            'is_demo': request.session.get('is_demo', False),
-        }
-        return render(request, 'emergency_cards/card_detail.html', context)
-    except EmergencyCard.DoesNotExist:
-        # Redirect to create card page with a helpful message
-        messages.info(request, "You don't have an emergency card yet. Let's create one!")
-        return redirect('emergency_cards:create_card')
+    """
+    Legacy view for displaying emergency card details.
+    Now redirects to the unified card management page.
+    """
+    # Redirect to the unified card management view
+    return redirect('emergency_cards:unified_card_management')
 
 
 @login_required
@@ -388,6 +303,32 @@ def download_card(request):
     
     return response
 
+@login_required
+def fullscreen_card(request):
+    """
+    Display a fullscreen view of the user's emergency card.
+    Simplified to remove language switching functionality.
+    """
+    try:
+        card = EmergencyCard.objects.get(user=request.user)
+    except EmergencyCard.DoesNotExist:
+        # If user doesn't have a card yet, redirect to unified card management
+        return redirect('emergency_cards:unified_card_management')
+    
+    # Always use the user's preferred language for the fullscreen view
+    current_lang = card.preferred_language or 'EN'
+    
+    # Get the message for the current language
+    message = card.translations.get(current_lang, card.translations.get('EN', ''))
+    
+    context = {
+        'card': card,
+        'current_lang': current_lang,
+        'message': message,
+    }
+    
+    return render(request, 'emergency_cards/fullscreen_card.html', context)
+
 def public_card(request, card_id):
     # Get the card by ID
     card = get_object_or_404(EmergencyCard, id=card_id)
@@ -558,3 +499,124 @@ def mark_tour_seen(request):
         request.session.modified = True
         return JsonResponse({'status': 'success'})
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+
+@login_required
+def unified_card_management(request):
+    """
+    Unified view for creating, editing, and managing emergency cards.
+    This view combines card creation, theme selection, and language switching 
+    into a single interface with live preview functionality.
+    """
+    try:
+        card = EmergencyCard.objects.get(user=request.user)
+    except EmergencyCard.DoesNotExist:
+        card = None
+    
+    # Get the active language (default to EN if not provided)
+    active_language = request.POST.get('active_language', 'EN').upper()
+    
+    # Check if we're switching languages
+    if request.POST.get('switch_language', False):
+        active_language = request.POST.get('language-selector', 'EN').upper()
+    
+    # Check if we're just previewing a theme
+    preview_theme = request.POST.get('preview_theme', False)
+    
+    if preview_theme and card:
+        # For theme preview, we just want to update the card preview with the selected theme
+        theme = request.POST.get('theme')
+        
+        # Get the appropriate message based on the active language
+        message = ""
+        if card.translations and active_language in card.translations:
+            message = card.translations[active_language]
+        elif card.translations and 'EN' in card.translations:
+            message = card.translations['EN']
+        
+        return render(request, 'emergency_cards/partials/card_preview.html', {
+            'card': card,
+            'message': message,
+            'current_lang': active_language,
+            'preview_theme': theme,
+        })
+    
+    if request.method == 'POST' and not preview_theme and not request.POST.get('switch_language', False):
+        if card:  # if card exists, update it
+            form = EmergencyCardForm(request.POST, request.FILES, instance=card)
+        else:
+            form = EmergencyCardForm(request.POST, request.FILES)
+        
+        if form.is_valid():
+            card = form.save(commit=False)
+            card.user = request.user
+            
+            # Initialize translations dictionary if needed
+            if not card.translations:
+                card.translations = {}
+            
+            # Process all language texts from the form
+            for lang_code, _ in EmergencyCard.LANGUAGE_CHOICES:
+                lang_code = lang_code.upper()
+                message_field_name = f'message_{lang_code.lower()}'
+                
+                if message_field_name in request.POST and request.POST[message_field_name].strip():
+                    # Save the message text for this language
+                    card.translations[lang_code] = request.POST[message_field_name].strip()
+            
+            # Set the preferred language based on the active tab
+            card.preferred_language = active_language
+            
+            # Save selected theme
+            if 'theme' in request.POST:
+                card.theme = request.POST.get('theme')
+            
+            # Make sure at least one language translation exists (English)
+            if not card.translations or 'EN' not in card.translations:
+                if 'message_en' in request.POST and request.POST['message_en'].strip():
+                    card.translations['EN'] = request.POST['message_en'].strip()
+                else:
+                    card.translations['EN'] = "I have celiac disease/gluten sensitivity and cannot consume any foods containing gluten."
+            
+            card.save()
+            
+            messages.success(request, "Your emergency card has been saved successfully!")
+            return redirect('emergency_cards:unified_card_management')
+    else:
+        # If user has a card, fill form with existing data
+        if card:
+            # Pre-populate form with card data
+            form = EmergencyCardForm(instance=card)
+        else:
+            # Create blank form
+            form = EmergencyCardForm()
+    
+    # Get current language for the active tab (default to English)
+    current_lang = active_language
+    if card and card.preferred_language and not request.POST.get('switch_language', False):
+        current_lang = card.preferred_language
+    
+    # If GET request has a lang parameter, update current_lang
+    if 'lang' in request.GET:
+        current_lang = request.GET.get('lang', 'EN').upper()
+    
+    # For HTMX requests that are switching languages, render just the card preview
+    if request.POST.get('switch_language', False):
+        message = ""
+        if card and card.translations and active_language in card.translations:
+            message = card.translations[active_language]
+        elif card and card.translations and 'EN' in card.translations:
+            message = card.translations['EN']
+        
+        return render(request, 'emergency_cards/partials/card_preview.html', {
+            'card': card,
+            'message': message,
+            'current_lang': active_language,
+        })
+    
+    return render(request, 'emergency_cards/unified_card_management.html', {
+        'form': form,
+        'card': card,
+        'page_title': 'My Emergency Card',
+        'current_lang': current_lang,
+        'language_choices': EmergencyCard.LANGUAGE_CHOICES,
+    })

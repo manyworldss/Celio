@@ -1,72 +1,87 @@
 <!-- Card Preview Partial Template -->
-<div class="card-id-container {% if card.theme == 'modern' %}card-modern{% elif card.theme == 'minimal' %}card-minimal{% elif card.theme == 'nature' %}card-nature{% elif card.theme == 'vintage' %}card-vintage{% elif card.theme == 'playful' %}card-playful{% elif card.theme == 'dark' %}card-dark{% elif card.theme == 'pastel' %}card-pastel{% elif card.theme == 'medical' %}card-medical{% elif card.theme == 'luxury' %}card-luxury{% elif card.theme == 'neon' %}card-neon{% elif card.theme == 'geometric' %}card-geometric{% elif card.theme == 'cyberpunk' %}card-cyberpunk{% else %}card-classic{% endif %}">
-    
-    <!-- Card Header with ID-style layout -->
-    <div class="card-header">
-        <div class="card-id-banner">
-            <div class="card-id-title">
-                {% if card.theme == 'modern' or card.theme == 'playful' or card.theme == 'dark' or card.theme == 'luxury' or card.theme == 'neon' or card.theme == 'cyberpunk' %}
-                    <h2 class="card-id-name text-white">{{ card.user.get_full_name|default:card.user.username }}</h2>
-                {% else %}
-                    <h2 class="card-id-name">{{ card.user.get_full_name|default:card.user.username }}</h2>
-                {% endif %}
+{% load emergency_card_filters %}
+
+<div class="emergency-card card">
+    <div class="theme-{{ preview_theme|default:card.theme }} card-inner p-4 relative rounded-lg shadow-md overflow-hidden">
+        <!-- Card Header -->
+        <div class="card-header mb-4 p-3 rounded-lg bg-opacity-20">
+            <h2 class="text-xl md:text-2xl font-bold flex items-center text-gray-900">
+                <svg class="w-6 h-6 mr-2 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+                <span>{{ card.get_condition_display }}</span>
+            </h2>
+        </div>
+        
+        <!-- User Profile Picture (if available and user wants to show it) -->
+        {% if card.profile_picture and card.show_profile_pic %}
+        <div class="user-info flex items-center justify-center my-4">
+            <div class="w-24 h-24 md:w-32 md:h-32 overflow-hidden rounded-full border-2 border-teal-400">
+                <img src="{{ card.profile_picture.url }}" alt="Profile Picture" class="w-full h-full object-cover">
             </div>
         </div>
-    </div>
-    
-    <!-- Card Body with ID-card layout -->
-    <div class="card-id-body">
-        <div class="card-id-photo-section">
-            {% if card.profile_picture and card.show_profile_pic %}
-                <div class="card-id-photo">
-                    <img src="{{ card.profile_picture.url }}" alt="Profile" class="w-full h-full object-cover">
-                </div>
-            {% else %}
-                <div class="card-id-photo card-id-photo-placeholder">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
-                </div>
-            {% endif %}
-            <div class="card-id-details">
-                <p class="card-id-detail">
-                    <span class="card-id-label">Condition:</span>
-                    <span class="card-id-value">{{ card.get_condition_display }}</span>
-                </p>
-                {% if card.emergency_contact_name %}
-                <p class="card-id-detail">
-                    <span class="card-id-label">Emergency Contact:</span>
-                    <span class="card-id-value">{{ card.emergency_contact_name }}</span>
-                </p>
-                <p class="card-id-detail">
-                    <span class="card-id-label">Phone:</span>
-                    <span class="card-id-value">{{ card.emergency_contact_phone }}</span>
-                </p>
+        {% endif %}
+        
+        <!-- Main Card Content -->
+        <div class="card-content my-6">
+            <div class="message text-center text-base md:text-lg font-medium text-gray-900">
+                {% if card.translations and current_lang in card.translations %}
+                    {{ card.translations|get_item:current_lang|linebreaksbr }}
+                {% elif card.translations and 'EN' in card.translations %}
+                    {{ card.translations|get_item:'EN'|linebreaksbr }}
+                {% else %}
+                    <span class="text-teal-700 italic">No message available. Please add a message in the form below.</span>
                 {% endif %}
             </div>
         </div>
         
-        <!-- Message Content with passport-style layout -->
-        <div class="card-id-message">
-            <div class="card-id-message-header">
-                <div class="card-id-language-tag">{{ current_lang }}</div>
-                <h3 class="card-id-message-title">
-                    {% if card.get_condition_display %}
-                        {{ card.get_condition_display }}
-                    {% else %}
-                        Celiac/Gluten Sensitivity
+        <!-- Emergency Contact Info -->
+        {% if card.emergency_contact_name %}
+        <div class="emergency-contact mt-6 p-3 rounded-lg bg-spruce-700 bg-opacity-30 border border-teal-500 border-opacity-30">
+            <h3 class="text-base md:text-lg font-semibold text-gray-900 mb-2">Emergency Contact</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                <div>
+                    <p class="text-sm md:text-base text-gray-900">
+                        <span class="font-medium text-gray-900">Name:</span> {{ card.emergency_contact_name }}
+                    </p>
+                    {% if card.emergency_contact_relationship %}
+                    <p class="text-sm md:text-base text-gray-900">
+                        <span class="font-medium text-gray-900">Relationship:</span> {{ card.emergency_contact_relationship }}
+                    </p>
                     {% endif %}
-                </h3>
-            </div>
-            <div id="card-message-content" class="card-id-message-content">
-                {% include 'emergency_cards/partials/message_content.html' %}
+                </div>
+                {% if card.emergency_contact_phone %}
+                <div>
+                    <p class="text-sm md:text-base text-gray-900">
+                        <span class="font-medium text-gray-900">Phone:</span> {{ card.emergency_contact_phone }}
+                    </p>
+                </div>
+                {% endif %}
             </div>
         </div>
-    </div>
-    
-    <!-- Card Footer with ID-style layout -->
-    <div class="card-id-footer">
-        <div class="card-id-date">Created: {{ card.created_at|date:"M Y"|default:"" }}</div>
-        <div class="card-id-issuer">Celio Emergency Card</div>
+        {% endif %}
+        
+        <!-- Language Indicator -->
+        <div class="language-indicator absolute top-2 right-2 bg-teal-600 bg-opacity-90 text-white rounded px-2 py-1 text-xs font-medium">
+            {% if current_lang == "EN" %}
+                English
+            {% elif current_lang == "ES" %}
+                Español
+            {% elif current_lang == "FR" %}
+                Français
+            {% elif current_lang == "DE" %}
+                Deutsch
+            {% elif current_lang == "IT" %}
+                Italiano
+            {% elif current_lang == "ZH" %}
+                中文
+            {% elif current_lang == "JA" %}
+                日本語
+            {% elif current_lang == "KO" %}
+                한국어
+            {% else %}
+                {{ current_lang }}
+            {% endif %}
+        </div>
     </div>
 </div>

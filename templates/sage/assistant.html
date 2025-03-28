@@ -6,13 +6,32 @@
 {% block extra_head %}
 <script src="https://unpkg.com/htmx.org@1.9.10"></script>
 <style>
+    :root {
+        --spruce-950: #0a1613;
+        --spruce-900: #0f211c;
+        --spruce-800: #14322a;
+        --spruce-700: #1a4237;
+        --teal-600: #0d9488;
+        --teal-500: #14b8a6;
+        --teal-400: #2dd4bf;
+        --teal-300: #5eead4;
+        --teal-200: #99f6e4;
+        --teal-100: #ccfbf1;
+    }
+
+    body {
+        background-color: var(--spruce-950);
+    }
+    
     .message-bubble.assistant {
-        background-color: #f3f4f6;
+        background-color: var(--spruce-800);
         border-radius: 0.75rem 0.75rem 0.75rem 0;
+        color: var(--teal-100);
+        border: 1px solid var(--spruce-700);
     }
     
     .message-bubble.user {
-        background-color: #358F80;
+        background-color: var(--teal-600);
         color: white;
         border-radius: 0.75rem 0.75rem 0 0.75rem;
     }
@@ -20,14 +39,59 @@
     .messages-container {
         height: calc(100vh - 16rem);
         overflow-y: auto;
+        background-color: var(--spruce-900);
     }
     
     .assistant-avatar {
-        background-color: #56AB91;
+        background-color: var(--teal-500);
     }
     
     .user-avatar {
-        background-color: #4b5563;
+        background-color: var(--spruce-700);
+    }
+
+    /* Dark theme for chat components */
+    .chat-sidebar {
+        background-color: var(--spruce-800);
+        border-color: var(--spruce-700);
+    }
+
+    .chat-area {
+        background-color: var(--spruce-900);
+        border-color: var(--spruce-700);
+    }
+
+    .chat-header {
+        background-color: var(--spruce-800);
+        border-color: var(--spruce-700);
+    }
+
+    .chat-footer {
+        background-color: var(--spruce-800);
+        border-color: var(--spruce-700);
+    }
+
+    .conversation-item {
+        color: var(--teal-300);
+    }
+
+    .conversation-item:hover {
+        background-color: var(--spruce-700);
+    }
+
+    .conversation-item.active {
+        background-color: var(--spruce-700);
+        border-color: var(--teal-500);
+    }
+
+    .chat-input {
+        background-color: var(--spruce-700);
+        border-color: var(--spruce-600);
+        color: white;
+    }
+
+    .chat-input:focus {
+        border-color: var(--teal-500);
     }
 </style>
 {% endblock %}
@@ -37,10 +101,10 @@
     <div class="flex flex-col md:flex-row gap-6">
         <!-- Sidebar -->
         <div class="w-full md:w-64 flex-shrink-0">
-            <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
+            <div class="chat-sidebar rounded-lg shadow-sm border p-4">
                 <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-semibold text-gray-900">Conversations</h2>
-                    <a href="{% url 'sage:new_conversation' %}" class="text-deep-teal hover:text-deep-teal-2">
+                    <h2 class="text-lg font-semibold text-teal-200">Conversations</h2>
+                    <a href="{% url 'sage:new_conversation' %}" class="text-teal-400 hover:text-teal-300">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                         </svg>
@@ -50,40 +114,40 @@
                 <div class="space-y-2">
                     {% for conv in conversations %}
                     <a href="{% url 'sage:assistant' %}?conversation={{ conv.id }}" 
-                       class="block p-2 rounded-lg hover:bg-gray-100 {% if conv.id == current_conversation.id %}bg-mint-light border border-seafoam{% endif %}">
+                       class="conversation-item block p-2 rounded-lg hover:bg-gray-100 {% if conv.id == current_conversation.id %}active{% endif %}">
                         <div class="flex justify-between items-center">
-                            <span class="text-sm font-medium {% if conv.id == current_conversation.id %}text-deep-teal-2{% else %}text-gray-700{% endif %} truncate">
+                            <span class="text-sm font-medium truncate">
                                 {{ conv.title }}
                             </span>
-                            <span class="text-xs text-gray-500">
+                            <span class="text-xs text-teal-300">
                                 {{ conv.updated_at|date:"M j" }}
                             </span>
                         </div>
                     </a>
                     {% empty %}
-                    <p class="text-sm text-gray-500">No conversations yet</p>
+                    <p class="text-sm text-teal-300">No conversations yet</p>
                     {% endfor %}
                 </div>
             </div>
         </div>
         
         <!-- Main Chat Area -->
-        <div class="flex-1 flex flex-col bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+        <div class="flex-1 flex flex-col chat-area rounded-lg shadow-sm border overflow-hidden">
             <!-- Chat Header -->
-            <div class="p-4 border-b border-gray-100 flex justify-between items-center">
+            <div class="p-4 chat-header border-b flex justify-between items-center">
                 <div class="flex items-center">
                     <div class="h-8 w-8 rounded-full assistant-avatar flex items-center justify-center text-white mr-3">
                         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
                     </div>
-                    <h1 class="text-lg font-semibold text-gray-900">Sage Assistant</h1>
+                    <h1 class="text-lg font-semibold text-teal-100">Sage Assistant</h1>
                 </div>
                 
                 {% if current_conversation %}
                 <form method="POST" action="{% url 'sage:delete_conversation' current_conversation.id %}" class="inline" onsubmit="return confirm('Delete this conversation?');">
                     {% csrf_token %}
-                    <button type="submit" class="text-red-600 hover:text-red-700">
+                    <button type="submit" class="text-red-400 hover:text-red-300">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                         </svg>
@@ -98,7 +162,7 @@
             </div>
             
             <!-- Input Area -->
-            <div class="p-4 border-t border-gray-100">
+            <div class="p-4 chat-footer border-t">
                 <form hx-post="{% url 'sage:assistant' %}" 
                       hx-target="#messages-container" 
                       hx-swap="innerHTML"
@@ -106,7 +170,7 @@
                       hx-indicator="#loading-indicator">
                     <div class="flex-1 relative">
                         <textarea name="message" 
-                                  class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-deep-teal focus:border-deep-teal resize-none"
+                                  class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-deep-teal focus:border-deep-teal resize-none chat-input"
                                   placeholder="Ask Sage about celiac disease..."
                                   rows="2"></textarea>
                         <div id="loading-indicator" class="htmx-indicator absolute right-2 bottom-2">
@@ -116,7 +180,7 @@
                             </svg>
                         </div>
                     </div>
-                    <button type="submit" class="bg-deep-teal text-white rounded-lg p-2 hover:bg-deep-teal-2">
+                    <button type="submit" class="bg-teal-500 text-white rounded-lg p-2 hover:bg-teal-400">
                         <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                         </svg>
