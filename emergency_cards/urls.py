@@ -5,6 +5,7 @@ app_name = 'emergency_cards'
 
 urlpatterns = [
     path('create/', views.create_card_or_edit, name='create_card'), # create or edit card
+    path('edit/', views.create_card_or_edit, name='edit_card'), # add edit url pattern
     path('card/detail/', views.card_detail, name='card_detail'), # view card details
     path('card/delete/', views.delete_card, name='delete_card'), # delete the card
     path('card/switch-language/', views.switch_language, name='switch_language'), # new language route
@@ -14,4 +15,9 @@ urlpatterns = [
     path('card/preview/', views.preview_card, name='preview_card'),
     path('public-card/<int:card_id>/', views.public_card, name='public_card'),
     path('api/subscription/', include('subscription.urls')),
+    # Theme-related URLs
+    path('themes/', views.themes, name='themes'),
+    path('update-profile-picture/', views.update_profile_picture, name='update_profile_picture'),
+    path('apply-theme/<str:theme_name>/', views.apply_theme, name='apply_theme'),
+    path('mark-tour-seen/', views.mark_tour_seen, name='mark_tour_seen'),
 ]

@@ -30,11 +30,10 @@ def start_demo(request):
     # Create a sample emergency card
     sample_card = EmergencyCard.objects.create(
         user=demo_user,
-        name="Demo Card",
-        date_of_birth=timezone.now().date(),
+        preferred_language="EN",
+        condition="CEL",
         emergency_contact_name="Emergency Contact",
         emergency_contact_phone="+1234567890",
-        preferred_language="EN",
         show_profile_pic=False,
     )
     
@@ -67,8 +66,11 @@ def end_demo(request):
             # Get the current demo user
             user = request.user
             
+            # Logout the user first to prevent crashes
+            logout(request)
+            
             # Delete all their data
-            if user.is_authenticated and user.username.startswith('demo_'):
+            if user.username.startswith('demo_'):
                 EmergencyCard.objects.filter(user=user).delete()
                 user.delete()
         except Exception as e:
@@ -81,7 +83,7 @@ def end_demo(request):
         request.session.pop('show_tour', None)
     
     # Redirect back to home page
-    return redirect('home')
+    return redirect('core:home')
 
 
 @require_POST

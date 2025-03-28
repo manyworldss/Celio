@@ -19,7 +19,7 @@
                     <h2 class="text-2xl font-bold text-gray-900 mb-4">Welcome Back{% if user.first_name %}, {{ user.first_name }}{% endif %}</h2>
                     
                     <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <p class="text-gray-600 mb-4 md:mb-0">Manage your emergency cards and access your travel guides.</p>
+                        <p class="text-gray-600 mb-4 md:mb-0">Manage your emergency card and access your travel guides.</p>
                         
                         <div class="flex space-x-4">
                             {% if has_card %}
@@ -79,17 +79,7 @@
             </div>
             
             <!-- Travel Guides -->
-            <div class="card-bg p-6 rounded-lg shadow-md hover:shadow-lg transition-all {% if not is_premium %}relative{% endif %}">
-                {% if not is_premium %}
-                <div class="absolute inset-0 premium-overlay flex flex-col justify-center items-center p-6 text-center rounded-lg">
-                    <span class="bg-white text-aline-green text-xs font-bold px-3 py-1 rounded-full mb-3">PREMIUM FEATURE</span>
-                    <h3 class="text-xl font-bold text-white mb-2">Unlock Travel Guides</h3>
-                    <p class="text-white/90 mb-4">Get exclusive access to country-specific gluten-free dining guides in multiple languages.</p>
-                    <a href="{% url 'subscription:upgrade_page' %}" class="inline-flex items-center px-4 py-2 bg-white text-aline-green font-medium rounded-lg hover:bg-gray-50 transition-colors">
-                        Upgrade to Premium
-                    </a>
-                </div>
-                {% endif %}
+            <div class="card-bg p-6 rounded-lg shadow-md hover:shadow-lg transition-all">
                 <div class="flex items-center mb-4">
                     <div class="feature-icon mr-4 rounded-lg bg-light-leaf p-3">
                         <svg class="w-6 h-6 text-aline-green" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -97,42 +87,18 @@
                         </svg>
                     </div>
                     <h3 class="text-lg font-semibold text-gray-900">Travel Guides</h3>
-                    {% if is_premium %}
-                        <span class="ml-2 bg-green-100 text-green-600 text-xs font-medium px-2 py-0.5 rounded">Active</span>
-                    {% else %}
-                        <span class="ml-2 bg-light-leaf text-aline-green text-xs font-medium px-2 py-0.5 rounded">Premium</span>
-                    {% endif %}
                 </div>
                 <p class="text-gray-600 mb-4">Access country-specific guides with restaurant phrases and foods to avoid.</p>
-                {% if is_premium %}
-                    <a href="{% url 'travel:travel_guide_list' %}" class="text-aline-green hover:text-blue-spruce font-medium text-sm flex items-center">
-                        Browse Travel Guides
-                        <svg class="ml-1 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
-                    </a>
-                {% else %}
-                    <a href="{% url 'subscription:upgrade_page' %}" class="text-aline-green hover:text-blue-spruce font-medium text-sm flex items-center">
-                        Upgrade to Premium
-                        <svg class="ml-1 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
-                    </a>
-                {% endif %}
+                <a href="{% url 'travel:travel_guide_list' %}" class="text-aline-green hover:text-blue-spruce font-medium text-sm flex items-center">
+                    Browse Travel Guides
+                    <svg class="ml-1 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                </a>
             </div>
             
             <!-- Sage Assistant -->
-            <div class="card-bg p-6 rounded-lg shadow-md hover:shadow-lg transition-all {% if not is_premium %}relative{% endif %}">
-                {% if not is_premium %}
-                <div class="absolute inset-0 premium-overlay flex flex-col justify-center items-center p-6 text-center rounded-lg">
-                    <span class="bg-white text-aline-green text-xs font-bold px-3 py-1 rounded-full mb-3">PREMIUM FEATURE</span>
-                    <h3 class="text-xl font-bold text-white mb-2">Meet Sage Assistant</h3>
-                    <p class="text-white/90 mb-4">Your personal AI guide for all things celiac and gluten-free dining.</p>
-                    <a href="{% url 'subscription:upgrade_page' %}" class="inline-flex items-center px-4 py-2 bg-white text-aline-green font-medium rounded-lg hover:bg-gray-50 transition-colors">
-                        Upgrade to Premium
-                    </a>
-                </div>
-                {% endif %}
+            <div class="card-bg p-6 rounded-lg shadow-md hover:shadow-lg transition-all">
                 <div class="flex items-center mb-4">
                     <div class="feature-icon mr-4 rounded-lg bg-light-leaf p-3">
                         <svg class="w-6 h-6 text-aline-green" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -140,28 +106,14 @@
                         </svg>
                     </div>
                     <h3 class="text-lg font-semibold text-gray-900">Sage Assistant</h3>
-                    {% if is_premium %}
-                        <span class="ml-2 bg-green-100 text-green-600 text-xs font-medium px-2 py-0.5 rounded">Active</span>
-                    {% else %}
-                        <span class="ml-2 bg-light-leaf text-aline-green text-xs font-medium px-2 py-0.5 rounded">Premium</span>
-                    {% endif %}
                 </div>
-                <p class="text-gray-600 mb-4">Get AI-powered advice and answers about celiac disease and gluten-free dining.</p>
-                {% if is_premium %}
-                    <a href="{% url 'sage:assistant' %}" class="text-aline-green hover:text-blue-spruce font-medium text-sm flex items-center">
-                        Talk to Sage
-                        <svg class="ml-1 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
-                    </a>
-                {% else %}
-                    <a href="{% url 'subscription:upgrade_page' %}" class="text-aline-green hover:text-blue-spruce font-medium text-sm flex items-center">
-                        Upgrade to Premium
-                        <svg class="ml-1 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
-                    </a>
-                {% endif %}
+                <p class="text-gray-600 mb-4">Your personal AI guide for all things celiac and gluten-free dining.</p>
+                <a href="{% url 'sage:assistant' %}" class="text-aline-green hover:text-blue-spruce font-medium text-sm flex items-center">
+                    Chat with Sage
+                    <svg class="ml-1 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                </a>
             </div>
         </div>
         
@@ -170,7 +122,7 @@
         <div class="flex flex-col lg:flex-row items-center mb-16">
             <div class="lg:w-1/2 lg:pr-8 mb-8 lg:mb-0">
                 <h2 class="text-3xl font-bold text-gray-900 mb-6">Communicate Your Dietary Needs Anywhere</h2>
-                <p class="text-lg text-gray-600 mb-6">Celio helps you create emergency cards in multiple languages so you can safely communicate your celiac disease or gluten sensitivity while traveling.</p>
+                <p class="text-lg text-gray-600 mb-6">Celio helps you create an emergency card in multiple languages so you can safely communicate your celiac disease or gluten sensitivity while traveling.</p>
                 <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                     <a href="{% url 'accounts:signup' %}" class="primary-button inline-flex items-center justify-center px-5 py-3 rounded-lg">
                         Sign Up Free
@@ -198,7 +150,7 @@
                         </div>
                         <h3 class="text-lg font-semibold text-gray-900">Multiple Languages</h3>
                     </div>
-                    <p class="text-gray-600">Create cards in multiple languages to communicate effectively no matter where you travel.</p>
+                    <p class="text-gray-600">Create your card with multiple languages to communicate effectively no matter where you travel.</p>
                 </div>
                 
                 <div class="card-bg p-6 rounded-lg shadow-md hover:shadow-lg transition-all">
@@ -227,61 +179,12 @@
             </div>
         </div>
         
-        <!-- Premium Features Showcase -->
-        <div class="mb-16">
-            <div class="relative">
-                <div class="absolute inset-0 bg-aline-green rounded-xl opacity-10"></div>
-                <div class="relative p-8 rounded-xl">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-2">Premium Features</h2>
-                    <p class="text-gray-600 mb-8">Unlock additional features to enhance your gluten-free travel experience.</p>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="flex">
-                            <div class="flex-shrink-0 mr-4">
-                                <div class="feature-icon rounded-lg bg-light-leaf p-3">
-                                    <svg class="w-6 h-6 text-aline-green" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                </div>
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-semibold text-gray-900 mb-1">Travel Guides</h3>
-                                <p class="text-gray-600">Country-specific guides with restaurant phrases and foods to avoid when traveling abroad.</p>
-                            </div>
-                        </div>
-                        
-                        <div class="flex">
-                            <div class="flex-shrink-0 mr-4">
-                                <div class="feature-icon rounded-lg bg-light-leaf p-3">
-                                    <svg class="w-6 h-6 text-aline-green" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                                    </svg>
-                                </div>
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-semibold text-gray-900 mb-1">Sage Assistant</h3>
-                                <p class="text-gray-600">AI-powered assistant for personalized advice about celiac disease and gluten-free options.</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="mt-8 text-center">
-                        <a href="{% url 'subscription:upgrade_page' %}" class="primary-button inline-flex items-center px-5 py-2 rounded-lg">
-                            Upgrade to Premium
-                            <svg class="ml-2 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
     {% endif %}
-    
+        
     <!-- CTA Section -->
     <div class="text-center py-8 border-t border-gray-200">
         <h2 class="text-2xl font-bold text-gray-900 mb-4">Ready to Try Celio?</h2>
-        <p class="text-lg text-gray-600 mb-6 max-w-3xl mx-auto">Experience the confidence of dining anywhere with our multilingual celiac emergency cards.</p>
+        <p class="text-lg text-gray-600 mb-6 max-w-3xl mx-auto">Experience the confidence of dining anywhere with our multilingual celiac emergency card.</p>
         <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
             {% if not user.is_authenticated %}
                 <a href="{% url 'accounts:signup' %}" class="primary-button px-6 py-3 rounded-lg inline-flex items-center justify-center">

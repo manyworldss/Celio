@@ -12,7 +12,7 @@
     }
     
     .message-bubble.user {
-        background-color: #8b5cf6;
+        background-color: #358F80;
         color: white;
         border-radius: 0.75rem 0.75rem 0 0.75rem;
     }
@@ -23,7 +23,7 @@
     }
     
     .assistant-avatar {
-        background-color: #8b5cf6;
+        background-color: #56AB91;
     }
     
     .user-avatar {
@@ -40,7 +40,7 @@
             <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-lg font-semibold text-gray-900">Conversations</h2>
-                    <a href="{% url 'sage:new_conversation' %}" class="text-purple-600 hover:text-purple-700">
+                    <a href="{% url 'sage:new_conversation' %}" class="text-deep-teal hover:text-deep-teal-2">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                         </svg>
@@ -50,9 +50,9 @@
                 <div class="space-y-2">
                     {% for conv in conversations %}
                     <a href="{% url 'sage:assistant' %}?conversation={{ conv.id }}" 
-                       class="block p-2 rounded-lg hover:bg-gray-100 {% if conv.id == current_conversation.id %}bg-purple-50 border border-purple-100{% endif %}">
+                       class="block p-2 rounded-lg hover:bg-gray-100 {% if conv.id == current_conversation.id %}bg-mint-light border border-seafoam{% endif %}">
                         <div class="flex justify-between items-center">
-                            <span class="text-sm font-medium {% if conv.id == current_conversation.id %}text-purple-700{% else %}text-gray-700{% endif %} truncate">
+                            <span class="text-sm font-medium {% if conv.id == current_conversation.id %}text-deep-teal-2{% else %}text-gray-700{% endif %} truncate">
                                 {{ conv.title }}
                             </span>
                             <span class="text-xs text-gray-500">
@@ -106,17 +106,17 @@
                       hx-indicator="#loading-indicator">
                     <div class="flex-1 relative">
                         <textarea name="message" 
-                                  class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 resize-none"
+                                  class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-deep-teal focus:border-deep-teal resize-none"
                                   placeholder="Ask Sage about celiac disease..."
                                   rows="2"></textarea>
                         <div id="loading-indicator" class="htmx-indicator absolute right-2 bottom-2">
-                            <svg class="animate-spin h-5 w-5 text-purple-600" fill="none" viewBox="0 0 24 24">
+                            <svg class="animate-spin h-5 w-5 text-deep-teal" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                             </svg>
                         </div>
                     </div>
-                    <button type="submit" class="bg-purple-600 text-white rounded-lg p-2 hover:bg-purple-700">
+                    <button type="submit" class="bg-deep-teal text-white rounded-lg p-2 hover:bg-deep-teal-2">
                         <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                         </svg>
@@ -138,4 +138,3 @@
     document.body.addEventListener('htmx:afterSwap', scrollToBottom);
 </script>
 {% endblock %}
-

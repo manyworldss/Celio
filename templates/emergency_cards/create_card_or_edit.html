@@ -40,7 +40,7 @@
                         Medical Condition
                     </label>
                     <select name="{{ form.condition.name }}" id="{{ form.condition.id_for_label }}" 
-                            class="block w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-purple-500 focus:border-purple-500">
+                            class="block w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-deep-teal focus:border-deep-teal">
                         {% for value, text in form.condition.field.choices %}
                             <option value="{{ value }}" {% if form.condition.value == value %}selected{% endif %}>
                                 {{ text }}
@@ -76,8 +76,8 @@
                                                   file:mr-4 file:py-2 file:px-4
                                                   file:rounded-md file:border-0
                                                   file:text-sm file:font-semibold
-                                                  file:bg-purple-50 file:text-purple-700
-                                                  hover:file:bg-purple-100">
+                                                  file:bg-mint-light file:text-deep-teal-2
+                                                  hover:file:bg-seafoam">
                                     <p class="mt-1 text-xs text-gray-500">PNG, JPG, GIF up to 5MB</p>
                                 </div>
                             </div>
@@ -92,7 +92,7 @@
                                 <div class="flex items-center h-5">
                                     <input id="{{ form.show_profile_pic.id_for_label }}" name="{{ form.show_profile_pic.name }}" 
                                            type="checkbox" {% if form.show_profile_pic.value %}checked{% endif %}
-                                           class="h-4 w-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500">
+                                           class="h-4 w-4 text-deep-teal border-gray-300 rounded focus:ring-deep-teal">
                                 </div>
                                 <div class="ml-3 text-sm">
                                     <label for="{{ form.show_profile_pic.id_for_label }}" class="font-medium text-gray-700">
@@ -121,8 +121,8 @@
                                        {% if form.theme.value == value %}checked{% endif %}>
                                 <label for="theme-{{ value }}" 
                                        class="block p-4 rounded-lg border-2 cursor-pointer
-                                              {% if form.theme.value == value %}border-purple-500{% else %}border-gray-200{% endif %}
-                                              {% if value == 'classic' %}bg-white{% elif value == 'modern' %}bg-gradient-to-br from-purple-500 to-indigo-600 text-white{% elif value == 'minimal' %}bg-gray-50{% endif %}">
+                                              {% if form.theme.value == value %}border-deep-teal{% else %}border-gray-200{% endif %}
+                                              {% if value == 'classic' %}bg-white{% elif value == 'modern' %}bg-gradient-to-br from-deep-teal to-blue-green-dark text-white{% elif value == 'minimal' %}bg-gray-50{% endif %}">
                                     <span class="font-medium {% if value == 'modern' %}text-white{% else %}text-gray-900{% endif %}">{{ text }}</span>
                                     <p class="text-sm {% if value == 'modern' %}text-white text-opacity-80{% else %}text-gray-500{% endif %}">
                                         {% if value == 'classic' %}
@@ -148,7 +148,7 @@
                         Primary Language
                     </label>
                     <select name="{{ form.language.name }}" id="{{ form.language.id_for_label }}" 
-                            class="block w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-purple-500 focus:border-purple-500">
+                            class="block w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-deep-teal focus:border-deep-teal">
                         {% for value, text in form.language.field.choices %}
                             <option value="{{ value }}" {% if form.language.value == value %}selected{% endif %}>
                                 {{ text }}
@@ -167,23 +167,54 @@
                 <h2 class="text-xl font-semibold text-gray-900">Medical Message</h2>
                 <p class="text-gray-600">Enter the text that will be displayed on your emergency card. This should explain your condition, dietary restrictions, and what to do in case of an emergency.</p>
                 
+                <!-- Language Tabs -->
+                <div class="border-b border-gray-200">
+                    <nav class="flex -mb-px" aria-label="Language tabs">
+                        {% for lang_code, lang_name in form.language.field.choices %}
+                            <button type="button" 
+                                    data-target="card-message-{{ lang_code|lower }}" 
+                                    class="{% if forloop.first %}border-deep-teal text-deep-teal{% else %}border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300{% endif %} whitespace-nowrap py-2 px-4 border-b-2 font-medium text-sm mr-8"
+                                    aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                                    role="tab">
+                                {{ lang_name }}
+                            </button>
+                        {% endfor %}
+                    </nav>
+                </div>
+                
+                <!-- Message Content -->
+                {% for lang_code, lang_name in form.language.field.choices %}
+                    <div id="card-message-{{ lang_code|lower }}" 
+                         class="tab-panel {% if not forloop.first %}hidden{% endif %}">
+                        <textarea name="message_{{ lang_code|lower }}" rows="6"
+                                class="block w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-deep-teal focus:border-deep-teal"
+                                hx-post="{% url 'emergency_cards:validate_field' %}"
+                                hx-trigger="blur"
+                                hx-target="#message_{{ lang_code|lower }}_error"
+                                hx-swap="innerHTML"
+                                hx-vals='{"field_name": "message_{{ lang_code|lower }}"}'>{% if form.instance.translations %}{{ form.instance.get_message_for_language|default:'' }}{% endif %}</textarea>
+                        <div id="message_{{ lang_code|lower }}_error"></div>
+                        <p class="mt-1 text-sm text-gray-500">Minimum 50 characters recommended for clarity.</p>
+                    </div>
+                {% endfor %}
+                
+                <!-- Card Message Textarea (this will be filled by the active language content) -->
                 <div>
-                    <label for="card_message" class="block text-sm font-medium text-gray-700 mb-1">
+                    <label for="card_message" class="block text-sm font-medium text-gray-700 mb-1 sr-only">
                         Card Message
                     </label>
                     <textarea name="card_message" id="card_message" rows="6"
-                              class="block w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-purple-500 focus:border-purple-500"
+                              class="hidden"
                               hx-post="{% url 'emergency_cards:validate_field' %}"
                               hx-trigger="blur"
                               hx-target="#card_message_error"
                               hx-swap="innerHTML"
-                              hx-vals='{"field_name": "card_message"}'>{{ form.instance.get_message }}</textarea>
+                              hx-vals='{"field_name": "card_message"}'>{% if form.instance.translations %}{{ form.instance.get_message }}{% endif %}</textarea>
                     <div id="card_message_error">
                         {% if form.non_field_errors %}
                             <p class="mt-2 text-sm text-red-600">{{ form.non_field_errors.0 }}</p>
                         {% endif %}
                     </div>
-                    <p class="mt-1 text-sm text-gray-500">Minimum 50 characters recommended for clarity.</p>
                 </div>
             </div>
             
@@ -197,7 +228,7 @@
                     </label>
                     <input type="text" name="{{ form.emergency_contact_name.name }}" id="{{ form.emergency_contact_name.id_for_label }}" 
                            value="{{ form.emergency_contact_name.value|default:'' }}"
-                           class="block w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-purple-500 focus:border-purple-500"
+                           class="block w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-deep-teal focus:border-deep-teal"
                            hx-post="{% url 'emergency_cards:validate_field' %}"
                            hx-trigger="blur"
                            hx-target="#emergency_contact_name_error"
@@ -216,7 +247,7 @@
                     </label>
                     <input type="text" name="{{ form.emergency_contact_relationship.name }}" id="{{ form.emergency_contact_relationship.id_for_label }}" 
                            value="{{ form.emergency_contact_relationship.value|default:'' }}"
-                           class="block w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-purple-500 focus:border-purple-500"
+                           class="block w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-deep-teal focus:border-deep-teal"
                            hx-post="{% url 'emergency_cards:validate_field' %}"
                            hx-trigger="blur"
                            hx-target="#emergency_contact_relationship_error"
@@ -235,7 +266,7 @@
                     </label>
                     <input type="tel" name="{{ form.emergency_contact_phone.name }}" id="{{ form.emergency_contact_phone.id_for_label }}" 
                            value="{{ form.emergency_contact_phone.value|default:'' }}"
-                           class="block w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-purple-500 focus:border-purple-500"
+                           class="block w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-deep-teal focus:border-deep-teal"
                            hx-post="{% url 'emergency_cards:validate_field' %}"
                            hx-trigger="blur"
                            hx-target="#emergency_contact_phone_error"
@@ -253,7 +284,7 @@
             <!-- Submit Button -->
             <div class="border-t border-gray-200 pt-6">
                 <input type="hidden" id="active_language" name="active_language" value="en">
-                <button type="submit" class="w-full md:w-auto px-6 py-3 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 transition-colors">
+                <button type="submit" class="w-full md:w-auto px-6 py-3 bg-deep-teal text-white font-medium rounded-lg hover:bg-deep-teal-2 transition-colors">
                     {% if is_edit %}Update{% else %}Create{% endif %} Emergency Card
                 </button>
             </div>
@@ -267,6 +298,36 @@
         const tabButtons = document.querySelectorAll('[data-target]');
         const tabPanels = document.querySelectorAll('.tab-panel');
         const activeLanguageInput = document.getElementById('active_language');
+        const cardMessageInput = document.getElementById('card_message');
+        
+        // Helper function to sync the active language textarea with the hidden card_message field
+        function syncActiveLanguage(langCode) {
+            const textarea = document.querySelector(`textarea[name="message_${langCode}"]`);
+            if (textarea && cardMessageInput) {
+                cardMessageInput.value = textarea.value;
+            }
+        }
+        
+        // On form submission, make sure the card_message field contains the active language message
+        const form = document.querySelector('form');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                if (activeLanguageInput) {
+                    const activeLang = activeLanguageInput.value;
+                    syncActiveLanguage(activeLang);
+                }
+            });
+        }
+        
+        // For each language textarea, set up an event listener to keep the hidden field updated
+        document.querySelectorAll('textarea[name^="message_"]').forEach(textarea => {
+            textarea.addEventListener('input', function() {
+                const langCode = this.name.split('_')[1]; // Extract language code from name="message_en"
+                if (activeLanguageInput && activeLanguageInput.value === langCode) {
+                    syncActiveLanguage(langCode);
+                }
+            });
+        });
         
         tabButtons.forEach(button => {
             button.addEventListener('click', function() {
@@ -276,6 +337,9 @@
                 // Update active language hidden input
                 if (activeLanguageInput) {
                     activeLanguageInput.value = langCode;
+                    
+                    // Also update the hidden card_message field with the current language content
+                    syncActiveLanguage(langCode);
                 }
                 
                 // Hide all panels
@@ -293,16 +357,22 @@
                 
                 // Update active tab styles
                 tabButtons.forEach(btn => {
-                    btn.classList.remove('border-purple-500', 'text-purple-600');
+                    btn.classList.remove('border-deep-teal', 'text-deep-teal');
                     btn.classList.add('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
                     btn.setAttribute('aria-selected', 'false');
                 });
                 
                 this.classList.remove('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
-                this.classList.add('border-purple-500', 'text-purple-600');
+                this.classList.add('border-deep-teal', 'text-deep-teal');
                 this.setAttribute('aria-selected', 'true');
             });
         });
+        
+        // Initialize by syncing the initial active language
+        if (activeLanguageInput) {
+            const initialLang = activeLanguageInput.value;
+            syncActiveLanguage(initialLang);
+        }
     });
 </script>
 

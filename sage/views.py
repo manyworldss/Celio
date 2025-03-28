@@ -2,102 +2,211 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Conversation, Message
 from django.http import HttpResponse
+import re
+
+# Pre-cached responses for the demo version
+DEMO_RESPONSES = {
+    "restaurant|dining|eat|restaurant|waiter|menu": 
+        "When dining at restaurants with celiac disease, always:\n\n"
+        "1. Call ahead to check if they can accommodate gluten-free needs\n"
+        "2. Clearly inform your server about your celiac disease (not just a preference)\n"
+        "3. Ask about dedicated preparation areas and cross-contamination protocols\n"
+        "4. Consider dining during off-peak hours when kitchen staff has more time to be careful\n"
+        "5. Use apps like Find Me Gluten Free to locate celiac-friendly restaurants\n\n"
+        "Remember that even 'gluten-free menu' items can be contaminated if proper protocols aren't followed.",
+    
+    "travel|trip|vacation|abroad|country|flight|plane|hotel": 
+        "When traveling with celiac disease:\n\n"
+        "1. Research gluten-free options at your destination before you go\n"
+        "2. Pack emergency snacks and gluten-free essentials\n"
+        "3. Consider booking accommodations with kitchen access to prepare safe meals\n"
+        "4. Download translation cards explaining celiac disease in the local language\n"
+        "5. Join online celiac groups for destination-specific advice\n"
+        "6. Bring a doctor's note explaining your condition for customs/security\n\n"
+        "The Celio app's travel guides provide country-specific information about celiac awareness and safe dining options in many destinations.",
+    
+    "symptom|reaction|sick|pain|bloat|diarrhea|headache|rash|fatigue": 
+        "Common symptoms of celiac disease and gluten exposure include:\n\n"
+        "1. Digestive issues: bloating, diarrhea, constipation, abdominal pain\n"
+        "2. Fatigue and weakness\n"
+        "3. Headaches or brain fog\n"
+        "4. Joint or bone pain\n"
+        "5. Skin rashes (dermatitis herpetiformis)\n"
+        "6. Anemia or nutritional deficiencies\n\n"
+        "If you've been exposed to gluten, focus on staying hydrated, resting, and following your doctor's recommendations. Symptoms typically resolve within a few days to weeks.",
+    
+    "food|ingredient|safe|avoid|eat|label|product|grocery": 
+        "Foods to always avoid with celiac disease:\n\n"
+        "1. Wheat (including durum, semolina, spelt, kamut, einkorn, farro)\n"
+        "2. Rye and barley\n"
+        "3. Most oats (unless certified gluten-free)\n"
+        "4. Malt and malt flavoring\n"
+        "5. Many processed foods with hidden gluten\n\n"
+        "Safe foods include:\n"
+        "- Fresh fruits and vegetables\n"
+        "- Unprocessed meats, fish, and poultry\n"
+        "- Most dairy products\n"
+        "- Beans, legumes, and nuts\n"
+        "- Gluten-free grains like rice, corn, quinoa, millet, and certified GF oats\n\n"
+        "Always carefully read product labels and look for certified gluten-free products.",
+    
+    "family|gene|genetic|hereditary|parent|child|test|diagnose|diagnosis": 
+        "Celiac disease has a genetic component:\n\n"
+        "1. It runs in families - first-degree relatives have a 1 in 10 risk\n"
+        "2. Celiac disease requires the presence of HLA-DQ2 or HLA-DQ8 genes\n"
+        "3. Having these genes doesn't guarantee developing celiac (40% of the population has them)\n"
+        "4. Environmental factors like infections, stress, or pregnancy can trigger onset\n\n"
+        "Diagnosis typically involves:\n"
+        "- Blood tests for specific antibodies\n"
+        "- Small intestine biopsy\n"
+        "- Genetic testing to rule out celiac disease\n\n"
+        "If you have a family history, consider getting tested even without symptoms, as early detection prevents complications.",
+    
+    "cross.?contamination|kitchen|prepare|cook|utensil|toaster|cutting": 
+        "Preventing cross-contamination at home:\n\n"
+        "1. Maintain separate cooking utensils, cutting boards, and toasters\n"
+        "2. Use different containers for condiments to prevent crumb transfer\n"
+        "3. Clean surfaces thoroughly before preparing gluten-free foods\n"
+        "4. Consider having designated gluten-free preparation areas\n"
+        "5. Store gluten-free products on upper shelves to prevent crumbs falling from above\n"
+        "6. Label gluten-free items clearly\n\n"
+        "Even tiny amounts of gluten from cross-contamination can cause reactions in people with celiac disease.",
+    
+    "hello|hi|hey|greetings|start|intro|welcome":
+        "Hello! I'm Sage, your personal gluten and celiac disease assistant. I can help with information about:\n\n"
+        "- Safely dining out with celiac disease\n"
+        "- Traveling with dietary restrictions\n"
+        "- Understanding symptoms and managing accidental exposure\n"
+        "- Safe and unsafe ingredients\n"
+        "- Cross-contamination prevention\n\n"
+        "What would you like to know about today? This is a demo version with pre-made responses, but I'm still learning to be more helpful!",
+        
+    "default":
+        "Thank you for your question. In this demo version, I have a limited set of pre-made responses about celiac disease topics like:\n\n"
+        "- Restaurant dining strategies\n"
+        "- Travel tips for celiacs\n"
+        "- Symptom management\n" 
+        "- Safe and unsafe foods\n"
+        "- Genetic/family information\n"
+        "- Cross-contamination prevention\n\n"
+        "Try asking about one of these topics, or check back when the premium version launches with full Claude AI integration for more personalized assistance!"
+}
 
 @login_required
 def sage_assistant(request):
-    # get users conversations or create a default one
-    conversation, created = Conversation.objects.get_or_create(user=request.user)
-
-    if not conversation.exists():
+    # Get current conversation id from query parameters
+    conversation_id = request.GET.get('conversation')
+    
+    # If conversation id provided, get that conversation
+    if conversation_id:
+        try:
+            conversation = get_object_or_404(Conversation, id=conversation_id, user=request.user)
+        except:
+            # If conversation not found, get the most recent one
+            conversation = Conversation.objects.filter(user=request.user).order_by('-updated_at').first()
+    else:
+        # Get the most recent conversation or create a new one
+        conversation = Conversation.objects.filter(user=request.user).order_by('-updated_at').first()
+    
+    # If no conversations exist, create a new one
+    if not conversation:
         conversation = Conversation.objects.create(
             user=request.user,
             title="Welcome to Sage!"
         )
-
-        # create a welcome message
+        
+        # Create a welcome message
         Message.objects.create(
             conversation=conversation,
-            role=Message.ROLE_ASSISTANT,
-            content="Hello! I'm Sage, your personal allergy assistant. How can I help you today?"
+            role="assistant",
+            content="Hello! I'm Sage, your personal celiac and gluten-free assistant. How can I help you today?"
         )
     
-    else:
-        conversation = Conversation.first()
-
-        # Get all messages for the current conversation
-        messages = conversation.messages.all()
-
-        # handle new message submission
-        if request.method == 'POST' and 'message' in request.POST:
-            user_message = request.POST.get('message').strip()
-
-            if user_message:
-                # save user message
-                Message.objects.create(
-                    conversation=conversation,
-                    role=Message.ROLE_USER,
-                    content=user_message
-                )
-                
-                # generate placeholder response (this will be replaced with actual AI response)
-                placeholder_response = {
-                    "restaurant": "When dining at restaurants, always inform your server about your celiac disease. Ask about dedicated preparation areas and cross-contamination protocols. Many restaurants now offer gluten-free menus - just make sure they understand the importance of avoiding cross-contamination.",
-                    "travel": "When traveling, research gluten-free options at your destination before you go. Consider booking accommodations with kitchen access. Pack emergency snacks, translation cards in the local language, and use apps like Find Me Gluten Free to locate safe restaurants.",
-                    "symptoms": "Common symptoms of celiac disease include digestive issues (bloating, diarrhea, constipation), fatigue, headaches, joint pain, and skin rashes. If you accidentally consume gluten, stay hydrated, rest, and follow your doctor's recommendations for recovery.",
-                    "foods": "Always avoid wheat, barley, rye, and regular oats (unless certified gluten-free). Safe foods include fresh fruits, vegetables, meat, fish, rice, potatoes, and certified gluten-free products. Always check labels, as gluten can hide in unexpected places like sauces and seasonings."
-                }
-                
-                # simple keyword matching for demo purposes
-                response_text = "I'm still learning about celiac disease. This feature will be expanded in the premium version of Celio to provide more personalized response using Claude AI."
-
-                # save assistant response
-                Message.objects.create(
-                    conversation=conversation,
-                    role=Message.ROLE_ASSISTANT,
-                    content=response_text
-                )
-                
-                # update conversation timestamp
-                conversation.save()
-
-                # if HTMX request, return just the messages
-                if request.headers.get('HX-Request'):
-                    return render(request, 'sage/partials/message.html', {
-                        'messages': conversation.messages.all().order_by('created_at')
-                    })
-        return render(request, 'sage/sage_assistant.html', {
-            'conversation': conversation,
-            'current_conversation': conversation,
-            'messages': messages,
-            })
+    # Get all user's conversations for the sidebar
+    conversations = Conversation.objects.filter(user=request.user).order_by('-updated_at')
     
+    # Get all messages for the current conversation
+    messages = conversation.messages.all().order_by('created_at')
+    
+    # Handle new message submission
+    if request.method == 'POST' and 'message' in request.POST:
+        user_message = request.POST.get('message').strip()
+        
+        if user_message:
+            # Save user message
+            Message.objects.create(
+                conversation=conversation,
+                role="user",
+                content=user_message
+            )
+            
+            # Generate response using demo cached responses based on keywords
+            response_text = get_demo_response(user_message)
+            
+            # Save assistant response
+            Message.objects.create(
+                conversation=conversation,
+                role="assistant",
+                content=response_text
+            )
+            
+            # Update conversation title if it's the first user message
+            if conversation.title == "Welcome to Sage!" or conversation.title == "New Conversation":
+                # Use first few words of user message as title
+                title = user_message[:30] + "..." if len(user_message) > 30 else user_message
+                conversation.title = title
+            
+            # Update conversation timestamp
+            conversation.save()
+            
+            # If HTMX request, return just the messages
+            if request.headers.get('HX-Request'):
+                return render(request, 'sage/partials/messages.html', {
+                    'messages': conversation.messages.all().order_by('created_at')
+                })
+    
+    return render(request, 'sage/assistant.html', {
+        'conversations': conversations,
+        'current_conversation': conversation,
+        'messages': messages,
+    })
+
+# Function to match user query to pre-made responses
+def get_demo_response(query):
+    # Convert query to lowercase for easier matching
+    query = query.lower()
+    
+    # Check each keyword pattern against the query
+    for keywords, response in DEMO_RESPONSES.items():
+        # Use regex to check if any of the keywords match
+        pattern = '\\b(' + keywords + ')\\b'
+        if re.search(pattern, query, re.IGNORECASE):
+            return response
+    
+    # If no specific matches, return the default response
+    return DEMO_RESPONSES["default"]
+
 @login_required
 def new_conversation(request):
-# create new conversation
-    Conversation.objects.create(
+    # Create new conversation
+    conversation = Conversation.objects.create(
         user=request.user,
         title="New Conversation"
     )
-
-    # add welcome message
+    
+    # Add welcome message
     Message.objects.create(
-        conversation=Conversation,
-        role=Message.ROLE_ASSISTANT,
-        content="Hello! I'm Sage, your personal allergy assistant. How can I help you today?"
+        conversation=conversation,
+        role="assistant",
+        content="Hello! I'm Sage, your personal celiac and gluten-free assistant. How can I help you today?"
     )
-    return redirect('sage:sage_assistant')
+    return redirect('sage:assistant')
 
 @login_required
 def delete_conversation(request, conversation_id):
     conversation = get_object_or_404(Conversation, id=conversation_id, user=request.user)
-
+    
     if request.method == 'POST':
         conversation.delete()
-
-    return redirect('sage:sage_assistant')
-
-        
-            
-
-
-# Create your views here.
+    
+    return redirect('sage:assistant')

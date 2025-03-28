@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib import messages
 
@@ -36,8 +36,22 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            messages.success(request, 'Successfully logged in!')
+            # Check if there's a next parameter in the URL and redirect there
+            if 'next' in request.POST:
+                return redirect(request.POST.get('next'))
             return redirect('core:home')
     else:
         form = AuthenticationForm()
     return render(request, 'accounts/login.html', {'form': form})
+
+def logout_view(request):
+    """Custom logout view to ensure clean logout"""
+    logout(request)
+    messages.success(request, "You have been successfully logged out.")
+    return redirect('core:home')
+
+def profile(request):
+    """View for user profile page"""
+    return render(request, 'accounts/profile.html', {
+        'user': request.user
+    })

@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 {% load static %}
 
@@ -12,26 +11,11 @@
         <p class="text-lg text-gray-600">Safely navigate gluten-free dining around the world</p>
     </div>
     
-    {% if not is_premium %}
-    <!-- Premium Upgrade Banner -->
-    <div class="bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-lg shadow-md p-6 mb-8">
-        <div class="flex flex-col md:flex-row items-center justify-between">
-            <div class="mb-4 md:mb-0">
-                <h2 class="text-xl font-bold mb-2">Upgrade to Celio Premium</h2>
-                <p class="text-white text-opacity-90">Get full access to all travel guides, restaurant cards, and more!</p>
-            </div>
-            <a href="#" class="px-6 py-2 bg-white text-purple-600 font-medium rounded-lg hover:bg-gray-100 transition-colors">
-                Upgrade Now
-            </a>
-        </div>
-    </div>
-    {% endif %}
-    
     <!-- Countries Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {% for country in countries %}
         <a href="{% url 'travel:country_detail' country.code %}" class="group">
-            <div class="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-200 hover:shadow-lg {% if not is_premium %}opacity-75 hover:opacity-100{% endif %}">
+            <div class="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-200 hover:shadow-lg">
                 <div class="p-6">
                     <div class="flex items-center mb-4">
                         <span class="text-4xl mr-3">{{ country.flag_emoji }}</span>
@@ -43,7 +27,7 @@
                         <div class="flex items-center">
                             {% for i in "12345" %}
                                 {% if forloop.counter <= country.celiac_awareness %}
-                                    <div class="w-6 h-2 bg-purple-500 rounded-full mr-1"></div>
+                                    <div class="w-6 h-2 bg-teal rounded-full mr-1"></div>
                                 {% else %}
                                     <div class="w-6 h-2 bg-gray-200 rounded-full mr-1"></div>
                                 {% endif %}
@@ -62,11 +46,7 @@
                     <p class="text-gray-600 line-clamp-3">{{ country.summary }}</p>
                     
                     <div class="mt-4 flex justify-between items-center">
-                        <span class="text-purple-600 font-medium group-hover:text-purple-700">View Guide</span>
-                        
-                        {% if not is_premium %}
-                        <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded">Premium</span>
-                        {% endif %}
+                        <span class="text-deep-teal font-medium group-hover:text-deep-teal-2">View Guide</span>
                     </div>
                 </div>
             </div>

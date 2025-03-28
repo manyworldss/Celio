@@ -1,13 +1,14 @@
 import io
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.utils import timezone
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.urls import reverse
 from .models import EmergencyCard
 from .forms import EmergencyCardForm
 import qrcode
 import base64
-from django.urls import reverse
 # For PDF generation
 from reportlab.lib.pagesizes import letter, A4
 from reportlab.lib import colors
@@ -23,23 +24,43 @@ def switch_language(request):
     card = get_object_or_404(EmergencyCard, user=request.user)
     language = request.GET.get('lang', 'EN')  # default to english if no language specified
     
+    # Case insensitive comparison for language codes
+    upper_lang = language.upper()
+    
+    # Get all available language keys in uppercase for comparison
+    available_langs = {lang.upper(): lang for lang in card.translations.keys()}
+    
     # Make sure requested language exists in translations
-    if language not in card.translations and card.translations:
-        language = next(iter(card.translations))
+    if upper_lang in available_langs:
+        language = available_langs[upper_lang]  # Use original case from card
+    elif card.translations:
+        language = next(iter(card.translations.keys()))
     
     # get message in requested language
     message = card.get_message(language)
+    
+    # Get language display name
+    current_lang_display = dict(EmergencyCard.LANGUAGE_CHOICES).get(language.lower(), language)
+    
+    # Create languages dictionary for the template
+    languages = {}
+    for lang_code in card.translations.keys():
+        lang_name = dict(EmergencyCard.LANGUAGE_CHOICES).get(lang_code.lower(), lang_code)
+        languages[lang_code] = lang_name
     
     if request.headers.get('HX-Request'):  # if it's an HTMX request
         # return formatted message content
         return render(request, 'emergency_cards/partials/message_content.html', {
             'message': message,
             'card': card, 
+            'current_lang': language,
+            'current_lang_display': current_lang_display,
+            'languages': languages,
             'theme': card.theme
         })
     
     # for regular requests, redirect to card detail with language parameter
-    return redirect(f"/emergency_cards/card/detail/?lang={language}")
+    return redirect(reverse('emergency_cards:card_detail') + f"?lang={language}")
 
 
 @login_required # make sure only logged-in users can access this view
@@ -49,29 +70,48 @@ def create_card_or_edit(request):
             # if card exists, we'll use it to populate the form
     except EmergencyCard.DoesNotExist:
         card = None
+    
+    # Get the currently active language from the form
+    active_language = request.POST.get('active_language', 'en').upper()
+    
     if request.method == 'POST':
         if card:  # if card exists, update it
             form = EmergencyCardForm(request.POST, request.FILES, instance=card)
         else:
             form = EmergencyCardForm(request.POST, request.FILES)
+        
         if form.is_valid():
             card = form.save(commit=False)
             card.user = request.user
             
+            # Get the message from the textarea
+            card_message = request.POST.get('card_message', '')
+            
+            # Initialize translations if needed
+            if not card.translations:
+                card.translations = {}
+            
+            # Update the message for the active language
+            if active_language and card_message:
+                card.translations[active_language] = card_message
+            
             # Make sure at least one language translation exists (English)
             if not card.translations or 'EN' not in card.translations:
-                if not card.translations:
-                    card.translations = {}
-                # Default English message if none provided
                 if 'message_en' in form.cleaned_data and form.cleaned_data['message_en']:
                     card.translations['EN'] = form.cleaned_data['message_en']
                 else:
                     card.translations['EN'] = "I have celiac disease/gluten sensitivity and cannot consume any foods containing gluten."
             
+            # Set preferred language if not already set
+            if not card.preferred_language and card.translations:
+                card.preferred_language = active_language
+            
             card.save()
+            messages.success(request, "Emergency card successfully updated!" if card else "Emergency card successfully created!")
             return redirect('emergency_cards:card_detail')
         else:
             # Return the form with errors if not valid
+            messages.error(request, "Please correct the errors below.")
             return render(request, 'emergency_cards/create_card_or_edit.html', {'form': form, 'is_edit': card is not None})
     else: # GET request
         if card: # if card exists, populate from card
@@ -115,20 +155,45 @@ def validate_field(request):
 def card_detail(request):
     try:
         card = EmergencyCard.objects.get(user=request.user)
-        # Get the current language from query parameter or default to English
-        current_lang = request.GET.get('lang', 'EN')
+        # Get the current language from query parameter, preferred language, or default to English
+        current_lang = request.GET.get('lang')
+        
+        if not current_lang:
+            # Use preferred language if available, otherwise default to English
+            current_lang = card.preferred_language if hasattr(card, 'preferred_language') and card.preferred_language else 'EN'
         
         # Make sure the language exists in translations, otherwise default to English
-        if current_lang not in card.translations:
-            current_lang = 'EN'
+        if current_lang.upper() not in card.translations:
+            if 'EN' in card.translations:
+                current_lang = 'EN'
+            elif card.translations:  # If there are translations but not the one we want
+                current_lang = next(iter(card.translations.keys()))  # Get the first available language
+            else:
+                # No translations available
+                return redirect('emergency_cards:create_card')
+        
+        # Get the language display name for the current language
+        current_lang_display = dict(EmergencyCard.LANGUAGE_CHOICES).get(current_lang.lower(), current_lang)
+        
+        # Create languages dictionary for the template
+        languages = {}
+        for lang_code in card.translations.keys():
+            lang_name = dict(EmergencyCard.LANGUAGE_CHOICES).get(lang_code.lower(), lang_code)
+            languages[lang_code] = lang_name
         
         context = {
             'card': card,
             'current_lang': current_lang,
-            'message': card.get_message(current_lang)
+            'current_lang_display': current_lang_display,
+            'message': card.get_message(current_lang),
+            'languages': languages,
+            'is_premium': getattr(request, 'is_premium', True),  # Always allow access in demo mode
+            'is_demo': request.session.get('is_demo', False),
         }
         return render(request, 'emergency_cards/card_detail.html', context)
     except EmergencyCard.DoesNotExist:
+        # Redirect to create card page with a helpful message
+        messages.info(request, "You don't have an emergency card yet. Let's create one!")
         return redirect('emergency_cards:create_card')
 
 
@@ -374,3 +439,122 @@ def share_card(request):
         'share_url': share_url,
         'qr_code_url': qr_code_url,
     })
+
+@login_required
+def update_profile_picture(request):
+    """Update the profile picture for the emergency card."""
+    try:
+        card = EmergencyCard.objects.get(user=request.user)
+    except EmergencyCard.DoesNotExist:
+        messages.error(request, "You need to create an emergency card first.")
+        return redirect('emergency_cards:create_card')
+    
+    if request.method == 'POST' and request.FILES.get('profile_picture'):
+        # Delete old profile picture if it exists to avoid storage bloat
+        if card.profile_picture:
+            card.profile_picture.delete(save=False)
+        
+        # Update with new profile picture
+        card.profile_picture = request.FILES['profile_picture']
+        card.save()
+        
+        messages.success(request, "Profile picture updated successfully.")
+    
+    return redirect('emergency_cards:themes')
+
+
+@login_required
+def apply_theme(request, theme_name):
+    """Apply a selected theme to the emergency card."""
+    try:
+        card = EmergencyCard.objects.get(user=request.user)
+    except EmergencyCard.DoesNotExist:
+        messages.info(request, "You need to create an emergency card first.")
+        return redirect('emergency_cards:create_card')
+    
+    # Get valid themes from the model choices
+    valid_themes = [choice[0] for choice in EmergencyCard.THEME_CHOICES]
+    
+    # Validate the theme name
+    if theme_name not in valid_themes:
+        messages.error(request, f"Invalid theme selection: {theme_name}")
+        return redirect('emergency_cards:card_detail')
+    
+    # Get language parameter
+    language = request.GET.get('lang', 'EN')
+    preview_only = request.GET.get('preview', 'false').lower() == 'true'
+    
+    # Only update the theme if not in preview mode
+    if not preview_only:
+        # Update the theme
+        card.theme = theme_name
+        card.save()
+        messages.success(request, f"Theme updated to {theme_name.title()}")
+    
+    # Get the current language and message
+    # Case insensitive comparison for language codes
+    upper_lang = language.upper()
+    
+    # Get all available language keys in uppercase for comparison
+    available_langs = {lang.upper(): lang for lang in card.translations.keys()}
+    
+    # Make sure requested language exists in translations
+    if upper_lang in available_langs:
+        language = available_langs[upper_lang]  # Use original case from card
+    elif card.translations:
+        language = next(iter(card.translations.keys()))
+    
+    # Get message in requested language
+    message = card.get_message(language)
+    
+    # Get language display name
+    current_lang_display = dict(EmergencyCard.LANGUAGE_CHOICES).get(language.lower(), language)
+    
+    # Create languages dictionary for the template
+    languages = {}
+    for lang_code in card.translations.keys():
+        lang_name = dict(EmergencyCard.LANGUAGE_CHOICES).get(lang_code.lower(), lang_code)
+        languages[lang_code] = lang_name
+    
+    if request.headers.get('HX-Request') or preview_only:  # if it's an HTMX request or preview
+        # For preview mode, temporarily set the theme without saving it to the database
+        original_theme = card.theme
+        if preview_only:
+            card.theme = theme_name  # Temporarily set the theme for rendering
+        
+        context = {
+            'card': card,
+            'current_lang': language,
+            'current_lang_display': current_lang_display,
+            'message': message,
+            'languages': languages,
+        }
+        
+        # Reset the theme to original if we're just previewing
+        if preview_only:
+            card.theme = original_theme
+            
+        # Return only the card preview
+        return render(request, 'emergency_cards/partials/card_preview.html', context)
+    
+    return redirect('emergency_cards:card_detail')
+
+@login_required
+def themes(request):
+    """Display available themes for the emergency card."""
+    try:
+        card = EmergencyCard.objects.get(user=request.user)
+    except EmergencyCard.DoesNotExist:
+        messages.info(request, "You need to create an emergency card first.")
+        return redirect('emergency_cards:create_card')
+    
+    return render(request, 'emergency_cards/themes.html', {'card': card})
+
+@login_required
+def mark_tour_seen(request):
+    """Mark the tour as seen by the user"""
+    if request.method == 'POST':
+        request.session['show_tour'] = False
+        request.session.modified = True
+        return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})

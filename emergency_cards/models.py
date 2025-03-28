@@ -2,62 +2,124 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 
-
-
 class EmergencyCard(models.Model):
-
-    # theme choices 
+    # Theme choices 
     THEME_CLASSIC = 'classic'
     THEME_MODERN = 'modern'
     THEME_MINIMAL = 'minimal'
+    THEME_MEDICAL = 'medical'
+    THEME_DARK = 'dark'
+    THEME_NATURE = 'nature'
+    THEME_VINTAGE = 'vintage'
+    THEME_PLAYFUL = 'playful'
+    THEME_PASTEL = 'pastel'
+    THEME_LUXURY = 'luxury'
+    THEME_NEON = 'neon'
+    THEME_GEOMETRIC = 'geometric'
+    THEME_CYBERPUNK = 'cyberpunk'
 
     THEME_CHOICES = [
         (THEME_CLASSIC, 'Classic'),
         (THEME_MODERN, 'Modern'),
         (THEME_MINIMAL, 'Minimal'),
+        (THEME_MEDICAL, 'Medical'),
+        (THEME_DARK, 'Dark'),
+        (THEME_NATURE, 'Nature'),
+        (THEME_VINTAGE, 'Vintage'),
+        (THEME_PLAYFUL, 'Playful'),
+        (THEME_PASTEL, 'Pastel'),
+        (THEME_LUXURY, 'Luxury'),
+        (THEME_NEON, 'Neon'),
+        (THEME_GEOMETRIC, 'Geometric'),
+        (THEME_CYBERPUNK, 'Cyberpunk'),
     ]
 
-
     LANGUAGE_CHOICES = [
-        ('EN', 'English'),
-        ('ES', 'Spanish'),
-        ('FR','French'),
-        ('ZH', 'Chinese'),
-        ('JA', 'Japanese'),
-        ('PT', 'Portuguese'),
-         ]
+        ('en', 'English'),
+        ('es', 'Spanish'),
+        ('fr', 'French'),
+        ('de', 'German'),
+        ('it', 'Italian'),
+        ('pt', 'Portuguese'),
+        ('ja', 'Japanese'),
+        ('zh', 'Chinese'),
+    ]
+    
     SEVERITY_CHOICES = [
         ('CEL', 'Celiac Disease'),
         ('SEN', 'Gluten Sensitive'),
         ('ALL', 'Wheat/Gluten Allergy'),
     ]
 
-    # core fields
-
+    # User and basic information
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    preferred_language = models.CharField(max_length=2, choices=LANGUAGE_CHOICES, default='EN', verbose_name='Preferred Language', help_text='The primary language for your card interface. You can still add translations in other languages')
-    condition = models.CharField(max_length=3, choices=SEVERITY_CHOICES, verbose_name='Condition', help_text='Select the option that best describes your dietary restriction')
-    emergency_contact_name = models.CharField(max_length=100, verbose_name='Emergency Contact Name', help_text='Person to contact in case of an emergency')
-    emergency_contact_phone = models.CharField(max_length=20, verbose_name='Emergency Contact Phone', help_text='Include country code if traveling internationally (e.g., +1 555-123-4567).')
-    emergency_contact_relationship = models.CharField(max_length=50, verbose_name='Emergency Contact Relationship')
-   
-    # storing languages and translations
-    translations = models.JSONField(default=dict, verbose_name=('Translations'), help_text='Stores the card content in multiple languages. At least English  (EN) is required.')
-    # timestamps  # This will store all language versions
+    name = models.CharField(max_length=100, blank=True)
+    condition = models.CharField(max_length=3, choices=SEVERITY_CHOICES, default='CEL', 
+                                 verbose_name='Condition', 
+                                 help_text='Select the option that best describes your dietary restriction')
+    
+    # Emergency contact information
+    emergency_contact_name = models.CharField(max_length=100, blank=True, 
+                                             verbose_name='Emergency Contact Name',
+                                             help_text='Person to contact in case of an emergency')
+    emergency_contact_phone = models.CharField(max_length=20, blank=True,
+                                              verbose_name='Emergency Contact Phone',
+                                              help_text='Include country code if traveling internationally (e.g., +1 555-123-4567).')
+    emergency_contact_relationship = models.CharField(max_length=50, blank=True,
+                                                     verbose_name='Emergency Contact Relationship')
+    
+    # Additional medical information
+    date_of_birth = models.DateField(null=True, blank=True)
+    blood_type = models.CharField(max_length=10, blank=True)
+    medical_conditions = models.TextField(blank=True)
+    medications = models.TextField(blank=True)
+    allergies = models.TextField(blank=True)
+    notes = models.TextField(blank=True)
+    
+    # Display options and customization
+    language = models.CharField(max_length=2, choices=LANGUAGE_CHOICES, default='en')
+    preferred_language = models.CharField(max_length=2, choices=LANGUAGE_CHOICES, default='en',
+                                         verbose_name='Preferred Language',
+                                         help_text='The primary language for your card interface')
+    profile_picture = models.ImageField(upload_to='emergency_cards/', null=True, blank=True)
+    show_profile_pic = models.BooleanField(default=True, verbose_name='Show Profile Picture')
+    theme = models.CharField(max_length=20, choices=THEME_CHOICES, default=THEME_CLASSIC)
+    
+    # Translations for multiple languages
+    translations = models.JSONField(default=dict, blank=True,
+                                   verbose_name='Translations',
+                                   help_text='Stores the card content in multiple languages')
+    
+    # Timestamps
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    # theme selection
-    theme = models.CharField(max_length=20, choices=THEME_CHOICES, default=THEME_CLASSIC, verbose_name='Theme', help_text='Select the theme for your card')
+    # Method to get the message in the selected language
+    def get_message(self, language_code='EN'):
+        """Get the message for this card in the specified language"""
+        # Default to English or first available language if the requested one doesn't exist
+        if not self.translations:
+            return "No information provided yet."
+        
+        language_code = language_code.upper()
+        if language_code in self.translations:
+            return self.translations[language_code]
+        elif 'EN' in self.translations:
+            return self.translations['EN']
+        else:
+            # Return the first available language if nothing else works
+            return next(iter(self.translations.values()))
+
+    def get_message_for_language(self, language_code=None):
+        """Get the message for a specific language"""
+        if not language_code:
+            language_code = self.preferred_language.upper()
+        return self.get_message(language_code)
+
+    def get_theme_choices(self):
+        """Return the theme choices for the dropdown"""
+        return self.THEME_CHOICES
     
-    # Optional profile picture
-    profile_pic = models.ImageField(upload_to='profile_pics/', blank=True, null=True, verbose_name='Profile Picture')
-    show_profile_pic = models.BooleanField(default=False, verbose_name='Show Profile Picture', help_text='Enable to display your profile picture on the card')
-
-    def get_message(self, language='EN'):
-        """Get the message in the specified language"""
-        return self.translations.get(language, self.translations.get('EN', ''))
-
     def set_message(self, language, message):
         """Set the message in the specified language"""
         if not self.translations:
@@ -66,6 +128,14 @@ class EmergencyCard(models.Model):
         self.save()
 
     def __str__(self):
-        available_languages = list(self.translations.keys())
-        languages_string = ",".join(available_languages) if available_languages else "No languages"
-        return f"Emergency card for {self.user.username} ({languages_string})"
+        return f"{self.user.username}'s Emergency Card"
+        
+    @property
+    def purpose_text(self):
+        """Returns a text description of the card's purpose based on condition"""
+        condition_mapping = {
+            'CEL': 'Celiac Disease Emergency Card',
+            'SEN': 'Gluten Sensitivity Alert Card',
+            'ALL': 'Wheat/Gluten Allergy Alert Card'
+        }
+        return condition_mapping.get(self.condition, 'Medical Alert Card')
