@@ -41,7 +41,8 @@ This project follows modern Django best practices:
 
 ## Screenshots
 
-![Card Creation](path/to/screenshot1.png)  
+![Card Creation](<img width="1401" alt="Screenshot 2025-03-29 at 8 21 12 PM" src="https://github.com/user-attachments/assets/353dd83d-8f9b-4cb7-b364-2280534b9403" />
+ 
 ![Language Switching](path/to/screenshot2.png)
 ![Travel Guides](path/to/screenshot3.png)
 
