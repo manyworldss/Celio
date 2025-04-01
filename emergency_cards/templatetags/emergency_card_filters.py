@@ -20,7 +20,7 @@ def get_dict_value(dictionary, key):
     Alternative name for the same functionality as get_item
     Usage: {{ mydict|get_dict_value:key_variable }}
     """
-    if dictionary is None:
+    if dictionary is None or not isinstance(dictionary, dict):
         return ""
     
     return dictionary.get(key, "")

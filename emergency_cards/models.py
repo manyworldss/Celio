@@ -3,35 +3,15 @@ from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 
 class EmergencyCard(models.Model):
-    # Theme choices 
-    THEME_CLASSIC = 'classic'
-    THEME_MODERN = 'modern'
-    THEME_MINIMAL = 'minimal'
-    THEME_MEDICAL = 'medical'
+    # Theme choices - simplified to 3 essential themes
     THEME_DARK = 'dark'
-    THEME_NATURE = 'nature'
-    THEME_VINTAGE = 'vintage'
-    THEME_PLAYFUL = 'playful'
-    THEME_PASTEL = 'pastel'
-    THEME_LUXURY = 'luxury'
-    THEME_NEON = 'neon'
-    THEME_GEOMETRIC = 'geometric'
-    THEME_CYBERPUNK = 'cyberpunk'
+    THEME_MEDICAL = 'medical'
+    THEME_MINIMAL = 'minimal'
 
     THEME_CHOICES = [
-        (THEME_CLASSIC, 'Classic'),
-        (THEME_MODERN, 'Modern'),
-        (THEME_MINIMAL, 'Minimal'),
-        (THEME_MEDICAL, 'Medical'),
-        (THEME_DARK, 'Dark'),
-        (THEME_NATURE, 'Nature'),
-        (THEME_VINTAGE, 'Vintage'),
-        (THEME_PLAYFUL, 'Playful'),
-        (THEME_PASTEL, 'Pastel'),
-        (THEME_LUXURY, 'Luxury'),
-        (THEME_NEON, 'Neon'),
-        (THEME_GEOMETRIC, 'Geometric'),
-        (THEME_CYBERPUNK, 'Cyberpunk'),
+        (THEME_DARK, 'Dark Theme'),
+        (THEME_MEDICAL, 'Medical Theme'),
+        (THEME_MINIMAL, 'Minimal Theme'),
     ]
 
     LANGUAGE_CHOICES = [
@@ -54,6 +34,7 @@ class EmergencyCard(models.Model):
     # User and basic information
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100, blank=True)
+    user_name = models.CharField(max_length=255, blank=True, null=True)
     condition = models.CharField(max_length=3, choices=SEVERITY_CHOICES, default='CEL', 
                                  verbose_name='Condition', 
                                  help_text='Select the option that best describes your dietary restriction')
@@ -83,7 +64,7 @@ class EmergencyCard(models.Model):
                                          help_text='The primary language for your card interface')
     profile_picture = models.ImageField(upload_to='emergency_cards/', null=True, blank=True)
     show_profile_pic = models.BooleanField(default=True, verbose_name='Show Profile Picture')
-    theme = models.CharField(max_length=20, choices=THEME_CHOICES, default=THEME_CLASSIC)
+    theme = models.CharField(max_length=20, choices=THEME_CHOICES, default=THEME_MINIMAL)
     
     # Translations for multiple languages
     translations = models.JSONField(default=dict, blank=True,

@@ -3,36 +3,69 @@
 
 {% block title %}Travel Guides - Celio{% endblock %}
 
+{% block extra_css %}
+<style>
+    /* Travel guide card styling */
+    .travel-card {
+        background-color: rgba(20, 50, 42, 0.2);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(46, 212, 191, 0.2);
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    
+    .travel-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(10, 22, 19, 0.3);
+        border-color: rgba(46, 212, 191, 0.4);
+    }
+    
+    .awareness-dot {
+        height: 8px;
+        width: 8px;
+        margin-right: 4px;
+        border-radius: 50%;
+    }
+    
+    .awareness-dot.filled {
+        background-color: #14b8a6;
+    }
+    
+    .awareness-dot.empty {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <!-- Header -->
-    <div class="mb-8 text-center">
-        <h1 class="text-3xl font-bold text-gray-900 mb-2">Celiac Travel Guides</h1>
-        <p class="text-lg text-gray-600">Safely navigate gluten-free dining around the world</p>
+    <div class="mb-12 text-center">
+        <h1 class="text-4xl font-bold text-teal-100 mb-4">Celiac Travel Guides</h1>
+        <p class="text-xl text-teal-200 max-w-3xl mx-auto">Safely navigate gluten-free dining around the world with our curated guides</p>
     </div>
     
     <!-- Countries Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {% for country in countries %}
         <a href="{% url 'travel:country_detail' country.code %}" class="group">
-            <div class="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-200 hover:shadow-lg">
-                <div class="p-6">
+            <div class="travel-card rounded-xl overflow-hidden transition-all duration-200 h-full flex flex-col">
+                <div class="p-6 flex flex-col h-full">
                     <div class="flex items-center mb-4">
                         <span class="text-4xl mr-3">{{ country.flag_emoji }}</span>
-                        <h2 class="text-xl font-bold text-gray-900">{{ country.name }}</h2>
+                        <h2 class="text-xl font-bold text-white">{{ country.name }}</h2>
                     </div>
                     
-                    <div class="mb-4">
-                        <div class="text-sm text-gray-500 mb-1">Celiac Awareness</div>
+                    <div class="mb-6">
+                        <div class="text-sm text-teal-300 mb-2">Celiac Awareness</div>
                         <div class="flex items-center">
                             {% for i in "12345" %}
                                 {% if forloop.counter <= country.celiac_awareness %}
-                                    <div class="w-6 h-2 bg-teal rounded-full mr-1"></div>
+                                    <div class="awareness-dot filled"></div>
                                 {% else %}
-                                    <div class="w-6 h-2 bg-gray-200 rounded-full mr-1"></div>
+                                    <div class="awareness-dot empty"></div>
                                 {% endif %}
                             {% endfor %}
-                            <span class="ml-2 text-sm text-gray-600">
+                            <span class="ml-2 text-sm text-teal-200">
                                 {% if country.celiac_awareness == 1 %}Very Low
                                 {% elif country.celiac_awareness == 2 %}Low
                                 {% elif country.celiac_awareness == 3 %}Moderate
@@ -43,17 +76,32 @@
                         </div>
                     </div>
                     
-                    <p class="text-gray-600 line-clamp-3">{{ country.summary }}</p>
+                    <p class="text-teal-100 mb-6 flex-grow">{{ country.summary }}</p>
                     
-                    <div class="mt-4 flex justify-between items-center">
-                        <span class="text-deep-teal font-medium group-hover:text-deep-teal-2">View Guide</span>
+                    <!-- Dining Tips Preview -->
+                    <div class="mb-4">
+                        <h3 class="text-sm font-medium text-teal-300 mb-2">Dining Tips</h3>
+                        <ul class="text-sm text-teal-200 list-disc list-inside space-y-1">
+                            <li>Look for "sin gluten" options on menus</li>
+                            <li>Bring translation cards to restaurants</li>
+                            <li>Research local cuisine in advance</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="mt-auto pt-4 flex justify-between items-center border-t border-teal-800">
+                        <span class="text-teal-400 font-medium group-hover:text-teal-300 transition-colors flex items-center">
+                            View Full Guide
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </span>
                     </div>
                 </div>
             </div>
         </a>
         {% empty %}
         <div class="col-span-3 text-center py-12">
-            <p class="text-gray-500">No travel guides available yet. Check back soon!</p>
+            <p class="text-teal-200">No travel guides available yet. Check back soon!</p>
         </div>
         {% endfor %}
     </div>

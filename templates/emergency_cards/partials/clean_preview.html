@@ -1,0 +1,142 @@
+<!-- Emergency Card Preview -->
+{% load static %}
+{% load emergency_card_filters %}
+
+<div class="card-inner emergency-card-theme-{{ preview_theme|default:card.theme }} rounded-lg overflow-hidden">
+    <!-- Card Header -->
+    <div class="card-header p-4 pb-2">
+        <div class="flex justify-between items-center">
+            <div class="language-indicator">
+                <span class="language-pill">
+                    {% if current_lang == "EN" %}
+                        English
+                    {% elif current_lang == "ES" %}
+                        Español
+                    {% elif current_lang == "FR" %}
+                        Français
+                    {% elif current_lang == "DE" %}
+                        Deutsch
+                    {% elif current_lang == "IT" %}
+                        Italiano
+                    {% elif current_lang == "ZH" %}
+                        中文
+                    {% elif current_lang == "JA" %}
+                        日本語
+                    {% elif current_lang == "KO" %}
+                        한국어
+                    {% elif current_lang == "PT" %}
+                        Português
+                    {% else %}
+                        {{ current_lang }}
+                    {% endif %}
+                </span>
+            </div>
+            <div class="card-actions flex gap-2">
+                <button class="action-icon globe">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                    </svg>
+                </button>
+                <button class="action-icon download">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                </button>
+                <button class="action-icon share">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="18" cy="5" r="3"></circle>
+                        <circle cx="6" cy="12" r="3"></circle>
+                        <circle cx="18" cy="19" r="3"></circle>
+                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Title and Person Info -->
+    <div class="card-title-section px-4 py-2">
+        <div class="flex items-center gap-3">
+            {% if card.profile_picture and card.show_profile_pic %}
+            <div class="avatar-circle">
+                <div class="w-16 h-16 md:w-20 md:h-20 overflow-hidden rounded-full border-2 border-teal-400">
+                    <img src="{{ card.profile_picture.url }}" alt="Profile Picture" class="w-full h-full object-cover">
+                </div>
+            </div>
+            {% else %}
+            <div class="avatar-circle">
+                <div class="avatar-inner"></div>
+            </div>
+            {% endif %}
+            <div class="person-info">
+                <h2 class="card-title">{{ card.get_condition_display }}</h2>
+                <p class="person-name">{{ card.user_name|default:user.get_full_name }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Card Content Sections -->
+    <div class="card-body p-4 pt-2">
+        <!-- Medical Information Section -->
+        <div class="info-section mb-3">
+            <h3 class="section-title">Medical Information</h3>
+            <div class="section-content">
+                <ul class="bullet-list">
+                    {% if card.translations %}
+                        {% with lang_key=current_lang.lower %}
+                            {% if lang_key in card.translations %}
+                                {% for item in card.translations|get_dict_value:lang_key %}
+                                    <li>{{ item }}</li>
+                                {% endfor %}
+                            {% elif 'en' in card.translations %}
+                                {% for item in card.translations|get_dict_value:'en' %}
+                                    <li>{{ item }}</li>
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+                    {% else %}
+                        <li>No medical information available.</li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Foods to Avoid Section -->
+        <div class="info-section mb-3">
+            <h3 class="section-title">Foods to Avoid</h3>
+            <div class="section-content">
+                <ul class="bullet-list">
+                    {% if card.foods_to_avoid %}
+                        {% for item in card.foods_to_avoid %}
+                            <li>{{ item }}</li>
+                        {% endfor %}
+                    {% else %}
+                        <li>No foods to avoid listed.</li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Emergency Contact Section -->
+        <div class="info-section">
+            <h3 class="section-title">Emergency Contact</h3>
+            <div class="section-content">
+                {% if card.emergency_contact_name %}
+                <p class="contact-info">{{ card.emergency_contact_name }}: {{ card.emergency_contact_phone }}</p>
+                {% else %}
+                <p class="contact-info">No emergency contact listed.</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Hidden message content for data storage -->
+        <div class="message-content hidden" 
+             data-message-text="{% with lang_key=current_lang.lower %}{% if card.translations and lang_key in card.translations %}{{ card.translations|get_dict_value:lang_key }}{% elif card.translations and 'en' in card.translations %}{{ card.translations|get_dict_value:'en' }}{% else %}No message available for {{ current_lang_display }}. Please add a message in the form below.{% endif %}{% endwith %}">
+        </div>
+    </div>
+</div>

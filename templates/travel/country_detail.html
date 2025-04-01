@@ -4,12 +4,44 @@
 
 {% block title %}{{ country.name }} Travel Guide - Celio{% endblock %}
 
+{% block extra_css %}
+<style>
+    .awareness-dot {
+        height: 8px;
+        width: 8px;
+        margin-right: 4px;
+        border-radius: 50%;
+    }
+    
+    .awareness-dot.filled {
+        background-color: #14b8a6;
+    }
+    
+    .awareness-dot.empty {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    .tab-button {
+        transition: all 0.2s ease;
+    }
+    
+    .tab-button.active {
+        background-color: #14b8a6;
+        color: white;
+    }
+    
+    .tab-button:hover:not(.active) {
+        background-color: rgba(20, 184, 166, 0.1);
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <!-- Back Navigation -->
-    <div class="mb-6">
-        <a href="{% url 'travel:travel_guide_list' %}" class="inline-flex items-center text-sm text-gray-600 hover:text-gray-900">
-            <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="mb-8">
+        <a href="{% url 'travel:travel_guide_list' %}" class="inline-flex items-center text-lg text-teal-300 hover:text-teal-200 transition-colors bg-spruce-800 px-4 py-2 rounded-lg shadow-sm">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
             </svg>
             Back to Travel Guides
@@ -17,26 +49,26 @@
     </div>
     
     <!-- Country Header -->
-    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-        <div class="flex items-center mb-4">
+    <div class="bg-spruce-800 bg-opacity-70 backdrop-blur-md rounded-xl shadow-lg p-8 mb-8 border border-teal-800">
+        <div class="flex items-center mb-6">
             <span class="text-5xl mr-4">{{ country.flag_emoji }}</span>
             <div>
-                <h1 class="text-3xl font-bold text-gray-900">{{ country.name }}</h1>
-                <p class="text-gray-600">{{ country.language }}</p>
+                <h1 class="text-3xl font-bold text-white">{{ country.name }}</h1>
+                <p class="text-teal-200">{{ country.language }}</p>
             </div>
         </div>
         
-        <div class="mb-4">
-            <div class="text-sm text-gray-500 mb-1">Celiac Awareness</div>
+        <div class="mb-6">
+            <div class="text-sm font-medium text-teal-300 mb-2">Celiac Awareness</div>
             <div class="flex items-center">
                 {% for i in "12345" %}
                     {% if forloop.counter <= country.celiac_awareness %}
-                        <div class="w-8 h-2 bg-purple-500 rounded-full mr-1"></div>
+                        <div class="awareness-dot filled"></div>
                     {% else %}
-                        <div class="w-8 h-2 bg-gray-200 rounded-full mr-1"></div>
+                        <div class="awareness-dot empty"></div>
                     {% endif %}
                 {% endfor %}
-                <span class="ml-2 text-sm text-gray-600">
+                <span class="ml-2 text-sm text-teal-200">
                     {% if country.celiac_awareness == 1 %}Very Low
                     {% elif country.celiac_awareness == 2 %}Low
                     {% elif country.celiac_awareness == 3 %}Moderate
@@ -47,68 +79,72 @@
             </div>
         </div>
         
-        <div class="prose max-w-none">
+        <div class="prose prose-invert max-w-none text-teal-100">
             <p>{{ country.summary }}</p>
         </div>
     </div>
     
-    <!-- Content Tabs -->
-    <div class="mb-8">
-        <div class="border-b border-gray-200">
-            <nav class="-mb-px flex space-x-8" aria-label="Tabs">
-                <button class="tab-button active-tab" data-target="dining-tips">
-                    Dining Tips
-                </button>
-                <button class="tab-button" data-target="dishes-to-avoid">
-                    Dishes to Avoid
-                </button>
-                <button class="tab-button" data-target="restaurant-phrases">
-                    Restaurant Phrases
-                </button>
-                <a href="{% url 'travel:restaurant_card' country.code %}" class="tab-button flex items-center">
-                    <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-                    </svg>
-                    Restaurant Card
-                </a>
-            </nav>
-        </div>
+    <!-- Tab Navigation -->
+    <div class="flex flex-wrap mb-2 border-b border-teal-800">
+        <button data-tab="dining-tips" class="tab-button active px-4 py-2 text-teal-100 font-medium rounded-t-lg">
+            Dining Tips
+        </button>
+        <button data-tab="dishes-to-avoid" class="tab-button px-4 py-2 text-teal-100 font-medium rounded-t-lg">
+            Dishes to Avoid
+        </button>
+        <button data-tab="restaurant-phrases" class="tab-button px-4 py-2 text-teal-100 font-medium rounded-t-lg">
+            Useful Phrases
+        </button>
     </div>
     
     <!-- Tab Content -->
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <div class="bg-spruce-800 bg-opacity-70 backdrop-blur-md rounded-xl shadow-lg border border-teal-800">
         <!-- Dining Tips Tab -->
         <div id="dining-tips" class="tab-content active">
-            <div class="p-6">
-                <h2 class="text-xl font-bold text-gray-900 mb-4">Dining Tips for {{ country.name }}</h2>
-                <div class="prose max-w-none">
+            <div class="p-8">
+                <h2 class="text-2xl font-bold text-white mb-6">Dining Tips for {{ country.name }}</h2>
+                
+                <!-- Dining Tips -->
+                <div class="space-y-4 text-teal-100">
                     <p>{{ country.dining_tips }}</p>
+                    
+                    <!-- Added Dining Suggestions -->
+                    <div class="mt-8">
+                        <h3 class="text-xl font-medium text-teal-300 mb-4">Safe Dining Options</h3>
+                        <ul class="list-disc pl-5 space-y-2 text-teal-100">
+                            <li>Look for restaurants with "gluten-free" or "sin gluten" menu options</li>
+                            <li>Farm-to-table restaurants are often more accommodating of dietary restrictions</li>
+                            <li>Consider booking a local food tour that offers gluten-free options</li>
+                            <li>Download the FindMeGlutenFree app to locate safe restaurants</li>
+                            <li>Visit local health food stores to find safe snacks and ingredients</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
         
         <!-- Dishes to Avoid Tab -->
         <div id="dishes-to-avoid" class="tab-content hidden">
-            <div class="p-6">
-                <h2 class="text-xl font-bold text-gray-900 mb-4">Dishes to Avoid in {{ country.name }}</h2>
+            <div class="p-8">
+                <h2 class="text-2xl font-bold text-white mb-6">Dishes to Avoid in {{ country.name }}</h2>
                 
                 <div class="space-y-6">
                     {% for dish in dishes_to_avoid %}
-                    <div class="border border-gray-200 rounded-lg p-4">
-                        <h3 class="text-lg font-medium text-gray-900">
+                    <div class="border border-teal-800 bg-spruce-900 bg-opacity-50 rounded-lg p-5">
+                        <h3 class="text-lg font-medium text-white">
                             {{ dish.name }}
                             {% if dish.local_name %}
-                            <span class="text-gray-600 ml-2">({{ dish.local_name }})</span>
+                            <span class="text-teal-300 ml-2">({{ dish.local_name }})</span>
                             {% endif %}
                         </h3>
-                        <p class="text-gray-600 mt-1">{{ dish.description }}</p>
-                        <div class="mt-2">
-                            <span class="text-sm font-medium text-gray-700">Contains:</span>
-                            <span class="text-sm text-gray-600">{{ dish.ingredients }}</span>
+                        <p class="text-teal-200 mt-2">{{ dish.description }}</p>
+                        <div class="mt-3 bg-spruce-900 p-3 rounded-lg inline-flex">
+                            <span class="text-sm font-medium text-teal-300 mr-2">Contains:</span>
+                            <span class="text-sm text-teal-200">{{ dish.ingredients }}</span>
                         </div>
                     </div>
                     {% empty %}
-                    <p class="text-gray-500">No specific dishes listed yet. Check back soon!</p>
+                    <p class="text-teal-200">No specific dishes listed yet. Check back soon!</p>
                     {% endfor %}
                 </div>
             </div>
@@ -116,26 +152,26 @@
         
         <!-- Restaurant Phrases Tab -->
         <div id="restaurant-phrases" class="tab-content hidden">
-            <div class="p-6">
-                <h2 class="text-xl font-bold text-gray-900 mb-4">Restaurant Phrases in {{ country.language }}</h2>
+            <div class="p-8">
+                <h2 class="text-2xl font-bold text-white mb-6">Essential Phrases in {{ country.language }}</h2>
                 
                 {% if general_phrases %}
-                <h3 class="text-lg font-medium text-gray-900 mb-2">General Phrases</h3>
-                <div class="space-y-4 mb-6">
+                <h3 class="text-xl font-medium text-teal-300 mb-4">General Phrases</h3>
+                <div class="space-y-4 mb-8">
                     {% for phrase in general_phrases %}
-                    <div class="border border-gray-200 rounded-lg p-4">
-                        <div class="mb-2">
-                            <span class="font-medium text-gray-900">English:</span>
-                            <span class="text-gray-700">{{ phrase.english_text }}</span>
+                    <div class="border border-teal-800 bg-spruce-900 bg-opacity-50 rounded-lg p-5">
+                        <div class="mb-3">
+                            <span class="font-medium text-teal-300 block mb-1">English:</span>
+                            <span class="text-white text-lg">{{ phrase.english_text }}</span>
                         </div>
-                        <div class="mb-2">
-                            <span class="font-medium text-gray-900">{{ country.language }}:</span>
-                            <span class="text-gray-700">{{ phrase.translated_text }}</span>
+                        <div class="mb-3">
+                            <span class="font-medium text-teal-300 block mb-1">{{ country.language }}:</span>
+                            <span class="text-white text-lg">{{ phrase.translated_text }}</span>
                         </div>
                         {% if phrase.pronunciation %}
                         <div>
-                            <span class="font-medium text-gray-900">Pronunciation:</span>
-                            <span class="text-gray-700">{{ phrase.pronunciation }}</span>
+                            <span class="font-medium text-teal-300 block mb-1">Pronunciation:</span>
+                            <span class="text-teal-100">{{ phrase.pronunciation }}</span>
                         </div>
                         {% endif %}
                     </div>
@@ -144,46 +180,22 @@
                 {% endif %}
                 
                 {% if ordering_phrases %}
-                <h3 class="text-lg font-medium text-gray-900 mb-2">Ordering Phrases</h3>
-                <div class="space-y-4 mb-6">
+                <h3 class="text-xl font-medium text-teal-300 mb-4">Ordering Phrases</h3>
+                <div class="space-y-4 mb-8">
                     {% for phrase in ordering_phrases %}
-                    <div class="border border-gray-200 rounded-lg p-4">
-                        <div class="mb-2">
-                            <span class="font-medium text-gray-900">English:</span>
-                            <span class="text-gray-700">{{ phrase.english_text }}</span>
+                    <div class="border border-teal-800 bg-spruce-900 bg-opacity-50 rounded-lg p-5">
+                        <div class="mb-3">
+                            <span class="font-medium text-teal-300 block mb-1">English:</span>
+                            <span class="text-white text-lg">{{ phrase.english_text }}</span>
                         </div>
-                        <div class="mb-2">
-                            <span class="font-medium text-gray-900">{{ country.language }}:</span>
-                            <span class="text-gray-700">{{ phrase.translated_text }}</span>
-                        </div>
-                        {% if phrase.pronunciation %}
-                        <div>
-                            <span class="font-medium text-gray-900">Pronunciation:</span>
-                            <span class="text-gray-700">{{ phrase.pronunciation }}</span>
-                        </div>
-                        {% endif %}
-                    </div>
-                    {% endfor %}
-                </div>
-                {% endif %}
-                
-                {% if ingredient_phrases %}
-                <h3 class="text-lg font-medium text-gray-900 mb-2">Ingredient Phrases</h3>
-                <div class="space-y-4">
-                    {% for phrase in ingredient_phrases %}
-                    <div class="border border-gray-200 rounded-lg p-4">
-                        <div class="mb-2">
-                            <span class="font-medium text-gray-900">English:</span>
-                            <span class="text-gray-700">{{ phrase.english_text }}</span>
-                        </div>
-                        <div class="mb-2">
-                            <span class="font-medium text-gray-900">{{ country.language }}:</span>
-                            <span class="text-gray-700">{{ phrase.translated_text }}</span>
+                        <div class="mb-3">
+                            <span class="font-medium text-teal-300 block mb-1">{{ country.language }}:</span>
+                            <span class="text-white text-lg">{{ phrase.translated_text }}</span>
                         </div>
                         {% if phrase.pronunciation %}
                         <div>
-                            <span class="font-medium text-gray-900">Pronunciation:</span>
-                            <span class="text-gray-700">{{ phrase.pronunciation }}</span>
+                            <span class="font-medium text-teal-300 block mb-1">Pronunciation:</span>
+                            <span class="text-teal-100">{{ phrase.pronunciation }}</span>
                         </div>
                         {% endif %}
                     </div>
@@ -192,22 +204,22 @@
                 {% endif %}
                 
                 {% if emergency_phrases %}
-                <h3 class="text-lg font-medium text-gray-900 mb-2">Emergency Phrases</h3>
+                <h3 class="text-xl font-medium text-teal-300 mb-4">Emergency Phrases</h3>
                 <div class="space-y-4">
                     {% for phrase in emergency_phrases %}
-                    <div class="border border-red-100 bg-red-50 rounded-lg p-4">
-                        <div class="mb-2">
-                            <span class="font-medium text-gray-900">English:</span>
-                            <span class="text-gray-700">{{ phrase.english_text }}</span>
+                    <div class="border border-red-800 bg-red-900 bg-opacity-20 rounded-lg p-5">
+                        <div class="mb-3">
+                            <span class="font-medium text-red-300 block mb-1">English:</span>
+                            <span class="text-white text-lg">{{ phrase.english_text }}</span>
                         </div>
-                        <div class="mb-2">
-                            <span class="font-medium text-gray-900">{{ country.language }}:</span>
-                            <span class="text-gray-700">{{ phrase.translated_text }}</span>
+                        <div class="mb-3">
+                            <span class="font-medium text-red-300 block mb-1">{{ country.language }}:</span>
+                            <span class="text-white text-lg">{{ phrase.translated_text }}</span>
                         </div>
                         {% if phrase.pronunciation %}
                         <div>
-                            <span class="font-medium text-gray-900">Pronunciation:</span>
-                            <span class="text-gray-700">{{ phrase.pronunciation }}</span>
+                            <span class="font-medium text-red-300 block mb-1">Pronunciation:</span>
+                            <span class="text-teal-100">{{ phrase.pronunciation }}</span>
                         </div>
                         {% endif %}
                     </div>
@@ -219,27 +231,38 @@
     </div>
 </div>
 
+{% endblock %}
+
 {% block extra_scripts %}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Tab switching functionality
-        const tabButtons = document.querySelectorAll('.tab-button:not(a)');
+        const tabButtons = document.querySelectorAll('.tab-button');
         const tabContents = document.querySelectorAll('.tab-content');
         
         tabButtons.forEach(button => {
             button.addEventListener('click', function() {
-                // Remove active class from all buttons and content
-                tabButtons.forEach(btn => btn.classList.remove('active-tab'));
-                tabContents.forEach(content => content.classList.add('hidden'));
+                const tabName = this.getAttribute('data-tab');
                 
-                // Add active class to clicked button and show corresponding content
-                this.classList.add('active-tab');
-                const target = this.getAttribute('data-target');
-                document.getElementById(target).classList.remove('hidden');
-                document.getElementById(target).classList.add('active');
+                // Hide all tab contents
+                tabContents.forEach(content => {
+                    content.classList.add('hidden');
+                    content.classList.remove('active');
+                });
+                
+                // Deactivate all tab buttons
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Activate the clicked tab button
+                this.classList.add('active');
+                
+                // Show the corresponding tab content
+                const activeTab = document.getElementById(tabName);
+                activeTab.classList.remove('hidden');
+                activeTab.classList.add('active');
             });
         });
     });
 </script>
-{% endblock %}
 {% endblock %}

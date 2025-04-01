@@ -15,7 +15,164 @@ from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
+import json
+import requests
+from django.utils.translation import get_language_from_request
 
+def translate_text(text, target_language, source_language='en'):
+    """
+    Mock translation function that provides realistic-looking translations for demo purposes.
+    """
+    if not text:
+        return ''
+    
+    # Convert language codes to expected format (e.g., 'EN' -> 'en')
+    target_language = target_language.lower()
+    source_language = source_language.lower()
+    
+    # Don't translate if source and target are the same
+    if source_language == target_language:
+        return text
+    
+    # For demo purposes, provide complete translations for common medical phrases
+    complete_translations = {
+        'es': {
+            'I have celiac disease': 'Tengo enfermedad celíaca',
+            'I have celiac disease and cannot consume any amount of gluten': 'Tengo enfermedad celíaca y no puedo consumir ninguna cantidad de gluten',
+            'In case of emergency, please ensure all food and medication is gluten-free': 'En caso de emergencia, por favor asegúrese de que todos los alimentos y medicamentos sean sin gluten',
+            'I am allergic to gluten': 'Soy alérgico al gluten',
+            'Please call my emergency contact': 'Por favor llame a mi contacto de emergencia',
+        },
+        'fr': {
+            'I have celiac disease': 'Je souffre de maladie cœliaque',
+            'I have celiac disease and cannot consume any amount of gluten': 'Je souffre de maladie cœliaque et ne peux consommer aucune quantité de gluten',
+            'In case of emergency, please ensure all food and medication is gluten-free': 'En cas d\'urgence, veuillez vous assurer que tous les aliments et médicaments sont sans gluten',
+            'I am allergic to gluten': 'Je suis allergique au gluten',
+            'Please call my emergency contact': 'Veuillez appeler mon contact d\'urgence',
+        },
+        'de': {
+            'I have celiac disease': 'Ich habe Zöliakie',
+            'I have celiac disease and cannot consume any amount of gluten': 'Ich habe Zöliakie und kann keine Menge Gluten konsumieren',
+            'In case of emergency, please ensure all food and medication is gluten-free': 'Im Notfall stellen Sie bitte sicher, dass alle Lebensmittel und Medikamente glutenfrei sind',
+            'I am allergic to gluten': 'Ich bin allergisch gegen Gluten',
+            'Please call my emergency contact': 'Bitte rufen Sie meinen Notfallkontakt an',
+        },
+        'zh': {
+            'I have celiac disease': '我患有乳糜泻',
+            'I have celiac disease and cannot consume any amount of gluten': '我患有乳糜泻，不能摄入任何含麸质的食物',
+            'In case of emergency, please ensure all food and medication is gluten-free': '如遇紧急情况，请确保所有食物和药物都不含麸质',
+            'I am allergic to gluten': '我对麸质过敏',
+            'Please call my emergency contact': '请联系我的紧急联系人',
+        }
+    }
+    
+    # Fallback phrase dictionary
+    phrase_dictionary = {
+        'es': {
+            'cannot consume': 'no puedo consumir',
+            'any amount of gluten': 'ninguna cantidad de gluten',
+            'in case of emergency': 'en caso de emergencia',
+            'please ensure': 'por favor asegúrese',
+            'food and medication': 'alimentos y medicamentos',
+            'is gluten-free': 'sin gluten',
+            'allergic': 'alérgico',
+            'medical condition': 'condición médica',
+            'emergency': 'emergencia'
+        },
+        'fr': {
+            'cannot consume': 'ne peux pas consommer',
+            'any amount of gluten': 'aucune quantité de gluten',
+            'in case of emergency': 'en cas d\'urgence',
+            'please ensure': 'veuillez vous assurer',
+            'food and medication': 'nourriture et médicaments',
+            'is gluten-free': 'sans gluten',
+            'allergic': 'allergique',
+            'medical condition': 'condition médicale',
+            'emergency': 'urgence'
+        },
+        'de': {
+            'cannot consume': 'kann nicht konsumieren',
+            'any amount of gluten': 'keine Menge Gluten',
+            'in case of emergency': 'im Notfall',
+            'please ensure': 'bitte stellen Sie sicher',
+            'food and medication': 'Essen und Medikamente',
+            'is gluten-free': 'glutenfrei ist',
+            'allergic': 'allergisch',
+            'medical condition': 'medizinischer Zustand',
+            'emergency': 'Notfall'
+        },
+        'zh': {
+            'cannot consume': '不能食用',
+            'any amount of gluten': '任何含麸质的食物',
+            'in case of emergency': '如遇紧急情况',
+            'please ensure': '请确保',
+            'food and medication': '食物和药物',
+            'is gluten-free': '不含麸质',
+            'allergic': '过敏',
+            'medical condition': '医疗状况',
+            'emergency': '紧急情况'
+        }
+    }
+    
+    try:
+        # First check if we have a complete translation for the whole text
+        if target_language in complete_translations and text.lower() in complete_translations[target_language]:
+            translated_text = complete_translations[target_language][text.lower()]
+            print(f"DEBUG: Found complete translation for '{text[:30]}...' to {target_language}")
+            return translated_text
+            
+        # If we have translations for this language but no exact match
+        if target_language in phrase_dictionary:
+            # First try to find the closest complete translation
+            closest_match = None
+            max_similarity = 0
+            
+            for eng_phrase in complete_translations.get(target_language, {}):
+                # Simple overlap check - in a real system you'd use more sophisticated NLP
+                if eng_phrase.lower() in text.lower() or text.lower() in eng_phrase.lower():
+                    similarity = len(set(eng_phrase.lower().split()) & set(text.lower().split()))
+                    if similarity > max_similarity:
+                        max_similarity = similarity
+                        closest_match = eng_phrase
+            
+            # If we found a reasonably close match, use its translation
+            if closest_match and max_similarity > 2:
+                translated_text = complete_translations[target_language][closest_match]
+                print(f"DEBUG: Using close match translation for {target_language}")
+                return translated_text
+            
+            # Otherwise do phrase-by-phrase translation
+            words = text.split()
+            result = []
+            
+            i = 0
+            while i < len(words):
+                # Try different phrase lengths
+                translated = False
+                for phrase_len in [3, 2, 1]:
+                    if i + phrase_len <= len(words):
+                        phrase = ' '.join(words[i:i+phrase_len]).lower()
+                        if phrase in phrase_dictionary[target_language]:
+                            result.append(phrase_dictionary[target_language][phrase])
+                            i += phrase_len
+                            translated = True
+                            break
+                
+                # If no phrase match was found, keep the original word
+                if not translated:
+                    result.append(words[i])
+                    i += 1
+            
+            translated_text = ' '.join(result)
+            print(f"DEBUG: Translated phrase-by-phrase from {source_language} to {target_language}")
+            return translated_text
+        else:
+            # For languages we don't have translations for
+            print(f"DEBUG: No translations available for {target_language}, returning original text")
+            return text
+    except Exception as e:
+        print(f"Translation error: {str(e)}")
+        return text  # Return original text if translation fails
 
 
 @login_required
@@ -307,7 +464,7 @@ def download_card(request):
 def fullscreen_card(request):
     """
     Display a fullscreen view of the user's emergency card.
-    Simplified to remove language switching functionality.
+    This is a static view with only sharing/printing functionality.
     """
     try:
         card = EmergencyCard.objects.get(user=request.user)
@@ -315,16 +472,12 @@ def fullscreen_card(request):
         # If user doesn't have a card yet, redirect to unified card management
         return redirect('emergency_cards:unified_card_management')
     
-    # Always use the user's preferred language for the fullscreen view
+    # Use the user's preferred language
     current_lang = card.preferred_language or 'EN'
-    
-    # Get the message for the current language
-    message = card.translations.get(current_lang, card.translations.get('EN', ''))
     
     context = {
         'card': card,
         'current_lang': current_lang,
-        'message': message,
     }
     
     return render(request, 'emergency_cards/fullscreen_card.html', context)
@@ -476,7 +629,7 @@ def apply_theme(request, theme_name):
             card.theme = original_theme
             
         # Return only the card preview
-        return render(request, 'emergency_cards/partials/card_preview.html', context)
+        return render(request, 'emergency_cards/partials/clean_preview.html', context)
     
     return redirect('emergency_cards:card_detail')
 
@@ -512,111 +665,167 @@ def unified_card_management(request):
     except EmergencyCard.DoesNotExist:
         card = None
     
-    # Get the active language (default to EN if not provided)
-    active_language = request.POST.get('active_language', 'EN').upper()
-    
-    # Check if we're switching languages
-    if request.POST.get('switch_language', False):
-        active_language = request.POST.get('language-selector', 'EN').upper()
-    
-    # Check if we're just previewing a theme
-    preview_theme = request.POST.get('preview_theme', False)
-    
-    if preview_theme and card:
-        # For theme preview, we just want to update the card preview with the selected theme
-        theme = request.POST.get('theme')
+    def prepare_preview_context(request, card, current_lang):
+        """
+        Prepares the context dictionary for rendering a card preview.
         
-        # Get the appropriate message based on the active language
-        message = ""
-        if card.translations and active_language in card.translations:
-            message = card.translations[active_language]
-        elif card.translations and 'EN' in card.translations:
-            message = card.translations['EN']
+        Args:
+            request: The HttpRequest object
+            card: The EmergencyCard instance or None
+            current_lang: The current language code (e.g., 'EN', 'ES')
         
-        return render(request, 'emergency_cards/partials/card_preview.html', {
+        Returns:
+            dict: Context dictionary for the preview template
+        """
+        preview_theme = request.POST.get('preview_theme', card.theme if card else 'standard')
+        
+        # Print all messages for debugging
+        if card and card.translations:
+            for lang, msg in card.translations.items():
+                if msg:
+                    print(f"DEBUG: Card has message for {lang.upper()}: {msg[:30]}...")
+        
+        return {
             'card': card,
-            'message': message,
-            'current_lang': active_language,
-            'preview_theme': theme,
+            'current_lang': current_lang,
+            'current_lang_display': dict(EmergencyCard.LANGUAGE_CHOICES).get(current_lang, current_lang),
+            'user': request.user,
+            'preview_theme': preview_theme,
+            'language_choices': EmergencyCard.LANGUAGE_CHOICES,
+            'theme_choices': EmergencyCard.THEME_CHOICES,
+            'translations': card.translations if card else {},
+        }
+
+    # Check if this is a request to get message for a specific language
+    if request.method == 'GET' and request.GET.get('get_message') == 'true' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        lang = request.GET.get('lang', 'en').lower()
+        translations = card.translations if card else {}
+        message = translations.get(lang, '')
+        
+        return JsonResponse({
+            'success': True,
+            'message': message
         })
     
-    if request.method == 'POST' and not preview_theme and not request.POST.get('switch_language', False):
-        if card:  # if card exists, update it
-            form = EmergencyCardForm(request.POST, request.FILES, instance=card)
-        else:
-            form = EmergencyCardForm(request.POST, request.FILES)
+    # Get or create a form instance
+    if request.method == 'POST':
+        # Check if this is a language switch request
+        if request.POST.get('switch_language') == 'true':
+            current_lang = request.POST.get('active_language', 'EN').upper()
+            previous_lang = request.POST.get('previous_language', 'EN').upper()
+            
+            print(f"DEBUG: Language switch requested from {previous_lang} to {current_lang}")
+            
+            # We need to store all messages in the translations object before we switch
+            if card:
+                translations = card.translations or {}
+                
+                # Process the message for the previous language first
+                message_key = f"message_{previous_lang.lower()}"
+                if message_key in request.POST and request.POST[message_key].strip():
+                    message_text = request.POST[message_key].strip()
+                    
+                    # Remove any existing language prefix that might have been added in a previous translation
+                    prefixes = [f"[{lang_name}]" for lang_name in ["English", "Spanish", "French", "German", "Chinese"]]
+                    for prefix in prefixes:
+                        if message_text.startswith(prefix):
+                            message_text = message_text[len(prefix):].strip()
+                    
+                    # Save the clean message
+                    translations[previous_lang.lower()] = message_text
+                    
+                    # Now translate to the new language if it doesn't exist yet
+                    if current_lang.lower() not in translations or not translations.get(current_lang.lower()):
+                        translated_text = translate_text(
+                            message_text, 
+                            target_language=current_lang.lower(),
+                            source_language=previous_lang.lower()
+                        )
+                        translations[current_lang.lower()] = translated_text
+                        print(f"DEBUG: Translated message from {previous_lang} to {current_lang}")
+                        print(f"DEBUG: Original: {message_text[:30]}...")
+                        print(f"DEBUG: Translated: {translated_text[:30]}...")
+            
+                # Save the updated translations to the card
+                card.translations = translations
+                card.save(update_fields=['translations'])
+            
+            # Prepare context for preview
+            preview_context = prepare_preview_context(request, card, current_lang)
+            
+            # Return only the card preview HTML fragment when switching language/theme
+            return render(request, 'emergency_cards/partials/clean_preview.html', preview_context)
         
+        # Regular form submission or theme change
+        form = EmergencyCardForm(request.POST, request.FILES, instance=card)
         if form.is_valid():
             card = form.save(commit=False)
             card.user = request.user
+            
+            # Get user name from the form
+            card.user_name = request.POST.get('user_name').strip()
             
             # Initialize translations dictionary if needed
             if not card.translations:
                 card.translations = {}
             
-            # Process all language texts from the form
-            for lang_code, _ in EmergencyCard.LANGUAGE_CHOICES:
-                lang_code = lang_code.upper()
-                message_field_name = f'message_{lang_code.lower()}'
-                
-                if message_field_name in request.POST and request.POST[message_field_name].strip():
-                    # Save the message text for this language
-                    card.translations[lang_code] = request.POST[message_field_name].strip()
+            # Handle the current language message
+            current_lang = request.POST.get('active_language', 'EN').upper()
+            message_key = f'message_{current_lang.lower()}'
             
-            # Set the preferred language based on the active tab
-            card.preferred_language = active_language
+            if message_key in request.POST and request.POST[message_key].strip():
+                # Store with lowercase key for consistency
+                card.translations[current_lang.lower()] = request.POST[message_key].strip()
             
-            # Save selected theme
-            if 'theme' in request.POST:
-                card.theme = request.POST.get('theme')
-            
-            # Make sure at least one language translation exists (English)
-            if not card.translations or 'EN' not in card.translations:
-                if 'message_en' in request.POST and request.POST['message_en'].strip():
-                    card.translations['EN'] = request.POST['message_en'].strip()
-                else:
-                    card.translations['EN'] = "I have celiac disease/gluten sensitivity and cannot consume any foods containing gluten."
-            
+            # Save the card
             card.save()
             
-            messages.success(request, "Your emergency card has been saved successfully!")
+            # Process the profile picture if needed
+            if 'profile_picture' in request.FILES:
+                card.profile_picture = request.FILES['profile_picture']
+                card.save()
+            
+            # Check if show_profile_pic preference changed
+            show_pic = request.POST.get('show_profile_pic')
+            card.show_profile_pic = show_pic == 'on'
+            card.save()
+            
             return redirect('emergency_cards:unified_card_management')
     else:
-        # If user has a card, fill form with existing data
-        if card:
-            # Pre-populate form with card data
-            form = EmergencyCardForm(instance=card)
-        else:
-            # Create blank form
-            form = EmergencyCardForm()
-    
-    # Get current language for the active tab (default to English)
-    current_lang = active_language
-    if card and card.preferred_language and not request.POST.get('switch_language', False):
-        current_lang = card.preferred_language
+        form = EmergencyCardForm(instance=card)
+        
+    # Set initial values for new card
+    if not card:
+        form.initial = {
+            'theme': 'minimal',
+            'preferred_language': 'EN',
+        }
+        
+    # Get current language - either from the card's preference or default to English    
+    current_lang = card.preferred_language if card else 'EN'
     
     # If GET request has a lang parameter, update current_lang
     if 'lang' in request.GET:
         current_lang = request.GET.get('lang', 'EN').upper()
+        if card:
+            card.preferred_language = current_lang
+            card.save()
     
-    # For HTMX requests that are switching languages, render just the card preview
-    if request.POST.get('switch_language', False):
-        message = ""
-        if card and card.translations and active_language in card.translations:
-            message = card.translations[active_language]
-        elif card and card.translations and 'EN' in card.translations:
-            message = card.translations['EN']
-        
-        return render(request, 'emergency_cards/partials/card_preview.html', {
-            'card': card,
-            'message': message,
-            'current_lang': active_language,
-        })
+    # Get language display name for the current language
+    current_lang_display = dict(EmergencyCard.LANGUAGE_CHOICES).get(current_lang.lower(), current_lang)
     
-    return render(request, 'emergency_cards/unified_card_management.html', {
+    # Prepare context for template rendering
+    context = {
         'form': form,
         'card': card,
         'page_title': 'My Emergency Card',
         'current_lang': current_lang,
+        'current_lang_display': current_lang_display,
         'language_choices': EmergencyCard.LANGUAGE_CHOICES,
-    })
+        'theme_choices': EmergencyCard.THEME_CHOICES,
+        'user': request.user,
+        'show_tour': request.session.get('show_tour', True),
+        'translations': card.translations if card else {},
+    }
+    
+    return render(request, 'emergency_cards/unified_card_management.html', context)

@@ -1,318 +1,287 @@
 /* Emergency Card Themes CSS */
 
-/* Common theme styles */
-.theme-preview {
-    border-radius: 0.75rem;
+/* Base Card Styles */
+.card-inner {
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    max-width: 400px;
+    margin: 0 auto;
     transition: all 0.3s ease;
-    position: relative;
 }
 
-.theme-preview:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-}
-
-.theme-header {
-    height: 120px;
-    position: relative;
-}
-
-/* Original theme headers */
-.theme-classic .theme-header {
-    background: linear-gradient(to right, var(--teal-500), var(--deep-teal));
-}
-
-.theme-modern .theme-header {
-    background: linear-gradient(135deg, var(--teal-500), var(--deep-teal));
-}
-
-.theme-minimal .theme-header {
-    background: white;
-    border-bottom: 2px solid var(--deep-teal);
-}
-
-.theme-medical .theme-header {
-    background: #1976d2;
-    border-bottom: 3px solid #90caf9;
-}
-
-.theme-dark .theme-header {
-    background: #212121;
-    border-bottom: 1px solid #424242;
-}
-
-/* New theme headers */
-.theme-nature .theme-header {
-    background: linear-gradient(to bottom, #81c784, #4caf50);
-}
-
-.theme-vintage .theme-header {
-    background: #f9f3e3;
-    border-bottom: 2px solid #8d6e63;
-}
-
-.theme-playful .theme-header {
-    background: linear-gradient(135deg, #ce93d8, #ba68c8);
-}
-
-.theme-pastel .theme-header {
-    background: #e1f5fe;
-    border-bottom: 2px solid #b3e5fc;
-}
-
-.theme-luxury .theme-header {
-    background: linear-gradient(135deg, #d7ccc8, #a1887f);
-}
-
-.theme-neon .theme-header {
-    background: #000000;
-    border-bottom: 2px solid #39ff14;
-}
-
-.theme-geometric .theme-header {
-    background: white;
-    border-bottom: 2px solid #333333;
-}
-
-.theme-cyberpunk .theme-header {
-    background: #0a0a0a;
-    border-bottom: 2px solid #00ffff;
-}
-
-.theme-profile-circle {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    border: 3px solid white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    position: absolute;
-    bottom: -40px;
-    left: 20px;
-    overflow: hidden;
-    background-color: var(--mint-light);
-}
-
-.theme-profile-circle img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.theme-body {
-    padding: 48px 20px 20px;
-    background: white;
-}
-
-/* Original theme bodies */
-.theme-minimal .theme-body {
-    border: 1px solid #e2e8f0;
-    border-top: none;
-}
-
-.theme-dark .theme-body {
-    background: #1a202c;
-    color: white;
-}
-
-/* New theme bodies */
-.theme-nature .theme-body {
-    background: #e8f5e9;
-    color: #2e7d32;
-}
-
-.theme-vintage .theme-body {
-    background: #f9f3e3;
-    color: #8d6e63;
-}
-
-.theme-playful .theme-body {
-    background: #f3e5f5;
-    color: #9c27b0;
-}
-
-.theme-pastel .theme-body {
-    background: #e1f5fe;
-    color: #0288d1;
-}
-
-.theme-luxury .theme-body {
-    background: #efebe9;
-    color: #5d4037;
-}
-
-.theme-neon .theme-body {
-    background: #000000;
-    color: #39ff14;
-}
-
-.theme-geometric .theme-body {
-    background: white;
-    color: #333333;
-    border: 1px solid #333333;
-    border-top: none;
-}
-
-.theme-cyberpunk .theme-body {
-    background: #0a0a0a;
-    color: #00ffff;
-    border: 1px solid #00ffff;
-    border-top: none;
-}
-
-.preview-pill {
+/* Language Pill Style */
+.language-pill {
     display: inline-block;
-    padding: 0.25rem 0.75rem;
-    border-radius: 9999px;
-    font-size: 0.75rem;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.9rem;
     font-weight: 500;
 }
 
-/* Original theme pills */
-.theme-classic .preview-pill {
-    background-color: var(--teal-500);
+/* Action Icons */
+.action-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Avatar Circle */
+.avatar-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar-inner {
+    width: 88%;
+    height: 88%;
+    border-radius: 50%;
+}
+
+/* Section Titles */
+.section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+/* Bullet Lists */
+.bullet-list {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+}
+
+.bullet-list li {
+    margin-bottom: 0.25rem;
+    line-height: 1.4;
+}
+
+.contact-info {
+    padding: 0.5rem 0;
+    font-weight: 500;
+}
+
+/* Card Title */
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.person-name {
+    font-size: 0.95rem;
+    opacity: 0.9;
+}
+
+/* Info Section */
+.info-section {
+    padding: 0.75rem;
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+}
+
+/* Pastel Theme */
+.emergency-card-theme-pastel {
+    background-color: #e6f2ff;
+    color: #2c3e50;
+}
+
+.emergency-card-theme-pastel .card-header {
+    background-color: #e6f2ff;
+}
+
+.emergency-card-theme-pastel .language-pill {
+    background-color: #4b7bec;
     color: white;
 }
 
-.theme-modern .preview-pill {
-    background-color: rgba(0, 0, 0, 0.1);
-    color: var(--deep-teal);
+.emergency-card-theme-pastel .action-icon {
+    background-color: #ffffff;
+    color: #4b7bec;
 }
 
-.theme-minimal .preview-pill {
-    border: 1px solid var(--deep-teal);
-    color: var(--deep-teal);
+.emergency-card-theme-pastel .action-icon:hover {
+    background-color: #f2f6ff;
 }
 
-.theme-medical .preview-pill {
-    background-color: #1976d2;
+.emergency-card-theme-pastel .avatar-circle {
+    border: 2px solid #4b7bec;
+}
+
+.emergency-card-theme-pastel .avatar-inner {
+    background-color: #e6e9f0;
+}
+
+.emergency-card-theme-pastel .section-title {
+    color: #4b7bec;
+}
+
+.emergency-card-theme-pastel .info-section {
+    background-color: #ffffff;
+    border: 1px solid rgba(75, 123, 236, 0.2);
+}
+
+/* Luxury Theme */
+.emergency-card-theme-luxury {
+    background-color: #7d5a2e;
+    color: #ffffff;
+}
+
+.emergency-card-theme-luxury .card-header {
+    background-color: #96682c;
+}
+
+.emergency-card-theme-luxury .language-pill {
+    background-color: #a3752f;
     color: white;
+    border: 1px solid #ffd700;
 }
 
-.theme-dark .preview-pill {
-    background-color: #424242;
-    color: white;
+.emergency-card-theme-luxury .action-icon {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #ffd700;
 }
 
-/* New theme pills */
-.theme-nature .preview-pill {
-    background-color: #4caf50;
-    color: white;
+.emergency-card-theme-luxury .action-icon:hover {
+    background-color: rgba(255, 255, 255, 0.25);
 }
 
-.theme-vintage .preview-pill {
-    background-color: #8d6e63;
-    color: white;
+.emergency-card-theme-luxury .avatar-circle {
+    border: 2px solid #ffd700;
 }
 
-.theme-playful .preview-pill {
-    background-color: #ba68c8;
-    color: white;
+.emergency-card-theme-luxury .avatar-inner {
+    background-color: #fff8e1;
 }
 
-.theme-pastel .preview-pill {
-    background-color: #03a9f4;
-    color: white;
+.emergency-card-theme-luxury .section-title {
+    color: #ffd700;
 }
 
-.theme-luxury .preview-pill {
-    background-color: #795548;
-    color: white;
+.emergency-card-theme-luxury .info-section {
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 215, 0, 0.3);
 }
 
-.theme-neon .preview-pill {
-    background-color: #000000;
-    color: #39ff14;
-    border: 1px solid #39ff14;
+.emergency-card-theme-luxury .bullet-list li {
+    color: #fff;
 }
 
-.theme-geometric .preview-pill {
-    background-color: white;
-    color: #333333;
-    border: 1px solid #333333;
-}
-
-.theme-cyberpunk .preview-pill {
-    background-color: #000000;
-    color: #00ffff;
-    border: 1px solid #00ffff;
-}
-
-/* Card rendering in the actual emergency card view */
-.card-nature {
-    background-color: #e8f5e9;
-    border: 1px solid #c8e6c9;
-    color: #2e7d32;
-}
-.card-nature h3, .card-nature .font-medium {
-    color: #2e7d32;
-}
-
-.card-vintage {
-    background-color: #f9f3e3;
-    border: 1px solid #e6d7b3;
-    color: #8d6e63;
-}
-.card-vintage h3, .card-vintage .font-medium {
-    color: #8d6e63;
-}
-
-.card-playful {
-    background-color: #f3e5f5;
-    background: linear-gradient(135deg, #ce93d8, #ba68c8);
-    color: white;
-}
-
-.card-pastel {
-    background-color: #e1f5fe;
-    border: 1px solid #b3e5fc;
-    color: #0288d1;
-}
-
-.card-luxury {
-    background: linear-gradient(135deg, #d7ccc8, #a1887f);
-    color: white;
-    border: 1px solid #8d6e63;
-}
-
-.card-neon {
-    background-color: #000000;
-    color: #39ff14;
-    border: 1px solid #39ff14;
-    text-shadow: 0 0 5px #39ff14;
-}
-
-.card-geometric {
+/* Medical Theme */
+.emergency-card-theme-medical {
     background-color: #ffffff;
     color: #333333;
-    border: 2px solid #333333;
-    position: relative;
-}
-.card-geometric::before {
-    content: '';
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background-color: #333333;
+    border: 2px solid #2b87d9;
 }
 
-.card-cyberpunk {
-    background-color: #0a0a0a;
-    color: #00ffff;
-    border: 1px solid #00ffff;
-    text-shadow: 0 0 5px #00ffff;
-    position: relative;
+.emergency-card-theme-medical .card-header {
+    background-color: #f9f9f9;
 }
-.card-cyberpunk::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, #ff00ff, #00ffff);
+
+.emergency-card-theme-medical .language-pill {
+    background-color: #2b87d9;
+    color: white;
+}
+
+.emergency-card-theme-medical .action-icon {
+    background-color: #f0f7ff;
+    color: #2b87d9;
+}
+
+.emergency-card-theme-medical .action-icon:hover {
+    background-color: #e1efff;
+}
+
+.emergency-card-theme-medical .avatar-circle {
+    border: 2px solid #2b87d9;
+}
+
+.emergency-card-theme-medical .avatar-inner {
+    background-color: #f0f7ff;
+}
+
+.emergency-card-theme-medical .section-title {
+    color: #2b87d9;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 0.25rem;
+}
+
+.emergency-card-theme-medical .info-section {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+}
+
+.emergency-card-theme-medical .bullet-list li::marker {
+    color: #2b87d9;
+}
+
+/* Theme variants for existing themes */
+.emergency-card-theme-dark {
+    background-color: #2d3748;
+    color: #f7fafc;
+}
+
+.emergency-card-theme-light {
+    background-color: #f7fafc;
+    color: #1a202c;
+}
+
+.emergency-card-theme-teal {
+    background-color: #e6fffa;
+    color: #234e52;
+}
+
+.emergency-card-theme-purple {
+    background-color: #faf5ff;
+    color: #44337a;
+}
+
+.emergency-card-theme-red {
+    background-color: #fff5f5;
+    color: #742a2a;
+}
+
+/* Make these themes compatible with new design */
+.emergency-card-theme-dark .info-section,
+.emergency-card-theme-light .info-section,
+.emergency-card-theme-teal .info-section,
+.emergency-card-theme-purple .info-section,
+.emergency-card-theme-red .info-section {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.emergency-card-theme-dark .language-pill,
+.emergency-card-theme-light .language-pill,
+.emergency-card-theme-teal .language-pill,
+.emergency-card-theme-purple .language-pill,
+.emergency-card-theme-red .language-pill {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: inherit;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    .card-inner {
+        max-width: 100%;
+    }
+    
+    .bullet-list li {
+        font-size: 0.9rem;
+    }
+    
+    .section-title {
+        font-size: 0.95rem;
+    }
 }
