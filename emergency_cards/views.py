@@ -464,24 +464,32 @@ def download_card(request):
 def fullscreen_card(request):
     """
     Display a fullscreen view of the user's emergency card.
-    This is a static view with only sharing/printing functionality.
+    This view now mirrors the clean_preview structure and styling.
     """
-    try:
-        card = EmergencyCard.objects.get(user=request.user)
-    except EmergencyCard.DoesNotExist:
-        # If user doesn't have a card yet, redirect to unified card management
-        return redirect('emergency_cards:unified_card_management')
+    card = get_object_or_404(EmergencyCard, user=request.user)
     
-    # Use the user's preferred language
-    current_lang = card.preferred_language or 'EN'
+    # Determine the language to display
+    requested_lang = request.GET.get('lang', card.preferred_language or 'en')
+    # Validate requested_lang against available choices
+    valid_langs = [choice[0].lower() for choice in EmergencyCard.LANGUAGE_CHOICES]
+    if requested_lang.lower() not in valid_langs:
+        requested_lang = card.preferred_language or 'en' # Fallback
+        
+    current_lang = requested_lang.upper() # Template expects uppercase
     
-    context = {
-        'card': card,
-        'current_lang': current_lang,
-    }
-    
-    return render(request, 'emergency_cards/fullscreen_card.html', context)
+    # Prepare language choices for the dropdown/switcher if needed
+    language_choices = {code: name for code, name in EmergencyCard.LANGUAGE_CHOICES}
+    current_lang_display = language_choices.get(current_lang, current_lang) # Get display name
 
+    return render(request, 'emergency_cards/fullscreen_card.html', {
+        'card': card,
+        'theme': card.theme,
+        'current_lang': current_lang,
+        'current_lang_display': current_lang_display,
+        'language_choices': language_choices # Pass all choices for switcher
+    })
+
+@login_required
 def public_card(request, card_id):
     # Get the card by ID
     card = get_object_or_404(EmergencyCard, id=card_id)
@@ -559,79 +567,83 @@ def update_profile_picture(request):
 
 @login_required
 def apply_theme(request, theme_name):
-    """Apply a selected theme to the emergency card."""
+    """Apply a selected theme to the emergency card or preview it."""
     try:
         card = EmergencyCard.objects.get(user=request.user)
     except EmergencyCard.DoesNotExist:
-        messages.info(request, "You need to create an emergency card first.")
-        return redirect('emergency_cards:create_card')
-    
-    # Get valid themes from the model choices
+        # Handle case where card doesn't exist - maybe redirect or show error
+        # For preview, we might want a default/dummy card?
+        # For now, let's assume the card exists for preview generation.
+        # If called without a card, it should ideally not happen from the UI.
+        # If it's not a preview, redirect as before.
+        if not request.GET.get('preview'):
+            messages.info(request, "You need to create an emergency card first.")
+            return redirect('emergency_cards:create_card')
+        else:
+            # Handle preview request without a card - maybe return an error response
+            # or a default placeholder? For now, returning error.
+            return HttpResponse("Error: Card not found for preview.", status=404)
+
     valid_themes = [choice[0] for choice in EmergencyCard.THEME_CHOICES]
-    
-    # Validate the theme name
     if theme_name not in valid_themes:
         messages.error(request, f"Invalid theme selection: {theme_name}")
-        return redirect('emergency_cards:card_detail')
-    
-    # Get language parameter
-    language = request.GET.get('lang', 'EN')
+        # Redirect back to wherever the user was (e.g., detail or unified view)
+        # Consider using request.META.get('HTTP_REFERER') or a specific view
+        return redirect('emergency_cards:unified_card_management') # Redirect to unified view
+
+    requested_lang_code = request.GET.get('lang') # Get requested language code (e.g., 'fr')
     preview_only = request.GET.get('preview', 'false').lower() == 'true'
-    
-    # Only update the theme if not in preview mode
+
     if not preview_only:
-        # Update the theme
         card.theme = theme_name
         card.save()
         messages.success(request, f"Theme updated to {theme_name.title()}")
+        return redirect('emergency_cards:unified_card_management') # Redirect after saving
+
+    # --- Preview Logic --- 
+    original_language = translation.get_language() # Remember original language
+    requested_lang_upper = requested_lang_code.upper() if requested_lang_code else card.preferred_language.upper() if card.preferred_language else 'EN'
     
-    # Get the current language and message
-    # Case insensitive comparison for language codes
-    upper_lang = language.upper()
+    # Determine the language to use for the preview context and translation activation
+    # Priority: Requested 'lang' param -> Card preferred -> 'en'
+    preview_lang_code = None
+    available_langs_lower = {code.lower(): code for code, name in settings.LANGUAGES}
     
-    # Get all available language keys in uppercase for comparison
-    available_langs = {lang.upper(): lang for lang in card.translations.keys()}
+    if requested_lang_code and requested_lang_code.lower() in available_langs_lower:
+        preview_lang_code = requested_lang_code.lower()
+    elif card.preferred_language and card.preferred_language.lower() in available_langs_lower:
+        preview_lang_code = card.preferred_language.lower()
+    else:
+        preview_lang_code = 'en' # Default to English
+
+    print(f"Requested Language Code: {requested_lang_code}, Preview Language Code: {preview_lang_code}")
+
+    # Get display name for the context
+    current_lang_display = dict(settings.LANGUAGES).get(preview_lang_code, preview_lang_code.upper())
     
-    # Make sure requested language exists in translations
-    if upper_lang in available_langs:
-        language = available_langs[upper_lang]  # Use original case from card
-    elif card.translations:
-        language = next(iter(card.translations.keys()))
-    
-    # Get message in requested language
-    message = card.get_message(language)
-    
-    # Get language display name
-    current_lang_display = dict(EmergencyCard.LANGUAGE_CHOICES).get(language.lower(), language)
-    
-    # Create languages dictionary for the template
-    languages = {}
-    for lang_code in card.translations.keys():
-        lang_name = dict(EmergencyCard.LANGUAGE_CHOICES).get(lang_code.lower(), lang_code)
-        languages[lang_code] = lang_name
-    
-    if request.headers.get('HX-Request') or preview_only:  # if it's an HTMX request or preview
-        # For preview mode, temporarily set the theme without saving it to the database
-        original_theme = card.theme
-        if preview_only:
-            card.theme = theme_name  # Temporarily set the theme for rendering
+    context = {
+        'card': card,
+        'preview_theme': theme_name, # Pass the theme to apply in the template
+        'current_lang': preview_lang_code.upper(), # Pass the language code (uppercase) for logic/display in template
+        'current_lang_display': current_lang_display,
+        # Add any other context needed by clean_preview.html
+    }
+
+    try:
+        # Activate the requested language for this request thread
+        translation.activate(preview_lang_code)
         
-        context = {
-            'card': card,
-            'current_lang': language,
-            'current_lang_display': current_lang_display,
-            'message': message,
-            'languages': languages,
-        }
+        # Render the preview template with the activated language
+        html = render_to_string('emergency_cards/partials/clean_preview.html', context, request=request)
         
-        # Reset the theme to original if we're just previewing
-        if preview_only:
-            card.theme = original_theme
-            
-        # Return only the card preview
-        return render(request, 'emergency_cards/partials/clean_preview.html', context)
-    
-    return redirect('emergency_cards:card_detail')
+        return HttpResponse(html)
+    finally:
+        # Deactivate the language to revert to the original or default
+        translation.deactivate()
+
+    # Fallback redirect if something goes wrong, though HttpResponse should be returned above
+    return redirect('emergency_cards:unified_card_management')
+
 
 @login_required
 def themes(request):
@@ -679,6 +691,13 @@ def unified_card_management(request):
         """
         preview_theme = request.POST.get('preview_theme', card.theme if card else 'standard')
         
+        # Print debug information for theme
+        print(f"DEBUG: Preparing preview with theme: {preview_theme}")
+        
+        # Get active message for the current language
+        translations = card.translations if card and card.translations else {}
+        active_message = translations.get(current_lang.lower(), '')
+        
         # Print all messages for debugging
         if card and card.translations:
             for lang, msg in card.translations.items():
@@ -694,6 +713,7 @@ def unified_card_management(request):
             'language_choices': EmergencyCard.LANGUAGE_CHOICES,
             'theme_choices': EmergencyCard.THEME_CHOICES,
             'translations': card.translations if card else {},
+            'active_message': active_message,
         }
 
     # Check if this is a request to get message for a specific language
@@ -813,6 +833,8 @@ def unified_card_management(request):
     
     # Get language display name for the current language
     current_lang_display = dict(EmergencyCard.LANGUAGE_CHOICES).get(current_lang.lower(), current_lang)
+    
+    print(f"DEBUG: Current Language: {current_lang}, Display: {current_lang_display}")
     
     # Prepare context for template rendering
     context = {

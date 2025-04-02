@@ -1,81 +1,42 @@
-<!-- Emergency Card Preview -->
+{% load i18n %}
 {% load static %}
 {% load emergency_card_filters %}
 
-<div class="card-inner emergency-card-theme-{{ preview_theme|default:card.theme }} rounded-lg overflow-hidden">
-    <!-- Card Header -->
-    <div class="card-header p-4 pb-2">
-        <div class="flex justify-between items-center">
-            <div class="language-indicator">
-                <span class="language-pill">
-                    {% if current_lang == "EN" %}
-                        English
-                    {% elif current_lang == "ES" %}
-                        Español
-                    {% elif current_lang == "FR" %}
-                        Français
-                    {% elif current_lang == "DE" %}
-                        Deutsch
-                    {% elif current_lang == "IT" %}
-                        Italiano
-                    {% elif current_lang == "ZH" %}
-                        中文
-                    {% elif current_lang == "JA" %}
-                        日本語
-                    {% elif current_lang == "KO" %}
-                        한국어
-                    {% elif current_lang == "PT" %}
-                        Português
-                    {% else %}
-                        {{ current_lang }}
-                    {% endif %}
-                </span>
-            </div>
-            <div class="card-actions flex gap-2">
-                <button class="action-icon globe">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <line x1="2" y1="12" x2="22" y2="12"></line>
-                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-                    </svg>
-                </button>
-                <button class="action-icon download">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                        <polyline points="7 10 12 15 17 10"></polyline>
-                        <line x1="12" y1="15" x2="12" y2="3"></line>
-                    </svg>
-                </button>
-                <button class="action-icon share">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="18" cy="5" r="3"></circle>
-                        <circle cx="6" cy="12" r="3"></circle>
-                        <circle cx="18" cy="19" r="3"></circle>
-                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-                    </svg>
-                </button>
-            </div>
+{# Use preview_theme if provided (from AJAX request), otherwise use card's theme #}
+{% with current_theme=preview_theme|default:card.theme %}
+<div class="card-inner card-{{ current_theme }} emergency-card-theme-{{ current_theme }} rounded-lg overflow-hidden relative" id="card-inner-preview">
+    <!-- Card Actions at Top Right -->
+    <div class="absolute top-0 right-0 p-4">
+        <div class="card-actions flex gap-2">
+            {# Keep icons simple placeholders in preview #}
+            <span class="action-icon globe placeholder">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+            </span>
+            <span class="action-icon download placeholder">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            </span>
+            <span class="action-icon share placeholder">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+            </span>
         </div>
     </div>
     
-    <!-- Main Title and Person Info -->
-    <div class="card-title-section px-4 py-2">
-        <div class="flex items-center gap-3">
+    <!-- Main Title and Person Info - LARGER -->
+    <div class="card-title-section px-4 py-4">
+        <div class="flex items-center gap-4">
             {% if card.profile_picture and card.show_profile_pic %}
-            <div class="avatar-circle">
-                <div class="w-16 h-16 md:w-20 md:h-20 overflow-hidden rounded-full border-2 border-teal-400">
-                    <img src="{{ card.profile_picture.url }}" alt="Profile Picture" class="w-full h-full object-cover">
+            <div class="avatar-circle-large">
+                <div class="w-20 h-20 md:w-24 md:h-24 overflow-hidden rounded-full border-2 border-teal-400">
+                    <img src="{{ card.profile_picture.url }}" alt="{% trans 'Profile Picture' %}" class="w-full h-full object-cover">
                 </div>
             </div>
             {% else %}
-            <div class="avatar-circle">
-                <div class="avatar-inner"></div>
+            <div class="avatar-circle-large bg-gray-200 border-2 border-teal-400 flex items-center justify-center text-gray-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
             </div>
             {% endif %}
             <div class="person-info">
-                <h2 class="card-title">{{ card.get_condition_display }}</h2>
-                <p class="person-name">{{ card.user_name|default:user.get_full_name }}</p>
+                <h2 class="person-name text-xl font-bold">{{ card.user_name|default:user.get_full_name }}</h2>
             </div>
         </div>
     </div>
@@ -84,59 +45,51 @@
     <div class="card-body p-4 pt-2">
         <!-- Medical Information Section -->
         <div class="info-section mb-3">
-            <h3 class="section-title">Medical Information</h3>
+            <h3 class="section-title">{% trans "Medical Information" %}</h3>
             <div class="section-content">
+                <div class="condition-display mb-2 font-bold text-lg">
+                    {# Condition display itself might be translatable if stored differently, but assuming it's a choice field display value #}
+                    {{ card.get_condition_display|default:"Celiac Disease" }}
+                </div>
+                {# These bullet points should ideally come from a translatable source if they need to change per language #}
+                {# For now, wrap them for potential translation #}
                 <ul class="bullet-list">
-                    {% if card.translations %}
-                        {% with lang_key=current_lang.lower %}
-                            {% if lang_key in card.translations %}
-                                {% for item in card.translations|get_dict_value:lang_key %}
-                                    <li>{{ item }}</li>
-                                {% endfor %}
-                            {% elif 'en' in card.translations %}
-                                {% for item in card.translations|get_dict_value:'en' %}
-                                    <li>{{ item }}</li>
-                                {% endfor %}
-                            {% endif %}
-                        {% endwith %}
-                    {% else %}
-                        <li>No medical information available.</li>
-                    {% endif %}
+                    <li>{% trans "Autoimmune disorder triggered by gluten" %}</li>
+                    <li>{% trans "Can cause severe intestinal damage" %}</li>
+                    <li>{% trans "Requires strict gluten-free diet" %}</li>
                 </ul>
             </div>
         </div>
         
-        <!-- Foods to Avoid Section -->
+        <!-- Message Section -->
         <div class="info-section mb-3">
-            <h3 class="section-title">Foods to Avoid</h3>
-            <div class="section-content">
-                <ul class="bullet-list">
-                    {% if card.foods_to_avoid %}
-                        {% for item in card.foods_to_avoid %}
-                            <li>{{ item }}</li>
-                        {% endfor %}
+            <h3 class="section-title">{% trans "Message" %}</h3>
+            <div class="section-content message-content" data-message-text="{% with lang_key=current_lang.lower %}{% if card.translations and lang_key in card.translations %}{{ card.translations|get_dict_value:lang_key }}{% elif card.translations and 'en' in card.translations %}{{ card.translations|get_dict_value:'en' }}{% else %}{% trans 'No message available.' %}{% endif %}{% endwith %}">
+                {# Display the message for the current language (current_lang) #}
+                {% with lang_key=current_lang.lower %}
+                    {% if card.translations and lang_key in card.translations and card.translations|get_dict_value:lang_key %}
+                        {{ card.translations|get_dict_value:lang_key|linebreaksbr }}
+                    {% elif card.translations and 'en' in card.translations and card.translations|get_dict_value:'en' %}
+                        {# Fallback to English if specific language message doesn't exist #}
+                        {{ card.translations|get_dict_value:'en'|linebreaksbr }}
                     {% else %}
-                        <li>No foods to avoid listed.</li>
+                        <span class="text-gray-400 italic">{% blocktrans %}No message available for {{ current_lang_display }}.{% endblocktrans %}</span>
                     {% endif %}
-                </ul>
+                {% endwith %}
             </div>
         </div>
         
         <!-- Emergency Contact Section -->
         <div class="info-section">
-            <h3 class="section-title">Emergency Contact</h3>
+            <h3 class="section-title">{% trans "Emergency Contact" %}</h3>
             <div class="section-content">
                 {% if card.emergency_contact_name %}
                 <p class="contact-info">{{ card.emergency_contact_name }}: {{ card.emergency_contact_phone }}</p>
                 {% else %}
-                <p class="contact-info">No emergency contact listed.</p>
+                <p class="contact-info italic text-gray-500">{% trans "No emergency contact listed." %}</p>
                 {% endif %}
             </div>
         </div>
-        
-        <!-- Hidden message content for data storage -->
-        <div class="message-content hidden" 
-             data-message-text="{% with lang_key=current_lang.lower %}{% if card.translations and lang_key in card.translations %}{{ card.translations|get_dict_value:lang_key }}{% elif card.translations and 'en' in card.translations %}{{ card.translations|get_dict_value:'en' }}{% else %}No message available for {{ current_lang_display }}. Please add a message in the form below.{% endif %}{% endwith %}">
-        </div>
     </div>
 </div>
+{% endwith %}

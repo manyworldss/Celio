@@ -446,42 +446,21 @@
                     <!-- Medical Message -->
                     <div class="form-section">
                         <div class="form-section-header border-b border-gray-200 pb-3 mb-4">
-                            <h2 class="text-lg font-medium text-white">Emergency Message</h2>
+                            <h2 class="text-lg font-medium text-white">Your Emergency Message</h2>
                         </div>
-                        <div class="form-section-body">
-                            <p class="text-base text-teal-200 mb-4">
-                                What should medical personnel know about your condition in an emergency?
-                                <span class="font-bold">Your message will be automatically translated</span> when you switch languages.
-                            </p>
-                            
-                            <!-- Single textarea for all languages with automatic translation -->
-                            <div class="form-group">
-                                <label for="message" class="form-label flex items-center">
-                                    <span>Your Emergency Message</span>
-                                    <span class="ml-2 py-1 px-2 rounded text-xs bg-teal-800 text-white">
-                                        <span id="current-language-display">{{ current_lang_display }}</span>
-                                    </span>
-                                    <span id="translation-indicator" class="ml-2 hidden transition-opacity duration-300 ease-in-out">
-                                        <svg class="w-4 h-4 text-teal-300 animate-pulse inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
-                                        </svg>
-                                        <span class="text-xs text-teal-300">Auto-translated</span>
-                                    </span>
-                                </label>
-                                <textarea id="message" 
-                                          name="message_{{ current_lang|lower }}" 
-                                          class="message-textarea form-textarea w-full bg-spruce-700 bg-opacity-50 border border-spruce-600 rounded-md px-3 py-2 text-white placeholder-gray-400"
-                                          placeholder="Example: I have Celiac Disease and cannot eat any food containing gluten. In case of emergency, please ensure all food and medication is gluten-free."
-                                          rows="6"
-                                          data-auto-expand="true">{{ translations|get_dict_value:current_lang.lower|default:'' }}</textarea>
-                                
-                                <p class="mt-2 text-sm text-teal-300">
-                                    <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                    Write your message in your preferred language. We'll automatically translate it when you switch languages in the card preview.
-                                </p>
-                            </div>
+                        
+                        <!-- Hidden language indicator that shows briefly when translation happens -->
+                        <div id="translation-indicator" class="hidden p-2 mb-4 bg-teal-50 text-teal-700 rounded border border-teal-200 flex items-center">
+                            <svg class="w-5 h-5 mr-2 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
+                            </svg>
+                            <span>Your message has been automatically translated</span>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <textarea id="message" name="message_{{ current_lang|lower }}" class="message-textarea w-full h-32 p-3 border border-gray-300 rounded-md resize-none focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white text-gray-800"
+                                      placeholder="Enter your emergency information message here. This will be translated when you switch languages.">{{ card.translations|get_dict_value:current_lang.lower|default:'' }}</textarea>
+                            <p class="text-sm text-gray-300 mt-1">This message will be translated automatically when you switch languages.</p>
                         </div>
                     </div>
                     
@@ -616,42 +595,42 @@
         // Function to update the card preview with HTMX
         function updateCardPreview() {
             const currentLang = document.getElementById('active_language').value;
-            const previewTheme = document.getElementById('selected-theme').value;
-            const csrfToken = getCsrfToken();
-            
-            // Save scroll position
-            saveScrollPosition();
-            
-            console.log('Updating card preview with language:', currentLang, 'and theme:', previewTheme);
-            
-            // Get the current message from the textarea
+            const selectedTheme = document.getElementById('theme-selector').value;
             const messageTextarea = document.getElementById('message');
-            const messageContent = messageTextarea ? messageTextarea.value : '';
             
-            // Form data
+            console.log('Updating preview with theme:', selectedTheme, 'and language:', currentLang);
+            
+            // Create form data for the update
             const formData = new FormData();
             formData.append('switch_language', 'true');
             formData.append('active_language', currentLang);
-            formData.append('preview_theme', previewTheme);
-            formData.append('csrfmiddlewaretoken', csrfToken);
+            formData.append('preview_theme', selectedTheme);
+            formData.append('csrfmiddlewaretoken', getCsrfToken());
             
-            // Add the current message to the form data
+            // Add the current message 
             if (messageTextarea) {
-                formData.append('message_' + currentLang.toLowerCase(), messageContent);
+                formData.append('message_' + currentLang.toLowerCase(), messageTextarea.value);
             }
             
-            // Use fetch API to avoid HTMX duplication issues
+            // Show loading indicator
+            const cardPreviewContainer = document.getElementById('card-preview-container');
+            if (cardPreviewContainer) {
+                cardPreviewContainer.classList.add('loading');
+                cardPreviewContainer.innerHTML = '<div class="loading-indicator flex items-center justify-center h-full"><div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal-500"></div><div class="ml-3 text-teal-300">Updating preview...</div></div>';
+            }
+            
+            // Send the update request
             fetch('{% url "emergency_cards:unified_card_management" %}', {
                 method: 'POST',
                 body: formData,
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRFToken': csrfToken
+                    'X-CSRFToken': getCsrfToken()
                 }
             })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Network response was not ok: ' + response.statusText);
+                    throw new Error('Preview update failed: ' + response.statusText);
                 }
                 return response.text();
             })
@@ -664,23 +643,34 @@
                 const cardContent = tempDiv.querySelector('.card-inner');
                 if (cardContent) {
                     document.getElementById('card-preview-container').innerHTML = cardContent.outerHTML;
+                    console.log('Preview updated successfully with theme:', selectedTheme);
                     
-                    // Update language and theme displays
-                    document.getElementById('current-language-display').textContent = 
-                        document.querySelector('.language-indicator').textContent.trim();
-                    document.getElementById('current-theme-display').textContent = 
-                        (previewTheme ? previewTheme.charAt(0).toUpperCase() + previewTheme.slice(1) : 'Default') + ' Theme';
+                    // Update the hidden theme input
+                    document.getElementById('selected-theme').value = selectedTheme;
                     
-                    console.log('Card preview updated successfully');
+                    // Refresh event handlers for any new elements
+                    setupLanguageDropdowns();
                 } else {
                     console.error('Could not find card preview content in response');
                 }
                 
-                // Restore scroll position
+                // Restore scroll position if needed
                 setTimeout(restoreScrollPosition, 50);
             })
             .catch(error => {
-                console.error('Error updating card preview:', error);
+                console.error('Error updating preview:', error);
+                
+                // Show error message
+                if (cardPreviewContainer) {
+                    cardPreviewContainer.innerHTML = `
+                        <div class="error-message p-4 bg-red-100 border border-red-300 text-red-800 rounded">
+                            <p class="font-bold">Update error</p>
+                            <p>${error.message}</p>
+                            <button class="mt-2 px-3 py-1 bg-red-700 text-white rounded text-sm" 
+                                    onclick="window.location.reload()">Reload page</button>
+                        </div>
+                    `;
+                }
             });
         }
         
