@@ -76,17 +76,17 @@ class EmergencyCard(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     # Method to get the message in the selected language
-    def get_message(self, language_code='EN'):
+    def get_message(self, language_code='en'):
         """Get the message for this card in the specified language"""
         # Default to English or first available language if the requested one doesn't exist
         if not self.translations:
             return "No information provided yet."
         
-        language_code = language_code.upper()
+        language_code = language_code.lower()
         if language_code in self.translations:
             return self.translations[language_code]
-        elif 'EN' in self.translations:
-            return self.translations['EN']
+        elif 'en' in self.translations:
+            return self.translations['en']
         else:
             # Return the first available language if nothing else works
             return next(iter(self.translations.values()))
@@ -94,7 +94,7 @@ class EmergencyCard(models.Model):
     def get_message_for_language(self, language_code=None):
         """Get the message for a specific language"""
         if not language_code:
-            language_code = self.preferred_language.upper()
+            language_code = self.preferred_language.lower()
         return self.get_message(language_code)
 
     def get_theme_choices(self):
