@@ -684,25 +684,42 @@ def unified_card_management(request):
         Args:
             request: The HttpRequest object
             card: The EmergencyCard instance or None
-            current_lang: The current language code (e.g., 'EN', 'ES')
+            current_lang: The current language code (e.g., 'en', 'es')
         
         Returns:
             dict: Context dictionary for the preview template
         """
-        preview_theme = request.POST.get('preview_theme', card.theme if card else 'standard')
+        # Ensure current_lang is lowercase for consistency
+        current_lang = current_lang.lower()
         
-        # Print debug information for theme
-        print(f"DEBUG: Preparing preview with theme: {preview_theme}")
+        # Default theme if card doesn't exist
+        preview_theme = request.POST.get('preview_theme', card.theme if card else 'minimal')
         
-        # Get active message for the current language
-        translations = card.translations if card and card.translations else {}
-        active_message = translations.get(current_lang.lower(), '')
+        # If no card, return default empty context
+        if not card:
+            return {
+                'card': None,
+                'current_lang': current_lang,
+                'current_lang_display': dict(EmergencyCard.LANGUAGE_CHOICES).get(current_lang, current_lang),
+                'user': request.user,
+                'preview_theme': preview_theme,
+                'language_choices': EmergencyCard.LANGUAGE_CHOICES,
+                'theme_choices': EmergencyCard.THEME_CHOICES,
+                'translations': {},
+                'message': 'No card information yet.',
+                'medical_bullets': [],
+                'is_translated': False,
+                'user_name': request.user.get_full_name() or request.user.username
+            }
         
-        # Print all messages for debugging
-        if card and card.translations:
-            for lang, msg in card.translations.items():
-                if msg:
-                    print(f"DEBUG: Card has message for {lang.upper()}: {msg[:30]}...")
+        # Get the message for the current language (predefined + custom note)
+        message = card.get_message(current_lang)  
+        
+        # Get medical info bullets for this condition and language
+        medical_bullets = card.get_medical_info_bullets(current_lang)
+        
+        # Check if we're viewing a translation (current language differs from preferred)
+        is_translated = current_lang != card.preferred_language.lower()
         
         return {
             'card': card,
@@ -712,63 +729,63 @@ def unified_card_management(request):
             'preview_theme': preview_theme,
             'language_choices': EmergencyCard.LANGUAGE_CHOICES,
             'theme_choices': EmergencyCard.THEME_CHOICES,
-            'translations': card.translations if card else {},
-            'active_message': active_message,
+            'translations': card.translations if card.translations else {},
+            'message': message,
+            'medical_bullets': medical_bullets,
+            'is_translated': is_translated,
+            'user_name': card.user_name or request.user.get_full_name() or request.user.username,
+            'custom_note': card.get_custom_note(current_lang)
         }
 
     # Check if this is a request to get message for a specific language
     if request.method == 'GET' and request.GET.get('get_message') == 'true' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         lang = request.GET.get('lang', 'en').lower()
-        translations = card.translations if card else {}
-        message = translations.get(lang, '')
+        
+        if not card:
+            return JsonResponse({
+                'success': False,
+                'message': 'No card found'
+            })
+        
+        # Get the full message (predefined + custom note) for the language
+        message = card.get_message(lang)
+        
+        # Also get custom note separately
+        custom_note = card.get_custom_note(lang)
         
         return JsonResponse({
             'success': True,
-            'message': message
+            'message': message,
+            'customNote': custom_note,
+            'isTranslated': lang != card.preferred_language.lower(),
+            'medicalBullets': card.get_medical_info_bullets(lang)
         })
     
     # Get or create a form instance
     if request.method == 'POST':
         # Check if this is a language switch request
         if request.POST.get('switch_language') == 'true':
-            current_lang = request.POST.get('active_language', 'EN').upper()
-            previous_lang = request.POST.get('previous_language', 'EN').upper()
+            current_lang = request.POST.get('active_language', 'en').lower()
+            previous_lang = request.POST.get('previous_language', 'en').lower()
             
-            print(f"DEBUG: Language switch requested from {previous_lang} to {current_lang}")
-            
-            # We need to store all messages in the translations object before we switch
-            if card:
-                translations = card.translations or {}
+            # Handle custom note translation if the card exists
+            if card and card.custom_note:
+                # Get the custom note for the previous language (might be primary note)
+                custom_note = card.get_custom_note(previous_lang)
                 
-                # Process the message for the previous language first
-                message_key = f"message_{previous_lang.lower()}"
-                if message_key in request.POST and request.POST[message_key].strip():
-                    message_text = request.POST[message_key].strip()
+                # If there's a custom note in the previous language and no translation yet for current language
+                if custom_note and (current_lang not in card.translations):
+                    # Translate the custom note to the current language
+                    translated_note = translate_text(
+                        custom_note,
+                        target_language=current_lang,
+                        source_language=previous_lang
+                    )
                     
-                    # Remove any existing language prefix that might have been added in a previous translation
-                    prefixes = [f"[{lang_name}]" for lang_name in ["English", "Spanish", "French", "German", "Chinese"]]
-                    for prefix in prefixes:
-                        if message_text.startswith(prefix):
-                            message_text = message_text[len(prefix):].strip()
-                    
-                    # Save the clean message
-                    translations[previous_lang.lower()] = message_text
-                    
-                    # Now translate to the new language if it doesn't exist yet
-                    if current_lang.lower() not in translations or not translations.get(current_lang.lower()):
-                        translated_text = translate_text(
-                            message_text, 
-                            target_language=current_lang.lower(),
-                            source_language=previous_lang.lower()
-                        )
-                        translations[current_lang.lower()] = translated_text
-                        print(f"DEBUG: Translated message from {previous_lang} to {current_lang}")
-                        print(f"DEBUG: Original: {message_text[:30]}...")
-                        print(f"DEBUG: Translated: {translated_text[:30]}...")
-            
-                # Save the updated translations to the card
-                card.translations = translations
-                card.save(update_fields=['translations'])
+                    # Store the translation
+                    if translated_note:
+                        card.set_custom_note(current_lang, translated_note)
+                        card.save()
             
             # Prepare context for preview
             preview_context = prepare_preview_context(request, card, current_lang)
@@ -785,17 +802,18 @@ def unified_card_management(request):
             # Get user name from the form
             card.user_name = request.POST.get('user_name').strip()
             
-            # Initialize translations dictionary if needed
-            if not card.translations:
-                card.translations = {}
+            # Get current language from form
+            current_lang = request.POST.get('active_language', 'en').lower()
             
-            # Handle the current language message
-            current_lang = request.POST.get('active_language', 'EN').upper()
-            message_key = f'message_{current_lang.lower()}'
-            
-            if message_key in request.POST and request.POST[message_key].strip():
-                # Store with lowercase key for consistency
-                card.translations[current_lang.lower()] = request.POST[message_key].strip()
+            # Handle custom note if provided
+            custom_note = request.POST.get('custom_note', '').strip()
+            if custom_note:
+                # Set the custom note for the current language
+                card.set_custom_note(current_lang, custom_note)
+                
+            # Set as preferred language if it's changed
+            if card.preferred_language != current_lang:
+                card.preferred_language = current_lang
             
             # Save the card
             card.save()
@@ -822,14 +840,14 @@ def unified_card_management(request):
         }
         
     # Get current language - either from the card's preference or default to English    
-    current_lang = card.preferred_language if card else 'EN'
+    current_lang = card.preferred_language.lower() if card else 'en'
     
     # If GET request has a lang parameter, update current_lang
     if 'lang' in request.GET:
-        current_lang = request.GET.get('lang', 'EN').upper()
+        current_lang = request.GET.get('lang', 'en').lower()
         if card:
             card.preferred_language = current_lang
-            card.save()
+            card.save(update_fields=['preferred_language'])
     
     # Get language display name for the current language
     current_lang_display = dict(EmergencyCard.LANGUAGE_CHOICES).get(current_lang.lower(), current_lang)

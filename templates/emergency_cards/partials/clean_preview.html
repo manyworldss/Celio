@@ -36,7 +36,13 @@
             </div>
             {% endif %}
             <div class="person-info">
-                <h2 class="person-name text-xl font-bold">{{ card.user_name|default:user.get_full_name }}</h2>
+                <h2 class="person-name text-xl font-bold">{{ user_name }}</h2>
+                <div class="text-sm flex items-center mt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
+                    </svg>
+                    <span>{{ current_lang_display }}</span>
+                </div>
             </div>
         </div>
     </div>
@@ -48,34 +54,44 @@
             <h3 class="section-title">{% trans "Medical Information" %}</h3>
             <div class="section-content">
                 <div class="condition-display mb-2 font-bold text-lg">
-                    {# Condition display itself might be translatable if stored differently, but assuming it's a choice field display value #}
                     {{ card.get_condition_display|default:"Celiac Disease" }}
                 </div>
-                {# These bullet points should ideally come from a translatable source if they need to change per language #}
-                {# For now, wrap them for potential translation #}
+                <!-- Display dynamic bullet points for this condition and language -->
+                {% if medical_bullets %}
+                <ul class="bullet-list">
+                    {% for bullet in medical_bullets %}
+                        <li>{{ bullet }}</li>
+                    {% endfor %}
+                </ul>
+                {% else %}
                 <ul class="bullet-list">
                     <li>{% trans "Autoimmune disorder triggered by gluten" %}</li>
                     <li>{% trans "Can cause severe intestinal damage" %}</li>
                     <li>{% trans "Requires strict gluten-free diet" %}</li>
                 </ul>
+                {% endif %}
             </div>
         </div>
         
         <!-- Message Section -->
         <div class="info-section mb-3">
             <h3 class="section-title">{% trans "Message" %}</h3>
-            <div class="section-content message-content" data-message-text="{% with lang_key=current_lang.lower %}{% if card.translations and lang_key in card.translations %}{{ card.translations|get_dict_value:lang_key }}{% elif card.translations and 'en' in card.translations %}{{ card.translations|get_dict_value:'en' }}{% else %}{% trans 'No message available.' %}{% endif %}{% endwith %}">
-                {# Display the message for the current language (current_lang) #}
-                {% with lang_key=current_lang.lower %}
-                    {% if card.translations and lang_key in card.translations and card.translations|get_dict_value:lang_key %}
-                        {{ card.translations|get_dict_value:lang_key|linebreaksbr }}
-                    {% elif card.translations and 'en' in card.translations and card.translations|get_dict_value:'en' %}
-                        {# Fallback to English if specific language message doesn't exist #}
-                        {{ card.translations|get_dict_value:'en'|linebreaksbr }}
-                    {% else %}
-                        <span class="text-gray-400 italic">{% blocktrans %}No message available for {{ current_lang_display }}.{% endblocktrans %}</span>
+            <div class="section-content message-content">
+                {% if message %}
+                    <div class="mb-2">
+                        {{ message|linebreaksbr }}
+                    </div>
+                    {% if is_translated %}
+                    <div class="mt-2 text-xs text-gray-400 flex items-center">
+                        <svg class="inline-block w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
+                        </svg>
+                        <span>{% trans "Translated" %}</span>
+                    </div>
                     {% endif %}
-                {% endwith %}
+                {% else %}
+                    <span class="text-gray-400 italic">{% blocktrans %}No message available for {{ current_lang_display }}.{% endblocktrans %}</span>
+                {% endif %}
             </div>
         </div>
         

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
+from .constants import PREDEFINED_MESSAGES, MEDICAL_INFO_BULLETS
 
 class EmergencyCard(models.Model):
     # Theme choices - simplified to 3 essential themes
@@ -57,6 +58,11 @@ class EmergencyCard(models.Model):
     allergies = models.TextField(blank=True)
     notes = models.TextField(blank=True)
     
+    # Custom note for personalization (will be added to predefined message)
+    custom_note = models.TextField(blank=True, 
+                                  verbose_name='Personal Note',
+                                  help_text='Optional: Add a personal note to your emergency card')
+    
     # Display options and customization
     language = models.CharField(max_length=2, choices=LANGUAGE_CHOICES, default='en')
     preferred_language = models.CharField(max_length=2, choices=LANGUAGE_CHOICES, default='en',
@@ -66,47 +72,95 @@ class EmergencyCard(models.Model):
     show_profile_pic = models.BooleanField(default=True, verbose_name='Show Profile Picture')
     theme = models.CharField(max_length=20, choices=THEME_CHOICES, default=THEME_MINIMAL)
     
-    # Translations for multiple languages
+    # Translations for multiple languages (for custom notes)
     translations = models.JSONField(default=dict, blank=True,
                                    verbose_name='Translations',
-                                   help_text='Stores the card content in multiple languages')
+                                   help_text='Stores translations of the custom note')
     
     # Timestamps
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     # Method to get the message in the selected language
-    def get_message(self, language_code='EN'):
-        """Get the message for this card in the specified language"""
-        # Default to English or first available language if the requested one doesn't exist
-        if not self.translations:
-            return "No information provided yet."
+    def get_message(self, language_code='en'):
+        """
+        Get the full message for this card in the specified language,
+        combining the predefined condition-specific message with any custom note.
+        """
+        # Convert language code to lowercase to match our constants structure
+        language_code = language_code.lower()
         
-        language_code = language_code.upper()
+        # Get the predefined message for this condition and language
+        # Default to English if the requested language isn't available
+        predefined_msg = PREDEFINED_MESSAGES.get(self.condition, {}).get(
+            language_code, 
+            PREDEFINED_MESSAGES.get(self.condition, {}).get('en', '')
+        )
+        
+        # If there's a custom note, add it to the predefined message
+        custom_note = self.get_custom_note(language_code)
+        if custom_note:
+            # Add a line break between the predefined message and custom note
+            return f"{predefined_msg}\n\n{custom_note}"
+        
+        return predefined_msg
+
+    def get_custom_note(self, language_code='en'):
+        """
+        Get the custom note in the specified language if available,
+        otherwise return the custom note in the primary language.
+        """
+        language_code = language_code.lower()
+        
+        # If no custom note or translations, return empty string
+        if not self.custom_note and not self.translations:
+            return ""
+        
+        # If custom note exists but no translations yet, return the primary custom note
+        if self.custom_note and not self.translations:
+            return self.custom_note
+        
+        # Try to get translated custom note from translations
         if language_code in self.translations:
             return self.translations[language_code]
-        elif 'EN' in self.translations:
-            return self.translations['EN']
-        else:
-            # Return the first available language if nothing else works
-            return next(iter(self.translations.values()))
-
-    def get_message_for_language(self, language_code=None):
-        """Get the message for a specific language"""
-        if not language_code:
-            language_code = self.preferred_language.upper()
-        return self.get_message(language_code)
+        
+        # If no translation for this language, use primary language note
+        return self.custom_note
+    
+    def set_custom_note(self, language_code, note_text):
+        """
+        Set or update the custom note for a specific language
+        """
+        language_code = language_code.lower()
+        
+        # If this is the primary language, update the main custom_note field
+        if language_code == self.preferred_language.lower():
+            self.custom_note = note_text
+        
+        # Always update the translations dictionary
+        if not self.translations:
+            self.translations = {}
+        
+        # Store in translations dictionary
+        self.translations[language_code] = note_text
+        
+    def get_medical_info_bullets(self, language_code='en'):
+        """
+        Get the medical information bullet points for the selected condition and language
+        """
+        language_code = language_code.lower()
+        
+        # Get bullet points for this condition and language, default to English if not available
+        return MEDICAL_INFO_BULLETS.get(self.condition, {}).get(
+            language_code, 
+            MEDICAL_INFO_BULLETS.get(self.condition, {}).get('en', [])
+        )
 
     def get_theme_choices(self):
         """Return the theme choices for the dropdown"""
         return self.THEME_CHOICES
     
-    def set_message(self, language, message):
-        """Set the message in the specified language"""
-        if not self.translations:
-            self.translations = {}
-        self.translations[language] = message
-        self.save()
+
 
     def __str__(self):
         return f"{self.user.username}'s Emergency Card"

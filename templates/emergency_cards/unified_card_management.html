@@ -449,18 +449,35 @@
                             <h2 class="text-lg font-medium text-white">Your Emergency Message</h2>
                         </div>
                         
-                        <!-- Hidden language indicator that shows briefly when translation happens -->
-                        <div id="translation-indicator" class="hidden p-2 mb-4 bg-teal-50 text-teal-700 rounded border border-teal-200 flex items-center">
+                        <!-- Translation Information -->
+                        {% if is_translated %}
+                        <div class="p-2 mb-4 bg-teal-50 text-teal-700 rounded border border-teal-200 flex items-center">
                             <svg class="w-5 h-5 mr-2 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
                             </svg>
-                            <span>Your message has been automatically translated</span>
+                            <span>You're viewing content in {{ current_lang_display }}. Some content may be machine-translated.</span>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Predefined Message Section -->
+                        <div class="mb-4">
+                            <h3 class="text-md font-medium text-teal-200 mb-2">Standard Medical Information</h3>
+                            <div class="p-3 bg-gray-50 rounded-md border border-gray-200 text-gray-700">
+                                {% if card and card.condition %}
+                                    <p>{{ card.get_message|linebreaksbr }}</p>
+                                {% else %}
+                                    <p class="text-gray-500 italic">Medical information will appear here based on your selected condition.</p>
+                                {% endif %}
+                            </div>
+                            <p class="text-sm text-gray-300 mt-1">This standard message is professionally translated into all supported languages.</p>
                         </div>
                         
+                        <!-- Custom Note -->
                         <div class="mb-6">
-                            <textarea id="message" name="message_{{ current_lang|lower }}" class="message-textarea w-full h-32 p-3 border border-gray-300 rounded-md resize-none focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white text-gray-800"
-                                      placeholder="Enter your emergency information message here. This will be translated when you switch languages.">{{ card.translations|get_dict_value:current_lang.lower|default:'' }}</textarea>
-                            <p class="text-sm text-gray-300 mt-1">This message will be translated automatically when you switch languages.</p>
+                            <h3 class="text-md font-medium text-teal-200 mb-2">Personal Note (Optional)</h3>
+                            <textarea id="custom_note" name="custom_note" class="w-full h-24 p-3 border border-gray-300 rounded-md resize-none focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white text-gray-800"
+                                      placeholder="Add any personal details you'd like to include on your emergency card...">{{ card.get_custom_note|default:'' }}</textarea>
+                            <p class="text-sm text-gray-300 mt-1">This personal note will be automatically translated when you switch languages.</p>
                         </div>
                     </div>
                     
