@@ -51,7 +51,7 @@
     <div class="card-body p-4 pt-2">
         <!-- Medical Information Section -->
         <div class="info-section mb-3">
-            <h3 class="section-title">{% trans "Medical Information" %}</h3>
+            <h3 class="section-title" data-i18n="Medical Information">{% trans "Medical Information" %}</h3>
             <div class="section-content">
                 <div class="condition-display mb-2 font-bold text-lg">
                     {{ card.get_condition_display|default:"Celiac Disease" }}
@@ -65,9 +65,26 @@
                 </ul>
                 {% else %}
                 <ul class="bullet-list">
-                    <li>{% trans "Autoimmune disorder triggered by gluten" %}</li>
-                    <li>{% trans "Can cause severe intestinal damage" %}</li>
-                    <li>{% trans "Requires strict gluten-free diet" %}</li>
+                    {% if card.condition == 'CEL' %}
+                    {# Celiac Disease #}
+                    <li data-i18n="Autoimmune disorder triggered by gluten">{% trans "Autoimmune disorder triggered by gluten" %}</li>
+                    <li data-i18n="Can cause severe intestinal damage">{% trans "Can cause severe intestinal damage" %}</li>
+                    <li data-i18n="Requires strict gluten-free diet">{% trans "Requires strict gluten-free diet" %}</li>
+                    {% elif card.condition == 'SEN' %}
+                    {# Gluten Sensitive #}
+                    <li data-i18n="Non-celiac gluten sensitivity">{% trans "Non-celiac gluten sensitivity" %}</li>
+                    <li data-i18n="Causes discomfort but not intestinal damage">{% trans "Causes discomfort but not intestinal damage" %}</li>
+                    <li data-i18n="Requires gluten-free diet for symptom control">{% trans "Requires gluten-free diet for symptom control" %}</li>
+                    {% elif card.condition == 'ALL' %}
+                    {# Wheat/Gluten Allergy #}
+                    <li data-i18n="Immune system reaction to wheat proteins">{% trans "Immune system reaction to wheat proteins" %}</li>
+                    <li data-i18n="Can cause immediate allergy symptoms">{% trans "Can cause immediate allergy symptoms" %}</li>
+                    <li data-i18n="May require emergency treatment if severe">{% trans "May require emergency treatment if severe" %}</li>
+                    {% else %}
+                    {# Default fallback #}
+                    <li data-i18n="Requires avoidance of gluten-containing foods">{% trans "Requires avoidance of gluten-containing foods" %}</li>
+                    <li data-i18n="Needs careful meal preparation">{% trans "Needs careful meal preparation" %}</li>
+                    {% endif %}
                 </ul>
                 {% endif %}
             </div>
@@ -97,12 +114,12 @@
         
         <!-- Emergency Contact Section -->
         <div class="info-section">
-            <h3 class="section-title">{% trans "Emergency Contact" %}</h3>
+            <h3 class="section-title" data-i18n="Emergency Contact">{% trans "Emergency Contact" %}</h3>
             <div class="section-content">
                 {% if card.emergency_contact_name %}
                 <p class="contact-info">{{ card.emergency_contact_name }}: {{ card.emergency_contact_phone }}</p>
                 {% else %}
-                <p class="contact-info italic text-gray-500">{% trans "No emergency contact listed." %}</p>
+                <p class="contact-info italic text-gray-500" data-i18n="No emergency contact listed.">{% trans "No emergency contact listed." %}</p>
                 {% endif %}
             </div>
         </div>

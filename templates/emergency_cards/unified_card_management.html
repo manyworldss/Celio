@@ -340,7 +340,7 @@
                         </div>
                         
                         <!-- Hidden theme input that will be updated by JavaScript -->
-                        <input type="hidden" name="theme" id="selected-theme" value="{{ card.theme|default:'minimal' }}">
+                        <input type="hidden" name="theme" id="selected-theme" value="{{ preview_theme|default:card.theme|default:'minimal' }}">
                     </div>
                 </div>
                 
@@ -699,6 +699,14 @@
             
             // Set up live preview updates for message changes
             setupMessageTextareaListeners();
+            
+            // Apply initial translations based on the current language
+            let currentLang = document.getElementById('active_language').value;
+            // Ensure language code is lowercase
+            currentLang = currentLang.toLowerCase();
+            document.getElementById('active_language').value = currentLang;
+            console.log('Initial language (lowercase):', currentLang);
+            translateUIElements(currentLang);
         });
         
         // Function to set up all language dropdowns in the DOM
@@ -717,10 +725,108 @@
             });
         }
         
+        // Translation dictionary for UI elements
+        const translations = {
+            'en': {
+                'Medical Information': 'Medical Information',
+                'Message': 'Message',
+                'Emergency Contact': 'Emergency Contact',
+                'No emergency contact listed.': 'No emergency contact listed.',
+                'No message available.': 'No message available.',
+                'Autoimmune disorder triggered by gluten': 'Autoimmune disorder triggered by gluten',
+                'Can cause severe intestinal damage': 'Can cause severe intestinal damage',
+                'Requires strict gluten-free diet': 'Requires strict gluten-free diet',
+                'Non-celiac gluten sensitivity': 'Non-celiac gluten sensitivity',
+                'Causes discomfort but not intestinal damage': 'Causes discomfort but not intestinal damage',
+                'Requires gluten-free diet for symptom control': 'Requires gluten-free diet for symptom control',
+                'Immune system reaction to wheat proteins': 'Immune system reaction to wheat proteins',
+                'Can cause immediate allergy symptoms': 'Can cause immediate allergy symptoms',
+                'May require emergency treatment if severe': 'May require emergency treatment if severe',
+                'Requires avoidance of gluten-containing foods': 'Requires avoidance of gluten-containing foods',
+                'Needs careful meal preparation': 'Needs careful meal preparation',
+                'Profile Picture': 'Profile Picture'
+            },
+            'es': {
+                'Medical Information': 'Información Médica',
+                'Message': 'Mensaje',
+                'Emergency Contact': 'Contacto de Emergencia',
+                'No emergency contact listed.': 'No hay contacto de emergencia registrado.',
+                'No message available.': 'No hay mensaje disponible.',
+                'Autoimmune disorder triggered by gluten': 'Trastorno autoinmune desencadenado por el gluten',
+                'Can cause severe intestinal damage': 'Puede causar daño intestinal severo',
+                'Requires strict gluten-free diet': 'Requiere dieta estricta sin gluten',
+                'Non-celiac gluten sensitivity': 'Sensibilidad al gluten no celíaca',
+                'Causes discomfort but not intestinal damage': 'Causa malestar pero no daño intestinal',
+                'Requires gluten-free diet for symptom control': 'Requiere dieta sin gluten para controlar los síntomas',
+                'Immune system reaction to wheat proteins': 'Reacción del sistema inmunológico a las proteínas del trigo',
+                'Can cause immediate allergy symptoms': 'Puede causar síntomas alérgicos inmediatos',
+                'May require emergency treatment if severe': 'Puede requerir tratamiento de emergencia si es grave',
+                'Requires avoidance of gluten-containing foods': 'Requiere evitar alimentos con gluten',
+                'Needs careful meal preparation': 'Necesita preparación cuidadosa de comidas',
+                'Profile Picture': 'Foto de Perfil'
+            },
+            'fr': {
+                'Medical Information': 'Informations Médicales',
+                'Message': 'Message',
+                'Emergency Contact': 'Contact d\'Urgence',
+                'No emergency contact listed.': 'Aucun contact d\'urgence indiqué.',
+                'No message available.': 'Aucun message disponible.',
+                'Autoimmune disorder triggered by gluten': 'Trouble auto-immun déclenché par le gluten',
+                'Can cause severe intestinal damage': 'Peut causer de graves lésions intestinales',
+                'Requires strict gluten-free diet': 'Nécessite un régime strict sans gluten',
+                'Non-celiac gluten sensitivity': 'Sensibilité au gluten non cœliaque',
+                'Causes discomfort but not intestinal damage': 'Provoque de l\'inconfort mais pas de lésions intestinales',
+                'Requires gluten-free diet for symptom control': 'Nécessite un régime sans gluten pour contrôler les symptômes',
+                'Immune system reaction to wheat proteins': 'Réaction du système immunitaire aux protéines de blé',
+                'Can cause immediate allergy symptoms': 'Peut provoquer des symptômes allergiques immédiats',
+                'May require emergency treatment if severe': 'Peut nécessiter un traitement d\'urgence si grave',
+                'Requires avoidance of gluten-containing foods': 'Exige d\'éviter les aliments contenant du gluten',
+                'Needs careful meal preparation': 'Nécessite une préparation soignée des repas',
+                'Profile Picture': 'Photo de Profil'
+            },
+            'de': {
+                'Medical Information': 'Medizinische Informationen',
+                'Message': 'Nachricht',
+                'Emergency Contact': 'Notfallkontakt',
+                'No emergency contact listed.': 'Kein Notfallkontakt angegeben.',
+                'No message available.': 'Keine Nachricht verfügbar.',
+                'Autoimmune disorder triggered by gluten': 'Durch Gluten ausgelöste Autoimmunerkrankung',
+                'Can cause severe intestinal damage': 'Kann schwere Darmschäden verursachen',
+                'Requires strict gluten-free diet': 'Erfordert strenge glutenfreie Diät',
+                'Non-celiac gluten sensitivity': 'Nicht-Zöliakie-Glutensensitivität',
+                'Causes discomfort but not intestinal damage': 'Verursacht Beschwerden, aber keine Darmschäden',
+                'Requires gluten-free diet for symptom control': 'Erfordert glutenfreie Diät zur Symptomkontrolle',
+                'Immune system reaction to wheat proteins': 'Immunsystemreaktion auf Weizenproteine',
+                'Can cause immediate allergy symptoms': 'Kann sofortige allergische Symptome verursachen',
+                'May require emergency treatment if severe': 'Kann bei schweren Fällen eine Notfallbehandlung erfordern',
+                'Requires avoidance of gluten-containing foods': 'Erfordert die Vermeidung glutenhaltiger Lebensmittel',
+                'Needs careful meal preparation': 'Erfordert sorgfältige Mahlzeitenzubereitung',
+                'Profile Picture': 'Profilbild'
+            }
+        };
+        
+        // Function to translate UI elements based on selected language
+        function translateUIElements(langCode) {
+            // If translations for this language don't exist, use English as fallback
+            const langDict = translations[langCode.toLowerCase()] || translations['en'];
+            console.log('Translating UI elements to', langCode, 'with dictionary:', langDict);
+            
+            // Find all elements with data-i18n attribute and translate them
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (langDict[key]) {
+                    element.textContent = langDict[key];
+                }
+            });
+            
+            console.log('UI elements translated to', langCode);
+        }
+        
         // Handle language change from dropdown
         function handleLanguageChange(e) {
-            const lang = this.value;
-            const prevLang = document.getElementById('active_language').value;
+            // Ensure language is lowercase
+            const lang = this.value.toLowerCase();
+            const prevLang = document.getElementById('active_language').value.toLowerCase();
             console.log('Language selected:', lang, 'Previous language:', prevLang);
             
             // Don't do anything if the language hasn't changed
@@ -740,6 +846,9 @@
             // Update language display
             document.getElementById('current-language-display').textContent = 
                 this.options[this.selectedIndex].text;
+                
+            // Apply translations immediately for better UX
+            translateUIElements(lang);
             
             // Show loading indicator in the card preview
             const cardPreviewContainer = document.getElementById('card-preview-container');
@@ -786,6 +895,9 @@
                 if (cardContent) {
                     document.getElementById('card-preview-container').innerHTML = cardContent.outerHTML;
                     console.log('Language updated successfully to:', lang);
+                    
+                    // Apply translations to the newly loaded content
+                    translateUIElements(lang);
                     
                     // Make sure the dropdown has the correct value
                     const newDropdown = document.querySelector('.language-selector-dropdown');
@@ -849,33 +961,27 @@
             // Update hidden input
             document.getElementById('selected-theme').value = theme;
             
-            // Update card preview with new theme
-            updateCardPreview();
-        }
-        
-        // Function to update card preview when theme changes
-        function updateCardPreview() {
+            // Get the current language
             const currentLang = document.getElementById('active_language').value;
-            const selectedTheme = document.getElementById('selected-theme').value;
-            const messageTextarea = document.getElementById('message');
-            
-            // Create form data for the update
-            const formData = new FormData();
-            formData.append('switch_language', 'true');
-            formData.append('active_language', currentLang);
-            formData.append('preview_theme', selectedTheme);
-            formData.append('csrfmiddlewaretoken', getCsrfToken());
-            
-            // Add the current message 
-            if (messageTextarea) {
-                formData.append('message_' + currentLang.toLowerCase(), messageTextarea.value);
-            }
             
             // Show loading indicator
             const cardPreviewContainer = document.getElementById('card-preview-container');
             if (cardPreviewContainer) {
                 cardPreviewContainer.classList.add('loading');
-                cardPreviewContainer.innerHTML = '<div class="loading-indicator flex items-center justify-center h-full"><div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal-500"></div><div class="ml-3 text-teal-300">Updating preview...</div></div>';
+                cardPreviewContainer.innerHTML = '<div class="loading-indicator flex items-center justify-center h-full"><div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal-500"></div><div class="ml-3 text-teal-300">Updating theme...</div></div>';
+            }
+            
+            // Create form data specifically for theme update
+            const formData = new FormData();
+            formData.append('switch_language', 'true');
+            formData.append('active_language', currentLang);
+            formData.append('preview_theme', theme);
+            formData.append('csrfmiddlewaretoken', getCsrfToken());
+            
+            // Add the current message 
+            const messageTextarea = document.getElementById('message');
+            if (messageTextarea) {
+                formData.append('message_' + currentLang.toLowerCase(), messageTextarea.value);
             }
             
             // Send the update request
@@ -889,7 +995,7 @@
             })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Preview update failed: ' + response.statusText);
+                    throw new Error('Theme update failed: ' + response.statusText);
                 }
                 return response.text();
             })
@@ -902,7 +1008,7 @@
                 const cardContent = tempDiv.querySelector('.card-inner');
                 if (cardContent) {
                     document.getElementById('card-preview-container').innerHTML = cardContent.outerHTML;
-                    console.log('Preview updated successfully');
+                    console.log('Theme updated successfully to:', theme);
                     
                     // Refresh event handlers for any new elements
                     setupLanguageDropdowns();
@@ -914,13 +1020,13 @@
                 setTimeout(restoreScrollPosition, 50);
             })
             .catch(error => {
-                console.error('Error updating preview:', error);
+                console.error('Error updating theme:', error);
                 
                 // Show error message
                 if (cardPreviewContainer) {
                     cardPreviewContainer.innerHTML = `
                         <div class="error-message p-4 bg-red-100 border border-red-300 text-red-800 rounded">
-                            <p class="font-bold">Update error</p>
+                            <p class="font-bold">Theme update error</p>
                             <p>${error.message}</p>
                             <button class="mt-2 px-3 py-1 bg-red-700 text-white rounded text-sm" 
                                     onclick="window.location.reload()">Reload page</button>

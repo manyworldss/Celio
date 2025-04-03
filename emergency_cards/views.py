@@ -469,13 +469,13 @@ def fullscreen_card(request):
     card = get_object_or_404(EmergencyCard, user=request.user)
     
     # Determine the language to display
-    requested_lang = request.GET.get('lang', card.preferred_language or 'en')
+    requested_lang = request.GET.get('lang', card.preferred_language or 'en').lower()
     # Validate requested_lang against available choices
     valid_langs = [choice[0].lower() for choice in EmergencyCard.LANGUAGE_CHOICES]
     if requested_lang.lower() not in valid_langs:
-        requested_lang = card.preferred_language or 'en' # Fallback
+        requested_lang = card.preferred_language.lower() if card.preferred_language else 'en' # Fallback
         
-    current_lang = requested_lang.upper() # Template expects uppercase
+    current_lang = requested_lang # Keep it lowercase throughout
     
     # Prepare language choices for the dropdown/switcher if needed
     language_choices = {code: name for code, name in EmergencyCard.LANGUAGE_CHOICES}
@@ -790,8 +790,29 @@ def unified_card_management(request):
             # Prepare context for preview
             preview_context = prepare_preview_context(request, card, current_lang)
             
-            # Return only the card preview HTML fragment when switching language/theme
-            return render(request, 'emergency_cards/partials/clean_preview.html', preview_context)
+            # Activate the requested language for template rendering
+            from django.utils import translation
+            # Convert the language code to lowercase for Django's translation system
+            lang_code = current_lang.lower()
+            print(f"DEBUG: Activating language: {lang_code} for template rendering")
+            
+            # Save current language
+            old_language = translation.get_language()
+            
+            try:
+                # Activate the new language
+                translation.activate(lang_code)
+                
+                # Render the template with the activated language
+                response = render(request, 'emergency_cards/partials/clean_preview.html', preview_context)
+                
+                # Set the language cookie
+                response.set_cookie(settings.LANGUAGE_COOKIE_NAME, lang_code)
+                
+                return response
+            finally:
+                # Restore original language
+                translation.activate(old_language)
         
         # Regular form submission or theme change
         form = EmergencyCardForm(request.POST, request.FILES, instance=card)
@@ -836,7 +857,7 @@ def unified_card_management(request):
     if not card:
         form.initial = {
             'theme': 'minimal',
-            'preferred_language': 'EN',
+            'preferred_language': 'en',
         }
         
     # Get current language - either from the card's preference or default to English    
@@ -844,6 +865,7 @@ def unified_card_management(request):
     
     # If GET request has a lang parameter, update current_lang
     if 'lang' in request.GET:
+        # Get the language from request, default to 'en' (lowercase), and convert to lowercase
         current_lang = request.GET.get('lang', 'en').lower()
         if card:
             card.preferred_language = current_lang
