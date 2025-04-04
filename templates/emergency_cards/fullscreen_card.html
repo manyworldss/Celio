@@ -213,15 +213,10 @@
                 <!-- Card Header -->
                 <div class="card-header p-4 pb-2">
                     <div class="flex justify-between items-center">
-                        <div class="language-dropdown">
-                            <button class="language-dropdown-button">{{ current_lang_display }}</button>
-                            <div class="language-dropdown-content">
-                                {% for code, name in language_choices.items %}
-                                    {% if code|lower != current_lang|lower %}
-                                        <a href="{% url 'emergency_cards:fullscreen_card' %}?lang={{ code }}">{{ name }}</a>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
+                        <div class="language-label">
+                            <span class="language-indicator px-3 py-1 bg-blue-600 text-white rounded-full text-sm font-medium">
+                                {{ current_lang_display }}
+                            </span>
                         </div>
                         <div class="card-actions flex gap-2">
                             <!-- Print/Download Button -->

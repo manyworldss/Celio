@@ -2,6 +2,7 @@ import io
 from django.http import HttpResponse, JsonResponse
 from django.utils import timezone
 from django.shortcuts import get_object_or_404, redirect, render
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.urls import reverse
@@ -717,6 +718,7 @@ def unified_card_management(request):
         
         # Get medical info bullets for this condition and language
         medical_bullets = card.get_medical_info_bullets(current_lang)
+        print(f"DEBUG: Medical bullets for {current_lang}: {medical_bullets}")
         
         # Check if we're viewing a translation (current language differs from preferred)
         is_translated = current_lang != card.preferred_language.lower()
@@ -765,16 +767,37 @@ def unified_card_management(request):
     if request.method == 'POST':
         # Check if this is a language switch request
         if request.POST.get('switch_language') == 'true':
-            current_lang = request.POST.get('active_language', 'en').lower()
-            previous_lang = request.POST.get('previous_language', 'en').lower()
+            # First check if there's a lang in the GET parameters as it takes precedence
+            if 'lang' in request.GET:
+                current_lang = request.GET.get('lang', 'en').lower()
+            else:
+                current_lang = request.POST.get('active_language', 'en').lower()
             
-            # Handle custom note translation if the card exists
-            if card and card.custom_note:
-                # Get the custom note for the previous language (might be primary note)
+            previous_lang = request.POST.get('previous_language', 'en').lower()
+            print(f"DEBUG: Switch language - from {previous_lang} to {current_lang}")
+            
+            # Check if we have an updated custom note from the form
+            custom_note_field_name = f'custom_note_{previous_lang}'
+            if custom_note_field_name in request.POST:
+                # Get the custom note from the form
+                custom_note_from_form = request.POST.get(custom_note_field_name, '').strip()
+                
+                # Update the custom note for the previous language
+                if card and custom_note_from_form:
+                    card.set_custom_note(previous_lang, custom_note_from_form)
+                    card.save()
+            
+            # Handle translation of custom note to the current language
+            if card:
+                # Get the custom note for the previous language
                 custom_note = card.get_custom_note(previous_lang)
                 
                 # If there's a custom note in the previous language and no translation yet for current language
-                if custom_note and (current_lang not in card.translations):
+                # or we're forcing a retranslation
+                needs_translation = custom_note and (current_lang not in card.translations or 
+                                                  request.POST.get('force_retranslate') == 'true')
+                
+                if needs_translation:
                     # Translate the custom note to the current language
                     translated_note = translate_text(
                         custom_note,
@@ -786,6 +809,18 @@ def unified_card_management(request):
                     if translated_note:
                         card.set_custom_note(current_lang, translated_note)
                         card.save()
+            
+            # Update card's preferred language
+            if card:
+                card.preferred_language = current_lang
+                
+                # Force save language selection and reset any language cookies if requested
+                if request.POST.get('force_language_update') == 'true':
+                    # Explicitly set language to ensure it takes precedence
+                    card.language = current_lang
+                    
+                card.save(update_fields=['preferred_language', 'language'])
+                print(f"DEBUG: Updated card preferred language during AJAX to: {card.preferred_language}")
             
             # Prepare context for preview
             preview_context = prepare_preview_context(request, card, current_lang)
@@ -867,9 +902,18 @@ def unified_card_management(request):
     if 'lang' in request.GET:
         # Get the language from request, default to 'en' (lowercase), and convert to lowercase
         current_lang = request.GET.get('lang', 'en').lower()
+        print(f"DEBUG: Language from GET parameter: {current_lang}")
         if card:
+            # Force update the preferred language and save
             card.preferred_language = current_lang
-            card.save(update_fields=['preferred_language'])
+            # Also update the language field to ensure consistency
+            card.language = current_lang
+            card.save(update_fields=['preferred_language', 'language'])
+            print(f"DEBUG: Updated card preferred language to: {card.preferred_language}")
+            
+            # Reset any cookies that might be affecting language selection
+            from django.utils import translation
+            translation.activate(current_lang)
     
     # Get language display name for the current language
     current_lang_display = dict(EmergencyCard.LANGUAGE_CHOICES).get(current_lang.lower(), current_lang)
@@ -890,4 +934,83 @@ def unified_card_management(request):
         'translations': card.translations if card else {},
     }
     
-    return render(request, 'emergency_cards/unified_card_management.html', context)
+    # Activate Django translation for this request
+    from django.utils import translation
+    old_language = translation.get_language()
+    try:
+        # Activate the user's selected language
+        translation.activate(current_lang)
+        # Render the template with the activated language
+        response = render(request, 'emergency_cards/unified_card_management.html', context)
+        # Set the language cookie
+        response.set_cookie(settings.LANGUAGE_COOKIE_NAME, current_lang)
+        return response
+    finally:
+        # Restore original language
+        translation.activate(old_language)
+
+@login_required
+def translate_card(request):
+    """
+    API endpoint to translate a card without requiring a full page reload.
+    Returns only the necessary data as JSON.
+    """
+    # Get the languages from the request
+    from_lang = request.GET.get('from_lang', 'en').lower()
+    to_lang = request.GET.get('to_lang', 'en').lower()
+    
+    # Debugging
+    print(f"DEBUG: Translating card from {from_lang} to {to_lang}")
+    
+    # Get the user's card
+    card = EmergencyCard.objects.filter(user=request.user).first()
+    
+    if not card:
+        return JsonResponse({
+            'success': False,
+            'error': 'No card found'
+        })
+    
+    # Save the current custom note if it exists in the request
+    custom_note_param = f'custom_note_{from_lang}'
+    if request.method == 'POST' and custom_note_param in request.POST:
+        card.set_custom_note(from_lang, request.POST.get(custom_note_param))
+        card.save()
+    
+    # Get the translated message and medical bullets
+    translated_message = card.get_message(to_lang)
+    medical_bullets = card.get_medical_info_bullets(to_lang)
+    custom_note = card.get_custom_note(to_lang)
+    
+    # Update the card's preferred language
+    card.preferred_language = to_lang
+    card.save()
+    
+    # Prepare the context for rendering the card
+    context = prepare_preview_context(request, card, to_lang)
+    
+    # Render just the card HTML
+    from django.template.loader import render_to_string
+    from django.utils import translation
+    
+    # Activate the target language for template rendering
+    old_language = translation.get_language()
+    try:
+        translation.activate(to_lang)
+        card_html = render_to_string(
+            'emergency_cards/partials/clean_preview.html',
+            context
+        )
+    finally:
+        translation.activate(old_language)
+    
+    # Return the translated data as JSON
+    return JsonResponse({
+        'success': True,
+        'card_html': card_html,
+        'message': translated_message,
+        'custom_note': custom_note,
+        'medical_bullets': medical_bullets,
+        'current_lang': to_lang,
+        'current_lang_display': dict(EmergencyCard.LANGUAGE_CHOICES).get(to_lang, to_lang)
+    })

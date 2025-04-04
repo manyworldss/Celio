@@ -315,6 +315,14 @@
                                         <option value="{{ lang_code }}" {% if current_lang == lang_code %}selected{% endif %}>{{ lang_name }}</option>
                                         {% endfor %}
                                     </select>
+                                    <!-- Direct language links as backup -->
+                                    <div class="mt-2 text-xs flex flex-wrap gap-1">
+                                        {% for lang_code, lang_name in language_choices %}
+                                            <a href="?lang={{ lang_code }}" class="px-2 py-1 rounded-full {% if current_lang == lang_code %}bg-teal-600 text-white{% else %}bg-spruce-700 text-teal-300 hover:bg-teal-700 hover:text-white{% endif %} transition-colors">
+                                                {{ lang_code|upper }}
+                                            </a>
+                                        {% endfor %}
+                                    </div>
                                 </div>
                                 
                                 <!-- Theme Selector -->
@@ -443,10 +451,10 @@
                         </div>
                     </div>
                     
-                    <!-- Medical Message -->
+                    <!-- Language and Translation Section -->
                     <div class="form-section">
                         <div class="form-section-header border-b border-gray-200 pb-3 mb-4">
-                            <h2 class="text-lg font-medium text-white">Your Emergency Message</h2>
+                            <h2 class="text-lg font-medium text-white">Language Settings</h2>
                         </div>
                         
                         <!-- Translation Information -->
@@ -459,25 +467,34 @@
                         </div>
                         {% endif %}
                         
-                        <!-- Predefined Message Section -->
-                        <div class="mb-4">
-                            <h3 class="text-md font-medium text-teal-200 mb-2">Standard Medical Information</h3>
-                            <div class="p-3 bg-gray-50 rounded-md border border-gray-200 text-gray-700">
-                                {% if card and card.condition %}
-                                    <p>{{ card.get_message|linebreaksbr }}</p>
-                                {% else %}
-                                    <p class="text-gray-500 italic">Medical information will appear here based on your selected condition.</p>
-                                {% endif %}
+                        <!-- Language Selection Section -->
+                        <div class="form-group">
+                            <label class="form-label" for="language-selector">Display Language</label>
+                            <div class="flex items-center gap-3">
+                                <select id="language-selector" class="language-selector-dropdown w-full bg-white text-gray-800 rounded-md px-3 py-2 border border-spruce-600 focus:ring-2 focus:ring-teal-500">
+                                    {% for code, name in language_choices %}
+                                        <option value="{{ code|lower }}" {% if current_lang == code|lower %}selected{% endif %}>{{ name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div id="current-language-display" class="text-sm text-teal-300 hidden md:inline-block">{{ current_lang_display }}</div>
                             </div>
-                            <p class="text-sm text-gray-300 mt-1">This standard message is professionally translated into all supported languages.</p>
+                            <div class="mt-2 text-sm text-teal-200">
+                                Pick the language that should be displayed on your emergency card. All information will be automatically translated.
+                            </div>
                         </div>
                         
-                        <!-- Custom Note -->
-                        <div class="mb-6">
-                            <h3 class="text-md font-medium text-teal-200 mb-2">Personal Note (Optional)</h3>
-                            <textarea id="custom_note" name="custom_note" class="w-full h-24 p-3 border border-gray-300 rounded-md resize-none focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white text-gray-800"
-                                      placeholder="Add any personal details you'd like to include on your emergency card...">{{ card.get_custom_note|default:'' }}</textarea>
-                            <p class="text-sm text-gray-300 mt-1">This personal note will be automatically translated when you switch languages.</p>
+                        <!-- Information about Automatic Translation -->
+                        <div class="mt-6 p-4 rounded-lg bg-teal-900 bg-opacity-30 border border-teal-800">
+                            <h4 class="text-teal-300 font-medium mb-2 flex items-center">
+                                <svg class="inline-block w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                About Translations
+                            </h4>
+                            <p class="text-teal-200 text-sm">
+                                Your emergency card comes with professional translations in multiple languages. When you switch languages, 
+                                all the medical information will be translated to ensure accuracy and clarity in emergency situations.
+                            </p>
                         </div>
                     </div>
                     
@@ -834,11 +851,8 @@
                 return;
             }
             
-            // Update the textarea name to match the previous language (since we're sending the current content)
-            const messageTextarea = document.getElementById('message');
-            if (messageTextarea) {
-                messageTextarea.name = 'message_' + prevLang.toLowerCase();
-            }
+            // For debugging
+            console.log('Switching language from', prevLang, 'to', lang);
             
             // Update hidden input
             document.getElementById('active_language').value = lang;
@@ -857,23 +871,12 @@
                 cardPreviewContainer.innerHTML = '<div class="loading-indicator flex items-center justify-center h-full"><div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal-500"></div><div class="ml-3 text-teal-300">Translating...</div></div>';
             }
             
-            // Update card preview - create a new FormData object for each request
-            const formData = new FormData();
-            formData.append('switch_language', 'true');
-            formData.append('active_language', lang);
-            formData.append('previous_language', prevLang); // Send the previous language for translation
-            formData.append('preview_theme', document.getElementById('selected-theme').value);
-            formData.append('csrfmiddlewaretoken', getCsrfToken());
+            // Save current scroll position
+            const scrollPosition = window.scrollY;
             
-            // Add the current message to the form data
-            if (messageTextarea) {
-                formData.append('message_' + prevLang.toLowerCase(), messageTextarea.value);
-            }
-            
-            // Make a direct fetch request for language change
-            fetch('{% url "emergency_cards:unified_card_management" %}', {
-                method: 'POST',
-                body: formData,
+            // Fetch only the translated card content instead of making a full form submission
+            fetch(`/emergency_cards/translate_card/?from_lang=${prevLang}&to_lang=${lang}`, {
+                method: 'GET',
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
                     'X-CSRFToken': getCsrfToken()
@@ -883,74 +886,52 @@
                 if (!response.ok) {
                     throw new Error('Language switch failed: ' + response.statusText);
                 }
-                return response.text();
+                return response.json();
             })
-            .then(html => {
-                // Create a temporary element to parse the HTML response
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = html;
+            .then(data => {
+                console.log('Received translation data:', data);
                 
-                // Extract just the card preview content
-                const cardContent = tempDiv.querySelector('.card-inner');
-                if (cardContent) {
-                    document.getElementById('card-preview-container').innerHTML = cardContent.outerHTML;
-                    console.log('Language updated successfully to:', lang);
-                    
-                    // Apply translations to the newly loaded content
-                    translateUIElements(lang);
-                    
-                    // Make sure the dropdown has the correct value
-                    const newDropdown = document.querySelector('.language-selector-dropdown');
-                    if (newDropdown) {
-                        newDropdown.value = lang;
-                        setupLanguageDropdowns(); // Re-setup events for the new dropdown
-                    }
-                    
-                    // Update the message textarea with the translated content
-                    const messageElement = tempDiv.querySelector('.message-content');
-                    if (messageElement && messageTextarea) {
-                        const translatedText = messageElement.getAttribute('data-message-text') || '';
-                        messageTextarea.value = translatedText;
-                        messageTextarea.name = 'message_' + lang.toLowerCase();
-                        console.log('Updated textarea with translated message for', lang);
-                        
-                        // Show the translation indicator
-                        const translationIndicator = document.getElementById('translation-indicator');
-                        if (translationIndicator) {
-                            translationIndicator.classList.remove('hidden');
-                            
-                            // Hide the indicator after 5 seconds
-                            setTimeout(() => {
-                                translationIndicator.classList.add('hidden');
-                            }, 5000);
+                // Update the card preview with the translated content
+                if (data.card_html) {
+                    document.getElementById('card-preview-container').innerHTML = data.card_html;
+                }
+                
+                // Apply translations to the newly loaded content
+                translateUIElements(lang);
+                
+                // Make sure the dropdown has the correct value
+                const newDropdown = document.querySelector('.language-selector-dropdown');
+                if (newDropdown) {
+                    newDropdown.value = lang;
+                    setupLanguageDropdowns(); // Re-setup events for the new dropdown
+                }
+                
+                // Update the language tabs if they exist
+                const languageTabs = document.querySelectorAll('.language-tab');
+                if (languageTabs.length > 0) {
+                    languageTabs.forEach(tab => {
+                        const tabLang = tab.getAttribute('data-lang');
+                        if (tabLang === lang) {
+                            tab.setAttribute('aria-selected', 'true');
+                            tab.classList.add('active-language');
+                        } else {
+                            tab.setAttribute('aria-selected', 'false');
+                            tab.classList.remove('active-language');
                         }
-                        
-                        // Auto-resize the textarea to fit the new content
-                        messageTextarea.style.height = 'auto';
-                        messageTextarea.style.height = messageTextarea.scrollHeight + 'px';
-                    }
-                } else {
-                    console.error('Could not find card preview content in response');
+                    });
                 }
                 
                 // Restore scroll position
-                setTimeout(restoreScrollPosition, 50);
+                window.scrollTo(0, scrollPosition);
             })
             .catch(error => {
-                console.error('Error updating language:', error);
-                
-                // Show error message in the preview
-                if (cardPreviewContainer) {
-                    cardPreviewContainer.innerHTML = `
-                        <div class="error-message p-4 bg-red-100 border border-red-300 text-red-800 rounded">
-                            <p class="font-bold">Translation error</p>
-                            <p>${error.message}</p>
-                            <button class="mt-2 px-3 py-1 bg-red-700 text-white rounded text-sm" 
-                                    onclick="window.location.reload()">Reload page</button>
-                        </div>
-                    `;
-                }
+                console.error('Error switching language:', error);
+                // Restore original content if there was an error
+                alert('There was an error switching languages. Please try again.');
             });
+            
+            // Store the language preference in localStorage for persistence
+            localStorage.setItem('preferred_language', lang);
         }
         
         // Handle theme change
@@ -977,12 +958,6 @@
             formData.append('active_language', currentLang);
             formData.append('preview_theme', theme);
             formData.append('csrfmiddlewaretoken', getCsrfToken());
-            
-            // Add the current message 
-            const messageTextarea = document.getElementById('message');
-            if (messageTextarea) {
-                formData.append('message_' + currentLang.toLowerCase(), messageTextarea.value);
-            }
             
             // Send the update request
             fetch('{% url "emergency_cards:unified_card_management" %}', {

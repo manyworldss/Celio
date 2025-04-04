@@ -56,37 +56,35 @@
                 <div class="condition-display mb-2 font-bold text-lg">
                     {{ card.get_condition_display|default:"Celiac Disease" }}
                 </div>
-                <!-- Display dynamic bullet points for this condition and language -->
-                {% if medical_bullets %}
+                <!-- Display medical bullet points for this condition and language -->
                 <ul class="bullet-list">
-                    {% for bullet in medical_bullets %}
-                        <li>{{ bullet }}</li>
-                    {% endfor %}
-                </ul>
-                {% else %}
-                <ul class="bullet-list">
-                    {% if card.condition == 'CEL' %}
-                    {# Celiac Disease #}
-                    <li data-i18n="Autoimmune disorder triggered by gluten">{% trans "Autoimmune disorder triggered by gluten" %}</li>
-                    <li data-i18n="Can cause severe intestinal damage">{% trans "Can cause severe intestinal damage" %}</li>
-                    <li data-i18n="Requires strict gluten-free diet">{% trans "Requires strict gluten-free diet" %}</li>
-                    {% elif card.condition == 'SEN' %}
-                    {# Gluten Sensitive #}
-                    <li data-i18n="Non-celiac gluten sensitivity">{% trans "Non-celiac gluten sensitivity" %}</li>
-                    <li data-i18n="Causes discomfort but not intestinal damage">{% trans "Causes discomfort but not intestinal damage" %}</li>
-                    <li data-i18n="Requires gluten-free diet for symptom control">{% trans "Requires gluten-free diet for symptom control" %}</li>
-                    {% elif card.condition == 'ALL' %}
-                    {# Wheat/Gluten Allergy #}
-                    <li data-i18n="Immune system reaction to wheat proteins">{% trans "Immune system reaction to wheat proteins" %}</li>
-                    <li data-i18n="Can cause immediate allergy symptoms">{% trans "Can cause immediate allergy symptoms" %}</li>
-                    <li data-i18n="May require emergency treatment if severe">{% trans "May require emergency treatment if severe" %}</li>
+                    {% if medical_bullets %}
+                        {% for bullet in medical_bullets %}
+                            <li>{{ bullet }}</li>
+                        {% endfor %}
                     {% else %}
-                    {# Default fallback #}
-                    <li data-i18n="Requires avoidance of gluten-containing foods">{% trans "Requires avoidance of gluten-containing foods" %}</li>
-                    <li data-i18n="Needs careful meal preparation">{% trans "Needs careful meal preparation" %}</li>
+                        {% if card.condition == 'CEL' %}
+                            {# Celiac Disease fallback #}
+                            <li data-i18n="Autoimmune disorder triggered by gluten">{% trans "Autoimmune disorder triggered by gluten" %}</li>
+                            <li data-i18n="Can cause severe intestinal damage">{% trans "Can cause severe intestinal damage" %}</li>
+                            <li data-i18n="Requires strict gluten-free diet">{% trans "Requires strict gluten-free diet" %}</li>
+                        {% elif card.condition == 'SEN' %}
+                            {# Gluten Sensitive fallback #}
+                            <li data-i18n="Non-celiac gluten sensitivity">{% trans "Non-celiac gluten sensitivity" %}</li>
+                            <li data-i18n="Causes discomfort but not intestinal damage">{% trans "Causes discomfort but not intestinal damage" %}</li>
+                            <li data-i18n="Requires gluten-free diet for symptom control">{% trans "Requires gluten-free diet for symptom control" %}</li>
+                        {% elif card.condition == 'ALL' %}
+                            {# Wheat/Gluten Allergy fallback #}
+                            <li data-i18n="Immune system reaction to wheat proteins">{% trans "Immune system reaction to wheat proteins" %}</li>
+                            <li data-i18n="Can cause immediate allergy symptoms">{% trans "Can cause immediate allergy symptoms" %}</li>
+                            <li data-i18n="May require emergency treatment if severe">{% trans "May require emergency treatment if severe" %}</li>
+                        {% else %}
+                            {# Default fallback #}
+                            <li data-i18n="Requires avoidance of gluten-containing foods">{% trans "Requires avoidance of gluten-containing foods" %}</li>
+                            <li data-i18n="Needs careful meal preparation">{% trans "Needs careful meal preparation" %}</li>
+                        {% endif %}
                     {% endif %}
                 </ul>
-                {% endif %}
             </div>
         </div>
         

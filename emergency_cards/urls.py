@@ -29,4 +29,5 @@ urlpatterns = [
     path('update-profile-picture/', views.update_profile_picture, name='update_profile_picture'),
     path('apply-theme/<str:theme_name>/', views.apply_theme, name='apply_theme'),
     path('mark-tour-seen/', views.mark_tour_seen, name='mark_tour_seen'),
+    path('translate_card/', views.translate_card, name='translate_card'),  # New API endpoint for efficient translation
 ]
