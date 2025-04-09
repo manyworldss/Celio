@@ -343,7 +343,7 @@
                             
                             <!-- Card Preview Container -->
                             <div id="card-preview-container" class="relative overflow-auto flex-grow bg-white bg-opacity-5 rounded-lg p-4">
-                                {% include "emergency_cards/partials/editable_card.html" with card=card preview_theme=preview_theme theme_choices=theme_choices language_choices=language_choices current_lang=current_lang %}
+                                {% include "emergency_cards/partials/clean_preview.html" %}
                             </div>
                         </div>
                         
@@ -354,13 +354,55 @@
                 
                 <!-- Form Panels (Right Side) -->
                 <div class="lg:col-span-7 xl:col-span-8 order-1 lg:order-2">
-                    <!-- Profile Picture -->
+                    <!-- Basic Information -->
                     <div class="form-section">
                         <div class="form-section-header border-b border-gray-200 pb-3 mb-4">
-                            <h2 class="text-lg font-medium text-white">Profile Picture</h2>
+                            <h2 class="text-lg font-medium text-white">Basic Information</h2>
                         </div>
                         <div class="form-section-body">
+                            <!-- User's Full Name -->
+                            <div class="form-group mb-6">
+                                <label for="user_name" class="form-label">
+                                    Your Full Name
+                                </label>
+                                <input type="text" 
+                                       name="user_name" 
+                                       id="user_name" 
+                                       value="{{ card.user_name|default:user.get_full_name }}"
+                                       class="form-input"
+                                       placeholder="John Doe"
+                                       hx-post="{% url 'emergency_cards:unified_card_management' %}"
+                                       hx-trigger="change delay:500ms"
+                                       hx-target="#card-preview"
+                                       hx-include="#active_language">
+                                <p class="form-hint">This will be displayed on your emergency card.</p>
+                            </div>
+                            
+                            <!-- Medical Condition -->
                             <div class="form-group">
+                                <label for="{{ form.condition.id_for_label }}" class="form-label">
+                                    What is your medical condition?
+                                </label>
+                                <select name="{{ form.condition.name }}" id="{{ form.condition.id_for_label }}"
+                                        class="form-select"
+                                        hx-post="{% url 'emergency_cards:unified_card_management' %}"
+                                        hx-trigger="change"
+                                        hx-target="#card-preview"
+                                        hx-include="#active_language">
+                                    {% for value, text in form.condition.field.choices %}
+                                        <option value="{{ value }}" {% if form.condition.value == value %}selected{% endif %}>
+                                            {{ text }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                                <p class="form-hint">This will be prominently displayed on your emergency card.</p>
+                                {% if form.condition.errors %}
+                                    <p class="error-text">{{ form.condition.errors.0 }}</p>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Profile Picture -->
+                            <div class="form-group mt-8">
                                 <h3 class="form-label mb-3">Do you want to add a profile picture? (Optional)</h3>
                                 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -409,49 +451,64 @@
                         </div>
                     </div>
                     
-                    <!-- E-Card Usage Instructions -->
+                    <!-- Language and Translation Section -->
                     <div class="form-section">
                         <div class="form-section-header border-b border-gray-200 pb-3 mb-4">
-                            <h2 class="text-lg font-medium text-white">How to Use Your e-Card</h2>
+                            <h2 class="text-lg font-medium text-white">Language Settings</h2>
                         </div>
-                        <div class="form-section-body">
-                            <div class="p-4 bg-teal-900 bg-opacity-20 rounded-lg border border-teal-800">
-                                <h3 class="text-teal-300 font-medium mb-3">Using Your e-Card</h3>
-                                <ul class="list-disc list-inside text-teal-200 space-y-2">
-                                    <li>Edit your information directly on the e-Card by clicking on any field</li>
-                                    <li>Change the theme using the theme selector on the card</li>
-                                    <li>Switch languages using the language selector on the card</li>
-                                    <li>All of your information is stored and will be available when you return</li>
-                                    <li>Use the buttons at the top to download or share your card</li>
-                                </ul>
+                        
+                        <!-- Translation Information -->
+                        {% if is_translated %}
+                        <div class="p-2 mb-4 bg-teal-50 text-teal-700 rounded border border-teal-200 flex items-center">
+                            <svg class="w-5 h-5 mr-2 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
+                            </svg>
+                            <span>You're viewing content in {{ current_lang_display }}. Some content may be machine-translated.</span>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Language Selection Section -->
+                        <div class="form-group">
+                            <label class="form-label" for="language-selector">Display Language</label>
+                            <div class="flex items-center gap-3">
+                                <select id="language-selector" class="language-selector-dropdown w-full bg-white text-gray-800 rounded-md px-3 py-2 border border-spruce-600 focus:ring-2 focus:ring-teal-500">
+                                    {% for code, name in language_choices %}
+                                        <option value="{{ code|lower }}" {% if current_lang == code|lower %}selected{% endif %}>{{ name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div id="current-language-display" class="text-sm text-teal-300 hidden md:inline-block">{{ current_lang_display }}</div>
+                            </div>
+                            <div class="mt-2 text-sm text-teal-200">
+                                Pick the language that should be displayed on your emergency card. All information will be automatically translated.
                             </div>
                         </div>
-                    </div>
-                    <!-- Translation Information (Kept as requested) -->
-                    {% if is_translated %}
-                    <div class="p-2 mb-4 bg-teal-50 text-teal-700 rounded border border-teal-200 flex items-center">
-                        <svg class="w-5 h-5 mr-2 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
-                        </svg>
-                        <span>You're viewing content in {{ current_lang_display }}. Some content may be machine-translated.</span>
-                    </div>
-                    {% endif %}
-                    
-                    <!-- Information about Automatic Translation (Kept as requested) -->
-                    <div class="mt-6 p-4 rounded-lg bg-teal-900 bg-opacity-30 border border-teal-800">
-                        <h4 class="text-teal-300 font-medium mb-2 flex items-center">
-                            <svg class="inline-block w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            About Translations
-                        </h4>
-                        <p class="text-teal-200 text-sm">
-                            Your e-card comes with professional translations in multiple languages. When you switch languages, 
-                            all the medical information will be translated to ensure accuracy and clarity in emergency situations.
-                        </p>
+                        
+                        <!-- Information about Automatic Translation -->
+                        <div class="mt-6 p-4 rounded-lg bg-teal-900 bg-opacity-30 border border-teal-800">
+                            <h4 class="text-teal-300 font-medium mb-2 flex items-center">
+                                <svg class="inline-block w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                About Translations
+                            </h4>
+                            <p class="text-teal-200 text-sm">
+                                Your emergency card comes with professional translations in multiple languages. When you switch languages, 
+                                all the medical information will be translated to ensure accuracy and clarity in emergency situations.
+                            </p>
+                        </div>
                     </div>
                     
-
+                    <!-- Emergency Contact -->
+                    <div class="form-section">
+                        <div class="form-section-header border-b border-gray-200 pb-3 mb-6">
+                            <h2 class="text-lg font-medium text-white">Emergency Contact Information</h2>
+                        </div>
+                        <div class="form-section-body">
+                            <p class="text-base text-teal-200 mb-8">
+                                Who should be contacted in case of an emergency? This information will be displayed on your card.
+                            </p>
+                            
+                            <div class="space-y-12">
                                 <div class="form-group">
                                     <label for="{{ form.emergency_contact_name.id_for_label }}" class="form-label">
                                         Contact Name

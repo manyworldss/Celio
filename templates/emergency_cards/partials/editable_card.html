@@ -1,0 +1,267 @@
+{% load i18n %}
+{% load static %}
+{% load emergency_card_filters %}
+
+{# Use preview_theme if provided (from AJAX request), otherwise use card's theme #}
+{% with current_theme=preview_theme|default:'pastel' %}
+<div class="card-inner card-{{ current_theme }} e-card-theme-{{ current_theme }} rounded-lg overflow-hidden relative editable-card" id="card-inner-preview">
+    <!-- Card Controls -->
+    <div class="card-controls p-3 flex flex-wrap gap-3 justify-between border-b border-white border-opacity-10">
+        <div class="flex flex-wrap w-full justify-between items-center">
+            <!-- Language Selector (Integrated in Card) -->
+            <div class="relative w-full sm:w-40 mb-2 sm:mb-0">
+                <div class="text-xs opacity-70 mb-1">Language</div>
+                <select id="language-selector" class="language-selector-dropdown w-full appearance-none bg-black bg-opacity-10 border border-white border-opacity-20 text-opacity-90 py-1.5 px-2 pr-8 rounded-md focus:outline-none focus:ring-1 focus:ring-opacity-30 text-sm">
+                    {% for lang_code, lang_name in language_choices %}
+                        <option value="{{ lang_code }}" {% if current_lang == lang_code %}selected{% endif %}>{{ lang_name }}</option>
+                    {% endfor %}
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 top-4 flex items-center px-2 opacity-70">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </div>
+            </div>
+            
+            <!-- Theme Selector (Integrated in Card) -->
+            <div class="relative w-full sm:w-40">
+                <div class="text-xs opacity-70 mb-1">Theme</div>
+                <select id="theme-selector" class="theme-selector-dropdown w-full appearance-none bg-black bg-opacity-10 border border-white border-opacity-20 text-opacity-90 py-1.5 px-2 pr-8 rounded-md focus:outline-none focus:ring-1 focus:ring-opacity-30 text-sm">
+                    <option value="pastel" {% if preview_theme == 'pastel' or card.theme == 'pastel' %}selected{% endif %}>Pastel</option>
+                    <option value="luxury" {% if preview_theme == 'luxury' or card.theme == 'luxury' %}selected{% endif %}>Luxury</option>
+                    <option value="medical" {% if preview_theme == 'medical' or card.theme == 'medical' %}selected{% endif %}>Medical</option>
+                    {% for theme_code, theme_name in theme_choices|default:'' %}
+                        {% if theme_code != 'pastel' and theme_code != 'luxury' and theme_code != 'medical' %}
+                        <option value="{{ theme_code }}" {% if preview_theme == theme_code or card.theme == theme_code %}selected{% endif %}>{{ theme_name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 top-4 flex items-center px-2 opacity-70">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Title and Person Info - With Edit Controls -->
+    <div class="card-title-section px-4 py-4">
+        <div class="flex items-start gap-4">
+            <!-- Editable Profile Picture -->
+            <div class="relative">
+                {% if card.profile_picture and card.show_profile_pic %}
+                <div class="avatar-circle-large">
+                    <div class="w-20 h-20 md:w-24 md:h-24 overflow-hidden rounded-full border-2 border-opacity-50">
+                        <img src="{{ card.profile_picture.url }}" alt="{% trans 'Profile Picture' %}" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                {% else %}
+                <div class="avatar-circle-large w-20 h-20 md:w-24 md:h-24 rounded-full border-2 border-opacity-30 flex items-center justify-center opacity-70">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                </div>
+                {% endif %}
+                
+                <!-- Upload button overlay -->
+                <label for="profile_picture" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 rounded-full opacity-0 hover:opacity-100 transition-opacity cursor-pointer">
+                    <span class="text-white text-xs font-medium">Change Photo</span>
+                </label>
+                <input type="file" id="profile_picture" name="profile_picture" class="hidden" accept="image/*">
+            </div>
+            
+            <!-- Editable Person Info -->
+            <div class="person-info flex-1">
+                <!-- Editable Name -->
+                <div class="editable-field mb-2">
+                    <input type="text" name="user_name" id="user_name" value="{{ card.user_name|default:'' }}" class="person-name text-xl font-bold bg-transparent border-b border-opacity-30 focus:border-opacity-100 focus:outline-none w-full" placeholder="Your Name">
+                </div>
+                
+                <!-- Age field with edit toggle -->
+                <div class="editable-field mb-2 flex items-center gap-2">
+                    <input type="number" name="age" id="age" value="{{ card.age|default:'' }}" class="w-16 bg-transparent border-b border-opacity-30 focus:border-opacity-100 focus:outline-none text-sm" placeholder="Age">
+                    <span class="text-sm">years old</span>
+                </div>
+                
+                <!-- Show language display, non-editable -->
+                <div class="text-sm flex items-center mt-1 opacity-75">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
+                    </svg>
+                    <span id="current-language-display">{{ current_lang_display }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Card Content Sections -->
+    <div class="card-body p-4 pt-2">
+        <!-- Medical Information Section -->
+        <div class="info-section mb-3">
+            <h3 class="section-title" data-i18n="Medical Information">{% trans "Medical Information" %}</h3>
+            <div class="section-content">
+                <!-- Editable Medical Condition -->
+                <div class="condition-selector mb-2">
+                    <div class="relative">
+                        <select name="condition" id="condition" class="w-full text-lg font-bold appearance-none bg-transparent border-b border-opacity-30 focus:border-opacity-100 focus:outline-none pr-8">
+                            <option value="CEL" {% if card.condition == 'CEL' %}selected{% endif %}>Celiac Disease</option>
+                            <option value="SEN" {% if card.condition == 'SEN' %}selected{% endif %}>Gluten Sensitivity</option>
+                            <option value="ALL" {% if card.condition == 'ALL' %}selected{% endif %}>Wheat/Gluten Allergy</option>
+                            <option value="OTH" {% if card.condition == 'OTH' %}selected{% endif %}>Other Condition</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 opacity-70">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Non-editable predefined medical information points -->
+                <div class="predefined-medical-info">
+                    <p class="mb-2 text-sm opacity-80">Showing translated medical information for <strong>{{ card.get_condition_display|default:"Celiac Disease" }}</strong> in <strong>{{ current_lang_display }}</strong></p>
+                    
+                    <ul class="bullet-list" id="predefined-medical-bullets">
+                        {% if medical_bullets %}
+                            {% for bullet in medical_bullets %}
+                                <li class="mb-2 flex items-start gap-2">
+                                    <span class="bullet-point">•</span>
+                                    <span class="flex-1">{{ bullet }}</span>
+                                </li>
+                            {% endfor %}
+                        {% else %}
+                            {% if card.condition == 'CEL' or card.condition == None %}
+                                {# Celiac Disease fallback #}
+                                <li class="mb-2 flex items-start gap-2">
+                                    <span class="bullet-point">•</span>
+                                    <span class="flex-1" data-i18n="Autoimmune disorder triggered by gluten">{% trans "Autoimmune disorder triggered by gluten" %}</span>
+                                </li>
+                                <li class="mb-2 flex items-start gap-2">
+                                    <span class="bullet-point">•</span>
+                                    <span class="flex-1" data-i18n="Can cause severe intestinal damage">{% trans "Can cause severe intestinal damage" %}</span>
+                                </li>
+                                <li class="mb-2 flex items-start gap-2">
+                                    <span class="bullet-point">•</span>
+                                    <span class="flex-1" data-i18n="Requires strict gluten-free diet">{% trans "Requires strict gluten-free diet" %}</span>
+                                </li>
+                            {% elif card.condition == 'SEN' %}
+                                {# Gluten Sensitive fallback #}
+                                <li class="mb-2 flex items-start gap-2">
+                                    <span class="bullet-point">•</span>
+                                    <span class="flex-1" data-i18n="Non-celiac gluten sensitivity">{% trans "Non-celiac gluten sensitivity" %}</span>
+                                </li>
+                                <li class="mb-2 flex items-start gap-2">
+                                    <span class="bullet-point">•</span>
+                                    <span class="flex-1" data-i18n="Causes discomfort but not intestinal damage">{% trans "Causes discomfort but not intestinal damage" %}</span>
+                                </li>
+                                <li class="mb-2 flex items-start gap-2">
+                                    <span class="bullet-point">•</span>
+                                    <span class="flex-1" data-i18n="Requires gluten-free diet for symptom control">{% trans "Requires gluten-free diet for symptom control" %}</span>
+                                </li>
+                            {% elif card.condition == 'ALL' %}
+                                {# Wheat/Gluten Allergy fallback #}
+                                <li class="mb-2 flex items-start gap-2">
+                                    <span class="bullet-point">•</span>
+                                    <span class="flex-1" data-i18n="Immune system reaction to wheat proteins">{% trans "Immune system reaction to wheat proteins" %}</span>
+                                </li>
+                                <li class="mb-2 flex items-start gap-2">
+                                    <span class="bullet-point">•</span>
+                                    <span class="flex-1" data-i18n="Can cause immediate allergy symptoms">{% trans "Can cause immediate allergy symptoms" %}</span>
+                                </li>
+                                <li class="mb-2 flex items-start gap-2">
+                                    <span class="bullet-point">•</span>
+                                    <span class="flex-1" data-i18n="May require emergency treatment if severe">{% trans "May require emergency treatment if severe" %}</span>
+                                </li>
+                            {% else %}
+                                {# Default fallback #}
+                                <li class="mb-2 flex items-start gap-2">
+                                    <span class="bullet-point">•</span>
+                                    <span class="flex-1" data-i18n="Requires avoidance of gluten-containing foods">{% trans "Requires avoidance of gluten-containing foods" %}</span>
+                                </li>
+                                <li class="mb-2 flex items-start gap-2">
+                                    <span class="bullet-point">•</span>
+                                    <span class="flex-1" data-i18n="Needs careful meal preparation">{% trans "Needs careful meal preparation" %}</span>
+                                </li>
+                            {% endif %}
+                        {% endif %}
+                    </ul>
+                    
+                    <div class="mt-3 text-xs opacity-70">
+                        <svg class="inline-block w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span>Medical information is automatically translated based on your condition</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Contact Section -->
+        <div class="info-section">
+            <h3 class="section-title">{% trans "Contact" %}</h3>
+            <div class="section-content">
+                <div class="editable-contact">
+                    <div class="flex flex-col sm:flex-row gap-2 mb-2">
+                        <input type="text" name="emergency_contact_name" id="emergency_contact_name" value="{{ card.emergency_contact_name|default:'' }}" class="flex-1 bg-transparent border-b border-white border-opacity-30 focus:border-white focus:outline-none" placeholder="Contact Name">
+                        <input type="tel" name="emergency_contact_phone" id="emergency_contact_phone" value="{{ card.emergency_contact_phone|default:'' }}" class="flex-1 bg-transparent border-b border-white border-opacity-30 focus:border-white focus:outline-none" placeholder="Phone Number">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Form Submit Button -->
+    <div class="card-footer p-3 border-t border-white border-opacity-10 flex justify-between items-center">
+        <div class="text-xs opacity-60">
+            <span class="autosave-status">e-Card changes ready to save</span>
+        </div>
+        <button type="submit" class="save-card-btn px-3 py-1.5 bg-black bg-opacity-20 hover:bg-opacity-30 border border-white border-opacity-30 hover:border-opacity-50 rounded-md transition-colors text-sm flex items-center">
+            <span class="save-icon mr-1.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
+                </svg>
+            </span>
+            <span class="save-text">Save e-Card</span>
+        </button>
+    </div>
+</div>
+
+<!-- CSS for editable card -->
+<style>
+    .editable-card input, .editable-card select {
+        transition: all 0.2s ease;
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+    
+    .editable-card input:hover, .editable-card select:hover {
+        border-color: rgba(255, 255, 255, 0.6) !important;
+    }
+    
+    .editable-card input:focus, .editable-card select:focus {
+        border-color: rgba(255, 255, 255, 1) !important;
+    }
+    
+    /* Fix focus ring colors for different themes */
+    .card-pastel input:focus, .card-pastel select:focus {
+        border-color: rgba(147, 197, 253, 0.8);
+    }
+    
+    .card-luxury input:focus, .card-luxury select:focus {
+        border-color: rgba(251, 191, 36, 0.8);
+    }
+    
+    .card-medical input:focus, .card-medical select:focus {
+        border-color: rgba(96, 165, 250, 0.8);
+    }
+    
+    /* Mobile responsiveness */
+    @media (max-width: 640px) {
+        .editable-card .flex-col-mobile {
+            flex-direction: column;
+        }
+        
+        .editable-card .w-full-mobile {
+            width: 100%;
+        }
+    }
+</style>
+{% endwith %}
