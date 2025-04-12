@@ -268,23 +268,11 @@
             
             <!-- Action buttons -->
             <div class="mt-3 flex flex-wrap gap-3">
-                <a href="{% url 'emergency_cards:fullscreen_card' %}" class="action-button action-button-secondary">
+                <a href="{% url 'emergency_cards:fullscreen_card' %}" class="action-button action-button-primary">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 4l5-5m11 5v-4m0 4h-4m4 0l-5-5"></path>
                     </svg>
                     View Fullscreen
-                </a>
-                <a href="{% url 'emergency_cards:download_card' %}" class="action-button action-button-secondary">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                    </svg>
-                    Download Card
-                </a>
-                <a href="{% url 'emergency_cards:share_card' %}" class="action-button action-button-secondary">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
-                    </svg>
-                    Share Card
                 </a>
             </div>
         </div>
@@ -292,8 +280,9 @@
         <form method="POST" enctype="multipart/form-data" id="card-form">
             {% csrf_token %}
             
-            <!-- Hidden input to track active language -->
+            <!-- Hidden inputs to track active language and theme -->
             <input type="hidden" name="active_language" id="active_language" value="{{ current_lang }}">
+            <input type="hidden" name="selected_theme" id="selected-theme" value="{{ preview_theme|default:card.theme|default:'pastel' }}">
             
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 <!-- Card Preview (Left Side) -->
@@ -305,40 +294,10 @@
                                 <h2 class="text-xl font-semibold text-white">Card Preview</h2>
                             </div>
                             
-                            <!-- Card Controls Outside Card -->
-                            <div class="card-controls flex flex-wrap gap-4 bg-spruce-800 bg-opacity-30 p-3 rounded-lg mb-4">
-                                <!-- Language Selector -->
-                                <div class="language-control flex-1">
-                                    <label for="language-selector" class="block text-sm font-medium text-teal-300 mb-1">Language</label>
-                                    <select id="language-selector" class="language-selector-dropdown w-full bg-white text-gray-800 rounded-md px-3 py-2 border border-spruce-600 focus:ring-2 focus:ring-teal-500">
-                                        {% for lang_code, lang_name in language_choices %}
-                                        <option value="{{ lang_code }}" {% if current_lang == lang_code %}selected{% endif %}>{{ lang_name }}</option>
-                                        {% endfor %}
-                                    </select>
-                                    <!-- Direct language links as backup -->
-                                    <div class="mt-2 text-xs flex flex-wrap gap-1">
-                                        {% for lang_code, lang_name in language_choices %}
-                                            <a href="?lang={{ lang_code }}" class="px-2 py-1 rounded-full {% if current_lang == lang_code %}bg-teal-600 text-white{% else %}bg-spruce-700 text-teal-300 hover:bg-teal-700 hover:text-white{% endif %} transition-colors">
-                                                {{ lang_code|upper }}
-                                            </a>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                                
-                                <!-- Theme Selector -->
-                                <div class="theme-control flex-1">
-                                    <label for="theme-selector" class="block text-sm font-medium text-teal-300 mb-1">Theme</label>
-                                    <select id="theme-selector" class="theme-selector-dropdown w-full bg-white text-gray-800 rounded-md px-3 py-2 border border-spruce-600 focus:ring-2 focus:ring-teal-500">
-                                        <option value="pastel" {% if preview_theme == 'pastel' or card.theme == 'pastel' %}selected{% endif %}>Pastel Theme</option>
-                                        <option value="luxury" {% if preview_theme == 'luxury' or card.theme == 'luxury' %}selected{% endif %}>Luxury Theme</option>
-                                        <option value="medical" {% if preview_theme == 'medical' or card.theme == 'medical' %}selected{% endif %}>Medical Theme</option>
-                                        {% for theme_code, theme_name in theme_choices %}
-                                            {% if theme_code != 'pastel' and theme_code != 'luxury' and theme_code != 'medical' %}
-                                            <option value="{{ theme_code }}" {% if preview_theme == theme_code or card.theme == theme_code %}selected{% endif %}>{{ theme_name }}</option>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </select>
-                                </div>
+                            <!-- Card Preview Instructions -->
+                            <div class="card-instructions bg-spruce-800 bg-opacity-30 p-3 rounded-lg mb-4">
+                                <p class="text-teal-300 text-sm">Use the controls on the e-Card below to change language, theme, and update your information.</p>
+                            </div>
                             </div>
                             
                             <!-- Card Preview Container -->
@@ -451,80 +410,11 @@
                         </p>
                     </div>
                     
-
-                                <div class="form-group">
-                                    <label for="{{ form.emergency_contact_name.id_for_label }}" class="form-label">
-                                        Contact Name
-                                    </label>
-                                    <input type="text" name="{{ form.emergency_contact_name.name }}" id="{{ form.emergency_contact_name.id_for_label }}" 
-                                           value="{{ form.emergency_contact_name.value|default:'' }}"
-                                           placeholder="Enter the full name of your emergency contact"
-                                           class="form-input"
-                                           hx-post="{% url 'emergency_cards:validate_field' %}"
-                                           hx-trigger="blur"
-                                           hx-target="#emergency_contact_name_error"
-                                           hx-swap="innerHTML"
-                                           hx-vals='{"field_name": "emergency_contact_name"}'>
-                                    <div id="emergency_contact_name_error" class="error-text">
-                                        {% if form.emergency_contact_name.errors %}
-                                            {{ form.emergency_contact_name.errors.0 }}
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="{{ form.emergency_contact_relationship.id_for_label }}" class="form-label">
-                                        Relationship to You
-                                    </label>
-                                    <input type="text" name="{{ form.emergency_contact_relationship.name }}" id="{{ form.emergency_contact_relationship.id_for_label }}" 
-                                           value="{{ form.emergency_contact_relationship.value|default:'' }}"
-                                           placeholder="Example: Spouse, Parent, Sibling, Friend"
-                                           class="form-input"
-                                           hx-post="{% url 'emergency_cards:validate_field' %}"
-                                           hx-trigger="blur"
-                                           hx-target="#emergency_contact_relationship_error"
-                                           hx-swap="innerHTML"
-                                           hx-vals='{"field_name": "emergency_contact_relationship"}'>
-                                    <div id="emergency_contact_relationship_error" class="error-text">
-                                        {% if form.emergency_contact_relationship.errors %}
-                                            {{ form.emergency_contact_relationship.errors.0 }}
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="{{ form.emergency_contact_phone.id_for_label }}" class="form-label">
-                                        Phone Number
-                                    </label>
-                                    <input type="tel" name="{{ form.emergency_contact_phone.name }}" id="{{ form.emergency_contact_phone.id_for_label }}" 
-                                           value="{{ form.emergency_contact_phone.value|default:'' }}"
-                                           placeholder="+1 (555) 123-4567"
-                                           class="form-input"
-                                           hx-post="{% url 'emergency_cards:validate_field' %}"
-                                           hx-trigger="blur"
-                                           hx-target="#emergency_contact_phone_error"
-                                           hx-swap="innerHTML"
-                                           hx-vals='{"field_name": "emergency_contact_phone"}'>
-                                    <div id="emergency_contact_phone_error" class="error-text">
-                                        {% if form.emergency_contact_phone.errors %}
-                                            {{ form.emergency_contact_phone.errors.0 }}
-                                        {% endif %}
-                                    </div>
-                                    <p class="form-hint">Include country code if needed (e.g., +1 for US and Canada)</p>
-                                </div>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Save Button -->
-                    <div class="flex justify-end pt-6 pb-12">
-                        <button type="submit" class="action-button action-button-primary text-base px-8 py-4">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            Save My Emergency Card
-                        </button>
-                    </div>
+
                 </div>
             </div>
         </form>
@@ -627,6 +517,7 @@
                     
                     // Refresh event handlers for any new elements
                     setupLanguageDropdowns();
+                    setupThemeDropdowns();
                 } else {
                     console.error('Could not find card preview content in response');
                 }
@@ -800,9 +691,19 @@
             // Update hidden input
             document.getElementById('active_language').value = lang;
             
+            // Update all language selectors to match
+            const langSelectors = document.querySelectorAll('.language-selector-dropdown');
+            langSelectors.forEach(selector => {
+                if (selector !== this) {
+                    selector.value = lang;
+                }
+            });
+            
             // Update language display
-            document.getElementById('current-language-display').textContent = 
-                this.options[this.selectedIndex].text;
+            const displayElement = document.getElementById('current-language-display');
+            if (displayElement) {
+                displayElement.textContent = this.options[this.selectedIndex].text;
+            }
                 
             // Apply translations immediately for better UX
             translateUIElements(lang);
@@ -817,9 +718,16 @@
             // Save current scroll position
             const scrollPosition = window.scrollY;
             
-            // Fetch only the translated card content instead of making a full form submission
-            fetch(`/emergency_cards/translate_card/?from_lang=${prevLang}&to_lang=${lang}`, {
-                method: 'GET',
+            // Create form data for language switch
+            const formData = new FormData();
+            formData.append('switch_language', 'true');
+            formData.append('active_language', lang);
+            formData.append('csrfmiddlewaretoken', getCsrfToken());
+            
+            // Send the update request
+            fetch('{% url "emergency_cards:unified_card_management" %}', {
+                method: 'POST',
+                body: formData,
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
                     'X-CSRFToken': getCsrfToken()
@@ -829,24 +737,26 @@
                 if (!response.ok) {
                     throw new Error('Language switch failed: ' + response.statusText);
                 }
-                return response.json();
+                return response.text();
             })
-            .then(data => {
-                console.log('Received translation data:', data);
+            .then(html => {
+                console.log('Received language switch response');
                 
-                // Update the card preview with the translated content
-                if (data.card_html) {
-                    document.getElementById('card-preview-container').innerHTML = data.card_html;
-                }
+                // Create a temporary element to parse the HTML response
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = html;
                 
-                // Apply translations to the newly loaded content
-                translateUIElements(lang);
-                
-                // Make sure the dropdown has the correct value
-                const newDropdown = document.querySelector('.language-selector-dropdown');
-                if (newDropdown) {
-                    newDropdown.value = lang;
-                    setupLanguageDropdowns(); // Re-setup events for the new dropdown
+                // Extract just the card preview content
+                const cardContent = tempDiv.querySelector('.card-inner');
+                if (cardContent) {
+                    document.getElementById('card-preview-container').innerHTML = cardContent.outerHTML;
+                    console.log('Preview updated successfully with language:', lang);
+                    
+                    // Refresh event handlers for any new elements
+                    setupLanguageDropdowns();
+                    setupThemeDropdowns();
+                } else {
+                    console.error('Could not find card preview content in response');
                 }
                 
                 // Update the language tabs if they exist
@@ -888,6 +798,14 @@
             // Get the current language
             const currentLang = document.getElementById('active_language').value;
             
+            // Update all theme selectors to match
+            const themeSelectors = document.querySelectorAll('.theme-selector-dropdown');
+            themeSelectors.forEach(selector => {
+                if (selector !== this) {
+                    selector.value = theme;
+                }
+            });
+            
             // Show loading indicator
             const cardPreviewContainer = document.getElementById('card-preview-container');
             if (cardPreviewContainer) {
@@ -895,11 +813,15 @@
                 cardPreviewContainer.innerHTML = '<div class="loading-indicator flex items-center justify-center h-full"><div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal-500"></div><div class="ml-3 text-teal-300">Updating theme...</div></div>';
             }
             
+            // Save current scroll position
+            const scrollPosition = window.scrollY;
+            
             // Create form data specifically for theme update
             const formData = new FormData();
-            formData.append('switch_language', 'true');
+            formData.append('switch_theme', 'true'); // Changed from switch_language to switch_theme
             formData.append('active_language', currentLang);
             formData.append('preview_theme', theme);
+            formData.append('selected_theme', theme); // Add this to ensure the theme is properly saved
             formData.append('csrfmiddlewaretoken', getCsrfToken());
             
             // Send the update request
@@ -930,6 +852,7 @@
                     
                     // Refresh event handlers for any new elements
                     setupLanguageDropdowns();
+                    setupThemeDropdowns();
                 } else {
                     console.error('Could not find card preview content in response');
                 }
