@@ -222,218 +222,16 @@
 <body>
     <div class="fullscreen-container">
         <div class="card-wrapper">
-            <!-- Reuse the structure from clean_preview.html -->
-            <div class="card-inner card-{{ theme|default:'pastel' }} emergency-card-theme-{{ theme|default:'pastel' }} rounded-lg overflow-hidden">
-                <!-- Card Header -->
-                <div class="card-header p-4 pb-2">
-                    <div class="flex justify-between items-center">
-                        <div class="language-label">
-                            <span class="language-indicator px-3 py-1 bg-blue-600 text-white rounded-full text-sm font-medium">
-                                {{ current_lang_display }}
-                            </span>
-                        </div>
-                        <div class="card-actions flex gap-2">
-                            <!-- Print/Download Button -->
-                            <button class="action-icon download card-action-button" onclick="window.print();" title="Print/Download">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                    <polyline points="7 10 12 15 17 10"></polyline>
-                                    <line x1="12" y1="15" x2="12" y2="3"></line>
-                                </svg>
-                            </button>
-                            <!-- Share Button (link to share functionality) -->
-                            <a href="{% url 'emergency_cards:share_card' %}?card_id={{ card.id }}" class="action-icon share card-action-button" title="Share">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="18" cy="5" r="3"></circle>
-                                    <circle cx="6" cy="12" r="3"></circle>
-                                    <circle cx="18" cy="19" r="3"></circle>
-                                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-                                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-                                </svg>
-                            </a>
-                            <!-- Globe icon might not be needed here, or link to public view if enabled -->
-                             {% if card.is_public %}
-                                <a href="{% url 'emergency_cards:public_card' card_id=card.id %}" target="_blank" class="action-icon globe card-action-button" title="View Public Card">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="12" cy="12" r="10"></circle>
-                                        <line x1="2" y1="12" x2="22" y2="12"></line>
-                                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-                                    </svg>
-                                </a>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Main Title and Person Info - LARGER -->
-                <div class="card-title-section px-4 py-4">
-                    <div class="flex items-center gap-4">
-                        {% if card.profile_picture and card.show_profile_pic %}
-                        <div class="avatar-circle-large">
-                            <div class="w-20 h-20 md:w-24 md:h-24 overflow-hidden rounded-full border-2 border-teal-400">
-                                <img src="{{ card.profile_picture.url }}" alt="Profile Picture" class="w-full h-full object-cover">
-                            </div>
-                        </div>
-                        {% else %}
-                        <!-- Placeholder if no picture -->
-                        <div class="avatar-circle-large bg-gray-200 border-2 border-teal-400 flex items-center justify-center">
-                           <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                           </svg>
-                        </div>
-                        {% endif %}
-                        <div class="person-info">
-                            <h2 class="person-name text-xl font-bold">{{ card.user_name|default:card.user.get_full_name }}</h2>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Card Content Sections -->
-                <div class="card-body p-4 pt-2">
-                    <!-- Medical Information Section (now includes condition) -->
-                    <div class="info-section mb-3">
-                        <h3 class="section-title">Medical Information</h3>
-                        <div class="section-content">
-                            <div class="condition-display mb-2 font-bold text-lg">
-                                {{ card.get_condition_display|default:"Celiac Disease" }}
-                            </div>
-                            <ul class="bullet-list">
-                                <!-- Example static points, replace with dynamic data if available -->
-                                <li>Autoimmune disorder triggered by gluten</li>
-                                <li>Can cause severe intestinal damage</li>
-                                <li>Requires strict gluten-free diet</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <!-- Message Section -->
-                    <div class="info-section mb-3">
-                        <h3 class="section-title">Message</h3>
-                        <div class="section-content message-content">
-                            {% with lang_key=current_lang.lower %}
-                                {% if card.translations and lang_key in card.translations and card.translations|get_dict_value:lang_key %}
-                                    {{ card.translations|get_dict_value:lang_key|linebreaksbr }}
-                                {% elif card.translations and 'en' in card.translations and card.translations|get_dict_value:'en' %}
-                                     {{ card.translations|get_dict_value:'en'|linebreaksbr }} <!-- Fallback to English -->
-                                {% else %}
-                                    <span class="text-gray-400 italic">No message available for {{ current_lang_display }}.</span>
-                                {% endif %}
-                            {% endwith %}
-                        </div>
-                    </div>
-                    
-                    <!-- Emergency Contact Section -->
-                    <div class="info-section">
-                        <h3 class="section-title">Emergency Contact</h3>
-                        <div class="section-content">
-                            {% if card.emergency_contact_name %}
-                            <p class="contact-info">{{ card.emergency_contact_name }}: {{ card.emergency_contact_phone }}</p>
-                            {% else %}
-                            <p class="contact-info italic text-gray-500">No emergency contact listed.</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- Use the same component as the editable preview card for consistency -->
+            {% include "emergency_cards/partials/editable_card.html" with card=card preview_theme=theme language_choices=language_choices current_lang=current_lang current_lang_display=current_lang_display is_fullscreen=True %}
         </div>
     </div>
 
-    <!-- Action Buttons Container -->
-    <div class="action-buttons-container print:hidden">
-        <!-- Share Button -->
-        <div class="action-button-wrapper">
-            <a href="{% url 'emergency_cards:share_card' %}" class="action-button" title="Share Card">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
-                </svg>
-            </a>
-            <span class="action-label">Share</span>
-        </div>
-        
-        <!-- Download Button -->
-        <div class="action-button-wrapper">
-            <a href="{% url 'emergency_cards:download_card' %}" class="action-button" title="Download Card">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                </svg>
-            </a>
-            <span class="action-label">Download</span>
-        </div>
-        
-        <!-- Exit Button -->
-        <div class="action-button-wrapper">
-            <button class="action-button" onclick="closeWindowOrGoBack()" title="Close Fullscreen">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-            </button>
-            <span class="action-label">Exit</span>
-        </div>
-    </div>
 
-    <style>
-        .action-buttons-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            z-index: 50;
-        }
-        
-        .action-button-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .action-button {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background-color: rgba(20, 184, 166, 0.9); /* teal-500 with opacity */
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            transition: all 0.2s ease;
-        }
-        
-        .action-button:hover {
-            background-color: rgba(13, 148, 136, 0.9); /* teal-600 with opacity */
-            transform: translateY(-2px);
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
-        }
-        
-        .action-label {
-            color: white;
-            font-size: 12px;
-            margin-top: 4px;
-            background-color: rgba(0,0,0,0.5);
-            padding: 2px 8px;
-            border-radius: 12px;
-            white-space: nowrap;
-        }
-        
-        /* Mobile adjustments */
-        @media (max-width: 640px) {
-            .action-buttons-container {
-                bottom: 10px;
-                right: 10px;
-                gap: 12px;
-            }
-            
-            .action-button {
-                width: 40px;
-                height: 40px;
-            }
-        }
-    </style>
+    <!-- No external buttons - all controls are inside the card -->
+
+    <!-- Removed external buttons styles -->
+    
 
     <script>
         // Simple close/back functionality for exit button
@@ -453,8 +251,19 @@
             }
         });
 
-        // Make sure the language dropdown button reflects the theme
         document.addEventListener('DOMContentLoaded', function() {
+            // Handle logo fallback
+            const logos = document.querySelectorAll('.celio-logo, [data-fallback]');
+            logos.forEach(logo => {
+                logo.onerror = function() {
+                    if (this.dataset.fallback) {
+                        this.src = this.dataset.fallback;
+                        this.dataset.fallback = ''; // Prevent infinite loop
+                    }
+                };
+            });
+            
+            // Make sure the language dropdown button reflects the theme
             const cardInner = document.querySelector('.card-inner');
             const languageButton = document.querySelector('.language-dropdown-button');
             if (cardInner && languageButton) {

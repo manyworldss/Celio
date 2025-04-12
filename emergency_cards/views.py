@@ -478,13 +478,19 @@ def fullscreen_card(request):
         
     current_lang = requested_lang # Keep it lowercase throughout
     
+    # Get the theme from URL parameter or use card's theme as fallback
+    requested_theme = request.GET.get('theme', card.theme or 'medical')
+    valid_themes = ['dark', 'medical', 'minimal']
+    if requested_theme not in valid_themes:
+        requested_theme = card.theme or 'medical'  # Fallback to medical if no valid theme
+    
     # Prepare language choices for the dropdown/switcher if needed
     language_choices = {code: name for code, name in EmergencyCard.LANGUAGE_CHOICES}
     current_lang_display = language_choices.get(current_lang, current_lang) # Get display name
 
     return render(request, 'emergency_cards/fullscreen_card.html', {
         'card': card,
-        'theme': card.theme,
+        'theme': requested_theme,
         'current_lang': current_lang,
         'current_lang_display': current_lang_display,
         'language_choices': language_choices # Pass all choices for switcher
