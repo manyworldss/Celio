@@ -269,8 +269,7 @@
             if (cardInner && languageButton) {
                 // Extract theme class
                 const themeClass = Array.from(cardInner.classList).find(cls => cls.startsWith('emergency-card-theme-'));
-                <option value="light" {% if theme == 'light' %}selected{% endif %}>Light Mode</option>
-                <option value="dark" {% if theme == 'dark' %}selected{% endif %}>Dark Mode</option>
+
             }
         });
     </script>
