@@ -401,7 +401,7 @@
                         </div>
                     </div>
                     
-
+python -m venv .venv
                 </div>
             </div>
         </form>
@@ -409,6 +409,8 @@
 </div>
 
 <script>
+// Removed fetch-based preview update JS for language and theme switching; now handled by HTMX.
+
     document.addEventListener('DOMContentLoaded', function() {
         // Prevent form submission which causes page refresh
         const cardForm = document.getElementById('card-form');

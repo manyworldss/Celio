@@ -6,13 +6,11 @@ from .constants import PREDEFINED_MESSAGES, MEDICAL_INFO_BULLETS
 class EmergencyCard(models.Model):
     # Theme choices - simplified to 3 essential themes
     THEME_DARK = 'dark'
-    THEME_MEDICAL = 'medical'
-    THEME_MINIMAL = 'minimal'
+    THEME_LIGHT = 'light'
 
     THEME_CHOICES = [
-        (THEME_DARK, 'Dark Theme'),
-        (THEME_MEDICAL, 'Medical Theme'),
-        (THEME_MINIMAL, 'Minimal Theme'),
+        (THEME_LIGHT, 'Light Mode'),
+        (THEME_DARK, 'Dark Mode'),
     ]
 
     LANGUAGE_CHOICES = [
