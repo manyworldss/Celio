@@ -60,11 +60,11 @@ INSTALLED_APPS = [
     'accounts',
     'emergency_cards',
     'travel',
-    'rest_framework',
     'subscription',
     'demo',
 
     # Third party
+    'rest_framework',
     'django_htmx', 
     'onboarding.apps.OnboardingConfig',
     'sage',
