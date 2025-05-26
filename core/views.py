@@ -68,3 +68,8 @@ def upgrade_page(request):
         'is_premium': is_premium,
         'demo_mode': True  # Flag to indicate demo mode in template
     })
+
+
+
+
+
