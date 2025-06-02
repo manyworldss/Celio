@@ -329,14 +329,8 @@
                                 <div class="theme-control flex-1">
                                     <label for="theme-selector" class="block text-sm font-medium text-teal-300 mb-1">Theme</label>
                                     <select id="theme-selector" class="theme-selector-dropdown w-full bg-white text-gray-800 rounded-md px-3 py-2 border border-spruce-600 focus:ring-2 focus:ring-teal-500">
-                                        <option value="pastel" {% if preview_theme == 'pastel' or card.theme == 'pastel' %}selected{% endif %}>Pastel Theme</option>
-                                        <option value="luxury" {% if preview_theme == 'luxury' or card.theme == 'luxury' %}selected{% endif %}>Luxury Theme</option>
-                                        <option value="medical" {% if preview_theme == 'medical' or card.theme == 'medical' %}selected{% endif %}>Medical Theme</option>
-                                        {% for theme_code, theme_name in theme_choices %}
-                                            {% if theme_code != 'pastel' and theme_code != 'luxury' and theme_code != 'medical' %}
-                                            <option value="{{ theme_code }}" {% if preview_theme == theme_code or card.theme == theme_code %}selected{% endif %}>{{ theme_name }}</option>
-                                            {% endif %}
-                                        {% endfor %}
+                                        <option value="light" {% if preview_theme == 'light' or card.theme == 'light' %}selected{% endif %}>Light</option>
+                                        <option value="dark" {% if preview_theme == 'dark' or card.theme == 'dark' %}selected{% endif %}>Dark</option>
                                     </select>
                                 </div>
                             </div>

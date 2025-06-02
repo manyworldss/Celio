@@ -98,11 +98,8 @@
                 <div class="mb-4">
                     <label for="theme-selector" class="block text-sm font-medium text-gray-700 mb-2">Select Theme</label>
                     <select id="theme-selector" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-deep-teal focus:ring-deep-teal">
-                        {% for theme_value, theme_name in card.get_theme_choices %}
-                            <option value="{{ theme_value }}" {% if card.theme == theme_value %}selected{% endif %}>
-                                {{ theme_name }}
-                            </option>
-                        {% endfor %}
+                        <option value="light" {% if card.theme == 'light' %}selected{% endif %}>Light</option>
+                        <option value="dark" {% if card.theme == 'dark' %}selected{% endif %}>Dark</option>
                     </select>
                 </div>
                 <p class="text-sm text-gray-500 mb-2">Choose a theme that best reflects your style.</p>

@@ -155,20 +155,11 @@
             <p class="text-gray-600 mb-6">Select a theme for your emergency card. Changes will be previewed immediately - click "Apply Theme" to save.</p>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Classic Theme -->
-                <div class="theme-preview theme-classic" data-theme="classic"
-                     hx-get="{% url 'emergency_cards:apply_theme' 'classic' %}?lang={{ current_lang }}&preview=true"
-                     hx-target="#current-card-preview" 
-                     hx-swap="innerHTML"
-                     hx-trigger="click">
+                <!-- Light Theme Preview -->
+                <div class="theme-preview theme-light" data-theme="light">
                     <div class="theme-header">
                         <div class="absolute inset-x-0 bottom-0 h-12 flex items-center justify-center">
-                            <h3 class="text-lg font-bold text-gray-800">Classic Theme</h3>
-                        </div>
-                        <div class="theme-profile-circle">
-                            {% if card.profile_picture %}
-                                <img src="{{ card.profile_picture.url }}" alt="Profile">
-                            {% endif %}
+                            <h3 class="text-lg font-bold text-gray-800">Light Theme</h3>
                         </div>
                     </div>
                     <div class="theme-body">
@@ -181,39 +172,16 @@
                             <p>Can cause severe intestinal damage</p>
                             <p>Requires strict gluten-free diet</p>
                         </div>
-                        <div class="border-t pt-2 text-sm">
-                            <p class="font-semibold">Emergency Contact:</p>
-                            <p>Jane Smith: +1 (555) 123-4567</p>
-                        </div>
-                    </div>
-                    <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 opacity-0 hover:opacity-100 transition-opacity duration-300">
-                        <a href="#" 
-                           class="px-4 py-2 bg-white rounded-lg shadow text-deep-teal font-medium hover:bg-mint-light transition-colors duration-300"
-                           hx-get="{% url 'emergency_cards:apply_theme' 'classic' %}?lang={{ current_lang }}"
-                           hx-target="#current-card-preview"
-                           hx-swap="innerHTML">
-                            Apply Theme
-                        </a>
                     </div>
                 </div>
-                
-                <!-- Modern Theme -->
-                <div class="theme-preview theme-modern" data-theme="modern"
-                     hx-get="{% url 'emergency_cards:apply_theme' 'modern' %}?lang={{ current_lang }}&preview=true"
-                     hx-target="#current-card-preview" 
-                     hx-swap="innerHTML"
-                     hx-trigger="click">
+                <!-- Dark Theme Preview -->
+                <div class="theme-preview theme-dark" data-theme="dark">
                     <div class="theme-header">
                         <div class="absolute inset-x-0 bottom-0 h-12 flex items-center justify-center">
-                            <h3 class="text-lg font-bold text-white">Modern Theme</h3>
-                        </div>
-                        <div class="theme-profile-circle">
-                            {% if card.profile_picture %}
-                                <img src="{{ card.profile_picture.url }}" alt="Profile">
-                            {% endif %}
+                            <h3 class="text-lg font-bold text-white">Dark Theme</h3>
                         </div>
                     </div>
-                    <div class="theme-body">
+                    <div class="theme-body" style="background:#1a202c;color:#e2e8f0;">
                         <div class="flex items-center justify-between mb-4">
                             <h4 class="font-semibold">Celiac Disease</h4>
                             <span class="preview-pill">English</span>
@@ -223,66 +191,8 @@
                             <p>Can cause severe intestinal damage</p>
                             <p>Requires strict gluten-free diet</p>
                         </div>
-                        <div class="border-t pt-2 text-sm">
-                            <p class="font-semibold">Emergency Contact:</p>
-                            <p>Jane Smith: +1 (555) 123-4567</p>
-                        </div>
-                    </div>
-                    <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 opacity-0 hover:opacity-100 transition-opacity duration-300">
-                        <a href="#" 
-                           class="px-4 py-2 bg-white rounded-lg shadow text-deep-teal font-medium hover:bg-mint-light transition-colors duration-300"
-                           hx-get="{% url 'emergency_cards:apply_theme' 'modern' %}?lang={{ current_lang }}"
-                           hx-target="#current-card-preview"
-                           hx-swap="innerHTML">
-                            Apply Theme
-                        </a>
                     </div>
                 </div>
-                
-                <!-- Minimal Theme -->
-                <div class="theme-preview theme-minimal" data-theme="minimal"
-                     hx-get="{% url 'emergency_cards:apply_theme' 'minimal' %}?lang={{ current_lang }}&preview=true"
-                     hx-target="#current-card-preview" 
-                     hx-swap="innerHTML"
-                     hx-trigger="click">
-                    <div class="theme-header">
-                        <div class="absolute inset-x-0 bottom-0 h-12 flex items-center justify-center">
-                            <h3 class="text-lg font-bold text-deep-teal">Minimal Theme</h3>
-                        </div>
-                        <div class="theme-profile-circle">
-                            {% if card.profile_picture %}
-                                <img src="{{ card.profile_picture.url }}" alt="Profile">
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="theme-body">
-                        <div class="flex items-center justify-between mb-4">
-                            <h4 class="font-semibold">Celiac Disease</h4>
-                            <span class="preview-pill">English</span>
-                        </div>
-                        <div class="text-sm space-y-1 mb-4">
-                            <p>Autoimmune disorder triggered by gluten</p>
-                            <p>Can cause severe intestinal damage</p>
-                            <p>Requires strict gluten-free diet</p>
-                        </div>
-                        <div class="border-t pt-2 text-sm">
-                            <p class="font-semibold">Emergency Contact:</p>
-                            <p>Jane Smith: +1 (555) 123-4567</p>
-                        </div>
-                    </div>
-                    <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 opacity-0 hover:opacity-100 transition-opacity duration-300">
-                        <a href="#" 
-                           class="px-4 py-2 bg-white rounded-lg shadow text-deep-teal font-medium hover:bg-mint-light transition-colors duration-300"
-                           hx-get="{% url 'emergency_cards:apply_theme' 'minimal' %}?lang={{ current_lang }}"
-                           hx-target="#current-card-preview"
-                           hx-swap="innerHTML">
-                            Apply Theme
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- Include all the new themes -->
-                {% include 'emergency_cards/theme_templates.html' %}
             </div>
         </div>
     </div>

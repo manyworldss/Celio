@@ -274,7 +274,19 @@
             
             <!-- Hidden inputs to track active language and theme -->
             <input type="hidden" name="active_language" id="active_language" value="{{ current_lang }}">
-            <input type="hidden" name="selected_theme" id="selected-theme" value="{{ preview_theme|default:card.theme|default:'light' }}">
+            {% with current_theme=preview_theme %}
+                {% if not current_theme and card and card.theme %}
+                    {% with current_theme=card.theme %}
+                        <input type="hidden" name="selected_theme" id="selected-theme" value="{{ current_theme }}">
+                    {% endwith %}
+                {% elif not current_theme %}
+                    {% with current_theme='light' %}
+                        <input type="hidden" name="selected_theme" id="selected-theme" value="{{ current_theme }}">
+                    {% endwith %}
+                {% else %}
+                    <input type="hidden" name="selected_theme" id="selected-theme" value="{{ current_theme }}">
+                {% endif %}
+            {% endwith %}
             <input type="hidden" name="save_card" id="save_card_input" value="false">
             
 
@@ -292,7 +304,19 @@
                 
                 <!-- Hidden inputs to track active language and theme -->
                 <input type="hidden" name="active_language" id="active_language" value="{{ current_lang }}">
-                <input type="hidden" name="selected_theme" id="selected-theme" value="{{ preview_theme|default:card.theme|default:'light' }}">
+                {% with current_theme=preview_theme %}
+                    {% if not current_theme and card and card.theme %}
+                        {% with current_theme=card.theme %}
+                            <input type="hidden" name="selected_theme" id="selected-theme" value="{{ current_theme }}">
+                        {% endwith %}
+                    {% elif not current_theme %}
+                        {% with current_theme='light' %}
+                            <input type="hidden" name="selected_theme" id="selected-theme" value="{{ current_theme }}">
+                        {% endwith %}
+                    {% else %}
+                        <input type="hidden" name="selected_theme" id="selected-theme" value="{{ current_theme }}">
+                    {% endif %}
+                {% endwith %}
                 <input type="hidden" name="save_card" id="save_card_input" value="false">
                 
 
@@ -302,11 +326,23 @@
                 <div class="card-fullscreen-container max-w-4xl mx-auto">
                     <!-- Card Preview Container (full-width) -->
                     <div id="card-preview-container" class="relative overflow-hidden bg-white bg-opacity-5 rounded-lg p-4 flex justify-center items-center">
-                        {% include "emergency_cards/partials/editable_card.html" with card=card preview_theme=preview_theme theme_choices=theme_choices language_choices=language_choices current_lang=current_lang is_preview=True %}
+                        {% include "emergency_cards/partials/editable_card.html" with card=card preview_theme=preview_theme language_choices=language_choices current_lang=current_lang is_preview=True %}
                     </div>
                     
                     <!-- Hidden theme input that will be updated by JavaScript -->
-                    <input type="hidden" name="theme" id="selected-theme" value="{{ preview_theme|default:card.theme|default:'light' }}">
+                    {% with current_theme=preview_theme %}
+                        {% if not current_theme and card and card.theme %}
+                            {% with current_theme=card.theme %}
+                                <input type="hidden" name="theme" id="selected-theme" value="{{ current_theme }}">
+                            {% endwith %}
+                        {% elif not current_theme %}
+                            {% with current_theme='light' %}
+                                <input type="hidden" name="theme" id="selected-theme" value="{{ current_theme }}">
+                            {% endwith %}
+                        {% else %}
+                            <input type="hidden" name="theme" id="selected-theme" value="{{ current_theme }}">
+                        {% endif %}
+                    {% endwith %}
                 </div>
 
                 <!-- Hidden sections that were previously visible -->

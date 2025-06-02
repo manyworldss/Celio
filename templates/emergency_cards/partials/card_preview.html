@@ -62,8 +62,10 @@
                 <span class="text-sm font-medium mr-1">
                     {% if preview_theme %}
                         {{ preview_theme|title }} Theme
-                    {% else %}
+                    {% elif card and card.theme %}
                         {{ card.theme|title }} Theme
+                    {% else %}
+                        Light Theme
                     {% endif %}
                 </span>
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -73,13 +75,14 @@
             
             <!-- Theme dropdown menu -->
             <div x-show="open" class="absolute top-full mt-2 right-0 w-44 bg-white rounded-lg shadow-xl overflow-hidden z-50">
-                {% for theme_value, theme_name in theme_choices %}
-                    <button type="button" 
-                            data-theme="{{ theme_value }}" 
-                            class="preview-theme-selector-item w-full text-left px-4 py-2 text-sm text-gray-800 hover:bg-teal-50 hover:text-teal-700 transition-colors {% if preview_theme == theme_value or not preview_theme and card.theme == theme_value %}bg-teal-100 text-teal-800 font-medium{% else %}text-gray-800{% endif %}">
-                        {{ theme_name }}
-                    </button>
-                {% endfor %}
+                <button type="button" data-theme="light"
+                    class="preview-theme-selector-item w-full text-left px-4 py-2 text-sm text-gray-800 hover:bg-teal-50 hover:text-teal-700 transition-colors {% if preview_theme == 'light' or (not preview_theme and ((card and card.theme == 'light') or not card)) %}bg-teal-100 text-teal-800 font-medium{% else %}text-gray-800{% endif %}">
+                    Light
+                </button>
+                <button type="button" data-theme="dark"
+                    class="preview-theme-selector-item w-full text-left px-4 py-2 text-sm text-gray-800 hover:bg-teal-50 hover:text-teal-700 transition-colors {% if preview_theme == 'dark' or (not preview_theme and card and card.theme == 'dark') %}bg-teal-100 text-teal-800 font-medium{% else %}text-gray-800{% endif %}">
+                    Dark
+                </button>
             </div>
         </div>
     </div>

@@ -257,14 +257,8 @@
                 </div>
                 <div class="relative">
                     <select id="theme-selector" class="theme-selector-dropdown w-full appearance-none bg-white bg-opacity-10 border border-white border-opacity-30 hover:border-opacity-50 py-1.5 px-2 pr-6 rounded-md focus:outline-none focus:ring-1 focus:ring-white focus:ring-opacity-30 text-sm transition-all duration-200 shadow-sm" onchange="handleThemeChange.call(this, event)">
-                        <option value="celio" {% if preview_theme == 'celio' or card.theme == 'celio' or not card.theme %}selected{% endif %}>Celio</option>
-                        <option value="dark" {% if preview_theme == 'dark' or card.theme == 'dark' %}selected{% endif %}>Dark</option>
-                        <option value="minimal" {% if preview_theme == 'minimal' or card.theme == 'minimal' %}selected{% endif %}>Minimal</option>
-                        {% for theme_code, theme_name in theme_choices|default:'' %}
-                            {% if theme_code != 'dark' and theme_code != 'celio' and theme_code != 'minimal' %}
-                            <option value="{{ theme_code }}" {% if preview_theme == theme_code or card.theme == theme_code %}selected{% endif %}>{{ theme_name }}</option>
-                            {% endif %}
-                        {% endfor %}
+                        <option value="light" {% if preview_theme == 'light' or (not preview_theme and card and card.theme == 'light') or (not preview_theme and not card) %}selected{% endif %}>Light</option>
+                        <option value="dark" {% if preview_theme == 'dark' or (not preview_theme and card and card.theme == 'dark') %}selected{% endif %}>Dark</option>
                     </select>
                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 opacity-70">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
