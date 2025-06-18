@@ -88,7 +88,5 @@ Celio was developed as a capstone project demonstrating full-stack development s
 ---
 
 
-Licensed under MIT © 2025
-
 ## Connect
 [LinkedIn](https://linkedin.com/in/raphealsuber/) 
