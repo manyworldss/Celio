@@ -21,20 +21,13 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('core.urls')),
-    path('accounts/', include('accounts.urls')),
-    path('emergency_cards/', include('emergency_cards.urls')), # this will handle all card - related URLs
-    path('onboarding/', include('onboarding.urls', namespace='onboarding')),
-    path('sage/', include('sage.urls', namespace='sage')),
-    path('travel/', include('travel.urls', namespace='travel')),
-    path('subscription/', include('subscription.urls', namespace='subscription')), # regular views
-    path('api/subscription/', include('subscription.urls', namespace='subscription_api')), # api endpoint
-    path('demo/', include('demo.urls', namespace='demo')), # demo mode with guided tour
+    path('admin/', admin.site.urls),  # Keep admin for demo management
+    path('', include('core.urls')),  # Main demo landing page
+    path('emergency_cards/', include('emergency_cards.urls')),  # Card functionality
+    path('accounts/', include('accounts.urls')),  # User authentication
 ]
 
-# Serve media files in development
+# Serve media and static files in development
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

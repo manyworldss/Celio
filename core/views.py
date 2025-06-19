@@ -1,33 +1,25 @@
-# subscription/views.py
-from rest_framework import views, permissions, status
-from rest_framework.response import Response
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib import messages
-#from subscription.models import Subscription
+
+# Sample demo user data
+DEMO_USER = {
+    'name': 'Demo User',
+    'email': 'demo@example.com',
+    'has_card': True,
+    'is_premium': True,
+    'is_demo': True
+}
 
 def home(request):
-    # Setup context variables
-    has_card = False
-    is_premium = False
-    
-    if request.user.is_authenticated:
-        # Check if user has a card
-        has_card = hasattr(request.user, 'emergency_card')
-        
-        # Check premium status
-        if hasattr(request.user, 'subscription'):
-            is_premium = request.user.subscription.is_premium
-    
-    context = {
-        'has_card': has_card,
-        'is_premium': is_premium,
-    }
-    
-    return render(request, 'core/home.html', context)
+    """Home view with demo mode enabled"""
+    # For now, we'll use the new landing page template
+    # The demo functionality will be handled by the emergency_cards app
+    return render(request, 'core/landing.html')
 
-
-class UpgradeSubscriptionView(views.APIView):
-    """View for upgrading to premium subscription (DEMO VERSION)"""
+def reset_demo(request):
+    """Reset the demo to initial state"""
+    messages.success(request, 'Demo has been reset to default settings.')
+    return redirect('core:home')
     permission_classes = [permissions.IsAuthenticated]
     
     def post(self, request):
