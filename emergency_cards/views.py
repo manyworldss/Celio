@@ -856,47 +856,58 @@ def unified_card_management(request):
         # Regular form submission or theme change
         form = EmergencyCardForm(request.POST, request.FILES, instance=card)
         if form.is_valid():
-            card = form.save(commit=False)
-            card.user = request.user
-            
-            # Get user name from the form
-            card.user_name = request.POST.get('user_name').strip()
-            
-            # Get current language from form
-            current_lang = request.POST.get('active_language', 'en').lower()
-            
-            # Handle custom note if provided
-            custom_note = request.POST.get('custom_note', '').strip()
-            if custom_note:
-                # Set the custom note for the current language
-                card.set_custom_note(current_lang, custom_note)
+            try:
+                card = form.save(commit=False)
+                card.user = request.user
                 
-            # Set as preferred language if it's changed
-            if card.preferred_language != current_lang:
-                card.preferred_language = current_lang
-            
-            # Save the card
-            card.save()
-            
-            # Process the profile picture if needed
-            if 'profile_picture' in request.FILES:
-                card.profile_picture = request.FILES['profile_picture']
+                # Get current language from form
+                current_lang = request.POST.get('active_language', 'en').lower()
+                
+                # Handle custom note if provided
+                custom_note = request.POST.get('custom_note', '').strip()
+                if custom_note:
+                    # Set the custom note for the current language
+                    card.set_custom_note(current_lang, custom_note)
+                    
+                # Set as preferred language if it's changed
+                if card.preferred_language != current_lang:
+                    card.preferred_language = current_lang
+                
+                # Save the card
                 card.save()
-            
-            # Check if show_profile_pic preference changed
-            show_pic = request.POST.get('show_profile_pic')
-            card.show_profile_pic = show_pic == 'on'
-            card.save()
-            
-            return redirect('emergency_cards:unified_card_management')
+                
+                # Process the profile picture if needed
+                if 'profile_picture' in request.FILES:
+                    card.profile_picture = request.FILES['profile_picture']
+                    card.save()
+                
+                # Check if show_profile_pic preference changed
+                show_pic = request.POST.get('show_profile_pic')
+                card.show_profile_pic = show_pic == 'on'
+                card.save()
+                
+                messages.success(request, 'Your emergency card has been saved successfully!')
+                return redirect('emergency_cards:unified_card_management')
+                
+            except Exception as e:
+                # Log the error for debugging
+                print(f"Error saving emergency card: {str(e)}")
+                messages.error(request, f'An error occurred while saving your card: {str(e)}')
+        else:
+            # If form is not valid, show error messages
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
     else:
         form = EmergencyCardForm(instance=card)
         
     # Set initial values for new card
-    if not card:
+    if not card and not request.method == 'POST':
         form.initial = {
-            'theme': 'minimal',
+            'theme': 'light',
             'preferred_language': 'en',
+            'show_profile_pic': True,
+            'condition': 'CEL'  # Default to Celiac Disease
         }
         
     # Get current language - either from the card's preference or default to English    

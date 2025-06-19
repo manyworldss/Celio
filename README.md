@@ -1,92 +1,113 @@
 
-# Celio: Multilingual Emergency Cards for Celiac Disease
+# Gluten Free Emergency Card - Demo
 
-Medium Blog: https://raphealsuber.medium.com/836e1eca60dc
+> A demo web application showcasing full-stack development skills with Django and modern web technologies.
 
-
-<img width="369" alt="Screenshot 2025-03-27 at 11 43 25 PM" src="https://github.com/user-attachments/assets/18abc19a-7b71-4b2e-a7f9-6f9ade307148" />
-
-
+[![Django](https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white)](https://www.djangoproject.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![HTMX](https://img.shields.io/badge/HTMX-48A1D9?style=for-the-badge&logo=html5&logoColor=white)](https://htmx.org/)
 
 ## Overview
 
-Celio is a web application that helps people with celiac disease and gluten sensitivities safely communicate their dietary needs in multiple languages while traveling. Users can create personalized emergency medical cards that translate crucial medical information into six languages: English, Spanish, French, Chinese, Japanese, and Portuguese.
+This is a demo application that allows users to create multilingual emergency cards for communicating dietary restrictions while traveling. The project demonstrates:
 
-**[Live Demo(Coming soon)**
+- Modern Django development practices
+- Clean, responsive UI with Tailwind CSS
+- Interactive features with HTMX
+- Form handling and validation
+- User authentication flows
+- Responsive design principles
 
-## Key Features
+## Demo Features
 
-- **Multilingual Emergency Cards**: Create one card, access it in six languages
-- **QR Code Sharing**: Easy sharing of cards with restaurants and medical staff
-- **Printable Cards**: Download as PDF for offline use
-- **Travel Guides**: Country-specific dining tips and phrases (Premium)
-- **Sage AI Assistant**: Get personalized gluten-free advice powered by Claude AI (Premium)
+- **Multilingual Emergency Cards**: Create and view cards in multiple languages
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
+- **Modern UI/UX**: Clean, intuitive interface built with TailwindCSS
+- **Interactive Elements**: Dynamic form handling with HTMX
+- **User Authentication**: Complete user account management system
 
-## Technical Highlights
+## Technical Stack
 
 - **Backend**: Django 5.1.5, Python 3.13
-- **Frontend**: TailwindCSS, HTMX for dynamic UI without complex JavaScript
-- **Database**: PostgreSQL with JSONField for translations
-- **PDF Generation**: ReportLab for creating downloadable emergency cards
-- **QR Codes**: Dynamic generation of shareable card links
-- **Responsive Design**: Mobile-first approach for travelers on the go
+- **Frontend**: HTML5, TailwindCSS, HTMX
+- **Database**: SQLite (for demo purposes)
+- **Authentication**: Django's built-in auth system
+- **Deployment**: Ready for platforms like Heroku or Railway
 
-## Development Approach
+## Key Technical Achievements
 
-This project follows modern Django best practices:
+- Implemented a unified card management system with real-time preview
+- Created a responsive, mobile-first UI with TailwindCSS
+- Used Django's template system with template inheritance for maintainable code
+- Implemented form handling with client-side validation
+- Set up a clean URL structure with proper namespacing
 
-- Modular app structure with clear separation of concerns
-- Class-based views and form handling
-- REST API endpoints for subscription management
-- Custom middleware for premium content access control
-- Interactive onboarding experience for new users
+## Project Structure
 
-## Screenshots
+```
+celio/
+├── accounts/           # User authentication and profiles
+├── emergency_cards/    # Core emergency card functionality
+├── static/             # Static files (CSS, JS, images)
+├── templates/          # HTML templates
+├── manage.py           # Django management script
+└── requirements.txt    # Project dependencies
+```
 
-Card Creation <img width="1401" alt="Screenshot 2025-03-29 at 8 21 12 PM" src="https://github.com/user-attachments/assets/353dd83d-8f9b-4cb7-b364-2280534b9403" />
- 
+## Getting Started
 
-Travel Guides<img width="1374" alt="Screenshot 2025-03-29 at 8 23 43 PM" src="https://github.com/user-attachments/assets/213e5308-44f7-4e8c-af10-4a480c64eb30" />
+### Prerequisites
 
+- Python 3.8+
+- pip (Python package manager)
 
-Sage Assistant<img width="1403" alt="Screenshot 2025-03-29 at 8 22 42 PM" src="https://github.com/user-attachments/assets/da1a40d8-ea6d-487a-91d6-560c2852dc24" />
-
-
-
-## Installation and Setup
+### Installation
 
 ```bash
-# Clone repository
+# Clone the repository
 git clone https://github.com/yourusername/celio.git
 cd celio
 
-# Set up virtual environment
-python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+# Create and activate a virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: .\venv\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt
 
-# Run migrations
+# Set up the database
 python manage.py migrate
+
+# Create a superuser (optional)
+python manage.py createsuperuser
 
 # Run the development server
 python manage.py runserver
 ```
 
+Visit `http://127.0.0.1:8000/` in your browser to view the application.
+
+## What This Demo Showcases
+
+- Full-stack web development with Django
+- Modern frontend development with TailwindCSS
+- Responsive design principles
+- Form handling and validation
+- User authentication flows
+- Clean code organization
+
 ## Future Enhancements
 
-- Mobile apps for iOS and Android
-- Additional languages and country guides
-- Integration with restaurant recommendation APIs
-- Offline functionality for areas with limited connectivity
+- Add more language options
+- Implement PDF generation for printable cards
+- Add QR code functionality
+- Integrate with translation APIs
 
-## About This Project
+## About the Developer
 
-Celio was developed as a capstone project demonstrating full-stack development skills with Django. It showcases my ability to build practical, user-centered web applications that solve real-world problems.
-
----
-
+This demo was created to showcase my skills in full-stack web development. I'm passionate about building applications that solve real-world problems with clean, maintainable code.
 
 ## Connect
-[LinkedIn](https://linkedin.com/in/raphealsuber/) 
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/raphealsuber/)
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/yourusername)

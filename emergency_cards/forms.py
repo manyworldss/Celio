@@ -14,6 +14,7 @@ class EmergencyCardForm(forms.ModelForm):
     class Meta:
         model = EmergencyCard
         fields = [
+            'user_name',
             'condition',
             'emergency_contact_name',
             'emergency_contact_phone',
@@ -21,7 +22,12 @@ class EmergencyCardForm(forms.ModelForm):
             'profile_picture',
             'show_profile_pic',
             'theme',
+            'preferred_language',
         ]
+        help_texts = {
+            'user_name': 'Your name as it should appear on the card',
+            'condition': 'Select the condition that best describes your dietary restriction',
+        }
         widgets = {
             'emergency_contact_relationship': forms.TextInput(attrs={
                 'placeholder': 'e.g, Parent, Spouse, Siblings'

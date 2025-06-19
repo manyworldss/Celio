@@ -6,7 +6,8 @@
     <title>{% block title %}Celio{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400&display=swap" rel="stylesheet">
+    <script src="{% static 'js/main.js' %}"></script>
+    <link href="https://api.fontshare.com/v2/css?f[]=zodiak@400,700,900&f[]=satoshi@900,700,500,400&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/js/shepherd.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/css/shepherd.css"/>
     {% load static %}
@@ -314,7 +315,7 @@
         }
     </script>
 </head>
-<body class="min-h-screen flex flex-col font-satoshi">
+<body class="min-h-screen flex flex-col font-zodiak">
     <!-- Demo Banner -->
     <div class="bg-gradient-to-r from-teal-500 to-blue-600 text-white text-center py-2 px-4">
         <div class="container mx-auto flex justify-between items-center">
@@ -332,7 +333,7 @@
         <div class="gradient-accent gradient-accent-2"></div>
     </div>
     <!-- Navigation -->
-    <nav class="bg-spruce-800 shadow-md">
+    <nav class="bg-spruce-800 shadow-md sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
@@ -411,11 +412,16 @@
                 </div>
                 
                 <!-- Mobile menu button -->
-                <div class="flex items-center sm:hidden">
-                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-teal-200 hover:text-white hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-teal-500" aria-controls="mobile-menu" aria-expanded="false">
+                <div class="md:hidden">
+                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-teal-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-teal-500" aria-controls="mobile-menu" aria-expanded="false">
                         <span class="sr-only">Open main menu</span>
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <!-- Menu icon -->
+                        <svg class="block h-6 w-6 menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <!-- Close icon -->
+                        <svg class="hidden h-6 w-6 close-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
                 </div>
