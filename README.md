@@ -10,9 +10,10 @@ Medium Blog: https://raphealsuber.medium.com/836e1eca60dc
 
 ## Overview
 
-Celio is a web application that helps people with celiac disease and gluten sensitivities safely communicate their dietary needs in multiple languages while traveling. Users can create personalized emergency medical cards that translate crucial medical information into six languages: English, Spanish, French, Chinese, Japanese, and Portuguese.
+This is a demo web application showcasing a full-stack Django project for creating multilingual emergency medical cards for people with celiac disease and gluten sensitivities. The application demonstrates my ability to build practical, user-centered web applications that solve real-world problems.
 
-**[Live Demo(Coming soon)**
+
+
 
 ## Key Features
 
@@ -24,12 +25,11 @@ Celio is a web application that helps people with celiac disease and gluten sens
 
 ## Technical Highlights
 
-- **Backend**: Django 5.1.5, Python 3.13
-- **Frontend**: TailwindCSS, HTMX for dynamic UI without complex JavaScript
-- **Database**: PostgreSQL with JSONField for translations
-- **PDF Generation**: ReportLab for creating downloadable emergency cards
-- **QR Codes**: Dynamic generation of shareable card links
-- **Responsive Design**: Mobile-first approach for travelers on the go
+- Implemented a unified card management system with real-time preview
+- Created a responsive, mobile-first UI with TailwindCSS
+- Used Django's template system with template inheritance for maintainable code
+- Implemented form handling with client-side validation
+- Set up a clean URL structure with proper namespacing
 
 ## Development Approach
 
