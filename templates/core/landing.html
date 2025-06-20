@@ -3,10 +3,8 @@
 {% block content %}
 <!-- Navigation -->
 <nav class="bg-white py-4 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-7xl mx-auto flex justify-between items-center">
-        <div class="flex items-center">
-            <span class="text-2xl font-bold text-teal-600">Celio</span>
-        </div>
+    <div class="max-w-7xl mx-auto flex justify-end items-center">
+        <!-- Removed duplicate Celio logo -->
         <div class="hidden md:flex items-center space-x-8">
             <a href="#features" class="text-gray-700 hover:text-teal-600 transition-colors">Features</a>
             <a href="#how-it-works" class="text-gray-700 hover:text-teal-600 transition-colors">How It Works</a>
@@ -15,9 +13,12 @@
                 Get Started
             </a>
         </div>
-        <button class="md:hidden text-gray-700">
-            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+        <button class="md:hidden text-gray-700" @click="mobileMenuOpen = !mobileMenuOpen">
+            <svg x-show="!mobileMenuOpen" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <svg x-show="mobileMenuOpen" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
         </button>
     </div>

@@ -28,8 +28,10 @@
             --teal-300: #5eead4;
             --teal-200: #99f6e4;
             --teal-100: #ccfbf1;
-            --off-white: #F5F5F0;
+            --off-white: #0f211c;
             --white: #ffffff;
+            --gradient-start: #0f211c;
+            --gradient-end: #1a4237;
         }
         
         /* Logo Styles */
@@ -38,19 +40,37 @@
             font-weight: 900;
             letter-spacing: -0.5px;
             position: relative;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            color: white;
+            font-size: 1.875rem;
             line-height: 1;
         }
         
-        .dot {
-            display: inline-block;
-            animation: pulse 2s infinite;
+
+        
+
+        
+        .checkmark-container {
+            display: inline-flex;
+            margin-left: 0.4rem;
+            transform: translateY(-1px);
         }
         
-        @keyframes pulse {
-            0% { opacity: 0.8; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.2); }
-            100% { opacity: 0.8; transform: scale(1); }
+        .checkmark {
+            width: 1.25rem;
+            height: 1.25rem;
+            color: var(--teal-400);
+        }
+        
+        .checkmark circle {
+            fill: none;
+            stroke: currentColor;
+        }
+        
+        .checkmark path {
+            stroke: currentColor;
+            fill: none;
         }
         
         /* Base Styles */
@@ -58,8 +78,9 @@
             position: relative;
             overflow-x: hidden;
             font-family: 'Aeonik', sans-serif;
-            color: #1a1a1a;
-            background-color: #f9fafb;
+            color: #e2e8f0;
+            background: var(--spruce-900);
+            min-height: 100vh;
             line-height: 1.6;
         }
         
@@ -72,8 +93,8 @@
             right: 0;
             bottom: 0;
             background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.95) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.95) 1px, transparent 1px);
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
             background-size: 20px 20px;
             z-index: -10;
             opacity: 0.8;
@@ -87,7 +108,7 @@
             left: 0;
             right: 0;
             height: 30vh;
-            background: linear-gradient(180deg, rgba(249, 250, 251, 0.9) 0%, rgba(249, 250, 251, 0) 100%);
+            background: linear-gradient(180deg, rgba(15, 33, 28, 0.9) 0%, rgba(15, 33, 28, 0) 100%);
             z-index: -9;
             pointer-events: none;
         }
@@ -122,10 +143,11 @@
         
         /* Content area styling */
         .content-area {
-            background-color: white;
+            background-color: var(--spruce-800);
+            border: 1px solid var(--spruce-700);
             border-radius: 0.75rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03), 
-                        0 4px 12px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 
+                        0 4px 12px rgba(0, 0, 0, 0.08);
             margin: 1.5rem auto;
             max-width: 100%;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -139,12 +161,12 @@
         
         /* Card styling */
         .card-bg {
-            background: white;
+            background: var(--spruce-800);
             border-radius: 0.75rem;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03),
-                        0 2px 8px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1),
+                        0 2px 8px rgba(0, 0, 0, 0.08);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
-            border: 1px solid rgba(0, 0, 0, 0.03);
+            border: 1px solid var(--spruce-700);
         }
         
         .card-bg:hover {
@@ -158,7 +180,9 @@
             position: relative;
             border-radius: 0.75rem;
             overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            background: var(--spruce-800);
+            border: 1px solid var(--spruce-700);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
         }
         
@@ -172,8 +196,8 @@
             height: 60px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid white;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border: 3px solid var(--spruce-800);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             position: absolute;
             top: 10px;
             right: 10px;
@@ -185,8 +209,9 @@
             font-weight: 900;
             letter-spacing: -0.5px;
             font-size: 1.85rem;
-            padding-right: 10px;
-            margin-right: 4px;
+            color: white;
+            display: inline-flex;
+            align-items: center;
         }
         
         .celio-logo::after {
@@ -242,7 +267,8 @@
         
         /* Card background styles */
         .card-bg {
-            background-color: white;
+            background-color: var(--spruce-800);
+            border: 1px solid var(--spruce-700);
             border-radius: 0.5rem;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -255,10 +281,10 @@
         
         /* Demo button styling */
         .demo-button {
-            background-color: white;
-            color: var(--deep-teal);
+            background-color: var(--spruce-800);
+            color: var(--teal-300);
             transition: all 0.2s ease;
-            border: 2px solid var(--deep-teal);
+            border: 2px solid var(--teal-400);
             font-weight: 600;
             display: inline-flex;
             align-items: center;
@@ -331,7 +357,8 @@
         
         /* Card animations */
         .card-bg {
-            background-color: white;
+            background-color: var(--spruce-800);
+            border: 1px solid var(--spruce-700);
             border-radius: 0.5rem;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -382,7 +409,7 @@
     <div class="bg-gradient-to-r from-teal-500 to-blue-600 text-white text-center py-2 px-4">
         <div class="container mx-auto flex justify-between items-center">
             <span class="font-medium">DEMO MODE - This is a demonstration of the Celio e-card system</span>
-            <a href="{% url 'core:reset_demo' %}" class="bg-white text-teal-600 hover:bg-gray-100 px-3 py-1 rounded text-sm font-medium transition-colors">
+            <a href="{% url 'core:reset_demo' %}" class="bg-white/90 hover:bg-white text-teal-700 px-3 py-1 rounded text-sm font-medium transition-colors">
                 Reset Demo
             </a>
         </div>
@@ -405,8 +432,15 @@
                 <div class="flex flex-col items-center justify-center w-1/3">
                     <a href="/" class="flex flex-col items-center group">
                         <div class="flex items-center">
-                            <span class="text-4xl font-black text-white celio-logo">Celio</span>
-                            <span class="relative -ml-2 -mb-3 w-2.5 h-2.5 bg-teal-400 rounded-full dot"></span>
+                            <span class="celio-logo">
+                                Celio
+                                <span class="checkmark-container">
+                                    <svg class="checkmark" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                        <path d="M8 12L11 15L16 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                            </span>
                         </div>
                         <div class="text-center mt-1">
                             <span class="text-xs uppercase tracking-widest text-teal-300 font-medium">e-Card</span>
@@ -417,13 +451,7 @@
                 
                 <!-- Right side - Navigation -->
                 <div class="w-1/3 flex justify-end">
-                    <div class="hidden sm:flex items-center space-x-1">
-                        <a href="/" class="px-4 py-2 text-sm font-medium rounded-md transition-colors {% if request.path == '/' %}bg-spruce-800 text-white{% else %}text-gray-300 hover:bg-spruce-700 hover:text-white{% endif %}">
-                            Home
-                        </a>
-                        <a href="{% url 'e_cards:unified_card_management' %}" class="px-4 py-2 text-sm font-medium rounded-md transition-colors {% if 'e_cards' in request.path %}bg-spruce-800 text-white{% else %}text-gray-300 hover:bg-spruce-700 hover:text-white{% endif %}">
-                            My Card
-                        </a>
+                    <div class="flex items-center space-x-4">
                         <a href="{% url 'travel:travel_guide_list' %}" class="px-4 py-2 text-sm font-medium rounded-md transition-colors {% if 'travel' in request.path %}bg-spruce-800 text-white{% else %}text-gray-300 hover:bg-spruce-700 hover:text-white{% endif %}">
                             Travel Guides
                         </a>
@@ -432,85 +460,54 @@
                         </a>
                     </div>
                 </div>
-                
-                <!-- Right side buttons -->
-                <div class="hidden sm:ml-6 sm:flex sm:items-center sm:space-x-4">
                     
-                    {% if user.is_authenticated %}
-                        <div class="relative" x-data="{ open: false }">
-                            <button @click="open = !open" class="flex items-center text-sm font-medium text-white rounded-full bg-spruce-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
-                                <span class="sr-only">Open user menu</span>
-                                <span class="h-8 w-8 rounded-full bg-teal-200 flex items-center justify-center text-white font-bold">
-                                    {{ user.first_name|first|upper }}{{ user.last_name|first|upper }}
-                                </span>
-                            </button>
-                            
-                            <!-- Fixed dropdown position with z-index to ensure it appears on top -->
-                            <div x-show="open" @click.away="open = false" class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-spruce-800 ring-1 ring-black ring-opacity-5 focus:outline-none z-50" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-                                <a href="{% url 'accounts:profile' %}" class="block px-4 py-2 text-sm text-teal-200 hover:bg-teal-700" role="menuitem">Your Profile</a>
-                                <a href="{% url 'e_cards:unified_card_management' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">My Card</a>
-                                <a href="{% url 'e_cards:card_detail' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Card Details</a>
-                                <a href="{% url 'e_cards:edit_card' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Edit Card</a>
-                                <a href="{% url 'accounts:logout' %}" class="block px-4 py-2 text-sm text-teal-200 hover:bg-teal-700" role="menuitem">Sign out</a>
-                            </div>
-                        </div>
-                    {% else %}
-                        <a href="{% url 'accounts:login' %}" class="text-sm font-medium text-teal-200 hover:text-white">Log in</a>
-                        <a href="{% url 'accounts:signup' %}" class="primary-button px-4 py-2 rounded-lg text-sm font-medium">
-                            Sign up
-                        </a>
-                    {% endif %}
-                </div>
-                
-                <!-- Right side buttons -->
-                <div class="flex items-center space-x-4">
-                    <div class="hidden sm:flex sm:items-center sm:space-x-4">
+                    <!-- User Menu -->
+                    <div class="hidden sm:block">
                         {% if user.is_authenticated %}
                             <div class="relative" x-data="{ open: false }">
-                                <button @click="open = !open" class="flex items-center text-sm font-medium text-white rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
+                                <button @click="open = !open" class="flex items-center text-sm font-medium text-white rounded-full bg-spruce-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
                                     <span class="sr-only">Open user menu</span>
-                                    <span class="h-8 w-8 rounded-full bg-teal-600 flex items-center justify-center text-white font-bold">
+                                    <span class="h-8 w-8 rounded-full bg-teal-500 flex items-center justify-center text-white font-bold">
                                         {{ user.first_name|first|upper }}{{ user.last_name|first|upper }}
                                     </span>
                                 </button>
                                 
-                                <!-- Dropdown menu -->
-                                <div x-show="open" @click.away="open = false" class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50" role="menu" aria-orientation="vertical" tabindex="-1">
-                                    <div class="py-1" role="none">
-                                        <a href="{% url 'accounts:profile' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Your Profile</a>
-                                        <a href="{% url 'accounts:logout' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Sign out</a>
-                                    </div>
+                                <!-- Dropdown Menu -->
+                                <div x-show="open" @click.away="open = false" class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-spruce-800 ring-1 ring-black ring-opacity-5 focus:outline-none z-50" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                                    <a href="{% url 'accounts:profile' %}" class="block px-4 py-2 text-sm text-teal-200 hover:bg-teal-700" role="menuitem">Your Profile</a>
+                                    <a href="{% url 'e_cards:unified_card_management' %}" class="block px-4 py-2 text-sm text-teal-200 hover:bg-teal-700" role="menuitem">My Card</a>
+                                    <a href="{% url 'accounts:logout' %}" class="block px-4 py-2 text-sm text-teal-200 hover:bg-teal-700" role="menuitem">Sign out</a>
                                 </div>
                             </div>
                         {% else %}
-                            <a href="{% url 'accounts:login' %}" class="text-sm font-medium text-gray-300 hover:text-white">Sign in</a>
-                            <a href="{% url 'accounts:signup' %}" class="ml-4 px-4 py-2 bg-teal-600 text-white text-sm font-medium rounded-md hover:bg-teal-700 transition-colors">
-                                Sign up
-                            </a>
+                            <div class="flex items-center space-x-4">
+                                <a href="{% url 'accounts:login' %}" class="text-sm font-medium text-teal-200 hover:text-white">Log in</a>
+                                <a href="{% url 'accounts:signup' %}" class="px-4 py-2 bg-teal-600 text-white rounded-lg text-sm font-medium hover:bg-teal-700 transition-colors">
+                                    Sign up
+                                </a>
+                            </div>
                         {% endif %}
                     </div>
+                </div>
 
                     <!-- Mobile menu button -->
-                    <div class="sm:hidden">
-                        <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-300 hover:text-white hover:bg-spruce-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-teal-500" aria-controls="mobile-menu" aria-expanded="false">
-                            <span class="sr-only">Open main menu</span>
-                            <!-- Menu icon -->
-                            <svg class="block h-6 w-6 menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                            </svg>
-                            <!-- Close icon -->
-                            <svg class="hidden h-6 w-6 close-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-                    </div>
+                <div class="flex items-center">
+                    <button type="button" @click="mobileMenuOpen = !mobileMenuOpen" class="inline-flex items-center justify-center p-2 rounded-md text-gray-300 hover:text-white hover:bg-spruce-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-teal-500 transition-colors">
+                        <span class="sr-only">Open main menu</span>
+                        <svg x-show="!mobileMenuOpen" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <svg x-show="mobileMenuOpen" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
                 </div>
             </div>
         </div>
         
         <!-- Mobile Navigation Menu -->
         <div class="sm:hidden hidden bg-spruce-800 shadow-lg rounded-b-lg" id="mobile-menu">
-            <div class="px-2 pt-2 pb-3 space-y-1">
+            <div class="px-2 pt-2 pb-4 space-y-1">
                 <a href="/" class="block px-4 py-3 text-base font-medium text-gray-200 hover:bg-spruce-700 rounded-md transition-colors {% if request.path == '/' %}bg-spruce-700 text-white{% endif %}">
                     Home
                 </a>
@@ -540,12 +537,6 @@
                         <div class="mt-4 space-y-2">
                             <a href="{% url 'e_cards:unified_card_management' %}" class="block px-3 py-2 text-base font-medium text-gray-200 hover:bg-spruce-700 hover:text-white rounded-md transition-colors">
                                 My Card
-                            </a>
-                            <a href="{% url 'e_cards:card_detail' %}" class="block px-3 py-2 text-base font-medium text-gray-200 hover:bg-spruce-700 hover:text-white rounded-md transition-colors">
-                                Card Details
-                            </a>
-                            <a href="{% url 'e_cards:edit_card' %}" class="block px-3 py-2 text-base font-medium text-gray-200 hover:bg-spruce-700 hover:text-white rounded-md transition-colors">
-                                Edit Card
                             </a>
                             <a href="{% url 'accounts:profile' %}" class="block px-3 py-2 text-base font-medium text-gray-200 hover:bg-spruce-700 hover:text-white rounded-md transition-colors">
                                 Your Profile
@@ -593,16 +584,12 @@
         {% if messages %}
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             {% for message in messages %}
-            <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md mb-4" role="alert">
-                <div class="flex">
-                    <div class="py-1">
-                        <svg class="fill-current h-6 w-6 text-teal-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <p class="font-bold">{{ message }}</p>
-                    </div>
+            <div class="bg-teal-900/50 border-l-4 border-teal-400 text-teal-100 p-4 shadow-md mb-4 rounded-md flex items-start" role="alert">
+                <svg class="flex-shrink-0 h-5 w-5 text-teal-400 mt-0.5 mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h.01a1 1 0 100-2H10V9z" clip-rule="evenodd" />
+                </svg>
+                <div>
+                    <p class="font-medium">{{ message }}</p>
                 </div>
             </div>
             {% endfor %}
@@ -612,14 +599,21 @@
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Alpine.js (for dropdowns) -->
+    <!-- Alpine.js (for dropdowns and mobile menu) -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     
-    <!-- Mobile menu toggle script -->
     <script>
-        document.getElementById('mobile-menu-button').addEventListener('click', function() {
-            const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenu.classList.toggle('hidden');
+        // Initialize mobile menu state
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('mobileMenu', () => ({
+                open: false,
+                toggle() {
+                    this.open = !this.open;
+                },
+                close() {
+                    this.open = false;
+                }
+            }));
         });
     </script>
     
