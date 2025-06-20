@@ -1,24 +1,20 @@
 
-# Gluten Free Emergency Card - Demo
+# Celio: Multilingual Emergency Cards for Celiac Disease
 
-> A demo web application showcasing full-stack development skills with Django and modern web technologies.
+Medium Blog: https://raphealsuber.medium.com/836e1eca60dc
 
-[![Django](https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white)](https://www.djangoproject.com/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-[![HTMX](https://img.shields.io/badge/HTMX-48A1D9?style=for-the-badge&logo=html5&logoColor=white)](https://htmx.org/)
+
+<img width="369" alt="Screenshot 2025-03-27 at 11 43 25 PM" src="https://github.com/user-attachments/assets/18abc19a-7b71-4b2e-a7f9-6f9ade307148" />
+
+
 
 ## Overview
 
-This is a demo application that allows users to create multilingual emergency cards for communicating dietary restrictions while traveling. The project demonstrates:
+Celio is a web application that helps people with celiac disease and gluten sensitivities safely communicate their dietary needs in multiple languages while traveling. Users can create personalized emergency medical cards that translate crucial medical information into six languages: English, Spanish, French, Chinese, Japanese, and Portuguese.
 
-- Modern Django development practices
-- Clean, responsive UI with Tailwind CSS
-- Interactive features with HTMX
-- Form handling and validation
-- User authentication flows
-- Responsive design principles
+**[Live Demo(Coming soon)**
 
-## Demo Features
+## Key Features
 
 - **Multilingual Emergency Cards**: Create and view cards in multiple languages
 - **Responsive Design**: Works seamlessly on desktop and mobile devices
@@ -29,39 +25,35 @@ This is a demo application that allows users to create multilingual emergency ca
 ## Technical Stack
 
 - **Backend**: Django 5.1.5, Python 3.13
-- **Frontend**: HTML5, TailwindCSS, HTMX
-- **Database**: SQLite (for demo purposes)
-- **Authentication**: Django's built-in auth system
-- **Deployment**: Ready for platforms like Heroku or Railway
+- **Frontend**: TailwindCSS, HTMX for dynamic UI without complex JavaScript
+- **Database**: PostgreSQL with JSONField for translations
+- **PDF Generation**: ReportLab for creating downloadable emergency cards
+- **QR Codes**: Dynamic generation of shareable card links
+- **Responsive Design**: Mobile-first approach for travelers on the go
 
-## Key Technical Achievements
+## Development Approach
 
-- Implemented a unified card management system with real-time preview
-- Created a responsive, mobile-first UI with TailwindCSS
-- Used Django's template system with template inheritance for maintainable code
-- Implemented form handling with client-side validation
-- Set up a clean URL structure with proper namespacing
+This project follows modern Django best practices:
 
-## Project Structure
+- Modular app structure with clear separation of concerns
+- Class-based views and form handling
+- REST API endpoints for subscription management
+- Custom middleware for premium content access control
+- Interactive onboarding experience for new users
 
-```
-celio/
-├── accounts/           # User authentication and profiles
-├── emergency_cards/    # Core emergency card functionality
-├── static/             # Static files (CSS, JS, images)
-├── templates/          # HTML templates
-├── manage.py           # Django management script
-└── requirements.txt    # Project dependencies
-```
+## Screenshots
 
-## Getting Started
+Card Creation <img width="1401" alt="Screenshot 2025-03-29 at 8 21 12 PM" src="https://github.com/user-attachments/assets/353dd83d-8f9b-4cb7-b364-2280534b9403" />
+ 
 
-### Prerequisites
+Travel Guides<img width="1374" alt="Screenshot 2025-03-29 at 8 23 43 PM" src="https://github.com/user-attachments/assets/213e5308-44f7-4e8c-af10-4a480c64eb30" />
 
-- Python 3.8+
-- pip (Python package manager)
 
-### Installation
+Sage Assistant<img width="1403" alt="Screenshot 2025-03-29 at 8 22 42 PM" src="https://github.com/user-attachments/assets/da1a40d8-ea6d-487a-91d6-560c2852dc24" />
+
+
+
+## Installation and Setup
 
 ```bash
 # Clone the repository
