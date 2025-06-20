@@ -23,7 +23,7 @@ def country_detail(request, country_code):
     general_phrases = RestaurantPhrase.objects.filter(country=country, category='general')
     ordering_phrases = RestaurantPhrase.objects.filter(country=country, category='ordering')
     ingredient_phrases = RestaurantPhrase.objects.filter(country=country, category='ingredients')
-    emergency_phrases = RestaurantPhrase.objects.filter(country=country, category='emergency')
+    e_card_phrases = RestaurantPhrase.objects.filter(country=country, category='emergency')
     
     return render(request, 'travel/country_detail.html', {
         'country': country,
@@ -31,7 +31,7 @@ def country_detail(request, country_code):
         'general_phrases': general_phrases,
         'ordering_phrases': ordering_phrases,
         'ingredient_phrases': ingredient_phrases,
-        'emergency_phrases': emergency_phrases
+        'e_card_phrases': e_card_phrases
     })
 
 @login_required

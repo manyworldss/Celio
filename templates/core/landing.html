@@ -1,90 +1,61 @@
 {% extends "base.html" %}
 
 {% block content %}
-<!-- Hero Section -->
-<div class="min-h-screen bg-gradient-to-b from-white to-gray-50">
-    <!-- Sticky Header -->
-    <div class="sticky top-0 z-50 bg-white shadow-sm">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <!-- Logo -->
-                <a href="/" class="text-2xl font-bold text-teal-600 hover:text-teal-700 transition-colors">
-                    Gluten Free Emergency Card
-                </a>
-                
-                <!-- Navigation -->
-                <nav class="hidden md:flex items-center space-x-8">
-                    <a href="#features" class="text-gray-700 hover:text-teal-600 px-3 py-2 text-sm font-medium transition-colors">Features</a>
-                    <a href="#how-it-works" class="text-gray-700 hover:text-teal-600 px-3 py-2 text-sm font-medium transition-colors">How It Works</a>
-                    <a href="{% url 'emergency_cards:unified_card_management' %}" class="ml-4 px-4 py-2 bg-teal-600 text-white text-sm font-medium rounded-md hover:bg-teal-700 transition-colors">
-                        Create Your Card
-                    </a>
-                </nav>
-                
-                <!-- Mobile menu button -->
-                <div class="md:hidden">
-                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-teal-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-teal-500">
-                        <span class="sr-only">Open main menu</span>
-                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
+<!-- Navigation -->
+<nav class="bg-white py-4 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <div class="flex items-center">
+            <span class="text-2xl font-bold text-teal-600">Celio</span>
         </div>
-        
-        <!-- Mobile menu -->
-        <div class="md:hidden hidden" id="mobile-menu">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white shadow-lg">
-                <a href="#features" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-teal-600 hover:bg-gray-50 rounded-md">Features</a>
-                <a href="#how-it-works" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-teal-600 hover:bg-gray-50 rounded-md">How It Works</a>
-                <a href="{% url 'emergency_cards:unified_card_management' %}" class="block px-3 py-2 text-base font-medium text-teal-600 hover:bg-teal-50 rounded-md">
-                    Create Your Card
-                </a>
-            </div>
+        <div class="hidden md:flex items-center space-x-8">
+            <a href="#features" class="text-gray-700 hover:text-teal-600 transition-colors">Features</a>
+            <a href="#how-it-works" class="text-gray-700 hover:text-teal-600 transition-colors">How It Works</a>
+            <a href="#about" class="text-gray-700 hover:text-teal-600 transition-colors">About</a>
+            <a href="{% url 'emergency_cards:unified_card_management' %}" class="bg-teal-600 text-white px-6 py-2 rounded-full hover:bg-teal-700 transition-colors">
+                Get Started
+            </a>
         </div>
+        <button class="md:hidden text-gray-700">
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+        </button>
     </div>
+</nav>
 
-    <!-- Hero Content -->
-    <div class="pt-16 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+<!-- Hero Section -->
+<div class="min-h-screen bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
         <div class="lg:grid lg:grid-cols-2 lg:gap-12 items-center">
-            <div class="mb-12 lg:mb-0">
-                <h1 class="text-4xl font-bold text-gray-900 sm:text-5xl md:text-6xl mb-6">
-                    <span class="block">Gluten Free</span>
-                    <span class="block text-teal-600">Emergency Card</span>
+            <div class="text-center lg:text-left mb-16 lg:mb-0">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+                    Gluten Free<br>Emergency Card
                 </h1>
-                <p class="mt-3 text-lg text-gray-600 sm:mt-5 sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
+                <p class="text-xl text-gray-600 mb-8 max-w-lg mx-auto lg:mx-0">
                     Communicate your dietary needs safely in any language while traveling abroad.
                 </p>
-                <div class="mt-8 flex flex-col sm:flex-row gap-4">
-                    <a href="{% url 'emergency_cards:unified_card_management' %}" class="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 transition-colors md:py-4 md:text-lg md:px-10">
-                        Create Your Card
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                    <a href="{% url 'emergency_cards:unified_card_management' %}" class="inline-flex items-center justify-center px-8 py-4 border border-transparent text-base font-medium rounded-full text-white bg-teal-600 hover:bg-teal-700 transition-colors md:text-lg">
+                        Get Your Free Card
                     </a>
                 </div>
             </div>
             <div class="relative">
-                <div class="relative mx-auto w-full max-w-xs">
-                    <div class="overflow-hidden rounded-3xl shadow-2xl border-8 border-gray-800">
-                        <div class="bg-gray-800 p-1">
-                            <div class="aspect-w-9 aspect-h-16 w-full bg-gray-900 rounded-lg overflow-hidden">
-                                <!-- Phone mockup with card preview -->
-                                <div class="h-full flex flex-col bg-white">
-                                    <div class="bg-teal-600 text-white p-4 text-center">
-                                        <div class="font-bold text-lg">GLUTEN FREE</div>
-                                        <div class="text-sm">Emergency Card</div>
-                                    </div>
-                                    <div class="p-4 flex-1 flex flex-col justify-center items-center">
-                                        <div class="text-center mb-4">
-                                            <div class="text-4xl">🌾</div>
-                                            <div class="font-bold text-gray-800 mt-2">NO GLUTEN</div>
-                                        </div>
-                                        <div class="text-sm text-gray-600 text-center">
-                                            I have celiac disease and cannot eat gluten. Even small amounts can make me very sick.
-                                        </div>
-                                    </div>
-                                    <div class="bg-gray-100 p-3 text-center text-xs text-gray-600">
-                                        Show this card when ordering food
-                                    </div>
+                <!-- Phone mockup -->
+                <div class="bg-gray-100 rounded-3xl p-2 shadow-xl max-w-md mx-auto">
+                    <div class="bg-white rounded-2xl overflow-hidden">
+                        <div class="h-8 bg-gray-100 flex items-center px-4">
+                            <div class="h-2 w-2 rounded-full bg-gray-400 mr-1"></div>
+                            <div class="h-2 w-2 rounded-full bg-gray-400 mr-1"></div>
+                            <div class="h-2 w-2 rounded-full bg-gray-400"></div>
+                        </div>
+                        <div class="p-6">
+                            <div class="bg-teal-100 text-teal-800 text-sm font-medium px-3 py-2 rounded-lg mb-4">
+                                I have celiac disease and cannot eat gluten
+                            </div>
+                            <div class="text-right">
+                                <div class="inline-block bg-teal-600 text-white text-sm font-medium px-4 py-2 rounded-lg">
+                                    No problem! We can accommodate you.
                                 </div>
                             </div>
                         </div>
@@ -93,89 +64,110 @@
             </div>
         </div>
     </div>
+</div>
 
     <!-- Features Section -->
-    <div id="features" class="py-16 bg-white">
+    <div id="features" class="py-20 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Why You Need This Card</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">Travel with confidence knowing your dietary needs will be understood</p>
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Why Choose Our E-Card?</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">The most reliable way to communicate your dietary needs anywhere in the world</p>
             </div>
-            
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
-                    <div class="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center mb-4 text-teal-600">
-                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                <!-- Feature 1 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 transition-all hover:shadow-md">
+                    <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Multiple Languages</h3>
-                    <p class="text-gray-600">Communicate your dietary needs in the local language, no matter where you travel.</p>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Medical Accuracy</h3>
+                    <p class="text-gray-600">Professionally translated and reviewed by medical professionals to ensure clear communication of your condition.</p>
                 </div>
-                
-                <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
-                    <div class="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center mb-4 text-teal-600">
-                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+
+                <!-- Feature 2 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 transition-all hover:shadow-md">
+                    <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Clear Communication</h3>
-                    <p class="text-gray-600">Eliminate language barriers and ensure your dietary restrictions are clearly understood.</p>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Always Accessible</h3>
+                    <p class="text-gray-600">Access your card anytime, anywhere - no internet connection needed after download.</p>
                 </div>
-                
-                <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
-                    <div class="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center mb-4 text-teal-600">
-                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+
+                <!-- Feature 3 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 transition-all hover:shadow-md">
+                    <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Peace of Mind</h3>
-                    <p class="text-gray-600">Dine with confidence knowing you've clearly communicated your needs to restaurant staff.</p>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Free to Use</h3>
+                    <p class="text-gray-600">Create and download your emergency card for free. Premium features available for enhanced functionality.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Our Story Section -->
+    <div id="about" class="py-20 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Our Story</h2>
+                <div class="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+                    <p class="text-lg text-gray-700 mb-6 leading-relaxed">
+                        Three years ago, my life changed when I was diagnosed with celiac disease. Like many others with this condition, I constantly struggled to communicate my dietary needs—especially when traveling or dining out. Language barriers made this challenge even more daunting.
+                    </p>
+                    <p class="text-lg text-gray-700 mb-6 leading-relaxed">
+                        I realized that while society evolves, the tools available to celiac patients have remained stagnant. Explaining celiac disease is difficult enough to someone who's never heard of it, but it becomes nearly impossible when they speak a different language.
+                    </p>
+                    <p class="text-lg text-gray-700 leading-relaxed">
+                        This personal struggle sparked the creation of Celio—a web application designed to help people with celiac disease and gluten sensitivities safely communicate their dietary needs in multiple languages.
+                    </p>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- How It Works Section -->
-    <div id="how-it-works" class="py-16 bg-gray-50">
+    <div id="how-it-works" class="py-20 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">How It Works</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">Get your personalized emergency card in just a few simple steps</p>
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">How It Works</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">Get your personalized emergency card in just a few simple steps</p>
             </div>
-            
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                <div class="relative">
-                    <div class="absolute -left-4 top-0 h-full w-0.5 bg-teal-200 md:block hidden"></div>
-                    <div class="relative pl-8">
-                        <div class="absolute left-0 top-0 w-8 h-8 rounded-full bg-teal-600 flex items-center justify-center text-white font-bold">1</div>
-                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Create Your Card</h3>
-                        <p class="text-gray-600">Fill in your details and dietary restrictions in our simple form.</p>
-                    </div>
+                <!-- Step 1 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center">
+                    <div class="w-14 h-14 bg-teal-600 text-white text-xl font-bold rounded-full flex items-center justify-center mx-auto mb-4">1</div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Create Your Card</h3>
+                    <p class="text-gray-600">Fill in your details and dietary requirements in our simple form.</p>
                 </div>
-                
-                <div class="relative">
-                    <div class="absolute -left-4 top-0 h-full w-0.5 bg-teal-200 md:block hidden"></div>
-                    <div class="relative pl-8">
-                        <div class="absolute left-0 top-0 w-8 h-8 rounded-full bg-teal-600 flex items-center justify-center text-white font-bold">2</div>
-                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Download or Print</h3>
-                        <p class="text-gray-600">Save your card to your phone or print a physical copy to carry with you.</p>
-                    </div>
-                </div>
-                
-                <div class="relative">
-                    <div class="relative pl-8">
-                        <div class="absolute left-0 top-0 w-8 h-8 rounded-full bg-teal-600 flex items-center justify-center text-white font-bold">3</div>
-                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Travel with Confidence</h3>
-                        <p class="text-gray-600">Show your card when ordering food to communicate your needs clearly.</p>
-                    </div>
-                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Always Accessible</h3>
+                <p class="text-gray-600">Access your card anytime, anywhere - no internet connection needed after download.</p>
             </div>
-            
-            <div class="mt-12 text-center">
-                <a href="{% url 'emergency_cards:unified_card_management' %}" class="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 transition-colors md:py-4 md:text-lg md:px-10">
-                    Get Started Now
-                </a>
+
+            <!-- Feature 3 -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 transition-all hover:shadow-md">
+                <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center mb-4">
+                    <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                            </div>
+                        </div>
+                        <div class="ml-6">
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Download or Print</h3>
+                            <p class="text-gray-600">Download your card to your phone or print it out to carry with you when you travel.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-16 text-center">
+                    <a href="{% url 'emergency_cards:unified_card_management' %}" class="inline-block px-8 py-3 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors text-lg">
+                        Get Started - It's Free
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -198,27 +190,51 @@
     </div>
     
     <!-- Footer -->
-    <footer class="bg-white border-t border-gray-200 mt-24">
-        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
-            <div class="md:flex md:justify-between">
-                <div class="space-y-8">
-                    <h3 class="text-2xl font-bold text-teal-600">Gluten Free Emergency Card</h3>
-                    <p class="text-gray-500 text-sm">
-                        Helping people with celiac disease and gluten sensitivities travel safely worldwide.
-                    </p>
+    <footer class="bg-spruce-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <!-- Brand -->
+                <div class="flex items-center mb-6 md:mb-0">
+                    <span class="text-2xl font-bold">Celio</span>
                 </div>
-                <div class="mt-12 md:mt-0">
-                    <h4 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">Quick Links</h4>
-                    <div class="mt-4 space-y-4">
-                        <a href="#features" class="block text-base text-gray-500 hover:text-teal-600">Features</a>
-                        <a href="#how-it-works" class="block text-base text-gray-500 hover:text-teal-600">How It Works</a>
-                        <a href="{% url 'emergency_cards:unified_card_management' %}" class="block text-base text-gray-500 hover:text-teal-600">Create Your Card</a>
-                    </div>
+                
+                <!-- Links -->
+                <div class="flex flex-wrap justify-center gap-6 mb-6 md:mb-0">
+                    <a href="https://www.ralphsuber.com/" target="_blank" class="text-teal-200 hover:text-white transition-colors">
+                        Blog
+                    </a>
+                    <a href="{% url 'emergency_cards:unified_card_management' %}" class="text-teal-200 hover:text-white transition-colors">
+                        Create E Card
+                    </a>
+                    <a href="{% url 'travel:travel_guide_list' %}" class="text-teal-200 hover:text-white transition-colors">
+                        Travel Guides
+                    </a>
+                    <a href="{% url 'sage:assistant' %}" class="text-teal-200 hover:text-white transition-colors">
+                        Sage Assistant
+                    </a>
+                </div>
+                
+                <!-- Social Links -->
+                <div class="flex space-x-6">
+                    <a href="https://www.linkedin.com/in/raphealsuber/" target="_blank" class="text-teal-300 hover:text-white transition-colors">
+                        <span class="sr-only">LinkedIn</span>
+                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                        </svg>
+                    </a>
+                    <a href="https://github.com/manyworldss" target="_blank" class="text-teal-300 hover:text-white transition-colors">
+                        <span class="sr-only">GitHub</span>
+                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
                 </div>
             </div>
-            <div class="mt-12 border-t border-gray-200 pt-8">
-                <p class="text-base text-gray-400 text-center">
-                    &copy; 2023 Gluten Free Emergency Card. All rights reserved.
+            
+            <!-- Copyright -->
+            <div class="mt-8 pt-6 border-t border-teal-900">
+                <p class="text-center text-teal-500 text-sm">
+                    &copy; {% now "Y" %} Celio. All rights reserved.
                 </p>
             </div>
         </div>

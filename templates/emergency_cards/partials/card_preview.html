@@ -52,6 +52,36 @@
             </div>
         </div>
         
+        <!-- Style Selector -->
+        <div class="relative" x-data="{ open: false, cardStyle: 'standard' }">
+            <button type="button" @click.prevent="open = !open" @click.away="open = false" 
+                    class="flex items-center px-3 py-2 rounded-full bg-teal-600 text-white hover:bg-teal-500 transition-all shadow-lg">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path>
+                </svg>
+                <span class="text-sm font-medium mr-1">
+                    <span x-text="cardStyle === 'standard' ? 'Standard' : 'Driver\'s License'">Standard</span> Style
+                </span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </button>
+            
+            <!-- Style dropdown menu -->
+            <div x-show="open" class="absolute top-full mt-2 right-0 w-48 bg-white rounded-lg shadow-xl overflow-hidden z-50">
+                <button type="button" @click="cardStyle = 'standard'; open = false"
+                    class="w-full text-left px-4 py-2 text-sm text-gray-800 hover:bg-teal-50 hover:text-teal-700 transition-colors"
+                    :class="{'bg-teal-100 text-teal-800 font-medium': cardStyle === 'standard'}">
+                    Standard Card
+                </button>
+                <button type="button" @click="cardStyle = 'drivers-license'; open = false"
+                    class="w-full text-left px-4 py-2 text-sm text-gray-800 hover:bg-teal-50 hover:text-teal-700 transition-colors"
+                    :class="{'bg-teal-100 text-teal-800 font-medium': cardStyle === 'drivers-license'}">
+                    Driver's License
+                </button>
+            </div>
+        </div>
+
         <!-- Theme Selector -->
         <div class="relative" x-data="{ open: false }">
             <button type="button" @click.prevent="open = !open" @click.away="open = false" 
@@ -87,26 +117,27 @@
         </div>
     </div>
     
-    <!-- THE ACTUAL CARD CONTENT -->
-    <div class="theme-{{ preview_theme|default:card.theme }} card-inner p-4 relative rounded-lg shadow-md overflow-hidden">
-        <!-- Action buttons - visible on fullscreen view -->
-        <div class="action-buttons absolute top-2 left-2 flex space-x-2 card-actions">
-            <button class="card-action-btn" title="Share Card">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
-                </svg>
-            </button>
-            <button class="card-action-btn" title="Print Card">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
-                </svg>
-            </button>
-            <button class="card-action-btn" title="Download Card">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                </svg>
-            </button>
-        </div>
+    <!-- Card Content - Switches between standard and driver's license styles -->
+    <div x-show="cardStyle === 'standard'" class="standard-card">
+        <div class="theme-{{ preview_theme|default:card.theme }} card-inner p-4 relative rounded-lg shadow-md overflow-hidden">
+            <!-- Action buttons - visible on fullscreen view -->
+            <div class="action-buttons absolute top-2 left-2 flex space-x-2 card-actions">
+                <button class="card-action-btn" title="Share Card">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+                    </svg>
+                </button>
+                <button class="card-action-btn" title="Print Card">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                    </svg>
+                </button>
+                <button class="card-action-btn" title="Download Card">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                    </svg>
+                </button>
+            </div>
         
         <!-- Language Indicator -->
         <div class="language-indicator absolute top-2 right-2 bg-teal-600 text-white rounded px-2 py-1 text-xs font-medium">
@@ -174,8 +205,49 @@
             </p>
         </div>
         {% endif %}
+        </div>
+    </div>
+    
+    <!-- Driver's License Style Card -->
+    <div x-show="cardStyle === 'drivers-license'" class="drivers-license-card-wrapper">
+        {% include 'emergency_cards/partials/drivers_license_card.html' %}
     </div>
 </div>
+
+<style>
+/* Add some spacing between the controls and the card */
+.emergency-card-container {
+    margin-top: 1rem;
+}
+
+/* Style the card containers */
+.standard-card,
+.drivers-license-card-wrapper {
+    transition: opacity 0.3s ease;
+}
+
+/* Ensure the barcode font is loaded */
+@import url('https://fonts.googleapis.com/css2?family=Libre+Barcode+39&display=swap');
+
+/* Add some responsive adjustments */
+@media (max-width: 640px) {
+    .card-controls {
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: center;
+    }
+    
+    .card-controls > div {
+        width: 100%;
+        max-width: 280px;
+    }
+    
+    .card-controls button {
+        width: 100%;
+        justify-content: center;
+    }
+}
+</style>
 
 <style>
 /* Theme styles */

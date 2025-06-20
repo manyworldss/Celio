@@ -203,22 +203,22 @@
                 </div>
                 {% endif %}
                 
-                {% if emergency_phrases %}
-                <h3 class="text-xl font-medium text-teal-300 mb-4">Emergency Phrases</h3>
+                {% if e_card_phrases %}
+                <h3 class="text-xl font-medium text-teal-300 mb-4">E-Card Phrases</h3>
                 <div class="space-y-4">
-                    {% for phrase in emergency_phrases %}
-                    <div class="border border-red-800 bg-red-900 bg-opacity-20 rounded-lg p-5">
+                    {% for phrase in e_card_phrases %}
+                    <div class="border border-teal-800 bg-teal-900 bg-opacity-20 rounded-lg p-5">
                         <div class="mb-3">
-                            <span class="font-medium text-red-300 block mb-1">English:</span>
+                            <span class="font-medium text-teal-300 block mb-1">English:</span>
                             <span class="text-white text-lg">{{ phrase.english_text }}</span>
                         </div>
                         <div class="mb-3">
-                            <span class="font-medium text-red-300 block mb-1">{{ country.language }}:</span>
+                            <span class="font-medium text-teal-300 block mb-1">{{ country.language }}:</span>
                             <span class="text-white text-lg">{{ phrase.translated_text }}</span>
                         </div>
                         {% if phrase.pronunciation %}
                         <div>
-                            <span class="font-medium text-red-300 block mb-1">Pronunciation:</span>
+                            <span class="font-medium text-teal-300 block mb-1">Pronunciation:</span>
                             <span class="text-teal-100">{{ phrase.pronunciation }}</span>
                         </div>
                         {% endif %}

@@ -1,0 +1,294 @@
+{% load static %}
+{% load emergency_card_filters %}
+
+<div class="drivers-license-card-container">
+    <div class="drivers-license-card">
+        <!-- Header with state and title -->
+        <div class="dl-header">
+            <div class="dl-state">
+                <span class="dl-state-text">CELIAC</span>
+                <span class="dl-state-subtext">DISEASE</span>
+            </div>
+            <div class="dl-title">
+                <span>GLUTEN FREE</span>
+                <span>EMERGENCY CARD</span>
+            </div>
+            <div class="dl-flag">
+                {% if current_lang == 'ES' %}
+                <span>ES</span>
+                {% elif current_lang == 'FR' %}
+                <span>FR</span>
+                {% elif current_lang == 'DE' %}
+                <span>DE</span>
+                {% else %}
+                <span>US</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Main content area -->
+        <div class="dl-content">
+            <!-- Left side - Photo and emergency info -->
+            <div class="dl-photo-section">
+                {% if card.profile_picture and card.show_profile_pic %}
+                <div class="dl-photo" style="background-image: url('{{ card.profile_picture.url }}')"></div>
+                {% else %}
+                <div class="dl-photo">
+                    <span class="dl-photo-placeholder">PHOTO</span>
+                </div>
+                {% endif %}
+                
+                <div class="dl-emergency">
+                    <div class="dl-label">EMERGENCY CONTACT</div>
+                    <div class="dl-value">{{ card.emergency_contact_name|default:"N/A" }}</div>
+                    <div class="dl-value">{{ card.emergency_contact_phone|default:"" }}</div>
+                </div>
+            </div>
+
+            <!-- Right side - User information -->
+            <div class="dl-info-section">
+                <!-- Name and DOB -->
+                <div class="dl-info-row">
+                    <div class="dl-info-group">
+                        <div class="dl-label">NAME</div>
+                        <div class="dl-value">{{ card.user.get_full_name|default:card.user.username|upper }}</div>
+                    </div>
+                    <div class="dl-info-group">
+                        <div class="dl-label">DOB</div>
+                        <div class="dl-value">{{ card.date_of_birth|date:"m/d/Y"|default:"N/A" }}</div>
+                    </div>
+                </div>
+
+                <!-- Condition -->
+                <div class="dl-info-row">
+                    <div class="dl-info-group">
+                        <div class="dl-label">CONDITION</div>
+                        <div class="dl-value">
+                            {% if card.condition == 'CEL' %}
+                            CELIAC DISEASE
+                            {% elif card.condition == 'SEN' %}
+                            GLUTEN SENSITIVE
+                            {% else %}
+                            WHEAT/GLUTEN ALLERGY
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="dl-info-group">
+                        <div class="dl-label">BLOOD TYPE</div>
+                        <div class="dl-value">{{ card.blood_type|default:"N/A" }}</div>
+                    </div>
+                </div>
+
+                <!-- Message section -->
+                <div class="dl-message-section">
+                    <div class="dl-label">MESSAGE</div>
+                    <div class="dl-message">
+                        {{ card.get_message|default:"I have a severe gluten-related condition and cannot consume any gluten. Even small amounts can make me very ill."|linebreaksbr }}
+                    </div>
+                </div>
+
+                <!-- Barcode and issue date -->
+                <div class="dl-footer">
+                    <div class="dl-barcode">
+                        <div class="barcode">GF-{{ card.user.id|stringformat:"06d" }}-{{ card.created_at|date:"ymd" }}</div>
+                    </div>
+                    <div class="dl-issued">
+                        <div>ISSUED: {{ card.created_at|date:"m/d/Y" }}</div>
+                        <div>EXPIRES: {{ card.updated_at|date:"m/d/Y"|add:"years:5" }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.drivers-license-card-container {
+    max-width: 600px;
+    margin: 0 auto;
+    font-family: 'Arial', sans-serif;
+}
+
+.drivers-license-card {
+    background: white;
+    border: 2px solid #333;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Header styles */
+.dl-header {
+    background: #1a4b84;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 15px;
+    align-items: center;
+}
+
+.dl-state {
+    text-align: center;
+    font-weight: bold;
+}
+
+.dl-state-text {
+    display: block;
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+.dl-state-subtext {
+    font-size: 0.7rem;
+    opacity: 0.8;
+}
+
+.dl-title {
+    text-align: center;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    line-height: 1.2;
+}
+
+.dl-flag {
+    background: #bf0a30;
+    color: white;
+    width: 40px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    border-radius: 3px;
+}
+
+/* Content area */
+.dl-content {
+    display: flex;
+    padding: 15px;
+}
+
+/* Photo section */
+.dl-photo-section {
+    width: 35%;
+    padding-right: 15px;
+    border-right: 1px solid #ddd;
+}
+
+.dl-photo {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: #f0f0f0;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+}
+
+.dl-photo-placeholder {
+    color: #999;
+    font-size: 0.8rem;
+}
+
+.dl-emergency {
+    font-size: 0.75rem;
+}
+
+/* Info section */
+.dl-info-section {
+    width: 65%;
+    padding-left: 15px;
+}
+
+.dl-info-row {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.dl-info-group {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.dl-info-group:last-child {
+    margin-right: 0;
+}
+
+.dl-label {
+    font-size: 0.6rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+}
+
+.dl-value {
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 5px;
+    word-break: break-word;
+}
+
+/* Message section */
+.dl-message-section {
+    margin: 10px 0;
+    padding: 8px;
+    background: #f8f9fa;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    line-height: 1.4;
+}
+
+.dl-message {
+    font-size: 0.8rem;
+    line-height: 1.4;
+}
+
+/* Footer */
+.dl-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid #eee;
+    font-size: 0.7rem;
+}
+
+.dl-barcode {
+    font-family: 'Libre Barcode 39', monospace;
+    font-size: 1.5rem;
+    line-height: 1;
+    transform: translateY(5px);
+}
+
+.dl-issued {
+    text-align: right;
+    font-size: 0.7rem;
+    color: #666;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .dl-content {
+        flex-direction: column;
+    }
+    
+    .dl-photo-section, .dl-info-section {
+        width: 100%;
+        padding: 0;
+        border: none;
+    }
+    
+    .dl-photo-section {
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #eee;
+    }
+}
+</style>
