@@ -1,4 +1,5 @@
 import io
+import uuid
 from django.http import HttpResponse, JsonResponse
 from django.utils import timezone
 from django.shortcuts import get_object_or_404, redirect, render
@@ -176,10 +177,19 @@ def translate_text(text, target_language, source_language='en'):
         return text  # Return original text if translation fails
 
 
-@login_required
 def switch_language(request):
-    # get the card
-    card = get_object_or_404(EmergencyCard, user=request.user)
+    # Get the card from the session
+    card_id = request.session.get('demo_card_id')
+    
+    if card_id:
+        try:
+            card = EmergencyCard.objects.get(card_id=uuid.UUID(card_id))
+        except (EmergencyCard.DoesNotExist, ValueError):
+            # If the card doesn't exist, redirect to create a new one
+            return redirect('emergency_cards:unified_card_management')
+    else:
+        # If no card in session, redirect to create a new one
+        return redirect('emergency_cards:unified_card_management')
     language = request.GET.get('lang', 'EN')  # default to english if no language specified
     
     # Case insensitive comparison for language codes
@@ -221,7 +231,6 @@ def switch_language(request):
     return redirect(reverse('emergency_cards:card_detail') + f"?lang={language}")
 
 
-@login_required # make sure only logged-in users can access this view
 def create_card_or_edit(request):
     """
     Legacy view for creating/editing emergency cards.
@@ -231,17 +240,30 @@ def create_card_or_edit(request):
     return redirect('emergency_cards:unified_card_management')
 
 
-@login_required
 def delete_card(request):
-    card = get_object_or_404(EmergencyCard, user=request.user)
+    # Get the card from the session
+    card_id = request.session.get('demo_card_id')
+    
+    if card_id:
+        try:
+            card = EmergencyCard.objects.get(card_id=uuid.UUID(card_id))
+        except (EmergencyCard.DoesNotExist, ValueError):
+            messages.error(request, 'No emergency card found.')
+            return redirect('core:home')
+    else:
+        messages.info(request, 'No emergency card to delete.')
+        return redirect('core:home')
 
     if request.method == 'POST':
         card.delete()
+        # Remove the card ID from the session
+        if 'demo_card_id' in request.session:
+            del request.session['demo_card_id']
+        messages.success(request, 'The demo emergency card has been deleted.')
         return redirect('core:home') # redirect home after deletion
     return render(request, 'emergency_cards/delete_card.html', {'card': card})
 
 
-@login_required # make sure only logged-in users can access this view
 def validate_field(request):
     # get the field name and value from the HTMX POST request
     field_name = request.POST.get('field_name') # 'emergency contact'
@@ -260,7 +282,6 @@ def validate_field(request):
     return HttpResponse('')
 
 
-@login_required
 def card_detail(request):
     """
     Legacy view for displaying emergency card details.
@@ -270,9 +291,20 @@ def card_detail(request):
     return redirect('emergency_cards:unified_card_management')
 
 
-@login_required
 def preview_card(request):
-    card = get_object_or_404(EmergencyCard, user=request.user)
+    # Get the card from the session
+    card_id = request.session.get('demo_card_id')
+    
+    if card_id:
+        try:
+            card = EmergencyCard.objects.get(card_id=uuid.UUID(card_id))
+        except (EmergencyCard.DoesNotExist, ValueError):
+            # If the card doesn't exist, redirect to create a new one
+            return redirect('emergency_cards:unified_card_management')
+    else:
+        # If no card in session, redirect to create a new one
+        return redirect('emergency_cards:unified_card_management')
+        
     language = request.GET.get('lang', 'EN')  # Get preferred language
 
     return render(request, 'emergency_cards/preview_card.html', {
@@ -281,9 +313,20 @@ def preview_card(request):
     })
 
 
-@login_required
 def download_card(request):
-    card = get_object_or_404(EmergencyCard, user=request.user)
+    # Get the card from the session
+    card_id = request.session.get('demo_card_id')
+    
+    if card_id:
+        try:
+            card = EmergencyCard.objects.get(card_id=uuid.UUID(card_id))
+        except (EmergencyCard.DoesNotExist, ValueError):
+            # If the card doesn't exist, redirect to create a new one
+            return redirect('emergency_cards:unified_card_management')
+    else:
+        # If no card in session, redirect to create a new one
+        return redirect('emergency_cards:unified_card_management')
+    
     format_type = request.GET.get('format', 'pdf')
     language = request.GET.get('lang', card.preferred_language)
     
@@ -453,7 +496,7 @@ def download_card(request):
     response = HttpResponse(content_type='application/pdf')
     
     # Generate a filename
-    filename = f"celio_emergency_card_{card.user.username}_{language}.pdf"
+    filename = f"celio_emergency_card_demo_{language}.pdf"
     response['Content-Disposition'] = f'attachment; filename="{filename}"'
     
     # Write PDF to response
@@ -461,13 +504,23 @@ def download_card(request):
     
     return response
 
-@login_required
 def fullscreen_card(request):
     """
-    Display a fullscreen view of the user's emergency card.
+    Display a fullscreen view of the emergency card.
     This view now mirrors the clean_preview structure and styling.
     """
-    card = get_object_or_404(EmergencyCard, user=request.user)
+    # Get the card from the session
+    card_id = request.session.get('demo_card_id')
+    
+    if card_id:
+        try:
+            card = EmergencyCard.objects.get(card_id=uuid.UUID(card_id))
+        except (EmergencyCard.DoesNotExist, ValueError):
+            # If the card doesn't exist, redirect to create a new one
+            return redirect('emergency_cards:unified_card_management')
+    else:
+        # If no card in session, redirect to create a new one
+        return redirect('emergency_cards:unified_card_management')
     
     # Determine the language to display
     requested_lang = request.GET.get('lang', card.preferred_language or 'en').lower()
@@ -496,10 +549,13 @@ def fullscreen_card(request):
         'language_choices': language_choices # Pass all choices for switcher
     })
 
-@login_required
 def public_card(request, card_id):
     # Get the card by ID
-    card = get_object_or_404(EmergencyCard, id=card_id)
+    try:
+        card = EmergencyCard.objects.get(card_id=uuid.UUID(card_id))
+    except (EmergencyCard.DoesNotExist, ValueError):
+        # If the card doesn't exist, redirect to create a new one
+        return redirect('emergency_cards:unified_card_management')
     
     # Get requested language or default to card's language
     language = request.GET.get('lang', card.language)
@@ -515,14 +571,23 @@ def public_card(request, card_id):
 
 
 
-@login_required
 def share_card(request):
-    # Get the user's card
-    card = get_object_or_404(EmergencyCard, user=request.user)
+    # Get the card from the session
+    card_id = request.session.get('demo_card_id')
+    
+    if card_id:
+        try:
+            card = EmergencyCard.objects.get(card_id=uuid.UUID(card_id))
+        except (EmergencyCard.DoesNotExist, ValueError):
+            # If the card doesn't exist, redirect to create a new one
+            return redirect('emergency_cards:unified_card_management')
+    else:
+        # If no card in session, redirect to create a new one
+        return redirect('emergency_cards:unified_card_management')
     
     # Create a shareable URL for the public view
     share_url = request.build_absolute_uri(
-        reverse('emergency_cards:public_card', args=[card.id])
+        reverse('emergency_cards:public_card', args=[str(card.card_id)])
     )
     
     # Generate QR code
@@ -549,14 +614,20 @@ def share_card(request):
         'qr_code_url': qr_code_url,
     })
 
-@login_required
 def update_profile_picture(request):
     """Update the profile picture for the emergency card."""
-    try:
-        card = EmergencyCard.objects.get(user=request.user)
-    except EmergencyCard.DoesNotExist:
+    # Get the card from the session
+    card_id = request.session.get('demo_card_id')
+    
+    if card_id:
+        try:
+            card = EmergencyCard.objects.get(card_id=uuid.UUID(card_id))
+        except (EmergencyCard.DoesNotExist, ValueError):
+            messages.error(request, "You need to create an emergency card first.")
+            return redirect('emergency_cards:unified_card_management')
+    else:
         messages.error(request, "You need to create an emergency card first.")
-        return redirect('emergency_cards:create_card')
+        return redirect('emergency_cards:unified_card_management')
     
     if request.method == 'POST' and request.FILES.get('profile_picture'):
         # Delete old profile picture if it exists to avoid storage bloat
@@ -572,15 +643,20 @@ def update_profile_picture(request):
     return redirect('emergency_cards:themes')
 
 
-@login_required
 def apply_theme(request, theme_name):
     """Apply a selected theme to the emergency card or preview it."""
-    try:
-        card = EmergencyCard.objects.get(user=request.user)
-    except EmergencyCard.DoesNotExist:
-        # Handle case where card doesn't exist - maybe redirect or show error
-        # For preview, we might want a default/dummy card?
-        # For now, let's assume the card exists for preview generation.
+    # Get the card from the session
+    card_id = request.session.get('demo_card_id')
+    
+    if card_id:
+        try:
+            card = EmergencyCard.objects.get(card_id=uuid.UUID(card_id))
+        except (EmergencyCard.DoesNotExist, ValueError):
+            # If the card doesn't exist, redirect to create a new one
+            return redirect('emergency_cards:unified_card_management')
+    else:
+        # If no card in session, redirect to create a new one
+        return redirect('emergency_cards:unified_card_management')
         # If called without a card, it should ideally not happen from the UI.
         # If it's not a preview, redirect as before.
         if not request.GET.get('preview'):
@@ -652,18 +728,23 @@ def apply_theme(request, theme_name):
     return redirect('emergency_cards:unified_card_management')
 
 
-@login_required
 def themes(request):
     """Display available themes for the emergency card."""
-    try:
-        card = EmergencyCard.objects.get(user=request.user)
-    except EmergencyCard.DoesNotExist:
+    # Get the card from the session
+    card_id = request.session.get('demo_card_id')
+    
+    if card_id:
+        try:
+            card = EmergencyCard.objects.get(card_id=uuid.UUID(card_id))
+        except (EmergencyCard.DoesNotExist, ValueError):
+            messages.info(request, "You need to create an emergency card first.")
+            return redirect('emergency_cards:unified_card_management')
+    else:
         messages.info(request, "You need to create an emergency card first.")
-        return redirect('emergency_cards:create_card')
+        return redirect('emergency_cards:unified_card_management')
     
     return render(request, 'emergency_cards/themes.html', {'card': card})
 
-@login_required
 def mark_tour_seen(request):
     """Mark the tour as seen by the user"""
     if request.method == 'POST':
@@ -672,16 +753,25 @@ def mark_tour_seen(request):
         return JsonResponse({'status': 'success'})
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
 
-@login_required
 def unified_card_management(request):
     """
     Unified view for creating, editing, and managing emergency cards.
     This view combines card creation, theme selection, and language switching 
     into a single interface with live preview functionality.
+    
+    In demo mode, cards are stored in the session rather than being tied to a user account.
     """
-    try:
-        card = EmergencyCard.objects.get(user=request.user)
-    except EmergencyCard.DoesNotExist:
+    # Check if there's a card ID in the session
+    card_id = request.session.get('demo_card_id')
+    
+    if card_id:
+        try:
+            # Try to get the card using the UUID from the session
+            card = EmergencyCard.objects.get(card_id=uuid.UUID(card_id))
+        except (EmergencyCard.DoesNotExist, ValueError):
+            # If the card doesn't exist or the UUID is invalid, create a new one
+            card = None
+    else:
         card = None
     
     def prepare_preview_context(request, card, current_lang):
@@ -708,14 +798,13 @@ def unified_card_management(request):
                 'card': None,
                 'current_lang': current_lang,
                 'current_lang_display': dict(EmergencyCard.LANGUAGE_CHOICES).get(current_lang, current_lang),
-                'user': request.user,
                 'preview_theme': preview_theme,
                 'language_choices': EmergencyCard.LANGUAGE_CHOICES,
                 'translations': {},
                 'message': 'No card information yet.',
                 'medical_bullets': [],
                 'is_translated': False,
-                'user_name': request.user.get_full_name() or request.user.username
+                'user_name': 'Demo User'
             }
         
         # Get the message for the current language (predefined + custom note)
@@ -732,14 +821,13 @@ def unified_card_management(request):
             'card': card,
             'current_lang': current_lang,
             'current_lang_display': dict(EmergencyCard.LANGUAGE_CHOICES).get(current_lang, current_lang),
-            'user': request.user,
             'preview_theme': preview_theme,
             'language_choices': EmergencyCard.LANGUAGE_CHOICES,
             'translations': card.translations if card.translations else {},
             'message': message,
             'medical_bullets': medical_bullets,
             'is_translated': is_translated,
-            'user_name': card.user_name or request.user.get_full_name() or request.user.username,
+            'user_name': card.user_name or 'Demo User',
             'custom_note': card.get_custom_note(current_lang)
         }
 
@@ -858,7 +946,6 @@ def unified_card_management(request):
         if form.is_valid():
             try:
                 card = form.save(commit=False)
-                card.user = request.user
                 
                 # Get current language from form
                 current_lang = request.POST.get('active_language', 'en').lower()
@@ -872,6 +959,10 @@ def unified_card_management(request):
                 # Set as preferred language if it's changed
                 if card.preferred_language != current_lang:
                     card.preferred_language = current_lang
+                    
+                # Save the card and store its ID in the session
+                card.save()
+                request.session['demo_card_id'] = str(card.card_id)
                 
                 # Save the card
                 card.save()
@@ -935,17 +1026,22 @@ def unified_card_management(request):
     
     print(f"DEBUG: Current Language: {current_lang}, Display: {current_lang_display}")
     
+    # Get preview theme from request or use card's theme or default
+    preview_theme = request.POST.get('preview_theme') or request.GET.get('preview_theme')
+    if not preview_theme:
+        preview_theme = card.theme if card else 'celio'
+    
     # Prepare context for template rendering
     context = {
         'form': form,
         'card': card,
-        'page_title': 'My Emergency Card',
+        'page_title': 'Demo Emergency Card',
         'current_lang': current_lang,
         'current_lang_display': current_lang_display,
         'language_choices': EmergencyCard.LANGUAGE_CHOICES,
-        'user': request.user,
         'show_tour': request.session.get('show_tour', True),
         'translations': card.translations if card else {},
+        'preview_theme': preview_theme,
     }
     
     # Activate Django translation for this request
@@ -963,7 +1059,6 @@ def unified_card_management(request):
         # Restore original language
         translation.activate(old_language)
 
-@login_required
 def translate_card(request):
     """
     API endpoint to translate a card without requiring a full page reload.
@@ -976,8 +1071,22 @@ def translate_card(request):
     # Debugging
     print(f"DEBUG: Translating card from {from_lang} to {to_lang}")
     
-    # Get the user's card
-    card = EmergencyCard.objects.filter(user=request.user).first()
+    # Get the card from the session
+    card_id = request.session.get('demo_card_id')
+    
+    if card_id:
+        try:
+            card = EmergencyCard.objects.get(card_id=uuid.UUID(card_id))
+        except (EmergencyCard.DoesNotExist, ValueError):
+            return JsonResponse({
+                'success': False,
+                'error': 'No card found'
+            })
+    else:
+        return JsonResponse({
+            'success': False,
+            'error': 'No card found'
+        })
     
     if not card:
         return JsonResponse({

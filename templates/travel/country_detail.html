@@ -7,117 +7,236 @@
 {% block extra_css %}
 <style>
     .awareness-dot {
-        height: 8px;
-        width: 8px;
-        margin-right: 4px;
+        height: 10px;
+        width: 10px;
+        margin-right: 6px;
         border-radius: 50%;
-    }
-    
-    .awareness-dot.filled {
-        background-color: #14b8a6;
-    }
-    
-    .awareness-dot.empty {
-        background-color: rgba(255, 255, 255, 0.2);
-    }
-    
-    .tab-button {
         transition: all 0.2s ease;
     }
     
+    .awareness-dot.filled {
+        background: linear-gradient(135deg, var(--accent-500), var(--accent-400));
+        box-shadow: 0 2px 4px var(--accent-600)/30;
+    }
+    
+    .awareness-dot.empty {
+        background-color: var(--neutral-600)/40;
+        border: 1px solid var(--neutral-500)/30;
+    }
+    
+    .tab-button {
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .tab-button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--gradient-accent);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
     .tab-button.active {
-        background-color: #14b8a6;
-        color: white;
+        background: linear-gradient(135deg, var(--accent-600)/20, var(--accent-500)/10);
+        border-color: var(--accent-400);
+        color: var(--accent-300);
+        box-shadow: 0 4px 12px var(--accent-600)/20;
+    }
+    
+    .tab-button.active::before {
+        opacity: 0.1;
     }
     
     .tab-button:hover:not(.active) {
-        background-color: rgba(20, 184, 166, 0.1);
+        background: var(--primary-800)/50;
+        border-color: var(--accent-500)/50;
+        color: var(--accent-400);
+        transform: translateY(-1px);
+    }
+    
+    .country-header {
+        background: var(--gradient-dark);
+        border: 1px solid var(--primary-700)/30;
+    }
+    
+    .content-section {
+        background: linear-gradient(135deg, var(--primary-900)/60, var(--primary-800)/40);
+        backdrop-filter: blur(12px);
+        border: 1px solid var(--primary-700)/30;
+    }
+    
+    .info-card {
+        background: var(--primary-800)/30;
+        border: 1px solid var(--primary-700)/30;
+        transition: all 0.3s ease;
+    }
+    
+    .info-card:hover {
+        background: var(--primary-700)/40;
+        border-color: var(--accent-500)/30;
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <!-- Back Navigation -->
     <div class="mb-8">
-        <a href="{% url 'travel:travel_guide_list' %}" class="inline-flex items-center text-lg text-teal-300 hover:text-teal-200 transition-colors bg-spruce-800 px-4 py-2 rounded-lg shadow-sm">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        <a href="{% url 'travel:travel_guide_list' %}" class="inline-flex items-center px-4 py-2 bg-primary-800/50 border border-primary-700/50 rounded-xl text-accent-400 hover:text-accent-300 hover:bg-primary-700/50 hover:border-accent-500/30 transition-all duration-300 group">
+            <svg class="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
             </svg>
             Back to Travel Guides
         </a>
     </div>
     
     <!-- Country Header -->
-    <div class="bg-spruce-800 bg-opacity-70 backdrop-blur-md rounded-xl shadow-lg p-8 mb-8 border border-teal-800">
-        <div class="flex items-center mb-6">
-            <span class="text-5xl mr-4">{{ country.flag_emoji }}</span>
-            <div>
-                <h1 class="text-3xl font-bold text-white">{{ country.name }}</h1>
-                <p class="text-teal-200">{{ country.language }}</p>
+    <div class="country-header rounded-2xl p-8 mb-8 backdrop-blur-sm">
+        <div class="flex flex-col lg:flex-row lg:items-center gap-8">
+            <div class="flex items-center gap-6">
+                <div class="text-7xl animate-pulse">{{ country.flag_emoji }}</div>
+                <div>
+                    <h1 class="text-5xl font-bold bg-gradient-to-r from-white to-accent-200 bg-clip-text text-transparent mb-3">{{ country.name }}</h1>
+                    <div class="flex items-center gap-4">
+                        <div class="inline-flex items-center px-3 py-1 bg-accent-600/20 border border-accent-500/30 rounded-full text-accent-300 text-sm font-medium">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
+                            </svg>
+                            {{ country.language }}
+                        </div>
+                        <div class="inline-flex items-center px-3 py-1 bg-primary-700/30 border border-primary-600/30 rounded-full text-neutral-300 text-sm font-medium">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            Travel Guide
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="lg:ml-auto">
+                <div class="info-card rounded-xl p-6">
+                    <div class="text-sm font-semibold text-accent-300 mb-3 uppercase tracking-wide">Celiac Awareness Level</div>
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            {% for i in "12345" %}
+                                {% if forloop.counter <= country.celiac_awareness %}
+                                    <div class="awareness-dot filled"></div>
+                                {% else %}
+                                    <div class="awareness-dot empty"></div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <span class="text-sm font-medium text-white px-3 py-1 bg-accent-600/20 rounded-full border border-accent-500/30">
+                            {% if country.celiac_awareness == 1 %}Very Low
+                            {% elif country.celiac_awareness == 2 %}Low
+                            {% elif country.celiac_awareness == 3 %}Moderate
+                            {% elif country.celiac_awareness == 4 %}High
+                            {% elif country.celiac_awareness == 5 %}Very High
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
         
-        <div class="mb-6">
-            <div class="text-sm font-medium text-teal-300 mb-2">Celiac Awareness</div>
-            <div class="flex items-center">
-                {% for i in "12345" %}
-                    {% if forloop.counter <= country.celiac_awareness %}
-                        <div class="awareness-dot filled"></div>
-                    {% else %}
-                        <div class="awareness-dot empty"></div>
-                    {% endif %}
-                {% endfor %}
-                <span class="ml-2 text-sm text-teal-200">
-                    {% if country.celiac_awareness == 1 %}Very Low
-                    {% elif country.celiac_awareness == 2 %}Low
-                    {% elif country.celiac_awareness == 3 %}Moderate
-                    {% elif country.celiac_awareness == 4 %}High
-                    {% elif country.celiac_awareness == 5 %}Very High
-                    {% endif %}
-                </span>
-            </div>
-        </div>
-        
-        <div class="prose prose-invert max-w-none text-teal-100">
-            <p>{{ country.summary }}</p>
+        <div class="mt-8 p-6 bg-primary-800/30 rounded-xl border border-primary-700/30">
+            <h2 class="text-lg font-semibold text-accent-300 mb-3">Country Overview</h2>
+            <p class="text-neutral-200 text-lg leading-relaxed">{{ country.summary }}</p>
         </div>
     </div>
     
     <!-- Tab Navigation -->
-    <div class="flex flex-wrap mb-2 border-b border-teal-800">
-        <button data-tab="dining-tips" class="tab-button active px-4 py-2 text-teal-100 font-medium rounded-t-lg">
-            Dining Tips
-        </button>
-        <button data-tab="dishes-to-avoid" class="tab-button px-4 py-2 text-teal-100 font-medium rounded-t-lg">
-            Dishes to Avoid
-        </button>
-        <button data-tab="restaurant-phrases" class="tab-button px-4 py-2 text-teal-100 font-medium rounded-t-lg">
-            Useful Phrases
-        </button>
+    <div class="mb-8">
+        <div class="flex flex-wrap gap-2 p-2 bg-primary-900/50 rounded-2xl border border-primary-700/30">
+            <button data-tab="dining-tips" class="tab-button active flex-1 min-w-0 py-4 px-6 text-sm font-semibold rounded-xl border border-primary-600/30 text-neutral-300 relative z-10">
+                <div class="flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                    </svg>
+                    Dining Tips
+                </div>
+            </button>
+            <button data-tab="dishes-to-avoid" class="tab-button flex-1 min-w-0 py-4 px-6 text-sm font-semibold rounded-xl border border-primary-600/30 text-neutral-300 relative z-10">
+                <div class="flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                    </svg>
+                    Dishes to Avoid
+                </div>
+            </button>
+            <button data-tab="restaurant-phrases" class="tab-button flex-1 min-w-0 py-4 px-6 text-sm font-semibold rounded-xl border border-primary-600/30 text-neutral-300 relative z-10">
+                <div class="flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                    </svg>
+                    Useful Phrases
+                </div>
+            </button>
+        </div>
     </div>
     
     <!-- Tab Content -->
-    <div class="bg-spruce-800 bg-opacity-70 backdrop-blur-md rounded-xl shadow-lg border border-teal-800">
+    <div class="content-section rounded-2xl border border-primary-700/30">
         <!-- Dining Tips Tab -->
         <div id="dining-tips" class="tab-content active">
             <div class="p-8">
-                <h2 class="text-2xl font-bold text-white mb-6">Dining Tips for {{ country.name }}</h2>
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-12 h-12 bg-gradient-to-br from-accent-500 to-accent-600 rounded-xl flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-3xl font-bold text-white">Dining Tips for {{ country.name }}</h2>
+                </div>
                 
                 <!-- Dining Tips -->
-                <div class="space-y-4 text-teal-100">
-                    <p>{{ country.dining_tips }}</p>
+                <div class="space-y-6 text-neutral-200">
+                    <div class="info-card rounded-xl p-6">
+                        <p class="leading-relaxed">{{ country.dining_tips }}</p>
+                    </div>
                     
                     <!-- Added Dining Suggestions -->
                     <div class="mt-8">
-                        <h3 class="text-xl font-medium text-teal-300 mb-4">Safe Dining Options</h3>
-                        <ul class="list-disc pl-5 space-y-2 text-teal-100">
-                            <li>Look for restaurants with "gluten-free" or "sin gluten" menu options</li>
-                            <li>Farm-to-table restaurants are often more accommodating of dietary restrictions</li>
-                            <li>Consider booking a local food tour that offers gluten-free options</li>
-                            <li>Download the FindMeGlutenFree app to locate safe restaurants</li>
-                            <li>Visit local health food stores to find safe snacks and ingredients</li>
-                        </ul>
+                        <h3 class="text-xl font-semibold text-accent-300 mb-4">Safe Dining Options</h3>
+                        <div class="grid gap-3">
+                            <div class="info-card rounded-xl p-4 group">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-2 h-2 bg-accent-500 rounded-full mt-3 group-hover:bg-accent-400 transition-colors"></div>
+                                    <p class="text-neutral-200 leading-relaxed">Look for restaurants with "gluten-free" or "sin gluten" menu options</p>
+                                </div>
+                            </div>
+                            <div class="info-card rounded-xl p-4 group">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-2 h-2 bg-accent-500 rounded-full mt-3 group-hover:bg-accent-400 transition-colors"></div>
+                                    <p class="text-neutral-200 leading-relaxed">Farm-to-table restaurants are often more accommodating of dietary restrictions</p>
+                                </div>
+                            </div>
+                            <div class="info-card rounded-xl p-4 group">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-2 h-2 bg-accent-500 rounded-full mt-3 group-hover:bg-accent-400 transition-colors"></div>
+                                    <p class="text-neutral-200 leading-relaxed">Consider booking a local food tour that offers gluten-free options</p>
+                                </div>
+                            </div>
+                            <div class="info-card rounded-xl p-4 group">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-2 h-2 bg-accent-500 rounded-full mt-3 group-hover:bg-accent-400 transition-colors"></div>
+                                    <p class="text-neutral-200 leading-relaxed">Download the FindMeGlutenFree app to locate safe restaurants</p>
+                                </div>
+                            </div>
+                            <div class="info-card rounded-xl p-4 group">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-2 h-2 bg-accent-500 rounded-full mt-3 group-hover:bg-accent-400 transition-colors"></div>
+                                    <p class="text-neutral-200 leading-relaxed">Visit local health food stores to find safe snacks and ingredients</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -126,25 +245,47 @@
         <!-- Dishes to Avoid Tab -->
         <div id="dishes-to-avoid" class="tab-content hidden">
             <div class="p-8">
-                <h2 class="text-2xl font-bold text-white mb-6">Dishes to Avoid in {{ country.name }}</h2>
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-12 h-12 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-3xl font-bold text-white">Dishes to Avoid in {{ country.name }}</h2>
+                </div>
                 
-                <div class="space-y-6">
+                <div class="grid gap-4">
                     {% for dish in dishes_to_avoid %}
-                    <div class="border border-teal-800 bg-spruce-900 bg-opacity-50 rounded-lg p-5">
-                        <h3 class="text-lg font-medium text-white">
-                            {{ dish.name }}
-                            {% if dish.local_name %}
-                            <span class="text-teal-300 ml-2">({{ dish.local_name }})</span>
-                            {% endif %}
-                        </h3>
-                        <p class="text-teal-200 mt-2">{{ dish.description }}</p>
-                        <div class="mt-3 bg-spruce-900 p-3 rounded-lg inline-flex">
-                            <span class="text-sm font-medium text-teal-300 mr-2">Contains:</span>
-                            <span class="text-sm text-teal-200">{{ dish.ingredients }}</span>
+                    <div class="bg-red-900/20 border border-red-700/40 rounded-xl p-6 group hover:bg-red-900/30 hover:border-red-600/50 transition-all duration-300">
+                        <div class="flex items-start gap-4">
+                            <div class="w-3 h-3 bg-red-500 rounded-full mt-2 group-hover:bg-red-400 transition-colors flex-shrink-0"></div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-semibold text-red-300 mb-3 group-hover:text-red-200 transition-colors">
+                                    {{ dish.name }}
+                                    {% if dish.local_name %}
+                                    <span class="text-red-400 ml-2">({{ dish.local_name }})</span>
+                                    {% endif %}
+                                </h3>
+                                <p class="text-red-100/90 leading-relaxed mb-3">{{ dish.description }}</p>
+                                {% if dish.ingredients %}
+                                <div class="bg-red-900/30 p-3 rounded-lg inline-flex">
+                                    <span class="text-sm font-medium text-red-300 mr-2">Contains:</span>
+                                    <span class="text-sm text-red-200">{{ dish.ingredients }}</span>
+                                </div>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                     {% empty %}
-                    <p class="text-teal-200">No specific dishes listed yet. Check back soon!</p>
+                    <div class="info-card rounded-xl p-8 text-center">
+                        <div class="w-16 h-16 bg-primary-800/50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-white mb-2">No Specific Dishes Listed</h3>
+                        <p class="text-neutral-400">We're working on adding specific dishes to avoid for this country.</p>
+                    </div>
                     {% endfor %}
                 </div>
             </div>
@@ -153,77 +294,127 @@
         <!-- Restaurant Phrases Tab -->
         <div id="restaurant-phrases" class="tab-content hidden">
             <div class="p-8">
-                <h2 class="text-2xl font-bold text-white mb-6">Essential Phrases in {{ country.language }}</h2>
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-3xl font-bold text-white">Essential Phrases in {{ country.language }}</h2>
+                </div>
                 
                 {% if general_phrases %}
-                <h3 class="text-xl font-medium text-teal-300 mb-4">General Phrases</h3>
-                <div class="space-y-4 mb-8">
+                <h3 class="text-xl font-medium text-accent-300 mb-4">General Phrases</h3>
+                <div class="grid gap-6 mb-8">
                     {% for phrase in general_phrases %}
-                    <div class="border border-teal-800 bg-spruce-900 bg-opacity-50 rounded-lg p-5">
-                        <div class="mb-3">
-                            <span class="font-medium text-teal-300 block mb-1">English:</span>
-                            <span class="text-white text-lg">{{ phrase.english_text }}</span>
+                    <div class="info-card rounded-xl p-6 group hover:bg-primary-700/40 hover:border-accent-500/30 transition-all duration-300">
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            <div class="space-y-2">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                    <h4 class="text-sm font-semibold text-blue-300 uppercase tracking-wide">English</h4>
+                                </div>
+                                <p class="text-white font-medium text-lg">{{ phrase.english_text }}</p>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-2 h-2 bg-accent-500 rounded-full"></div>
+                                    <h4 class="text-sm font-semibold text-accent-300 uppercase tracking-wide">{{ country.language }}</h4>
+                                </div>
+                                <p class="text-white font-medium text-lg">{{ phrase.translated_text }}</p>
+                            </div>
+                            {% if phrase.pronunciation %}
+                            <div class="space-y-2">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+                                    <h4 class="text-sm font-semibold text-purple-300 uppercase tracking-wide">Pronunciation</h4>
+                                </div>
+                                <p class="text-purple-100 italic text-lg font-light">{{ phrase.pronunciation }}</p>
+                            </div>
+                            {% endif %}
                         </div>
-                        <div class="mb-3">
-                            <span class="font-medium text-teal-300 block mb-1">{{ country.language }}:</span>
-                            <span class="text-white text-lg">{{ phrase.translated_text }}</span>
-                        </div>
-                        {% if phrase.pronunciation %}
-                        <div>
-                            <span class="font-medium text-teal-300 block mb-1">Pronunciation:</span>
-                            <span class="text-teal-100">{{ phrase.pronunciation }}</span>
-                        </div>
-                        {% endif %}
                     </div>
                     {% endfor %}
                 </div>
                 {% endif %}
                 
                 {% if ordering_phrases %}
-                <h3 class="text-xl font-medium text-teal-300 mb-4">Ordering Phrases</h3>
-                <div class="space-y-4 mb-8">
+                <h3 class="text-xl font-medium text-accent-300 mb-4">Ordering Phrases</h3>
+                <div class="grid gap-6 mb-8">
                     {% for phrase in ordering_phrases %}
-                    <div class="border border-teal-800 bg-spruce-900 bg-opacity-50 rounded-lg p-5">
-                        <div class="mb-3">
-                            <span class="font-medium text-teal-300 block mb-1">English:</span>
-                            <span class="text-white text-lg">{{ phrase.english_text }}</span>
+                    <div class="info-card rounded-xl p-6 group hover:bg-primary-700/40 hover:border-accent-500/30 transition-all duration-300">
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            <div class="space-y-2">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                    <h4 class="text-sm font-semibold text-blue-300 uppercase tracking-wide">English</h4>
+                                </div>
+                                <p class="text-white font-medium text-lg">{{ phrase.english_text }}</p>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-2 h-2 bg-accent-500 rounded-full"></div>
+                                    <h4 class="text-sm font-semibold text-accent-300 uppercase tracking-wide">{{ country.language }}</h4>
+                                </div>
+                                <p class="text-white font-medium text-lg">{{ phrase.translated_text }}</p>
+                            </div>
+                            {% if phrase.pronunciation %}
+                            <div class="space-y-2">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+                                    <h4 class="text-sm font-semibold text-purple-300 uppercase tracking-wide">Pronunciation</h4>
+                                </div>
+                                <p class="text-purple-100 italic text-lg font-light">{{ phrase.pronunciation }}</p>
+                            </div>
+                            {% endif %}
                         </div>
-                        <div class="mb-3">
-                            <span class="font-medium text-teal-300 block mb-1">{{ country.language }}:</span>
-                            <span class="text-white text-lg">{{ phrase.translated_text }}</span>
-                        </div>
-                        {% if phrase.pronunciation %}
-                        <div>
-                            <span class="font-medium text-teal-300 block mb-1">Pronunciation:</span>
-                            <span class="text-teal-100">{{ phrase.pronunciation }}</span>
-                        </div>
-                        {% endif %}
                     </div>
                     {% endfor %}
                 </div>
                 {% endif %}
                 
                 {% if e_card_phrases %}
-                <h3 class="text-xl font-medium text-teal-300 mb-4">E-Card Phrases</h3>
-                <div class="space-y-4">
+                <h3 class="text-xl font-medium text-accent-300 mb-4">E-Card Phrases</h3>
+                <div class="grid gap-6">
                     {% for phrase in e_card_phrases %}
-                    <div class="border border-teal-800 bg-teal-900 bg-opacity-20 rounded-lg p-5">
-                        <div class="mb-3">
-                            <span class="font-medium text-teal-300 block mb-1">English:</span>
-                            <span class="text-white text-lg">{{ phrase.english_text }}</span>
+                    <div class="bg-accent-900/20 border border-accent-700/40 rounded-xl p-6 group hover:bg-accent-900/30 hover:border-accent-600/50 transition-all duration-300">
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            <div class="space-y-2">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                    <h4 class="text-sm font-semibold text-blue-300 uppercase tracking-wide">English</h4>
+                                </div>
+                                <p class="text-white font-medium text-lg">{{ phrase.english_text }}</p>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-2 h-2 bg-accent-500 rounded-full"></div>
+                                    <h4 class="text-sm font-semibold text-accent-300 uppercase tracking-wide">{{ country.language }}</h4>
+                                </div>
+                                <p class="text-white font-medium text-lg">{{ phrase.translated_text }}</p>
+                            </div>
+                            {% if phrase.pronunciation %}
+                            <div class="space-y-2">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+                                    <h4 class="text-sm font-semibold text-purple-300 uppercase tracking-wide">Pronunciation</h4>
+                                </div>
+                                <p class="text-purple-100 italic text-lg font-light">{{ phrase.pronunciation }}</p>
+                            </div>
+                            {% endif %}
                         </div>
-                        <div class="mb-3">
-                            <span class="font-medium text-teal-300 block mb-1">{{ country.language }}:</span>
-                            <span class="text-white text-lg">{{ phrase.translated_text }}</span>
-                        </div>
-                        {% if phrase.pronunciation %}
-                        <div>
-                            <span class="font-medium text-teal-300 block mb-1">Pronunciation:</span>
-                            <span class="text-teal-100">{{ phrase.pronunciation }}</span>
-                        </div>
-                        {% endif %}
                     </div>
                     {% endfor %}
+                </div>
+                {% else %}
+                <div class="info-card rounded-xl p-8 text-center">
+                    <div class="w-16 h-16 bg-primary-800/50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-white mb-2">No Phrases Available</h3>
+                    <p class="text-neutral-400">We're working on adding useful phrases for this country.</p>
                 </div>
                 {% endif %}
             </div>
@@ -235,18 +426,26 @@
 
 {% block extra_scripts %}
 <script>
+    // Enhanced tab functionality with smooth transitions
     document.addEventListener('DOMContentLoaded', function() {
         const tabButtons = document.querySelectorAll('.tab-button');
         const tabContents = document.querySelectorAll('.tab-content');
+        
+        // Add transition styles to tab contents
+        tabContents.forEach(content => {
+            content.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        });
         
         tabButtons.forEach(button => {
             button.addEventListener('click', function() {
                 const tabName = this.getAttribute('data-tab');
                 
-                // Hide all tab contents
+                // Hide all tab contents with animation
                 tabContents.forEach(content => {
                     content.classList.add('hidden');
                     content.classList.remove('active');
+                    content.style.opacity = '0';
+                    content.style.transform = 'translateY(10px)';
                 });
                 
                 // Deactivate all tab buttons
@@ -257,12 +456,25 @@
                 // Activate the clicked tab button
                 this.classList.add('active');
                 
-                // Show the corresponding tab content
+                // Show the corresponding tab content with animation
                 const activeTab = document.getElementById(tabName);
                 activeTab.classList.remove('hidden');
                 activeTab.classList.add('active');
+                
+                // Animate in the new content
+                setTimeout(() => {
+                    activeTab.style.opacity = '1';
+                    activeTab.style.transform = 'translateY(0)';
+                }, 50);
             });
         });
+        
+        // Initialize first tab with proper styling
+        const firstTab = document.querySelector('.tab-content.active');
+        if (firstTab) {
+            firstTab.style.opacity = '1';
+            firstTab.style.transform = 'translateY(0)';
+        }
     });
 </script>
 {% endblock %}

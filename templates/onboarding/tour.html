@@ -16,9 +16,9 @@
         <h1 class="text-3xl font-bold text-gray-900 mb-6 text-center" id="welcome-element">Welcome to Celio!</h1>
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 create-card-section">
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 create-E-card-section">
                 <h2 class="text-xl font-bold text-gray-900 mb-2">Create Your Card</h2>
-                <p class="text-gray-600">Set up your emergency card with personal information and medical details.</p>
+                <p class="text-gray-600">Set up your medical card with personal information and medical details.</p>
             </div>
             
             <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 languages-section">
@@ -28,7 +28,7 @@
             
             <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 theme-selector">
                 <h2 class="text-xl font-bold text-gray-900 mb-2">Choose a Theme</h2>
-                <p class="text-gray-600">Select from different visual styles for your emergency card.</p>
+                <p class="text-gray-600">Select from different visual styles for your medical card.</p>
             </div>
             
             <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 share-options">
@@ -38,8 +38,8 @@
         </div>
         
         <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 mb-8 sage-container">
-            <h2 class="text-xl font-bold text-gray-900 mb-2">Sage Assistant</h2>
-            <p class="text-gray-600">Get help and advice about celiac disease and gluten-free options when traveling.</p>
+            <h2 class="text-xl font-bold text-gray-900 mb-2">Sage AI Assistant (Coming Soon)</h2>
+            <p class="text-gray-600">Upcoming mobile app that will act as an assistant for travelers with celiac disease.</p>
         </div>
         
         <div class="flex justify-between mt-8">
@@ -68,7 +68,7 @@
         tour.addStep({
             id: 'welcome',
             title: 'Welcome to Celio!',
-            text: 'This tour will guide you through the features of our emergency card system for people with celiac disease and gluten sensitivities.',
+            text: 'This tour will guide you through the features of our medical card system for people with celiac disease and gluten sensitivities.',
             attachTo: {
                 element: '#welcome-element',
                 on: 'bottom'
@@ -88,7 +88,7 @@
         tour.addStep({
             id: 'tour-complete',
             title: 'Tour Complete!',
-            text: 'You\'re all set! Now you can create and manage your celiac emergency card with confidence.',
+            text: 'You\'re all set! Now you can create and manage your celiac medical card with confidence.',
             buttons: [
                 {
                     action() {

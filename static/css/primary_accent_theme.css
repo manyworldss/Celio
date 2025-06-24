@@ -1,0 +1,243 @@
+/* Primary Accent Theme CSS */
+:root {
+    --primary-950: #1a0b2e;
+    --primary-900: #2d1657;
+    --primary-800: #3b1a74;
+    --primary-700: #4c2889;
+    --accent-600: #0d9488;
+    --accent-500: #14b8a6;
+    --accent-400: #2dd4bf;
+    --accent-300: #5eead4;
+    --accent-200: #99f6e4;
+    --accent-100: #ccfbf1;
+}
+
+body {
+    background-color: var(--primary-950);
+    color: white;
+}
+
+/* Primary gradient background */
+.primary-gradient-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -10;
+    background: var(--primary-950);
+    overflow: hidden;
+}
+
+.primary-gradient-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.6;
+    background: radial-gradient(ellipse at center, var(--primary-900) 0%, transparent 70%);
+}
+
+.gradient-accent {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+}
+
+.gradient-accent-1 {
+    width: 60vw;
+    height: 60vw;
+    background: rgba(20, 184, 166, 0.15);
+    top: -10%;
+    right: -10%;
+}
+
+.gradient-accent-2 {
+    width: 40vw;
+    height: 40vw;
+    background: rgba(45, 212, 191, 0.1);
+    bottom: -10%;
+    left: -10%;
+}
+
+/* Section styling */
+.form-section {
+    background-color: var(--spruce-800);
+    background-color: rgba(20, 50, 42, 0.2);
+    backdrop-filter: blur(8px);
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 1.75rem;
+    border: 1px solid rgba(26, 66, 55, 0.5);
+    margin-bottom: 1.5rem;
+}
+
+.form-section-header {
+    padding: 0;
+    border-bottom: 1px solid rgba(26, 66, 55, 0.7);
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-section-header h2 {
+    color: white;
+    font-weight: 600;
+}
+
+/* Form controls */
+.form-group {
+    margin-bottom: 2.25rem;
+}
+
+.form-label {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--teal-100);
+    margin-bottom: 0.75rem;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--spruce-700);
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    margin-top: 0.25rem;
+    background-color: rgba(20, 50, 42, 0.2);
+    color: white;
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+    color: rgba(94, 234, 212, 0.5);
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: var(--teal-400);
+    box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.2);
+}
+
+.form-textarea {
+    min-height: 8rem;
+}
+
+.form-hint {
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--teal-300);
+}
+
+.error-text {
+    color: #f87171;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+}
+
+/* Action buttons with improved styling */
+.action-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    padding: 0.75rem 1.25rem;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+}
+
+.action-button-primary {
+    background-color: var(--teal-600);
+    color: white;
+    border: none;
+}
+
+.action-button-primary:hover {
+    background-color: var(--teal-500);
+}
+
+.action-button-secondary {
+    background-color: rgba(20, 50, 42, 0.4);
+    color: white;
+    border: 1px solid var(--spruce-700);
+}
+
+.action-button-secondary:hover {
+    background-color: rgba(20, 50, 42, 0.6);
+}
+
+/* Panel styling */
+.panel {
+    background-color: rgba(20, 50, 42, 0.25);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(26, 66, 55, 0.5);
+    margin-bottom: 2rem;
+    backdrop-filter: blur(8px);
+}
+
+/* Card preview styling */
+.card-preview {
+    background-color: var(--spruce-900);
+    border: 1px solid var(--spruce-700);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+}
+
+/* Language tabs */
+.language-tab {
+    color: var(--teal-300);
+    border-bottom-color: transparent;
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.language-tab[aria-selected="true"] {
+    color: white;
+    border-bottom-color: var(--teal-400);
+}
+
+.language-tab:hover:not([aria-selected="true"]) {
+    color: var(--teal-200);
+}
+
+/* Custom card theme colors for the new spruce-teal theme */
+.theme-spruce .card-inner {
+    background-color: var(--spruce-900);
+    color: white;
+    border: 1px solid var(--teal-600);
+}
+
+.theme-spruce .card-header {
+    background-color: var(--spruce-800);
+    border-bottom: 1px solid var(--teal-500);
+}
+
+.theme-spruce .card-footer {
+    background-color: var(--spruce-800);
+    border-top: 1px solid var(--teal-500);
+}
+
+/* Responsive styling */
+@media (max-width: 1024px) {
+    .order-1 {
+        order: 2;
+    }
+    
+    .order-2 {
+        order: 1;
+    }
+}

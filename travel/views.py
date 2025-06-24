@@ -2,7 +2,6 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Country, DishesToAvoid, RestaurantPhrase
 
-@login_required
 def travel_guide_list(request):
     """View for listing available country guides"""
     countries = Country.objects.all().order_by('name')
@@ -11,7 +10,6 @@ def travel_guide_list(request):
         'countries': countries
     })
 
-@login_required
 def country_detail(request, country_code):
     """View for detailed country guide"""
     country = get_object_or_404(Country, code=country_code.upper())
@@ -34,7 +32,6 @@ def country_detail(request, country_code):
         'e_card_phrases': e_card_phrases
     })
 
-@login_required
 def restaurant_card(request, country_code):
     """View for printable restaurant card"""
     country = get_object_or_404(Country, code=country_code.upper())

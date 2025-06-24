@@ -4,7 +4,7 @@
 
 {% block title %}
     {% if card.condition == 'CEL' %}
-        Celiac Disease Emergency Card
+        Celiac Disease Medical Card
     {% elif card.condition == 'SEN' %}
         Gluten Sensitivity Card
     {% else %}
@@ -76,9 +76,9 @@
                 </div>
             </div>
 
-            <!-- Emergency Contact -->
-            <div>
-                <h3 class="text-lg font-medium mb-3 {% if card.theme == 'modern' %}text-white{% else %}text-gray-900{% endif %}">Emergency Contact</h3>
+            <!-- Contact -->
+        <div class="mb-6">
+            <h3 class="text-lg font-medium mb-3 {% if card.theme == 'modern' %}text-white{% else %}text-gray-900{% endif %}">Contact</h3>
                 <div class="{% if card.theme == 'modern' %}bg-white bg-opacity-10{% else %}bg-gray-50{% endif %} rounded-lg p-4">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
@@ -101,7 +101,7 @@
     
     <!-- Powered by Celio -->
     <div class="text-center text-gray-500 text-sm">
-        Powered by <a href="{% url 'core:home' %}" class="text-purple-600 hover:text-purple-700">Celio</a> - Emergency Card System for Celiac Disease
+        Powered by <a href="{% url 'core:home' %}" class="text-purple-600 hover:text-purple-700">Celio</a> - Medical Card System for Celiac Disease
     </div>
 </div>
 {% endblock %}

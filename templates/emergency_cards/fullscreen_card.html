@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Emergency Card - {{ card.user_name|default:card.user.get_full_name }}</title>
+    <title>Medical Card - {{ card.user_name|default:card.user.get_full_name }}</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="{% static 'css/emergency_card_themes.css' %}" rel="stylesheet">
     <style>
@@ -17,7 +17,7 @@
             min-height: 100vh;
             background-color: #0a1613; /* Spruce 950 */
             color: white;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            font-family: 'Hex Franklin', sans-serif;
         }
         
         .fullscreen-container {

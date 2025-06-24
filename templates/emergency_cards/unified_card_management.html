@@ -200,31 +200,31 @@
     
     /* Card preview style */
     #card-preview {
-        background-color: var(--spruce-900);
-        border: 1px solid var(--spruce-700);
+        background-color: var(--primary-900);
+        border: 1px solid var(--primary-700);
         border-radius: 0.5rem;
     }
     
-    /* Spruce gradient background */
-    .spruce-gradient-bg {
+    /* Primary gradient background */
+    .primary-gradient-bg {
         position: fixed;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
         z-index: -10;
-        background: var(--spruce-950);
+        background: var(--primary-950);
         overflow: hidden;
     }
     
-    .spruce-gradient-overlay {
+    .primary-gradient-overlay {
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
         opacity: 0.6;
-        background: radial-gradient(ellipse at center, var(--spruce-900) 0%, transparent 70%);
+        background: radial-gradient(ellipse at center, var(--primary-900) 0%, transparent 70%);
     }
     
     .gradient-accent {
@@ -252,9 +252,9 @@
 {% endblock %}
 
 {% block content %}
-<!-- Spruce gradient background -->
-<div class="spruce-gradient-bg">
-    <div class="spruce-gradient-overlay"></div>
+<!-- Primary gradient background -->
+<div class="primary-gradient-bg">
+        <div class="primary-gradient-overlay"></div>
     <div class="gradient-accent gradient-accent-1"></div>
     <div class="gradient-accent gradient-accent-2"></div>
 </div>
@@ -262,11 +262,129 @@
 <div class="min-h-screen py-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Page Header -->
-        <div class="mb-8">
-            <h1 class="text-2xl font-bold text-white">{{ page_title }}</h1>
-            <p class="mt-1 text-sm text-teal-300">Create and customize your emergency medical card.</p>
-            
-            <!-- Removed fullscreen button from here as it's now directly on the card -->
+        <div class="mb-4">
+            <h1 class="text-3xl font-bold bg-gradient-to-r from-white to-teal-200 bg-clip-text text-transparent">{{ page_title }}</h1>
+            <p class="mt-1 text-sm text-teal-300">Create and customize your travel E-card.</p>
+        </div>
+        
+        <!-- Theme Selection with Hex Copying -->
+        <div class="mb-6">
+            <div class="p-3 bg-spruce-900 bg-opacity-30 rounded-lg border border-teal-800">
+                <h3 class="text-lg font-semibold bg-gradient-to-r from-teal-200 to-emerald-300 bg-clip-text text-transparent mb-3 flex items-center">
+                    <svg class="w-5 h-5 mr-2 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5H9a2 2 0 00-2 2v12a4 4 0 004 4h10a2 2 0 002-2V7a2 2 0 00-2-2z"></path>
+                    </svg>
+                    E-Card Theme Selection
+                </h3>
+                
+                <div class="flex justify-center">
+                    <div class="w-full max-w-md space-y-3">
+                        <!-- Celio Theme -->
+                        <div class="theme-button border-2 border-transparent rounded-lg p-3 cursor-pointer transition-all duration-200 hover:border-teal-600 bg-spruce-800 bg-opacity-20" onclick="setGlobalTheme('celio')">
+                            <div class="theme-preview w-full h-12 rounded-md mb-2 flex items-center justify-center" style="background-color: #e2f5f0;">
+                                <span class="text-xs font-medium" style="color: #1a4237;">Celio Theme</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h4 class="text-white font-medium text-sm">Celio</h4>
+                                    <p class="text-teal-300 text-xs">Professional travel</p>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button type="button" class="hex-copy-btn px-3 py-2 rounded-sm text-xs font-medium transition-all duration-200 shadow-sm" 
+                                            style="background: linear-gradient(135deg, #e2f5f0 0%, #d1f0e6 100%), 
+                                                   radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 1px, transparent 1px),
+                                                   radial-gradient(circle at 80% 50%, rgba(0,0,0,0.05) 1px, transparent 1px);
+                                                   background-size: 100% 100%, 4px 4px, 4px 4px;
+                                                   color: #1a4237; border: 1px solid rgba(26, 66, 55, 0.2);" 
+                                            data-hex="#e2f5f0" title="Copy Background #e2f5f0">
+                                        #e2f5f0
+                                    </button>
+                                    <button type="button" class="hex-copy-btn px-3 py-2 rounded-sm text-xs font-medium transition-all duration-200 shadow-sm" 
+                                            style="background: linear-gradient(135deg, #1a4237 0%, #0f2e26 100%), 
+                                                   radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 1px, transparent 1px),
+                                                   radial-gradient(circle at 80% 50%, rgba(0,0,0,0.2) 1px, transparent 1px);
+                                                   background-size: 100% 100%, 4px 4px, 4px 4px;
+                                                   color: #e2f5f0; border: 1px solid rgba(226, 245, 240, 0.2);" 
+                                            data-hex="#1a4237" title="Copy Text #1a4237">
+                                        #1a4237
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Dark Theme -->
+                        <div class="theme-button border-2 border-transparent rounded-lg p-3 cursor-pointer transition-all duration-200 hover:border-teal-600 bg-spruce-800 bg-opacity-20" onclick="setGlobalTheme('dark')">
+                            <div class="theme-preview w-full h-12 rounded-md mb-2 flex items-center justify-center" style="background-color: #1a1a1a;">
+                                <span class="text-xs font-medium" style="color: white;">Dark Theme</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h4 class="text-white font-medium text-sm">Dark</h4>
+                                    <p class="text-teal-300 text-xs">Modern dark interface</p>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button type="button" class="hex-copy-btn px-3 py-2 rounded-sm text-xs font-medium transition-all duration-200 shadow-sm" 
+                                            style="background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%), 
+                                                   radial-gradient(circle at 20% 50%, rgba(255,255,255,0.05) 1px, transparent 1px),
+                                                   radial-gradient(circle at 80% 50%, rgba(0,0,0,0.3) 1px, transparent 1px);
+                                                   background-size: 100% 100%, 4px 4px, 4px 4px;
+                                                   color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.1);" 
+                                            data-hex="#1a1a1a" title="Copy Background #1a1a1a">
+                                        #1a1a1a
+                                    </button>
+                                    <button type="button" class="hex-copy-btn px-3 py-2 rounded-sm text-xs font-medium transition-all duration-200 shadow-sm" 
+                                            style="background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%), 
+                                                   radial-gradient(circle at 20% 50%, rgba(0,0,0,0.02) 1px, transparent 1px),
+                                                   radial-gradient(circle at 80% 50%, rgba(0,0,0,0.05) 1px, transparent 1px);
+                                                   background-size: 100% 100%, 4px 4px, 4px 4px;
+                                                   color: #1a1a1a; border: 1px solid rgba(26, 26, 26, 0.1);" 
+                                            data-hex="#ffffff" title="Copy Text #ffffff">
+                                        #ffffff
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Light Theme -->
+                        <div class="theme-button border-2 border-transparent rounded-lg p-3 cursor-pointer transition-all duration-200 hover:border-teal-600 bg-spruce-800 bg-opacity-20" onclick="setGlobalTheme('light')">
+                            <div class="theme-preview w-full h-12 rounded-md mb-2 flex items-center justify-center" style="background-color: #f5f5f5;">
+                                <span class="text-xs font-medium" style="color: #333333;">Light Theme</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h4 class="text-white font-medium text-sm">Light</h4>
+                                    <p class="text-teal-300 text-xs">Clean minimal design</p>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button type="button" class="hex-copy-btn px-3 py-2 rounded-sm text-xs font-medium transition-all duration-200 shadow-sm" 
+                                            style="background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%), 
+                                                   radial-gradient(circle at 20% 50%, rgba(0,0,0,0.02) 1px, transparent 1px),
+                                                   radial-gradient(circle at 80% 50%, rgba(0,0,0,0.05) 1px, transparent 1px);
+                                                   background-size: 100% 100%, 4px 4px, 4px 4px;
+                                                   color: #333333; border: 1px solid rgba(51, 51, 51, 0.1);" 
+                                            data-hex="#f5f5f5" title="Copy Background #f5f5f5">
+                                        #f5f5f5
+                                    </button>
+                                    <button type="button" class="hex-copy-btn px-3 py-2 rounded-sm text-xs font-medium transition-all duration-200 shadow-sm" 
+                                            style="background: linear-gradient(135deg, #333333 0%, #262626 100%), 
+                                                   radial-gradient(circle at 20% 50%, rgba(255,255,255,0.05) 1px, transparent 1px),
+                                                   radial-gradient(circle at 80% 50%, rgba(0,0,0,0.3) 1px, transparent 1px);
+                                                   background-size: 100% 100%, 4px 4px, 4px 4px;
+                                                   color: #f5f5f5; border: 1px solid rgba(245, 245, 245, 0.1);" 
+                                            data-hex="#333333" title="Copy Text #333333">
+                                        #333333
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Copy notification -->
+                <div id="copy-notification" class="hidden mt-2 p-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-xs rounded-md transition-all duration-300 shadow-lg">
+                    <span id="copy-message">Hex code copied to clipboard!</span>
+                </div>
+            </div>
         </div>
         
         <form method="POST" enctype="multipart/form-data" id="card-form" hx-post="{% url 'emergency_cards:unified_card_management' %}" hx-swap="none" hx-trigger="none">
@@ -289,36 +407,6 @@
             {% endwith %}
             <input type="hidden" name="save_card" id="save_card_input" value="false">
             
-
-            </div> <!-- End of hidden sections -->
-
-            <!-- Card Container (Full Screen) -->
-            <div class="card-fullscreen-container max-w-4xl mx-auto">
-                <!-- Card Preview Container (full-width) -->
-                
-                <!-- Removed fullscreen button from here as it's now directly on the card -->
-            </div>
-            
-            <form method="POST" enctype="multipart/form-data" id="card-form" hx-post="{% url 'emergency_cards:unified_card_management' %}" hx-swap="none" hx-trigger="none">
-                {% csrf_token %}
-                
-                <!-- Hidden inputs to track active language and theme -->
-                <input type="hidden" name="active_language" id="active_language" value="{{ current_lang }}">
-                {% with current_theme=preview_theme %}
-                    {% if not current_theme and card and card.theme %}
-                        {% with current_theme=card.theme %}
-                            <input type="hidden" name="selected_theme" id="selected-theme" value="{{ current_theme }}">
-                        {% endwith %}
-                    {% elif not current_theme %}
-                        {% with current_theme='light' %}
-                            <input type="hidden" name="selected_theme" id="selected-theme" value="{{ current_theme }}">
-                        {% endwith %}
-                    {% else %}
-                        <input type="hidden" name="selected_theme" id="selected-theme" value="{{ current_theme }}">
-                    {% endif %}
-                {% endwith %}
-                <input type="hidden" name="save_card" id="save_card_input" value="false">
-                
 
                 </div> <!-- End of hidden sections -->
 
@@ -381,11 +469,11 @@
                                     
                                     <div class="space-y-3">
                                         <div class="flex justify-between items-center p-3 bg-spruce-800 bg-opacity-30 rounded-md border border-teal-900 border-opacity-40">
-                                            <span class="text-teal-200">Emergency Information Only</span>
+                                            <span class="text-teal-200">Dietary Information Only</span>
                                             <span class="text-white bg-teal-700 px-2 py-1 rounded-md text-xs">Default</span>
                                         </div>
                                         <div class="flex justify-between items-center p-3 bg-spruce-800 bg-opacity-10 rounded-md">
-                                            <span class="text-teal-300">Include medical history</span>
+                                            <span class="text-teal-300">Include dietary history</span>
                                             <span class="text-teal-300 text-xs">(Coming Soon)</span>
                                         </div>
                                         <div class="flex justify-between items-center p-3 bg-spruce-800 bg-opacity-10 rounded-md">
@@ -401,13 +489,13 @@
                     <!-- E-Card Usage Instructions -->
                     <div class="form-section">
                         <div class="form-section-header border-b border-gray-200 pb-3 mb-4">
-                            <h2 class="text-lg font-medium text-white">How to Use Your e-Card</h2>
+                            <h2 class="text-lg font-medium text-white">How to Use Your E-Card</h2>
                         </div>
                         <div class="form-section-body">
                             <div class="p-4 bg-teal-900 bg-opacity-20 rounded-lg border border-teal-800">
-                                <h3 class="text-teal-300 font-medium mb-3">Using Your e-Card</h3>
+                                <h3 class="text-teal-300 font-medium mb-3">Using Your E-Card</h3>
                                 <ul class="list-disc list-inside text-teal-200 space-y-2">
-                                    <li>Edit your information directly on the e-Card by clicking on any field</li>
+                                    <li>Edit your information directly on the E-Card by clicking on any field</li>
                                     <li>Change the theme using the theme selector on the card</li>
                                     <li>Switch languages using the language selector on the card</li>
                                     <li>All of your information is stored and will be available when you return</li>
@@ -435,8 +523,8 @@
                             About Translations
                         </h4>
                         <p class="text-teal-200 text-sm">
-                            Your e-card comes with professional translations in multiple languages. When you switch languages, 
-                            all the medical information will be translated to ensure accuracy and clarity in emergency situations.
+                            Your E-card comes with professional translations in multiple languages. When you switch languages, 
+                            all the dietary information will be translated to ensure accuracy and clarity in travel situations.
                         </p>
                     </div>
                     
@@ -606,7 +694,7 @@ python -m venv .venv
                     const saveText = document.querySelector('.save-text');
                     const originalText = saveText.textContent;
                     saveText.textContent = 'Saving...';
-                    document.querySelector('.autosave-status').textContent = 'Saving your e-Card...';
+                    document.querySelector('.autosave-status').textContent = 'Saving your E-Card...';
                     
                     // Submit the form
                     form.submit();
@@ -641,10 +729,10 @@ python -m venv .venv
         // Translation dictionary for UI elements
         const translations = {
             'en': {
-                'Medical Information': 'Medical Information',
+                'Medical Information': 'Dietary Information',
                 'Message': 'Message',
-                'Emergency Contact': 'Emergency Contact',
-                'No emergency contact listed.': 'No emergency contact listed.',
+                'Contact': 'Contact',
+                'No contact listed.': 'No contact listed.'
                 'No message available.': 'No message available.',
                 'Autoimmune disorder triggered by gluten': 'Autoimmune disorder triggered by gluten',
                 'Can cause severe intestinal damage': 'Can cause severe intestinal damage',
@@ -654,16 +742,16 @@ python -m venv .venv
                 'Requires gluten-free diet for symptom control': 'Requires gluten-free diet for symptom control',
                 'Immune system reaction to wheat proteins': 'Immune system reaction to wheat proteins',
                 'Can cause immediate allergy symptoms': 'Can cause immediate allergy symptoms',
-                'May require emergency treatment if severe': 'May require emergency treatment if severe',
+                'May require emergency assistance if severe': 'May require emergency assistance if severe',
                 'Requires avoidance of gluten-containing foods': 'Requires avoidance of gluten-containing foods',
                 'Needs careful meal preparation': 'Needs careful meal preparation',
                 'Profile Picture': 'Profile Picture'
             },
             'es': {
-                'Medical Information': 'Información Médica',
+                'Medical Information': 'Información Dietética',
                 'Message': 'Mensaje',
-                'Emergency Contact': 'Contacto de Emergencia',
-                'No emergency contact listed.': 'No hay contacto de emergencia registrado.',
+                'Contact': 'Contacto',
+                'No contact listed.': 'No hay contacto registrado.'
                 'No message available.': 'No hay mensaje disponible.',
                 'Autoimmune disorder triggered by gluten': 'Trastorno autoinmune desencadenado por el gluten',
                 'Can cause severe intestinal damage': 'Puede causar daño intestinal severo',
@@ -673,16 +761,16 @@ python -m venv .venv
                 'Requires gluten-free diet for symptom control': 'Requiere dieta sin gluten para controlar los síntomas',
                 'Immune system reaction to wheat proteins': 'Reacción del sistema inmunológico a las proteínas del trigo',
                 'Can cause immediate allergy symptoms': 'Puede causar síntomas alérgicos inmediatos',
-                'May require emergency treatment if severe': 'Puede requerir tratamiento de emergencia si es grave',
+                'May require emergency assistance if severe': 'Puede requerir asistencia de emergencia si es grave',
                 'Requires avoidance of gluten-containing foods': 'Requiere evitar alimentos con gluten',
                 'Needs careful meal preparation': 'Necesita preparación cuidadosa de comidas',
                 'Profile Picture': 'Foto de Perfil'
             },
             'fr': {
-                'Medical Information': 'Informations Médicales',
+                'Medical Information': 'Informations Diététiques',
                 'Message': 'Message',
-                'Emergency Contact': 'Contact d\'Urgence',
-                'No emergency contact listed.': 'Aucun contact d\'urgence indiqué.',
+                'Contact': 'Contact',
+                'No contact listed.': 'Aucun contact indiqué.'
                 'No message available.': 'Aucun message disponible.',
                 'Autoimmune disorder triggered by gluten': 'Trouble auto-immun déclenché par le gluten',
                 'Can cause severe intestinal damage': 'Peut causer de graves lésions intestinales',
@@ -692,16 +780,16 @@ python -m venv .venv
                 'Requires gluten-free diet for symptom control': 'Nécessite un régime sans gluten pour contrôler les symptômes',
                 'Immune system reaction to wheat proteins': 'Réaction du système immunitaire aux protéines de blé',
                 'Can cause immediate allergy symptoms': 'Peut provoquer des symptômes allergiques immédiats',
-                'May require emergency treatment if severe': 'Peut nécessiter un traitement d\'urgence si grave',
+                'May require emergency assistance if severe': 'Peut nécessiter une assistance d\'urgence si grave',
                 'Requires avoidance of gluten-containing foods': 'Exige d\'éviter les aliments contenant du gluten',
                 'Needs careful meal preparation': 'Nécessite une préparation soignée des repas',
                 'Profile Picture': 'Photo de Profil'
             },
             'de': {
-                'Medical Information': 'Medizinische Informationen',
+                'Medical Information': 'Diätetische Informationen',
                 'Message': 'Nachricht',
-                'Emergency Contact': 'Notfallkontakt',
-                'No emergency contact listed.': 'Kein Notfallkontakt angegeben.',
+                'Contact': 'Kontakt',
+                'No contact listed.': 'Kein Kontakt angegeben.'
                 'No message available.': 'Keine Nachricht verfügbar.',
                 'Autoimmune disorder triggered by gluten': 'Durch Gluten ausgelöste Autoimmunerkrankung',
                 'Can cause severe intestinal damage': 'Kann schwere Darmschäden verursachen',
@@ -711,7 +799,7 @@ python -m venv .venv
                 'Requires gluten-free diet for symptom control': 'Erfordert glutenfreie Diät zur Symptomkontrolle',
                 'Immune system reaction to wheat proteins': 'Immunsystemreaktion auf Weizenproteine',
                 'Can cause immediate allergy symptoms': 'Kann sofortige allergische Symptome verursachen',
-                'May require emergency treatment if severe': 'Kann bei schweren Fällen eine Notfallbehandlung erfordern',
+                'May require emergency assistance if severe': 'Kann bei schweren Fällen Notfallhilfe erfordern',
                 'Requires avoidance of gluten-containing foods': 'Erfordert die Vermeidung glutenhaltiger Lebensmittel',
                 'Needs careful meal preparation': 'Erfordert sorgfältige Mahlzeitenzubereitung',
                 'Profile Picture': 'Profilbild'
@@ -1117,6 +1205,9 @@ python -m venv .venv
                 });
             }
             
+            // Initialize hex copy buttons
+            initializeHexCopyButtons();
+            
             // Fix theme button previews with correct theme colors
             document.querySelectorAll('.theme-preview').forEach(preview => {
                 const parent = preview.closest('.theme-button');
@@ -1138,6 +1229,50 @@ python -m venv .venv
             // Initialize theme button states
             const currentTheme = document.getElementById('selected-theme').value || 'celio';
             updateThemeButtonStates(currentTheme);
+        }
+        
+        // Hex copy functionality
+        function initializeHexCopyButtons() {
+            const hexCopyButtons = document.querySelectorAll('.hex-copy-btn');
+            const notification = document.getElementById('copy-notification');
+            const message = document.getElementById('copy-message');
+            
+            hexCopyButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation(); // Prevent theme selection when clicking hex buttons
+                    const hexCode = this.getAttribute('data-hex');
+                    
+                    // Copy to clipboard
+                    navigator.clipboard.writeText(hexCode).then(() => {
+                        // Show notification
+                        message.textContent = `Hex code ${hexCode} copied to clipboard!`;
+                        notification.classList.remove('hidden');
+                        
+                        // Hide notification after 2 seconds
+                        setTimeout(() => {
+                            notification.classList.add('hidden');
+                        }, 2000);
+                    }).catch(err => {
+                        console.error('Failed to copy hex code:', err);
+                        // Fallback for older browsers
+                        const textArea = document.createElement('textarea');
+                        textArea.value = hexCode;
+                        document.body.appendChild(textArea);
+                        textArea.select();
+                        try {
+                            document.execCommand('copy');
+                            message.textContent = `Hex code ${hexCode} copied to clipboard!`;
+                        } catch (fallbackErr) {
+                            message.textContent = 'Failed to copy hex code';
+                        }
+                        document.body.removeChild(textArea);
+                        notification.classList.remove('hidden');
+                        setTimeout(() => {
+                            notification.classList.add('hidden');
+                        }, 2000);
+                    });
+                });
+            });
         }
         
         // Call setupGlobalSelectors to initialize everything

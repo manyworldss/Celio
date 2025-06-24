@@ -157,10 +157,10 @@
             </div>
         </div>
         
-        <!-- Emergency Contact Info -->
-        {% if card.emergency_contact_name %}
-        <div class="emergency-contact mt-4 p-3 rounded-lg border border-opacity-30">
-            <h3 class="text-base font-semibold mb-1">Emergency Contact</h3>
+        <!-- Contact Info -->
+    {% if card.emergency_contact_name %}
+    <div class="emergency-contact mt-4 p-3 rounded-lg border border-opacity-30">
+        <h3 class="text-base font-semibold mb-1">Contact</h3>
             <p class="text-sm">
                 {% if card.emergency_contact_relationship %}{{ card.emergency_contact_relationship }}: {% endif %}
                 {{ card.emergency_contact_name }} • {{ card.emergency_contact_phone }}

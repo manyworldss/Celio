@@ -2,7 +2,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Delete Emergency Card - Celio{% endblock %}
+{% block title %}Delete Medical Card - Celio{% endblock %}
 
 {% block content %}
 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -17,7 +17,7 @@
     </div>
     
     <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
-        <h1 class="text-2xl font-bold text-gray-900 mb-4">Delete Emergency Card</h1>
+        <h1 class="text-2xl font-bold text-gray-900 mb-4">Delete Medical Card</h1>
         
         <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6">
             <div class="flex">
@@ -28,7 +28,7 @@
                 </div>
                 <div class="ml-3">
                     <p class="text-sm text-red-700">
-                        Warning: This action cannot be undone. Your emergency card will be permanently deleted.
+                        Warning: This action cannot be undone. Your medical card will be permanently deleted.
                     </p>
                 </div>
             </div>
@@ -39,7 +39,7 @@
             <ul class="list-disc list-inside text-gray-600 ml-4 space-y-1">
                 <li>Condition: {{ card.get_condition_display }}</li>
                 <li>Created: {{ card.created_at|date:"F j, Y" }}</li>
-                <li>Emergency Contact: {{ card.emergency_contact_name }}</li>
+                <li>Contact: {{ card.emergency_contact_name }}</li>
                 <li>Languages: 
                     {% for lang in card.translations.keys %}
                         {{ lang }}{% if not forloop.last %}, {% endif %}

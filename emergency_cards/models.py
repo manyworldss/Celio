@@ -1,6 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
+import uuid
 from .constants import PREDEFINED_MESSAGES, MEDICAL_INFO_BULLETS
 
 class EmergencyCard(models.Model):
@@ -30,8 +30,8 @@ class EmergencyCard(models.Model):
         ('ALL', 'Wheat/Gluten Allergy'),
     ]
 
-    # User and basic information
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # Demo card identifier
+    card_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     name = models.CharField(max_length=100, blank=True)
     user_name = models.CharField(max_length=255, blank=True, null=True)
     condition = models.CharField(max_length=3, choices=SEVERITY_CHOICES, default='CEL', 
@@ -161,7 +161,8 @@ class EmergencyCard(models.Model):
 
 
     def __str__(self):
-        return f"{self.user.username}'s Emergency Card"
+        display_name = self.user_name or "Demo"
+        return f"{display_name}'s Emergency Card"
         
     @property
     def purpose_text(self):

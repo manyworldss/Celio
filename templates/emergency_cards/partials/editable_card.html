@@ -11,10 +11,17 @@
     - In fullscreen mode, controls are visible but disabled for consistency
     {% endcomment %}
     <!-- Celio Logo -->    
-    <div class="flex justify-center py-3 border-b border-white border-opacity-20 bg-teal-600 {% if is_fullscreen %}py-4{% endif %}" id="card-header">
-        <div class="celio-logo-container text-white {% if is_fullscreen %}transform scale-110{% endif %}">
-            <span class="celio-logo {% if is_fullscreen %}text-3xl{% else %}text-2xl{% endif %}">Celio</span>
-            <span class="celio-tagline text-xs uppercase tracking-widest opacity-90 mt-1">e-Card</span>
+    <div class="flex justify-center py-3 border-b border-white border-opacity-20 {% if is_fullscreen %}py-4{% endif %}" id="card-header">
+        <div class="flex flex-col items-center {% if is_fullscreen %}transform scale-110{% endif %}">
+            <div class="flex items-start {% if is_fullscreen %}text-3xl{% else %}text-2xl{% endif %}">
+                <span class="text-white font-black tracking-tight">Celio</span>
+                <div class="relative ml-1 {% if is_fullscreen %}mt-1.5{% else %}mt-1{% endif %} {% if is_fullscreen %}w-5 h-5{% else %}w-4 h-4{% endif %} bg-green-500 rounded-full flex items-center justify-center">
+                    <svg class="{% if is_fullscreen %}w-3 h-3{% else %}w-2.5 h-2.5{% endif %} text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                </div>
+            </div>
+            <span class="text-xs uppercase tracking-widest text-white opacity-90 mt-1">GLUTEN-FREE PASSPORT</span>
         </div>
     </div>
     
@@ -22,7 +29,7 @@
     <style>
         /* Override card theme styles for the header */
         #card-header {
-            background-color: var(--teal-600, #0d9488) !important;
+            background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
             color: white !important;
         }
         
@@ -73,23 +80,17 @@
     <style>
         /* Logo styling from the front page, adapted for cards */
         .celio-logo {
-            font-family: 'Satoshi', sans-serif;
+            font-family: 'Hex Franklin', sans-serif;
             position: relative;
-            font-weight: 900;
-            letter-spacing: -0.5px;
-            padding-right: 10px;
-            margin-right: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
-        .celio-logo::after {
-            content: '';
-            position: absolute;
-            bottom: 4px;
-            right: -5px;
-            width: 8px;
-            height: 8px;
-            background: var(--teal-400, #2dd4bf);
-            border-radius: 50%;
+        .logo-accent {
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .celio-logo-container {
@@ -257,8 +258,8 @@
                 </div>
                 <div class="relative">
                     <select id="theme-selector" class="theme-selector-dropdown w-full appearance-none bg-white bg-opacity-10 border border-white border-opacity-30 hover:border-opacity-50 py-1.5 px-2 pr-6 rounded-md focus:outline-none focus:ring-1 focus:ring-white focus:ring-opacity-30 text-sm transition-all duration-200 shadow-sm" onchange="handleThemeChange.call(this, event)">
-                        <option value="light" {% if preview_theme == 'light' or (not preview_theme and card and card.theme == 'light') or (not preview_theme and not card) %}selected{% endif %}>Light</option>
-                        <option value="dark" {% if preview_theme == 'dark' or (not preview_theme and card and card.theme == 'dark') %}selected{% endif %}>Dark</option>
+                        <option value="light" {% if preview_theme == 'light' or preview_theme == '' and card.theme == 'light' or preview_theme == '' and not card %}selected{% endif %}>Light</option>
+                <option value="dark" {% if preview_theme == 'dark' or preview_theme == '' and card.theme == 'dark' %}selected{% endif %}>Dark</option>
                     </select>
                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 opacity-70">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -457,7 +458,7 @@
                                 </li>
                                 <li class="mb-2 flex items-start gap-2">
                                     <span class="bullet-point">•</span>
-                                    <span class="flex-1" data-i18n="May require emergency treatment if severe">{% trans "May require emergency treatment if severe" %}</span>
+                                    <span class="flex-1" data-i18n="May require medical treatment if severe">{% trans "May require medical treatment if severe" %}</span>
                                 </li>
                             {% else %}
                                 {# Default fallback #}
@@ -483,9 +484,9 @@
             </div>
         </div>
         
-        <!-- Emergency Contact Section -->
-        <div class="info-section">
-            <h2 class="text-xl font-bold text-teal-600 emergency-contact">{% trans "Emergency Contact" %}</h2>
+        <!-- Contact Section -->
+            <div class="contact-section mt-8">
+                <h2 class="text-xl font-bold text-teal-600 emergency-contact">{% trans "Contact" %}</h2>
             <div class="section-content">
                 <div class="editable-contact">
                     <div class="flex flex-col sm:flex-row gap-4 mb-2">
@@ -529,7 +530,7 @@
     <!-- Form Submit Button (Preview Mode Only) -->
     <div class="card-footer p-3 border-t border-white border-opacity-10 flex justify-between items-center">
         <div class="text-xs opacity-60">
-            <span class="autosave-status">e-Card changes ready to save</span>
+            <span class="autosave-status">E-Card changes ready to save</span>
         </div>
         <button type="button" class="save-card-btn px-4 py-2 bg-teal-600 hover:bg-teal-500 border border-teal-500 hover:border-teal-400 rounded-md transition-all duration-200 text-sm font-medium flex items-center shadow-md" id="save-card-button">
             <span class="save-icon mr-1.5">
@@ -537,7 +538,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
                 </svg>
             </span>
-            <span class="save-text">Save e-Card</span>
+            <span class="save-text">Save E-Card</span>
         </button>
     </div>
     {% endif %}

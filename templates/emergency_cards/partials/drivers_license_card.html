@@ -1,19 +1,19 @@
 {% load static %}
 {% load emergency_card_filters %}
 
-<div class="drivers-license-card-container">
-    <div class="drivers-license-card">
-        <!-- Header with state and title -->
-        <div class="dl-header">
-            <div class="dl-state">
-                <span class="dl-state-text">CELIAC</span>
-                <span class="dl-state-subtext">DISEASE</span>
+<div class="allergy-card-container">
+    <div class="allergy-card">
+        <!-- Header with condition and language -->
+        <div class="card-header">
+            <div class="condition-badge">
+                <span class="condition-text">ALLERGY</span>
+                <span class="condition-subtext">ALERT</span>
             </div>
-            <div class="dl-title">
+            <div class="card-title">
                 <span>GLUTEN FREE</span>
-                <span>EMERGENCY CARD</span>
+                <span>COMMUNICATION CARD</span>
             </div>
-            <div class="dl-flag">
+            <div class="language-flag">
                 {% if current_lang == 'ES' %}
                 <span>ES</span>
                 {% elif current_lang == 'FR' %}
@@ -21,274 +21,332 @@
                 {% elif current_lang == 'DE' %}
                 <span>DE</span>
                 {% else %}
-                <span>US</span>
+                <span>EN</span>
                 {% endif %}
             </div>
         </div>
 
         <!-- Main content area -->
-        <div class="dl-content">
-            <!-- Left side - Photo and emergency info -->
-            <div class="dl-photo-section">
+        <div class="card-content">
+            <!-- Profile section -->
+            <div class="profile-section">
                 {% if card.profile_picture and card.show_profile_pic %}
-                <div class="dl-photo" style="background-image: url('{{ card.profile_picture.url }}')"></div>
+                <div class="profile-photo" style="background-image: url('{{ card.profile_picture.url }}')">
+                </div>
                 {% else %}
-                <div class="dl-photo">
-                    <span class="dl-photo-placeholder">PHOTO</span>
+                <div class="profile-photo">
+                    <div class="photo-placeholder">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z" fill="#999"/>
+                            <path d="M12 14C7.58172 14 4 17.5817 4 22H20C20 17.5817 16.4183 14 12 14Z" fill="#999"/>
+                        </svg>
+                    </div>
                 </div>
                 {% endif %}
                 
-                <div class="dl-emergency">
-                    <div class="dl-label">EMERGENCY CONTACT</div>
-                    <div class="dl-value">{{ card.emergency_contact_name|default:"N/A" }}</div>
-                    <div class="dl-value">{{ card.emergency_contact_phone|default:"" }}</div>
+                <div class="user-info">
+                    <div class="info-label">NAME</div>
+                    <div class="info-value">{{ card.user.get_full_name|default:card.user.username }}</div>
                 </div>
             </div>
 
-            <!-- Right side - User information -->
-            <div class="dl-info-section">
-                <!-- Name and DOB -->
-                <div class="dl-info-row">
-                    <div class="dl-info-group">
-                        <div class="dl-label">NAME</div>
-                        <div class="dl-value">{{ card.user.get_full_name|default:card.user.username|upper }}</div>
-                    </div>
-                    <div class="dl-info-group">
-                        <div class="dl-label">DOB</div>
-                        <div class="dl-value">{{ card.date_of_birth|date:"m/d/Y"|default:"N/A" }}</div>
-                    </div>
-                </div>
-
-                <!-- Condition -->
-                <div class="dl-info-row">
-                    <div class="dl-info-group">
-                        <div class="dl-label">CONDITION</div>
-                        <div class="dl-value">
-                            {% if card.condition == 'CEL' %}
-                            CELIAC DISEASE
-                            {% elif card.condition == 'SEN' %}
-                            GLUTEN SENSITIVE
-                            {% else %}
-                            WHEAT/GLUTEN ALLERGY
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="dl-info-group">
-                        <div class="dl-label">BLOOD TYPE</div>
-                        <div class="dl-value">{{ card.blood_type|default:"N/A" }}</div>
+            <!-- Medical information -->
+            <div class="medical-section">
+                <div class="condition-info">
+                    <div class="info-label">MEDICAL CONDITION</div>
+                    <div class="info-value condition-highlight">
+                        {% if card.condition == 'CEL' %}
+                        Celiac Disease
+                        {% elif card.condition == 'SEN' %}
+                        Gluten Sensitivity
+                        {% else %}
+                        Wheat/Gluten Allergy
+                        {% endif %}
                     </div>
                 </div>
 
-                <!-- Message section -->
-                <div class="dl-message-section">
-                    <div class="dl-label">MESSAGE</div>
-                    <div class="dl-message">
+                <!-- Important message -->
+                <div class="message-section">
+                    <div class="info-label">IMPORTANT MESSAGE</div>
+                    <div class="message-content">
                         {{ card.get_message|default:"I have a severe gluten-related condition and cannot consume any gluten. Even small amounts can make me very ill."|linebreaksbr }}
                     </div>
                 </div>
 
-                <!-- Barcode and issue date -->
-                <div class="dl-footer">
-                    <div class="dl-barcode">
-                        <div class="barcode">GF-{{ card.user.id|stringformat:"06d" }}-{{ card.created_at|date:"ymd" }}</div>
-                    </div>
-                    <div class="dl-issued">
-                        <div>ISSUED: {{ card.created_at|date:"m/d/Y" }}</div>
-                        <div>EXPIRES: {{ card.updated_at|date:"m/d/Y"|add:"years:5" }}</div>
+                <!-- Contact -->
+    <div class="emergency-section">
+        <div class="info-label">CONTACT</div>
+        <div class="emergency-info">
+                        <div class="contact-name">{{ card.emergency_contact_name|default:"Not provided" }}</div>
+                        <div class="contact-phone">{{ card.emergency_contact_phone|default:"" }}</div>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="card-footer">
+            <div class="card-id">
+                <span>Card ID: GF-{{ card.user.id|stringformat:"06d" }}</span>
+            </div>
+            <div class="issue-date">
+                <span>Created: {{ card.created_at|date:"M d, Y" }}</span>
+            </div>
+        </div>
         </div>
     </div>
 </div>
 
 <style>
-.drivers-license-card-container {
-    max-width: 600px;
+.allergy-card-container {
+    max-width: 400px;
     margin: 0 auto;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Hex Franklin', sans-serif;
+    padding: 10px;
 }
 
-.drivers-license-card {
-    background: white;
-    border: 2px solid #333;
-    border-radius: 10px;
+.allergy-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    color: white;
+    position: relative;
+}
+
+.allergy-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    z-index: 0;
+}
+
+.allergy-card > * {
+    position: relative;
+    z-index: 1;
 }
 
 /* Header styles */
-.dl-header {
-    background: #1a4b84;
-    color: white;
+.card-header {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
     display: flex;
     justify-content: space-between;
-    padding: 10px 15px;
     align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.dl-state {
-    text-align: center;
-    font-weight: bold;
+.condition-badge {
+    text-align: left;
 }
 
-.dl-state-text {
+.condition-text {
     display: block;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
+    font-weight: 700;
     line-height: 1;
 }
 
-.dl-state-subtext {
-    font-size: 0.7rem;
-    opacity: 0.8;
+.condition-subtext {
+    font-size: 0.75rem;
+    opacity: 0.9;
+    font-weight: 500;
 }
 
-.dl-title {
+.card-title {
     text-align: center;
-    font-weight: bold;
-    text-transform: uppercase;
-    font-size: 0.9rem;
+    font-weight: 600;
+    font-size: 0.85rem;
     line-height: 1.2;
 }
 
-.dl-flag {
-    background: #bf0a30;
+.language-flag {
+    background: rgba(255, 255, 255, 0.2);
     color: white;
-    width: 40px;
-    height: 25px;
+    width: 36px;
+    height: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: bold;
-    border-radius: 3px;
+    font-weight: 600;
+    border-radius: 6px;
+    font-size: 0.8rem;
 }
 
 /* Content area */
-.dl-content {
+.card-content {
+    padding: 20px;
+}
+
+/* Profile section */
+.profile-section {
     display: flex;
-    padding: 15px;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Photo section */
-.dl-photo-section {
-    width: 35%;
-    padding-right: 15px;
-    border-right: 1px solid #ddd;
-}
-
-.dl-photo {
-    width: 100%;
-    aspect-ratio: 3/4;
-    background: #f0f0f0;
-    margin-bottom: 15px;
+.profile-photo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    margin-right: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
     background-size: cover;
     background-position: center;
+    flex-shrink: 0;
 }
 
-.dl-photo-placeholder {
-    color: #999;
-    font-size: 0.8rem;
-}
-
-.dl-emergency {
-    font-size: 0.75rem;
-}
-
-/* Info section */
-.dl-info-section {
-    width: 65%;
-    padding-left: 15px;
-}
-
-.dl-info-row {
+.photo-placeholder {
     display: flex;
-    margin-bottom: 10px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
 }
 
-.dl-info-group {
+.user-info {
     flex: 1;
-    margin-right: 10px;
 }
 
-.dl-info-group:last-child {
-    margin-right: 0;
-}
-
-.dl-label {
-    font-size: 0.6rem;
-    color: #666;
+.info-label {
+    font-size: 0.7rem;
+    opacity: 0.8;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.info-value {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+/* Medical section */
+.medical-section {
+    space-y: 16px;
+}
+
+.condition-info {
+    margin-bottom: 16px;
+}
+
+.condition-highlight {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.message-section {
+    margin-bottom: 16px;
+}
+
+.message-content {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.emergency-section {
+    margin-bottom: 16px;
+}
+
+.emergency-info {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.contact-name {
+    font-weight: 600;
     margin-bottom: 2px;
 }
 
-.dl-value {
+.contact-phone {
     font-size: 0.9rem;
-    font-weight: 500;
-    margin-bottom: 5px;
-    word-break: break-word;
-}
-
-/* Message section */
-.dl-message-section {
-    margin: 10px 0;
-    padding: 8px;
-    background: #f8f9fa;
-    border: 1px solid #eee;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    line-height: 1.4;
-}
-
-.dl-message {
-    font-size: 0.8rem;
-    line-height: 1.4;
+    opacity: 0.9;
 }
 
 /* Footer */
-.dl-footer {
+.card-footer {
+    background: rgba(0, 0, 0, 0.1);
+    padding: 12px 20px;
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
-    margin-top: 10px;
-    padding-top: 8px;
-    border-top: 1px solid #eee;
-    font-size: 0.7rem;
+    align-items: center;
+    font-size: 0.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.dl-barcode {
-    font-family: 'Libre Barcode 39', monospace;
-    font-size: 1.5rem;
-    line-height: 1;
-    transform: translateY(5px);
+.card-id {
+    font-weight: 500;
+    opacity: 0.9;
 }
 
-.dl-issued {
-    text-align: right;
-    font-size: 0.7rem;
-    color: #666;
+.issue-date {
+    opacity: 0.8;
 }
 
-/* Responsive adjustments */
+/* Mobile optimizations */
 @media (max-width: 480px) {
-    .dl-content {
+    .allergy-card-container {
+        max-width: 100%;
+        padding: 8px;
+    }
+    
+    .card-header {
+        padding: 12px 16px;
+    }
+    
+    .card-content {
+        padding: 16px;
+    }
+    
+    .profile-section {
         flex-direction: column;
+        text-align: center;
     }
     
-    .dl-photo-section, .dl-info-section {
-        width: 100%;
-        padding: 0;
-        border: none;
+    .profile-photo {
+        margin-right: 0;
+        margin-bottom: 12px;
     }
     
-    .dl-photo-section {
-        margin-bottom: 15px;
-        padding-bottom: 15px;
-        border-bottom: 1px solid #eee;
+    .card-footer {
+        flex-direction: column;
+        gap: 4px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 320px) {
+    .card-header {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
+    
+    .condition-badge, .card-title {
+        text-align: center;
     }
 }
 </style>

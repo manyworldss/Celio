@@ -1,244 +1,306 @@
 {% extends "base.html" %}
 
 {% block content %}
-<!-- Navigation -->
-<nav class="bg-white py-4 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-7xl mx-auto flex justify-end items-center">
-        <!-- Removed duplicate Celio logo -->
-        <div class="hidden md:flex items-center space-x-8">
-            <a href="#features" class="text-gray-700 hover:text-teal-600 transition-colors">Features</a>
-            <a href="#how-it-works" class="text-gray-700 hover:text-teal-600 transition-colors">How It Works</a>
-            <a href="#about" class="text-gray-700 hover:text-teal-600 transition-colors">About</a>
-            <a href="{% url 'emergency_cards:unified_card_management' %}" class="bg-teal-600 text-white px-6 py-2 rounded-full hover:bg-teal-700 transition-colors">
-                Get Started
-            </a>
-        </div>
-        <button class="md:hidden text-gray-700" @click="mobileMenuOpen = !mobileMenuOpen">
-            <svg x-show="!mobileMenuOpen" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-            <svg x-show="mobileMenuOpen" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-        </button>
-    </div>
-</nav>
+
+
 
 <!-- Hero Section -->
-<div class="min-h-screen bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
-        <div class="lg:grid lg:grid-cols-2 lg:gap-12 items-center">
-            <div class="text-center lg:text-left mb-16 lg:mb-0">
-                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-                    Gluten Free<br>Emergency Card
+<div class="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-spruce-900 via-spruce-800 to-spruce-700">
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <!-- Left Side: Title and Our Story -->
+            <div class="space-y-8">
+                <!-- Gradient Title -->
+                <h1 class="text-5xl md:text-6xl font-bold leading-tight">
+                    <span class="bg-gradient-to-br from-white via-green-100 to-green-400 bg-clip-text text-transparent">
+                        Multilingual Travel<br>
+                        E-Cards Demo
+                    </span>
                 </h1>
-                <p class="text-xl text-gray-600 mb-8 max-w-lg mx-auto lg:mx-0">
-                    Communicate your dietary needs safely in any language while traveling abroad.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                    <a href="{% url 'emergency_cards:unified_card_management' %}" class="inline-flex items-center justify-center px-8 py-4 border border-transparent text-base font-medium rounded-full text-white bg-teal-600 hover:bg-teal-700 transition-colors md:text-lg">
-                        Get Your Free Card
-                    </a>
+                
+                <!-- Our Story Section -->
+                <div class="space-y-6">
+                    <h2 class="text-2xl md:text-3xl font-semibold text-white">
+                        Our Story
+                    </h2>
+                    <p class="text-lg text-neutral-300 leading-relaxed">
+                        Born from real travel challenges, this portfolio project demonstrates how technology can bridge language barriers during travel. When dietary restrictions meet foreign languages, clear communication becomes critical.
+                    </p>
+                    <p class="text-lg text-neutral-300 leading-relaxed">
+                        Built with Django, TailwindCSS, and modern web technologies, this full-stack application showcases practical problem-solving through code.
+                    </p>
+                    
+                    <!-- CTA Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                        <a href="{% url 'e_cards:unified_card_management' %}" class="bg-accent-600 hover:bg-accent-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors text-center">
+                            Try Demo Now
+                        </a>
+                        <a href="#features" class="text-accent-400 hover:text-accent-300 font-semibold text-lg transition-colors flex items-center justify-center">
+                            Learn More →
+                        </a>
+                    </div>
                 </div>
             </div>
-            <div class="relative">
-                <!-- Phone mockup -->
-                <div class="bg-gray-100 rounded-3xl p-2 shadow-xl max-w-md mx-auto">
-                    <div class="bg-white rounded-2xl overflow-hidden">
-                        <div class="h-8 bg-gray-100 flex items-center px-4">
-                            <div class="h-2 w-2 rounded-full bg-gray-400 mr-1"></div>
-                            <div class="h-2 w-2 rounded-full bg-gray-400 mr-1"></div>
-                            <div class="h-2 w-2 rounded-full bg-gray-400"></div>
-                        </div>
-                        <div class="p-6">
-                            <div class="bg-teal-100 text-teal-800 text-sm font-medium px-3 py-2 rounded-lg mb-4">
-                                I have celiac disease and cannot eat gluten
+            
+            <!-- Right Side: E-Card Images and Explanations -->
+            <div class="space-y-6">
+                <!-- E-Card Preview 1 - Driver's License Style -->
+                <div class="bg-white rounded-lg border border-neutral-200 overflow-hidden shadow-2xl max-w-3xl mx-auto mb-8">
+                    <!-- Horizontal Layout -->
+                    <div class="flex h-64">
+                        <!-- Left Side: Logo and Header -->
+                        <div class="bg-gradient-to-br from-teal-600 to-teal-700 w-1/3 flex flex-col justify-center items-center text-white p-6">
+                            <div class="flex items-center mb-3">
+                                <span class="text-2xl font-bold tracking-tight">Celio</span>
+                                <div class="ml-2 w-5 h-5 bg-white rounded-full flex items-center justify-center">
+                                    <svg class="w-3 h-3 text-teal-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                </div>
                             </div>
-                            <div class="text-right">
-                                <div class="inline-block bg-teal-600 text-white text-sm font-medium px-4 py-2 rounded-lg">
-                                    No problem! We can accommodate you.
+                            <span class="text-sm uppercase tracking-widest text-center opacity-90">TRAVEL ID</span>
+                            <div class="mt-6 text-center">
+                                <div class="text-sm opacity-75">John Doe</div>
+                                <div class="text-sm opacity-75 mt-2">Wheat/Gluten Allergy</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Right Side: Information -->
+                        <div class="flex-1 p-6 bg-white">
+                            <div class="h-full flex flex-col justify-between">
+                                <!-- Dietary Information -->
+                                <div>
+                                    <h3 class="text-teal-600 font-semibold text-base mb-3">Dietary Information</h3>
+                                    <div class="text-neutral-800 text-sm mb-4">
+                                        <p class="font-medium">Wheat/Gluten Allergy</p>
+                                        <p class="text-neutral-600 mt-2">• No foods to avoid listed</p>
+                                    </div>
+                                    
+                                    <!-- Custom Message Box -->
+                                    <div class="bg-neutral-50 rounded p-3 mb-4">
+                                        <h4 class="text-teal-600 font-semibold text-sm mb-2">Custom Message</h4>
+                                        <p class="text-neutral-700 text-sm italic">"I cannot eat gluten. Please contact emergency assistance if needed."</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Emergency Contact -->
+                                <div>
+                                    <h3 class="text-teal-600 font-semibold text-sm mb-2">Emergency Contact</h3>
+                                    <p class="text-neutral-800 text-sm">Maria Green: +18644200104</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-    <!-- Features Section -->
-    <div id="features" class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Why Choose Our E-Card?</h2>
-                <p class="text-lg text-gray-600 max-w-2xl mx-auto">The most reliable way to communicate your dietary needs anywhere in the world</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Feature 1 -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 transition-all hover:shadow-md">
-                    <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center mb-4">
-                        <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                        </svg>
+                    
+                    <!-- Action Icons -->
+                    <div class="bg-neutral-50 px-6 py-4 border-t border-neutral-200">
+                        <div class="flex justify-center space-x-6">
+                            <!-- Download Icon -->
+                            <button class="flex items-center space-x-2 text-teal-600 hover:text-teal-700 transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                <span class="text-sm font-medium">Download</span>
+                            </button>
+                            
+                            <!-- Share Icon -->
+                            <button class="flex items-center space-x-2 text-teal-600 hover:text-teal-700 transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path>
+                                </svg>
+                                <span class="text-sm font-medium">Share</span>
+                            </button>
+                            
+                            <!-- PDF Icon -->
+                            <button class="flex items-center space-x-2 text-teal-600 hover:text-teal-700 transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                </svg>
+                                <span class="text-sm font-medium">PDF</span>
+                            </button>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Medical Accuracy</h3>
-                    <p class="text-gray-600">Professionally translated and reviewed by medical professionals to ensure clear communication of your condition.</p>
                 </div>
-
-                <!-- Feature 2 -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 transition-all hover:shadow-md">
-                    <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center mb-4">
-                        <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Always Accessible</h3>
-                    <p class="text-gray-600">Access your card anytime, anywhere - no internet connection needed after download.</p>
-                </div>
-
-                <!-- Feature 3 -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 transition-all hover:shadow-md">
-                    <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center mb-4">
-                        <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Free to Use</h3>
-                    <p class="text-gray-600">Create and download your emergency card for free. Premium features available for enhanced functionality.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Our Story Section -->
-    <div id="about" class="py-20 bg-white">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Our Story</h2>
-                <div class="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-                    <p class="text-lg text-gray-700 mb-6 leading-relaxed">
-                        Three years ago, my life changed when I was diagnosed with celiac disease. Like many others with this condition, I constantly struggled to communicate my dietary needs—especially when traveling or dining out. Language barriers made this challenge even more daunting.
-                    </p>
-                    <p class="text-lg text-gray-700 mb-6 leading-relaxed">
-                        I realized that while society evolves, the tools available to celiac patients have remained stagnant. Explaining celiac disease is difficult enough to someone who's never heard of it, but it becomes nearly impossible when they speak a different language.
-                    </p>
-                    <p class="text-lg text-gray-700 leading-relaxed">
-                        This personal struggle sparked the creation of Celio—a web application designed to help people with celiac disease and gluten sensitivities safely communicate their dietary needs in multiple languages.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- How It Works Section -->
-    <div id="how-it-works" class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">How It Works</h2>
-                <p class="text-lg text-gray-600 max-w-2xl mx-auto">Get your personalized emergency card in just a few simple steps</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                <!-- Step 1 -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center">
-                    <div class="w-14 h-14 bg-teal-600 text-white text-xl font-bold rounded-full flex items-center justify-center mx-auto mb-4">1</div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Create Your Card</h3>
-                    <p class="text-gray-600">Fill in your details and dietary requirements in our simple form.</p>
-                </div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-2">Always Accessible</h3>
-                <p class="text-gray-600">Access your card anytime, anywhere - no internet connection needed after download.</p>
-            </div>
-
-            <!-- Feature 3 -->
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 transition-all hover:shadow-md">
-                <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center mb-4">
-                    <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
+                
+                <!-- E-Card Preview 2 - Driver's License Style (Japanese) -->
+                <div class="bg-white rounded-lg border border-neutral-200 overflow-hidden shadow-2xl max-w-3xl mx-auto">
+                    <!-- Horizontal Layout -->
+                    <div class="flex h-64">
+                        <!-- Left Side: Logo and Header -->
+                        <div class="bg-gradient-to-br from-teal-600 to-teal-700 w-1/3 flex flex-col justify-center items-center text-white p-6">
+                            <div class="flex items-center mb-3">
+                                <span class="text-2xl font-bold tracking-tight">Celio</span>
+                                <div class="ml-2 w-5 h-5 bg-white rounded-full flex items-center justify-center">
+                                    <svg class="w-3 h-3 text-teal-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                </div>
+                            </div>
+                            <span class="text-sm uppercase tracking-widest text-center opacity-90">医療ID</span>
+                            <div class="mt-6 text-center">
+                                <div class="text-sm opacity-75">田中太郎</div>
+                                <div class="text-sm opacity-75 mt-2">小麦/グルテンアレルギー</div>
                             </div>
                         </div>
-                        <div class="ml-6">
-                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Download or Print</h3>
-                            <p class="text-gray-600">Download your card to your phone or print it out to carry with you when you travel.</p>
+                        
+                        <!-- Right Side: Information -->
+                        <div class="flex-1 p-6 bg-white">
+                            <div class="h-full flex flex-col justify-between">
+                                <!-- Dietary Information -->
+                                <div>
+                                    <h3 class="text-teal-600 font-semibold text-base mb-3">医療情報</h3>
+                                    <div class="text-neutral-800 text-sm mb-4">
+                                        <p class="font-medium">小麦/グルテンアレルギー</p>
+                                        <p class="text-neutral-600 mt-2">• 避けるべき食品はリストされていません</p>
+                                    </div>
+                                    
+                                    <!-- Custom Message Box -->
+                                    <div class="bg-neutral-50 rounded p-3 mb-4">
+                                        <h4 class="text-teal-600 font-semibold text-sm mb-2">カスタムメッセージ</h4>
+                                        <p class="text-neutral-700 text-sm italic">「グルテンを含む食品は食べられません。必要に応じて医療機関にご連絡ください。」</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Emergency Contact -->
+                                <div>
+                                    <h3 class="text-teal-600 font-semibold text-sm mb-2">緊急連絡先</h3>
+                                    <p class="text-neutral-800 text-sm">マリア・グリーン: +18644200104</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Action Icons -->
+                    <div class="bg-neutral-50 px-6 py-4 border-t border-neutral-200">
+                        <div class="flex justify-center space-x-6">
+                            <!-- Download Icon -->
+                            <button class="flex items-center space-x-2 text-teal-600 hover:text-teal-700 transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                <span class="text-sm font-medium">ダウンロード</span>
+                            </button>
+                            
+                            <!-- Share Icon -->
+                            <button class="flex items-center space-x-2 text-teal-600 hover:text-teal-700 transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path>
+                                </svg>
+                                <span class="text-sm font-medium">共有</span>
+                            </button>
+                            
+                            <!-- PDF Icon -->
+                            <button class="flex items-center space-x-2 text-teal-600 hover:text-teal-700 transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                </svg>
+                                <span class="text-sm font-medium">PDF</span>
+                            </button>
                         </div>
                     </div>
                 </div>
-                <div class="mt-16 text-center">
-                    <a href="{% url 'emergency_cards:unified_card_management' %}" class="inline-block px-8 py-3 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors text-lg">
-                        Get Started - It's Free
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- CTA Section -->
-    <div class="bg-teal-600">
-        <div class="max-w-4xl mx-auto text-center py-20 px-4 sm:py-24 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-bold text-white sm:text-5xl">
-                <span class="block">Ready to travel with confidence?</span>
-            </h2>
-            <p class="mt-6 text-xl leading-8 text-teal-100 max-w-3xl mx-auto">
-                Create your free Gluten Free Emergency Card today and never worry about dietary restrictions while traveling again.
-            </p>
-            <div class="mt-10">
-                <a href="{% url 'emergency_cards:unified_card_management' %}" class="inline-flex items-center justify-center px-8 py-4 border border-transparent text-lg font-medium rounded-md text-teal-600 bg-white hover:bg-teal-50 transition-colors">
-                    Create Your Card Now
-                </a>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Footer -->
-    <footer class="bg-spruce-800 text-white py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <!-- Brand -->
-                <div class="flex items-center mb-6 md:mb-0">
-                    <span class="text-2xl font-bold">Celio</span>
-                </div>
                 
-                <!-- Links -->
-                <div class="flex flex-wrap justify-center gap-6 mb-6 md:mb-0">
-                    <a href="https://www.ralphsuber.com/" target="_blank" class="text-teal-200 hover:text-white transition-colors">
-                        Blog
-                    </a>
-                    <a href="{% url 'emergency_cards:unified_card_management' %}" class="text-teal-200 hover:text-white transition-colors">
-                        Create E Card
-                    </a>
-                    <a href="{% url 'travel:travel_guide_list' %}" class="text-teal-200 hover:text-white transition-colors">
-                        Travel Guides
-                    </a>
-                    <a href="{% url 'sage:assistant' %}" class="text-teal-200 hover:text-white transition-colors">
-                        Sage Assistant
-                    </a>
-                </div>
-                
-                <!-- Social Links -->
-                <div class="flex space-x-6">
-                    <a href="https://www.linkedin.com/in/raphealsuber/" target="_blank" class="text-teal-300 hover:text-white transition-colors">
-                        <span class="sr-only">LinkedIn</span>
-                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                        </svg>
-                    </a>
-                    <a href="https://github.com/manyworldss" target="_blank" class="text-teal-300 hover:text-white transition-colors">
-                        <span class="sr-only">GitHub</span>
-                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
-                        </svg>
-                    </a>
-                </div>
-            </div>
-            
-            <!-- Copyright -->
-            <div class="mt-8 pt-6 border-t border-teal-900">
-                <p class="text-center text-teal-500 text-sm">
-                    &copy; {% now "Y" %} Celio. All rights reserved.
-                </p>
-            </div>
-        </div>
-    </footer>
+                <!-- Feature Highlight -->
+                <div class="bg-accent-600/10 border border-accent-600/20 rounded-lg p-6">
+                    <h4 class="text-accent-300 font-semibold mb-2">How It Works</h4>
+                    <ul class="text-neutral-300 text-sm space-y-2">
+                        <li>• Input your dietary restrictions and travel needs</li>
+                        <li>• Generate cards in 6+ languages with cultural context</li>
+                        <li>• Download PDF or share QR code for instant access</li>
+                        <li>• Emergency contact integration for travel situations</li>
+                    </ul>
+                    <div class="mt-4">
+                        <a href="{% url 'e_cards:unified_card_management' %}" class="text-accent-400 hover:text-accent-300 font-medium transition-colors">
+                            Try It Now →
+                        </a>
+                    </div>
+             </div>
+         </div>
+     </div>
+ </div>
 </div>
+
+<!-- Features Section -->
+<div id="features" class="bg-neutral-900 py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+                Travel Cards<br>
+                <span class="text-neutral-400">for Safe Travel</span>
+            </h2>
+            <p class="text-xl text-neutral-300 max-w-3xl mx-auto">
+                Demonstrating how technology can bridge language barriers in travel situations. 
+                This portfolio project showcases full-stack development skills with real-world impact.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Data Processing -->
+            <div class="bg-neutral-800/50 rounded-xl p-6 border border-neutral-700/50">
+                <div class="bg-accent-600/20 rounded-lg p-4 mb-4">
+                    <div class="w-8 h-8 bg-accent-400 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-neutral-900" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <h3 class="text-white font-semibold text-lg mb-3">Travel Translation</h3>
+                <p class="text-neutral-400 text-sm mb-4">
+                    Transform dietary restriction information into accurate, culturally-appropriate 
+                    emergency cards that healthcare providers and restaurants can understand instantly.
+                </p>
+                <div class="bg-neutral-700/30 rounded-lg p-3">
+                    <div class="text-xs text-neutral-500 mb-1">Sample Translation</div>
+                    <div class="text-accent-300 text-sm font-mono">"Celiac Disease" → "セリアック病"</div>
+                </div>
+            </div>
+
+            <!-- Intelligent Analysis -->
+            <div class="bg-neutral-800/50 rounded-xl p-6 border border-neutral-700/50">
+                <div class="bg-neutral-600/20 rounded-lg p-4 mb-4">
+                    <div class="w-8 h-8 bg-neutral-400 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-neutral-900" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <h3 class="text-white font-semibold text-lg mb-3">Travel Ready</h3>
+                <p class="text-neutral-400 text-sm mb-4">
+                    Cards include contact information, severity indicators, and 
+                    cross-contamination warnings tailored for different cultural contexts.
+                </p>
+                <div class="bg-neutral-700/30 rounded-lg p-3">
+                    <div class="text-xs text-neutral-500 mb-1">Languages Supported</div>
+                    <div class="text-neutral-300 text-sm font-mono">EN, ES, FR, ZH, JA, PT</div>
+                </div>
+            </div>
+
+            <!-- API Dashboard -->
+            <div class="bg-neutral-800/50 rounded-xl p-6 border border-neutral-700/50">
+                <div class="bg-green-600/20 rounded-lg p-4 mb-4">
+                    <div class="w-8 h-8 bg-green-400 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-neutral-900" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M3 7v10a2 2 0 002 2h10a2 2 0 002-2V9a2 2 0 00-2-2h-1V5a3 3 0 00-3-3H9a3 3 0 00-3 3v2H5a2 2 0 00-2 2z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <h3 class="text-white font-semibold text-lg mb-3">Portfolio Showcase</h3>
+                <p class="text-neutral-400 text-sm mb-4">
+                    Built with Django, TailwindCSS, and HTMX. Features user authentication, 
+                    PDF generation, QR codes, and responsive design for mobile-first experience.
+                </p>
+                <div class="bg-neutral-700/30 rounded-lg p-3">
+                    <div class="text-xs text-neutral-500 mb-1">Tech Stack</div>
+                    <div class="text-green-300 text-sm font-mono">Django + TailwindCSS + HTMX</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Footer -->
+
+
 {% endblock %}

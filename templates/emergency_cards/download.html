@@ -2,7 +2,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Download Emergency Card - Celio{% endblock %}
+{% block title %}Download Medical Card - Celio{% endblock %}
 
 {% block content %}
 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -17,7 +17,7 @@
     </div>
     
     <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
-        <h1 class="text-2xl font-bold text-gray-900 mb-6">Download Your Emergency Card</h1>
+        <h1 class="text-2xl font-bold text-gray-900 mb-6">Download Your Medical Card</h1>
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <!-- PDF Option -->
@@ -32,7 +32,7 @@
                 </div>
                 
                 <p class="text-gray-600 mb-6">
-                    Download your emergency card as a PDF document that can be printed or shared digitally.
+                    Download your medical card as a PDF document that can be printed or shared digitally.
                 </p>
                 
                 <form action="{% url 'emergency_cards:download_card' %}" method="GET" class="space-y-4">
@@ -78,7 +78,7 @@
                 </div>
                 
                 <p class="text-gray-600 mb-6">
-                    Download a compact wallet-sized version of your emergency card to carry with you.
+                    Download a compact wallet-sized version of your medical card to carry with you.
                 </p>
                 
                 <form action="{% url 'emergency_cards:download_card' %}" method="GET" class="space-y-4">

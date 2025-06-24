@@ -4,7 +4,7 @@
 {% load emergency_card_filters %}
 
 {% block title %}
-    {% if is_edit %}Edit{% else %}Create{% endif %} Emergency Card - Celio
+    {% if is_edit %}Edit{% else %}Create{% endif %} Travel Card - Celio
 {% endblock %}
 
 {% block extra_head %}
@@ -25,7 +25,7 @@
     
     <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
         <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
-            {% if is_edit %}Edit{% else %}Create{% endif %} Your Emergency Card
+            {% if is_edit %}Edit{% else %}Create{% endif %} Your Travel Card
         </h1>
         
         <form method="POST" class="space-y-6" enctype="multipart/form-data">
@@ -41,7 +41,7 @@
                 <!-- Condition -->
                 <div>
                     <label for="{{ form.condition.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
-                        Medical Condition
+                        Dietary Condition
                     </label>
                     <select name="{{ form.condition.name }}" id="{{ form.condition.id_for_label }}" 
                             class="block w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-deep-teal focus:border-deep-teal">
@@ -102,7 +102,7 @@
                                     <label for="{{ form.show_profile_pic.id_for_label }}" class="font-medium text-gray-700">
                                         Display profile picture on card
                                     </label>
-                                    <p class="text-gray-500">Show your profile picture on your emergency card</p>
+                                    <p class="text-gray-500">Show your profile picture on your travel card</p>
                                 </div>
                             </div>
                             {% if form.show_profile_pic.errors %}
@@ -126,7 +126,7 @@
             
             <!-- Card Message -->
             <div class="space-y-4 border-t border-gray-200 pt-6">
-                <h2 class="text-xl font-semibold text-gray-900">Medical Message</h2>
+                <h2 class="text-xl font-semibold text-gray-900">Travel Message</h2>
                 <p class="text-gray-600">Enter the text that will be displayed on your emergency card. This should explain your condition, dietary restrictions, and what to do in case of an emergency.</p>
                 
                 <!-- Language Tabs -->

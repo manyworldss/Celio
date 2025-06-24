@@ -92,82 +92,100 @@ DEMO_RESPONSES = {
         "Try asking about one of these topics, or check back when the premium version launches with full Claude AI integration for more personalized assistance!"
 }
 
-@login_required
 def sage_assistant(request):
-    # Get current conversation id from query parameters
-    conversation_id = request.GET.get('conversation')
-    
-    # If conversation id provided, get that conversation
-    if conversation_id:
-        try:
-            conversation = get_object_or_404(Conversation, id=conversation_id, user=request.user)
-        except:
-            # If conversation not found, get the most recent one
-            conversation = Conversation.objects.filter(user=request.user).order_by('-updated_at').first()
-    else:
-        # Get the most recent conversation or create a new one
-        conversation = Conversation.objects.filter(user=request.user).order_by('-updated_at').first()
-    
-    # If no conversations exist, create a new one
-    if not conversation:
-        conversation = Conversation.objects.create(
-            user=request.user,
-            title="Welcome to Sage!"
-        )
+    # For demo mode, use session-based messages instead of database
+    if not request.user.is_authenticated:
+        # Demo mode for unauthenticated users
+        if 'demo_messages' not in request.session:
+            request.session['demo_messages'] = []
         
-        # Create a welcome message
-        Message.objects.create(
-            conversation=conversation,
-            role="assistant",
-            content="Hello! I'm Sage, your personal celiac and gluten-free assistant. How can I help you today?"
-        )
-    
-    # Get all user's conversations for the sidebar
-    conversations = Conversation.objects.filter(user=request.user).order_by('-updated_at')
-    
-    # Get all messages for the current conversation
-    messages = conversation.messages.all().order_by('created_at')
+        messages = request.session['demo_messages']
+        conversations = []  # No conversations in demo mode
+        current_conversation = None
+    else:
+        # Authenticated user logic (existing functionality)
+        conversation_id = request.GET.get('conversation')
+        
+        if conversation_id:
+            try:
+                conversation = get_object_or_404(Conversation, id=conversation_id, user=request.user)
+            except:
+                conversation = Conversation.objects.filter(user=request.user).order_by('-updated_at').first()
+        else:
+            conversation = Conversation.objects.filter(user=request.user).order_by('-updated_at').first()
+        
+        if not conversation:
+            conversation = Conversation.objects.create(
+                user=request.user,
+                title="Welcome to Sage!"
+            )
+            
+            Message.objects.create(
+                conversation=conversation,
+                role="assistant",
+                content="Hello! I'm Sage, your personal celiac and gluten-free assistant. How can I help you today?"
+            )
+        
+        conversations = Conversation.objects.filter(user=request.user).order_by('-updated_at')
+        messages = conversation.messages.all().order_by('created_at')
+        current_conversation = conversation
     
     # Handle new message submission
     if request.method == 'POST' and 'message' in request.POST:
         user_message = request.POST.get('message').strip()
         
         if user_message:
-            # Save user message
-            Message.objects.create(
-                conversation=conversation,
-                role="user",
-                content=user_message
-            )
-            
             # Generate response using demo cached responses based on keywords
             response_text = get_demo_response(user_message)
             
-            # Save assistant response
-            Message.objects.create(
-                conversation=conversation,
-                role="assistant",
-                content=response_text
-            )
-            
-            # Update conversation title if it's the first user message
-            if conversation.title == "Welcome to Sage!" or conversation.title == "New Conversation":
-                # Use first few words of user message as title
-                title = user_message[:30] + "..." if len(user_message) > 30 else user_message
-                conversation.title = title
-            
-            # Update conversation timestamp
-            conversation.save()
-            
-            # If HTMX request, return just the messages
-            if request.headers.get('HX-Request'):
-                return render(request, 'sage/partials/messages.html', {
-                    'messages': conversation.messages.all().order_by('created_at')
+            if not request.user.is_authenticated:
+                # Demo mode: use session storage
+                request.session['demo_messages'].append({
+                    'role': 'user',
+                    'content': user_message
                 })
+                request.session['demo_messages'].append({
+                    'role': 'assistant', 
+                    'content': response_text
+                })
+                request.session.modified = True
+                messages = request.session['demo_messages']
+                
+                # If HTMX request, return just the messages
+                if request.headers.get('HX-Request'):
+                    return render(request, 'sage/partials/messages.html', {
+                        'messages': messages
+                    })
+            else:
+                # Authenticated mode: use database
+                Message.objects.create(
+                    conversation=current_conversation,
+                    role="user",
+                    content=user_message
+                )
+                
+                Message.objects.create(
+                    conversation=current_conversation,
+                    role="assistant",
+                    content=response_text
+                )
+                
+                # Update conversation title if it's the first user message
+                if current_conversation.title == "Welcome to Sage!" or current_conversation.title == "New Conversation":
+                    title = user_message[:30] + "..." if len(user_message) > 30 else user_message
+                    current_conversation.title = title
+                
+                current_conversation.save()
+                
+                # If HTMX request, return just the messages
+                if request.headers.get('HX-Request'):
+                    return render(request, 'sage/partials/messages.html', {
+                        'messages': current_conversation.messages.all().order_by('created_at')
+                    })
     
     return render(request, 'sage/assistant.html', {
         'conversations': conversations,
-        'current_conversation': conversation,
+        'current_conversation': current_conversation if request.user.is_authenticated else None,
         'messages': messages,
     })
 
@@ -186,15 +204,18 @@ def get_demo_response(query):
     # If no specific matches, return the default response
     return DEMO_RESPONSES["default"]
 
-@login_required
 def new_conversation(request):
-    # Create new conversation
+    if not request.user.is_authenticated:
+        # Demo mode: clear session messages
+        request.session['demo_messages'] = []
+        return redirect('sage:assistant')
+    
+    # Authenticated mode: create new conversation
     conversation = Conversation.objects.create(
         user=request.user,
         title="New Conversation"
     )
     
-    # Add welcome message
     Message.objects.create(
         conversation=conversation,
         role="assistant",
@@ -202,8 +223,11 @@ def new_conversation(request):
     )
     return redirect('sage:assistant')
 
-@login_required
 def delete_conversation(request, conversation_id):
+    if not request.user.is_authenticated:
+        # Demo mode: redirect back to assistant
+        return redirect('sage:assistant')
+    
     conversation = get_object_or_404(Conversation, id=conversation_id, user=request.user)
     
     if request.method == 'POST':

@@ -15,7 +15,11 @@
     
     {% if message.role == 'user' %}
     <div class="user-avatar h-8 w-8 rounded-full flex items-center justify-center text-white ml-2 flex-shrink-0">
-        {{ request.user.username.0|upper }}
+        {% if request.user.is_authenticated %}
+            {{ request.user.username.0|upper }}
+        {% else %}
+            U
+        {% endif %}
     </div>
     {% endif %}
 </div>

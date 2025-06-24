@@ -4,6 +4,8 @@ import re
 
 
 class EmergencyCardForm(forms.ModelForm):
+    """Form for creating and editing emergency cards in demo mode without user accounts."""
+
     message_en = forms.CharField(widget=forms.Textarea, required=False, label="Message (English)")
     message_es = forms.CharField(widget=forms.Textarea, required=False, label="Message (Spanish)")
     message_fr = forms.CharField(widget=forms.Textarea, required=False, label="Message (French)")

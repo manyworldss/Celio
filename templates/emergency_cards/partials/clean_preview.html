@@ -77,7 +77,7 @@
                             {# Wheat/Gluten Allergy fallback #}
                             <li data-i18n="Immune system reaction to wheat proteins">{% trans "Immune system reaction to wheat proteins" %}</li>
                             <li data-i18n="Can cause immediate allergy symptoms">{% trans "Can cause immediate allergy symptoms" %}</li>
-                            <li data-i18n="May require emergency treatment if severe">{% trans "May require emergency treatment if severe" %}</li>
+                            <li data-i18n="May require medical treatment if severe">{% trans "May require medical treatment if severe" %}</li>
                         {% else %}
                             {# Default fallback #}
                             <li data-i18n="Requires avoidance of gluten-containing foods">{% trans "Requires avoidance of gluten-containing foods" %}</li>
@@ -110,14 +110,14 @@
             </div>
         </div>
         
-        <!-- Emergency Contact Section -->
-        <div class="info-section">
-            <h3 class="section-title" data-i18n="Emergency Contact">{% trans "Emergency Contact" %}</h3>
+        <!-- Contact Section -->
+            <div class="contact-section">
+                <h3 class="section-title" data-i18n="Contact">{% trans "Contact" %}</h3>
             <div class="section-content">
                 {% if card.emergency_contact_name %}
                 <p class="contact-info">{{ card.emergency_contact_name }}: {{ card.emergency_contact_phone }}</p>
                 {% else %}
-                <p class="contact-info italic text-gray-500" data-i18n="No emergency contact listed.">{% trans "No emergency contact listed." %}</p>
+                <p class="contact-info italic text-gray-500" data-i18n="No contact listed.">{% trans "No contact listed." %}</p>
                 {% endif %}
             </div>
         </div>

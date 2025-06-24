@@ -106,11 +106,11 @@
             <!-- Theme dropdown menu -->
             <div x-show="open" class="absolute top-full mt-2 right-0 w-44 bg-white rounded-lg shadow-xl overflow-hidden z-50">
                 <button type="button" data-theme="light"
-                    class="preview-theme-selector-item w-full text-left px-4 py-2 text-sm text-gray-800 hover:bg-teal-50 hover:text-teal-700 transition-colors {% if preview_theme == 'light' or (not preview_theme and ((card and card.theme == 'light') or not card)) %}bg-teal-100 text-teal-800 font-medium{% else %}text-gray-800{% endif %}">
+                    class="preview-theme-selector-item w-full text-left px-4 py-2 text-sm text-gray-800 hover:bg-teal-50 hover:text-teal-700 transition-colors {% if preview_theme == 'light' or preview_theme == '' and card.theme == 'light' or preview_theme == '' and not card %}bg-teal-100 text-teal-800 font-medium{% else %}text-gray-800{% endif %}">
                     Light
                 </button>
                 <button type="button" data-theme="dark"
-                    class="preview-theme-selector-item w-full text-left px-4 py-2 text-sm text-gray-800 hover:bg-teal-50 hover:text-teal-700 transition-colors {% if preview_theme == 'dark' or (not preview_theme and card and card.theme == 'dark') %}bg-teal-100 text-teal-800 font-medium{% else %}text-gray-800{% endif %}">
+                    class="preview-theme-selector-item w-full text-left px-4 py-2 text-sm text-gray-800 hover:bg-teal-50 hover:text-teal-700 transition-colors {% if preview_theme == 'dark' or preview_theme == '' and card.theme == 'dark' %}bg-teal-100 text-teal-800 font-medium{% else %}text-gray-800{% endif %}">
                     Dark
                 </button>
             </div>
@@ -195,10 +195,10 @@
             </div>
         </div>
         
-        <!-- Emergency Contact Info -->
-        {% if card.emergency_contact_name %}
-        <div class="emergency-contact mt-4 p-3 rounded-lg border border-opacity-30">
-            <h3 class="text-base font-semibold mb-1">Emergency Contact</h3>
+        <!-- Contact Info -->
+    {% if card.emergency_contact_name %}
+    <div class="emergency-contact mt-4 p-3 rounded-lg border border-opacity-30">
+        <h3 class="text-base font-semibold mb-1">Contact</h3>
             <p class="text-sm">
                 {% if card.emergency_contact_relationship %}{{ card.emergency_contact_relationship }}: {% endif %}
                 {{ card.emergency_contact_name }} • {{ card.emergency_contact_phone }}
@@ -209,7 +209,7 @@
     </div>
     
     <!-- Driver's License Style Card -->
-    <div x-show="cardStyle === 'drivers-license'" class="drivers-license-card-wrapper">
+    <div x-show="cardStyle === 'drivers-license'" class="drivers-license-E-card-wrapper">
         {% include 'emergency_cards/partials/drivers_license_card.html' %}
     </div>
 </div>
@@ -222,7 +222,7 @@
 
 /* Style the card containers */
 .standard-card,
-.drivers-license-card-wrapper {
+.drivers-license-E-card-wrapper {
     transition: opacity 0.3s ease;
 }
 
