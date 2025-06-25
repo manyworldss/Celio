@@ -58,7 +58,7 @@ INSTALLED_APPS = [
     # apps
     'core',
     'accounts',
-    'emergency_cards',
+    'message_cards',
     'travel',
     'subscription',
     'demo',

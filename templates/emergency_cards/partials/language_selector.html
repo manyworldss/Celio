@@ -4,7 +4,7 @@
     <div class="flex flex-wrap gap-2">
         {% for lang_code, lang_name in languages.items %}
             <button
-                hx-get="{% url 'emergency_cards:switch_language' %}?lang={{ lang_code }}"
+                hx-get="{% url 'message_cards:switch_language' %}?lang={{ lang_code }}"
                 hx-target="#card-message-content"
                 hx-swap="innerHTML"
                 class="px-3 py-1.5 text-sm font-medium rounded-md {% if lang_code == current_lang %}bg-deep-teal text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %}"

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load emergency_card_filters %}
+{% load message_card_filters %}
 
 {% block title %}{{ page_title }} - Celio{% endblock %}
 
@@ -262,132 +262,64 @@
 <div class="min-h-screen py-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Page Header -->
-        <div class="mb-4">
-            <h1 class="text-3xl font-bold bg-gradient-to-r from-white to-teal-200 bg-clip-text text-transparent">{{ page_title }}</h1>
-            <p class="mt-1 text-sm text-teal-300">Create and customize your travel E-card.</p>
-        </div>
-        
-        <!-- Theme Selection with Hex Copying -->
-        <div class="mb-6">
-            <div class="p-3 bg-spruce-900 bg-opacity-30 rounded-lg border border-teal-800">
-                <h3 class="text-lg font-semibold bg-gradient-to-r from-teal-200 to-emerald-300 bg-clip-text text-transparent mb-3 flex items-center">
-                    <svg class="w-5 h-5 mr-2 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5H9a2 2 0 00-2 2v12a4 4 0 004 4h10a2 2 0 002-2V7a2 2 0 00-2-2z"></path>
-                    </svg>
-                    E-Card Theme Selection
-                </h3>
+        <div class="mb-8 text-center">
+            <h1 class="text-4xl font-bold bg-gradient-to-r from-white to-teal-200 bg-clip-text text-transparent mb-4">{{ page_title }}</h1>
+            <p class="text-lg text-teal-300 mb-6">Create and customize your travel E-card for any situations.</p>
+            
+            <!-- Demo E-Card Section -->
+            <div class="mb-8">
+                <div class="flex justify-center mb-6">
+                    <div>
+                        {% include "emergency_cards/partials/editable_card.html" with card=card preview_theme=preview_theme language_choices=language_choices current_lang=current_lang is_preview=True %}
+                    </div>
+                </div>
                 
-                <div class="flex justify-center">
-                    <div class="w-full max-w-md space-y-3">
-                        <!-- Celio Theme -->
-                        <div class="theme-button border-2 border-transparent rounded-lg p-3 cursor-pointer transition-all duration-200 hover:border-teal-600 bg-spruce-800 bg-opacity-20" onclick="setGlobalTheme('celio')">
-                            <div class="theme-preview w-full h-12 rounded-md mb-2 flex items-center justify-center" style="background-color: #e2f5f0;">
-                                <span class="text-xs font-medium" style="color: #1a4237;">Celio Theme</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <h4 class="text-white font-medium text-sm">Celio</h4>
-                                    <p class="text-teal-300 text-xs">Professional travel</p>
-                                </div>
-                                <div class="flex space-x-2">
-                                    <button type="button" class="hex-copy-btn px-3 py-2 rounded-sm text-xs font-medium transition-all duration-200 shadow-sm" 
-                                            style="background: linear-gradient(135deg, #e2f5f0 0%, #d1f0e6 100%), 
-                                                   radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 1px, transparent 1px),
-                                                   radial-gradient(circle at 80% 50%, rgba(0,0,0,0.05) 1px, transparent 1px);
-                                                   background-size: 100% 100%, 4px 4px, 4px 4px;
-                                                   color: #1a4237; border: 1px solid rgba(26, 66, 55, 0.2);" 
-                                            data-hex="#e2f5f0" title="Copy Background #e2f5f0">
-                                        #e2f5f0
-                                    </button>
-                                    <button type="button" class="hex-copy-btn px-3 py-2 rounded-sm text-xs font-medium transition-all duration-200 shadow-sm" 
-                                            style="background: linear-gradient(135deg, #1a4237 0%, #0f2e26 100%), 
-                                                   radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 1px, transparent 1px),
-                                                   radial-gradient(circle at 80% 50%, rgba(0,0,0,0.2) 1px, transparent 1px);
-                                                   background-size: 100% 100%, 4px 4px, 4px 4px;
-                                                   color: #e2f5f0; border: 1px solid rgba(226, 245, 240, 0.2);" 
-                                            data-hex="#1a4237" title="Copy Text #1a4237">
-                                        #1a4237
-                                    </button>
-                                </div>
+                <!-- Instructions -->
+                <div class="max-w-2xl mx-auto bg-gradient-to-r from-teal-900/30 to-blue-900/30 backdrop-blur-sm rounded-xl p-6 border border-teal-700/50">
+                    <h3 class="text-xl font-semibold text-teal-200 mb-4 flex items-center justify-center">
+                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        How to Use Your E-Card
+                    </h3>
+                    <div class="grid md:grid-cols-2 gap-4 text-sm text-teal-100">
+                        <div class="flex items-start">
+                            <span class="bg-teal-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-0.5">1</span>
+                            <div>
+                                <strong class="text-white">Edit Information:</strong> Click on any text field to customize your medical information and contact details.
                             </div>
                         </div>
-                        
-                        <!-- Dark Theme -->
-                        <div class="theme-button border-2 border-transparent rounded-lg p-3 cursor-pointer transition-all duration-200 hover:border-teal-600 bg-spruce-800 bg-opacity-20" onclick="setGlobalTheme('dark')">
-                            <div class="theme-preview w-full h-12 rounded-md mb-2 flex items-center justify-center" style="background-color: #1a1a1a;">
-                                <span class="text-xs font-medium" style="color: white;">Dark Theme</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <h4 class="text-white font-medium text-sm">Dark</h4>
-                                    <p class="text-teal-300 text-xs">Modern dark interface</p>
-                                </div>
-                                <div class="flex space-x-2">
-                                    <button type="button" class="hex-copy-btn px-3 py-2 rounded-sm text-xs font-medium transition-all duration-200 shadow-sm" 
-                                            style="background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%), 
-                                                   radial-gradient(circle at 20% 50%, rgba(255,255,255,0.05) 1px, transparent 1px),
-                                                   radial-gradient(circle at 80% 50%, rgba(0,0,0,0.3) 1px, transparent 1px);
-                                                   background-size: 100% 100%, 4px 4px, 4px 4px;
-                                                   color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.1);" 
-                                            data-hex="#1a1a1a" title="Copy Background #1a1a1a">
-                                        #1a1a1a
-                                    </button>
-                                    <button type="button" class="hex-copy-btn px-3 py-2 rounded-sm text-xs font-medium transition-all duration-200 shadow-sm" 
-                                            style="background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%), 
-                                                   radial-gradient(circle at 20% 50%, rgba(0,0,0,0.02) 1px, transparent 1px),
-                                                   radial-gradient(circle at 80% 50%, rgba(0,0,0,0.05) 1px, transparent 1px);
-                                                   background-size: 100% 100%, 4px 4px, 4px 4px;
-                                                   color: #1a1a1a; border: 1px solid rgba(26, 26, 26, 0.1);" 
-                                            data-hex="#ffffff" title="Copy Text #ffffff">
-                                        #ffffff
-                                    </button>
-                                </div>
+                        <div class="flex items-start">
+                            <span class="bg-teal-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-0.5">2</span>
+                            <div>
+                                <strong class="text-white">Choose Theme:</strong> Select from different color themes to personalize your card appearance.
                             </div>
                         </div>
-                        
-                        <!-- Light Theme -->
-                        <div class="theme-button border-2 border-transparent rounded-lg p-3 cursor-pointer transition-all duration-200 hover:border-teal-600 bg-spruce-800 bg-opacity-20" onclick="setGlobalTheme('light')">
-                            <div class="theme-preview w-full h-12 rounded-md mb-2 flex items-center justify-center" style="background-color: #f5f5f5;">
-                                <span class="text-xs font-medium" style="color: #333333;">Light Theme</span>
+                        <div class="flex items-start">
+                            <span class="bg-teal-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-0.5">3</span>
+                            <div>
+                                <strong class="text-white">Language Support:</strong> Switch between multiple languages for international travel.
                             </div>
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <h4 class="text-white font-medium text-sm">Light</h4>
-                                    <p class="text-teal-300 text-xs">Clean minimal design</p>
-                                </div>
-                                <div class="flex space-x-2">
-                                    <button type="button" class="hex-copy-btn px-3 py-2 rounded-sm text-xs font-medium transition-all duration-200 shadow-sm" 
-                                            style="background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%), 
-                                                   radial-gradient(circle at 20% 50%, rgba(0,0,0,0.02) 1px, transparent 1px),
-                                                   radial-gradient(circle at 80% 50%, rgba(0,0,0,0.05) 1px, transparent 1px);
-                                                   background-size: 100% 100%, 4px 4px, 4px 4px;
-                                                   color: #333333; border: 1px solid rgba(51, 51, 51, 0.1);" 
-                                            data-hex="#f5f5f5" title="Copy Background #f5f5f5">
-                                        #f5f5f5
-                                    </button>
-                                    <button type="button" class="hex-copy-btn px-3 py-2 rounded-sm text-xs font-medium transition-all duration-200 shadow-sm" 
-                                            style="background: linear-gradient(135deg, #333333 0%, #262626 100%), 
-                                                   radial-gradient(circle at 20% 50%, rgba(255,255,255,0.05) 1px, transparent 1px),
-                                                   radial-gradient(circle at 80% 50%, rgba(0,0,0,0.3) 1px, transparent 1px);
-                                                   background-size: 100% 100%, 4px 4px, 4px 4px;
-                                                   color: #f5f5f5; border: 1px solid rgba(245, 245, 245, 0.1);" 
-                                            data-hex="#333333" title="Copy Text #333333">
-                                        #333333
-                                    </button>
-                                </div>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="bg-teal-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-0.5">4</span>
+                            <div>
+                                <strong class="text-white">Save & Download:</strong> Save your card and download it for offline use during emergencies.
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Copy notification -->
-                <div id="copy-notification" class="hidden mt-2 p-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-xs rounded-md transition-all duration-300 shadow-lg">
-                    <span id="copy-message">Hex code copied to clipboard!</span>
-                </div>
+            </div>
+            
+            <!-- Travel E-Card Creation Section -->
+            <div class="mb-8">
+                <h2 class="text-2xl font-semibold text-white mb-4">Create Your Travel E-Card</h2>
+                <p class="text-teal-300 mb-6">Customize your medical card for safe travels worldwide.</p>
             </div>
         </div>
+
         
-        <form method="POST" enctype="multipart/form-data" id="card-form" hx-post="{% url 'emergency_cards:unified_card_management' %}" hx-swap="none" hx-trigger="none">
+        <form method="POST" enctype="multipart/form-data" id="card-form" hx-post="{% url 'message_cards:unified_card_management' %}" hx-swap="none" hx-trigger="none">
             {% csrf_token %}
             
             <!-- Hidden inputs to track active language and theme -->
@@ -414,7 +346,7 @@
                 <div class="card-fullscreen-container max-w-4xl mx-auto">
                     <!-- Card Preview Container (full-width) -->
                     <div id="card-preview-container" class="relative overflow-hidden bg-white bg-opacity-5 rounded-lg p-4 flex justify-center items-center">
-                        {% include "emergency_cards/partials/editable_card.html" with card=card preview_theme=preview_theme language_choices=language_choices current_lang=current_lang is_preview=True %}
+                        <!-- This container will be populated by the editable card when editing -->
                     </div>
                     
                     <!-- Hidden theme input that will be updated by JavaScript -->
@@ -486,47 +418,7 @@
                         </div>
                     </div>
                     
-                    <!-- E-Card Usage Instructions -->
-                    <div class="form-section">
-                        <div class="form-section-header border-b border-gray-200 pb-3 mb-4">
-                            <h2 class="text-lg font-medium text-white">How to Use Your E-Card</h2>
-                        </div>
-                        <div class="form-section-body">
-                            <div class="p-4 bg-teal-900 bg-opacity-20 rounded-lg border border-teal-800">
-                                <h3 class="text-teal-300 font-medium mb-3">Using Your E-Card</h3>
-                                <ul class="list-disc list-inside text-teal-200 space-y-2">
-                                    <li>Edit your information directly on the E-Card by clicking on any field</li>
-                                    <li>Change the theme using the theme selector on the card</li>
-                                    <li>Switch languages using the language selector on the card</li>
-                                    <li>All of your information is stored and will be available when you return</li>
-                                    <li>Use the buttons at the top to download or share your card</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Translation Information (Kept as requested) -->
-                    {% if is_translated %}
-                    <div class="p-2 mb-4 bg-teal-50 text-teal-700 rounded border border-teal-200 flex items-center">
-                        <svg class="w-5 h-5 mr-2 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
-                        </svg>
-                        <span>You're viewing content in {{ current_lang_display }}. Some content may be machine-translated.</span>
-                    </div>
-                    {% endif %}
-                    
-                    <!-- Information about Automatic Translation (Kept as requested) -->
-                    <div class="mt-6 p-4 rounded-lg bg-teal-900 bg-opacity-30 border border-teal-800">
-                        <h4 class="text-teal-300 font-medium mb-2 flex items-center">
-                            <svg class="inline-block w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            About Translations
-                        </h4>
-                        <p class="text-teal-200 text-sm">
-                            Your E-card comes with professional translations in multiple languages. When you switch languages, 
-                            all the dietary information will be translated to ensure accuracy and clarity in travel situations.
-                        </p>
-                    </div>
+
                     
                             </div>
                         </div>
@@ -607,7 +499,7 @@ python -m venv .venv
             }
             
             // Send the update request
-            fetch('{% url "emergency_cards:unified_card_management" %}', {
+            fetch('{% url "message_cards:unified_card_management" %}', {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -742,7 +634,7 @@ python -m venv .venv
                 'Requires gluten-free diet for symptom control': 'Requires gluten-free diet for symptom control',
                 'Immune system reaction to wheat proteins': 'Immune system reaction to wheat proteins',
                 'Can cause immediate allergy symptoms': 'Can cause immediate allergy symptoms',
-                'May require emergency assistance if severe': 'May require emergency assistance if severe',
+                'May require assistance if severe': 'May require assistance if severe',
                 'Requires avoidance of gluten-containing foods': 'Requires avoidance of gluten-containing foods',
                 'Needs careful meal preparation': 'Needs careful meal preparation',
                 'Profile Picture': 'Profile Picture'
@@ -761,7 +653,7 @@ python -m venv .venv
                 'Requires gluten-free diet for symptom control': 'Requiere dieta sin gluten para controlar los síntomas',
                 'Immune system reaction to wheat proteins': 'Reacción del sistema inmunológico a las proteínas del trigo',
                 'Can cause immediate allergy symptoms': 'Puede causar síntomas alérgicos inmediatos',
-                'May require emergency assistance if severe': 'Puede requerir asistencia de emergencia si es grave',
+                'May require assistance if severe': 'Puede requerir asistencia si es grave',
                 'Requires avoidance of gluten-containing foods': 'Requiere evitar alimentos con gluten',
                 'Needs careful meal preparation': 'Necesita preparación cuidadosa de comidas',
                 'Profile Picture': 'Foto de Perfil'
@@ -780,7 +672,7 @@ python -m venv .venv
                 'Requires gluten-free diet for symptom control': 'Nécessite un régime sans gluten pour contrôler les symptômes',
                 'Immune system reaction to wheat proteins': 'Réaction du système immunitaire aux protéines de blé',
                 'Can cause immediate allergy symptoms': 'Peut provoquer des symptômes allergiques immédiats',
-                'May require emergency assistance if severe': 'Peut nécessiter une assistance d\'urgence si grave',
+                'May require assistance if severe': 'Peut nécessiter une assistance si grave',
                 'Requires avoidance of gluten-containing foods': 'Exige d\'éviter les aliments contenant du gluten',
                 'Needs careful meal preparation': 'Nécessite une préparation soignée des repas',
                 'Profile Picture': 'Photo de Profil'
@@ -799,7 +691,7 @@ python -m venv .venv
                 'Requires gluten-free diet for symptom control': 'Erfordert glutenfreie Diät zur Symptomkontrolle',
                 'Immune system reaction to wheat proteins': 'Immunsystemreaktion auf Weizenproteine',
                 'Can cause immediate allergy symptoms': 'Kann sofortige allergische Symptome verursachen',
-                'May require emergency assistance if severe': 'Kann bei schweren Fällen Notfallhilfe erfordern',
+                'May require assistance if severe': 'Kann bei schweren Fällen Hilfe erfordern',
                 'Requires avoidance of gluten-containing foods': 'Erfordert die Vermeidung glutenhaltiger Lebensmittel',
                 'Needs careful meal preparation': 'Erfordert sorgfältige Mahlzeitenzubereitung',
                 'Profile Picture': 'Profilbild'
@@ -875,7 +767,7 @@ python -m venv .venv
             formData.append('csrfmiddlewaretoken', getCsrfToken());
             
             // Send the update request
-            fetch('{% url "emergency_cards:unified_card_management" %}', {
+            fetch('{% url "message_cards:unified_card_management" %}', {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -990,7 +882,7 @@ python -m venv .venv
             formData.append('csrfmiddlewaretoken', getCsrfToken());
             
             // Send the update request
-            fetch('{% url "emergency_cards:unified_card_management" %}', {
+            fetch('{% url "message_cards:unified_card_management" %}', {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -1066,7 +958,7 @@ python -m venv .venv
                     formData.append('message_' + currentLang.toLowerCase(), this.value);
                     
                     // Send the update request
-                    fetch('{% url "emergency_cards:unified_card_management" %}', {
+                    fetch('{% url "message_cards:unified_card_management" %}', {
                         method: 'POST',
                         body: formData,
                         headers: {

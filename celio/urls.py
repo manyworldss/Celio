@@ -23,7 +23,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),  # Keep admin for demo management
     path('', include('core.urls')),  # Main demo landing page
-    path('e_cards/', include('emergency_cards.urls', namespace='e_cards')),  # Card functionality
+    path('m_cards/', include('message_cards.urls', namespace='message_cards')),  # Card functionality
     path('accounts/', include('accounts.urls')),  # User authentication
     path('travel/', include('travel.urls', namespace='travel')),
     path('sage/', include('sage.urls', namespace='sage')),

@@ -54,7 +54,7 @@ def start_demo(request):
     request.session['show_tour'] = True
     
     # Redirect to the card detail page with the tour
-    return redirect('emergency_cards:card_detail')
+    return redirect('message_cards:card_detail')
 
 
 def end_demo(request):

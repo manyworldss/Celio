@@ -107,7 +107,7 @@
                 <!-- Profile Picture Upload -->
                 <div class="mt-8">
                     <h3 class="text-lg font-semibold text-gray-900 mb-4">Profile Picture</h3>
-                    <form method="POST" enctype="multipart/form-data" action="{% url 'emergency_cards:update_profile_picture' %}">
+                    <form method="POST" enctype="multipart/form-data" action="{% url 'message_cards:update_profile_picture' %}">
                         {% csrf_token %}
                         <div class="flex items-center">
                             <div class="w-20 h-20 mr-4 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center border border-gray-200">
@@ -156,7 +156,8 @@
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- Light Theme Preview -->
-                <div class="theme-preview theme-light" data-theme="light">
+                <div class="theme-preview theme-light" data-theme="light"
+                    hx-post="{% url 'message_cards:apply_theme' %}">
                     <div class="theme-header">
                         <div class="absolute inset-x-0 bottom-0 h-12 flex items-center justify-center">
                             <h3 class="text-lg font-bold text-gray-800">Light Theme</h3>
@@ -175,7 +176,8 @@
                     </div>
                 </div>
                 <!-- Dark Theme Preview -->
-                <div class="theme-preview theme-dark" data-theme="dark">
+                <div class="theme-preview theme-dark" data-theme="dark"
+                     hx-post="{% url 'message_cards:apply_theme' %}">
                     <div class="theme-header">
                         <div class="absolute inset-x-0 bottom-0 h-12 flex items-center justify-center">
                             <h3 class="text-lg font-bold text-white">Dark Theme</h3>

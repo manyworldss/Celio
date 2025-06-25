@@ -5,14 +5,16 @@
 
 {% block extra_css %}
 <style>
-    /* Travel guide card styling */
+    /* Enhanced travel guide card styling with better mobile UX */
     .travel-card {
-        background: linear-gradient(135deg, var(--primary-900)/80, var(--primary-800)/60);
-        backdrop-filter: blur(12px);
-        border: 1px solid var(--accent-500)/20;
-        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        background: linear-gradient(135deg, var(--primary-900)/85, var(--primary-800)/70);
+        backdrop-filter: blur(16px);
+        border: 1px solid var(--accent-500)/25;
+        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
         position: relative;
         overflow: hidden;
+        border-radius: 1.5rem;
+        box-shadow: 0 8px 32px var(--primary-950)/20;
     }
     
     .travel-card::before {
@@ -22,19 +24,35 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(135deg, var(--accent-600)/5, var(--primary-600)/10);
+        background: linear-gradient(135deg, var(--accent-600)/8, var(--primary-600)/15);
         opacity: 0;
-        transition: opacity 0.3s ease;
+        transition: opacity 0.4s ease;
     }
     
     .travel-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 20px 40px var(--primary-950)/30, 0 8px 16px var(--accent-600)/10;
-        border-color: var(--accent-400)/40;
+        transform: translateY(-12px) scale(1.02);
+        box-shadow: 0 25px 50px var(--primary-950)/40, 0 12px 24px var(--accent-600)/15;
+        border-color: var(--accent-400)/50;
     }
     
     .travel-card:hover::before {
         opacity: 1;
+    }
+    
+    /* Mobile optimizations */
+    @media (max-width: 768px) {
+        .travel-card:hover {
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: 0 15px 30px var(--primary-950)/30, 0 8px 16px var(--accent-600)/10;
+        }
+    }
+    
+    /* Touch-friendly interactions */
+    @media (hover: none) and (pointer: coarse) {
+        .travel-card:active {
+            transform: scale(0.98);
+            transition: transform 0.1s ease;
+        }
     }
     
     .awareness-dot {
@@ -129,6 +147,85 @@
         background: var(--gradient-accent);
         border-radius: 2px;
     }
+    
+    /* Animated Country Flags */
+    .flag-container {
+        perspective: 1000px;
+    }
+    
+    .country-flag {
+        animation: flagWave 3s ease-in-out infinite;
+        transform-origin: left center;
+        filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+    }
+    
+    .travel-card:hover .country-flag {
+        animation: flagWaveHover 1.5s ease-in-out infinite;
+        filter: drop-shadow(0 6px 12px rgba(0,0,0,0.4)) brightness(1.1);
+    }
+    
+    @keyframes flagWave {
+        0%, 100% {
+            transform: rotateY(0deg) rotateX(0deg);
+        }
+        25% {
+            transform: rotateY(-2deg) rotateX(1deg);
+        }
+        50% {
+            transform: rotateY(0deg) rotateX(-1deg);
+        }
+        75% {
+            transform: rotateY(2deg) rotateX(1deg);
+        }
+    }
+    
+    @keyframes flagWaveHover {
+        0%, 100% {
+            transform: rotateY(0deg) rotateX(0deg) scale(1.1);
+        }
+        25% {
+            transform: rotateY(-5deg) rotateX(2deg) scale(1.1);
+        }
+        50% {
+            transform: rotateY(0deg) rotateX(-2deg) scale(1.1);
+        }
+        75% {
+            transform: rotateY(5deg) rotateX(2deg) scale(1.1);
+        }
+    }
+    
+    /* Enhanced mobile responsiveness */
+    @media (max-width: 640px) {
+        .country-flag {
+            font-size: 2.5rem;
+            animation-duration: 4s;
+        }
+        
+        .flag-glow {
+            font-size: 2.5rem;
+        }
+        
+        .travel-card {
+            margin-bottom: 1rem;
+        }
+        
+        .page-header {
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+    }
+    
+    /* Reduce motion for accessibility */
+    @media (prefers-reduced-motion: reduce) {
+        .country-flag {
+            animation: none;
+        }
+        
+        .travel-card:hover .country-flag {
+            animation: none;
+            transform: scale(1.05);
+        }
+    }
 </style>
 {% endblock %}
 
@@ -137,8 +234,8 @@
     <!-- Header -->
     <div class="page-header rounded-2xl p-8 mb-12 backdrop-blur-sm">
         <div class="text-center">
-            <h1 class="text-5xl font-bold bg-gradient-to-r from-white to-accent-200 bg-clip-text text-transparent mb-4">Travel Guides</h1>
-            <p class="text-xl text-neutral-300 max-w-3xl mx-auto leading-relaxed">Discover safe gluten-free dining experiences around the world with our comprehensive country guides</p>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-white to-accent-200 bg-clip-text text-transparent mb-4 leading-tight">Travel Guides</h1>
+            <p class="text-lg md:text-xl text-neutral-300 max-w-3xl mx-auto leading-relaxed px-4">Discover safe gluten-free dining experiences around the world with our comprehensive country guides</p>
             <div class="mt-6 inline-flex items-center px-4 py-2 bg-accent-600/20 border border-accent-500/30 rounded-full text-accent-300 text-sm font-medium">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -148,15 +245,22 @@
         </div>
     </div>
     
-    <!-- Countries Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+    <!-- Countries Grid with Enhanced Mobile Layout -->
+    <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
         {% for country in countries %}
         <a href="{% url 'travel:country_detail' country.code %}" class="group block">
             <div class="travel-card rounded-2xl overflow-hidden transition-all duration-300 h-full flex flex-col relative">
-                <div class="p-8 flex flex-col h-full relative z-10">
-                    <!-- Country Header -->
+                <div class="p-6 md:p-8 flex flex-col h-full relative z-10">
+                    <!-- Country Header with Animated Flag -->
                     <div class="flex items-center mb-6">
-                        <div class="text-5xl mr-4 group-hover:scale-110 transition-transform duration-300">{{ country.flag_emoji }}</div>
+                        <div class="flag-container relative mr-4">
+                            <div class="country-flag text-5xl group-hover:scale-110 transition-all duration-500 ease-out transform-gpu">
+                                {{ country.flag_emoji }}
+                            </div>
+                            <div class="flag-glow absolute inset-0 text-5xl opacity-0 group-hover:opacity-30 transition-opacity duration-500 blur-sm">
+                                {{ country.flag_emoji }}
+                            </div>
+                        </div>
                         <div class="flex-1">
                             <div class="flex items-center justify-between mb-2">
                                 <h2 class="text-2xl font-bold text-white group-hover:text-accent-200 transition-colors">{{ country.name }}</h2>
@@ -242,9 +346,9 @@
         {% endfor %}
     </div>
     
-    <!-- Mobile App Teaser -->
-    <div class="mt-16 text-center">
-        <div class="bg-gradient-to-br from-primary-900/60 to-primary-800/40 backdrop-blur-sm rounded-2xl p-8 border border-accent-500/20 relative overflow-hidden">
+    <!-- Enhanced Mobile App Teaser -->
+    <div class="mt-12 md:mt-16 text-center">
+        <div class="bg-gradient-to-br from-primary-900/70 to-primary-800/50 backdrop-blur-lg rounded-2xl p-6 md:p-8 border border-accent-500/25 relative overflow-hidden shadow-2xl">
             <div class="absolute inset-0 bg-gradient-to-r from-accent-600/5 to-primary-600/10 opacity-50"></div>
             <div class="relative z-10">
                 <div class="inline-flex items-center justify-center w-12 h-12 bg-accent-600/20 rounded-xl mb-4">

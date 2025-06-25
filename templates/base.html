@@ -594,10 +594,10 @@
                             <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-gradient-to-r from-accent-500 to-primary-500 rounded-full"></div>
                             {% endif %}
                         </a>
-                        <a href="{% url 'e_cards:unified_card_management' %}" class="group relative px-4 py-3 text-sm font-medium text-white transition-all duration-300 hover:text-accent-300">
+                        <a href="{% url 'message_cards:unified_card_management' %}" class="group relative px-4 py-3 text-sm font-medium text-white transition-all duration-300 hover:text-accent-300">
                             <span class="relative z-10">E-Card (Demo)</span>
                             <div class="absolute inset-0 bg-gradient-to-r from-accent-600/10 to-primary-600/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                            {% if 'e_cards' in request.path %}
+                            {% if 'message_cards' in request.path or 'm_cards' in request.path %}
                             <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-gradient-to-r from-accent-500 to-primary-500 rounded-full"></div>
                             {% endif %}
                         </a>
@@ -683,7 +683,7 @@
                 <a href="/" class="block px-4 py-3 text-base font-medium text-neutral-200 hover:bg-primary-800/50 hover:text-accent-300 rounded-lg transition-all {% if request.path == '/' %}bg-gradient-to-r from-accent-600/20 to-primary-600/20 text-accent-300 border-l-4 border-accent-500{% endif %}">
                     Home
                 </a>
-                <a href="{% url 'e_cards:unified_card_management' %}" class="block px-4 py-3 text-base font-medium text-neutral-200 hover:bg-primary-800/50 hover:text-accent-300 rounded-lg transition-all {% if 'e_cards' in request.path %}bg-gradient-to-r from-accent-600/20 to-primary-600/20 text-accent-300 border-l-4 border-accent-500{% endif %}">
+                <a href="{% url 'message_cards:unified_card_management' %}" class="block px-4 py-3 text-base font-medium text-neutral-200 hover:bg-primary-800/50 hover:text-accent-300 rounded-lg transition-all {% if 'message_cards' in request.path or 'm_cards' in request.path %}bg-gradient-to-r from-accent-600/20 to-primary-600/20 text-accent-300 border-l-4 border-accent-500{% endif %}">
                     E-Card (Demo)
                 </a>
                 <a href="{% url 'travel:travel_guide_list' %}" class="block px-4 py-3 text-base font-medium text-neutral-200 hover:bg-primary-800/50 hover:text-accent-300 rounded-lg transition-all {% if 'travel' in request.path %}bg-gradient-to-r from-accent-600/20 to-primary-600/20 text-accent-300 border-l-4 border-accent-500{% endif %}">
@@ -860,7 +860,7 @@
                         <h3 class="text-accent-300 font-semibold mb-4 text-sm uppercase tracking-wider">Quick Links</h3>
                         <ul class="space-y-2">
                             <li><a href="/" class="text-neutral-300 hover:text-accent-300 transition-colors text-sm">Home</a></li>
-                            <li><a href="{% url 'e_cards:unified_card_management' %}" class="text-neutral-300 hover:text-accent-300 transition-colors text-sm">E-Card (Demo)</a></li>
+                            <li><a href="{% url 'message_cards:unified_card_management' %}" class="text-neutral-300 hover:text-accent-300 transition-colors text-sm">E-Card (Demo)</a></li>
                             <li><a href="{% url 'travel:travel_guide_list' %}" class="text-neutral-300 hover:text-accent-300 transition-colors text-sm">Travel Guides</a></li>
                             <li><a href="{% url 'sage:assistant' %}" class="text-neutral-400 hover:text-accent-300 text-sm transition-colors">Sage AI (Beta)</a></li>
                         </ul>
