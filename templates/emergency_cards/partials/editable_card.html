@@ -2,8 +2,9 @@
 {% load static %}
 {% load emergency_card_filters %}
 
-{# Use preview_theme if provided (from AJAX request), otherwise use card's theme with medical as default #}
-{% with current_theme=preview_theme|default:card.theme|default:'celio' %}
+{# Use preview_theme if provided (from AJAX request), otherwise use card's theme with celio as default #}
+{% firstof preview_theme card.theme 'celio' as current_theme %}
+{% with current_theme=current_theme %}
 <div class="card-inner card-{{ current_theme }} emergency-card-theme-{{ current_theme }} rounded-lg overflow-hidden relative editable-card {% if is_preview %}card-preview{% else %}card-fullscreen{% endif %}" id="card-inner-preview">
     {% comment %}
     This template is used for both the editable preview and the fullscreen view.

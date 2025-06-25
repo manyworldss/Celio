@@ -259,7 +259,7 @@ def delete_card(request):
         # Remove the card ID from the session
         if 'demo_card_id' in request.session:
             del request.session['demo_card_id']
-        messages.success(request, 'The demo emergency card has been deleted.')
+        messages.success(request, 'The demo E-Card has been deleted.')
         return redirect('core:home') # redirect home after deletion
     return render(request, 'emergency_cards/delete_card.html', {'card': card})
 
@@ -1035,7 +1035,7 @@ def unified_card_management(request):
     context = {
         'form': form,
         'card': card,
-        'page_title': 'Demo Emergency Card',
+        'page_title': 'Demo E-Card',
         'current_lang': current_lang,
         'current_lang_display': current_lang_display,
         'language_choices': EmergencyCard.LANGUAGE_CHOICES,
