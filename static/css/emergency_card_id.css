@@ -517,6 +517,46 @@
     color: rgba(255, 255, 255, 0.8);
 }
 
+/* Dark Purple Theme */
+.card-dark-purple {
+    background: linear-gradient(135deg, #0f0520 0%, #1a0b3d 100%);
+    color: #ffffff;
+    box-shadow: 0 8px 32px rgba(107, 70, 193, 0.4);
+}
+
+.card-dark-purple .card-header {
+    background-color: #1a0b3d;
+    border-bottom: 1px solid #6b46c1;
+}
+
+.card-dark-purple .card-id-name {
+    color: #a78bfa;
+    font-weight: 600;
+}
+
+.card-dark-purple .card-id-message {
+    background-color: rgba(107, 70, 193, 0.15);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.card-dark-purple .card-id-message-content {
+    color: rgba(255, 255, 255, 0.95);
+}
+
+.card-dark-purple .card-id-message-title {
+    color: #8b5cf6;
+}
+
+.card-dark-purple .card-id-footer {
+    background-color: #2d1b5a;
+    color: #c4b5fd;
+}
+
+.card-dark-purple .card-id-value {
+    color: rgba(255, 255, 255, 0.9);
+}
+
 /* Language Button Styles */
 .language-buttons {
     display: flex;

@@ -7,10 +7,12 @@ class EmergencyCard(models.Model):
     # Theme choices - simplified to 3 essential themes
     THEME_DARK = 'dark'
     THEME_LIGHT = 'light'
+    THEME_DARK_PURPLE = 'dark-purple'
 
     THEME_CHOICES = [
         (THEME_LIGHT, 'Light'),
         (THEME_DARK, 'Dark'),
+        (THEME_DARK_PURPLE, 'Dark Purple'),
     ]
 
     LANGUAGE_CHOICES = [

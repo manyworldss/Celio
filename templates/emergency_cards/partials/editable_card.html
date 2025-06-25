@@ -271,7 +271,7 @@
 
 <!-- E-Card with Dynamic Themes -->
 <div class="editable-card card-{{ current_theme|default:'celio' }} mx-auto rounded-xl shadow-2xl overflow-hidden transition-all duration-300 hover:shadow-3xl border" 
-     style="width: 400px; height: 600px;" 
+     style="width: 400px; min-height: 600px;" 
      data-theme="{{ current_theme|default:'celio' }}">
     
     <!-- Header with Centered Logo, Top-Left Buttons, and Top-Right Profile -->
@@ -400,7 +400,7 @@
                 <!-- Theme Selection -->
                 <div class="form-field">
                     <label class="block text-xs font-medium mb-1 text-left opacity-80">Visual Theme</label>
-                    <div class="grid grid-cols-3 gap-2">
+                    <div class="grid grid-cols-4 gap-2">
                         <button class="theme-option p-2 rounded-lg border-2 border-transparent transition-all duration-200 active" data-theme="celio">
                             <div class="w-full h-6 rounded bg-gradient-to-r from-teal-600 to-emerald-600 mb-1"></div>
                             <div class="text-xs font-medium">Celio</div>
@@ -413,11 +413,16 @@
                             <div class="w-full h-6 rounded bg-gradient-to-r from-purple-600 to-purple-700 mb-1"></div>
                             <div class="text-xs font-medium">Dark</div>
                         </button>
+                        <button class="theme-option p-2 rounded-lg border-2 border-transparent transition-all duration-200" data-theme="dark-purple">
+                            <div class="w-full h-6 rounded bg-gradient-to-r from-purple-900 to-indigo-900 mb-1"></div>
+                            <div class="text-xs font-medium">Dark Purple</div>
+                        </button>
                     </div>
                     <select class="field-input w-full p-2.5 rounded-lg border text-sm hidden" id="theme-select">
                         <option value="celio">Celio (Teal/Emerald)</option>
                         <option value="light">Light (Gray/White)</option>
                         <option value="dark">Dark (Purple)</option>
+                        <option value="dark-purple">Dark Purple (Deep Purple)</option>
                     </select>
                 </div>
             </div>
@@ -671,68 +676,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     URL.revokeObjectURL(url);
                     break;
                     
-                case 'Print':
-                    const printWindow = window.open('', '_blank');
-                    const cardHTML = card.outerHTML;
-                    const styles = document.querySelector('style').outerHTML;
-                    
-                    printWindow.document.write(`
-                        <!DOCTYPE html>
-                        <html>
-                        <head>
-                            <title>E-Card</title>
-                            <script src="https://cdn.tailwindcss.com"></script>
-                            ${'${'}styles}
-                            <style>
-                                @media print {
-                                    body { margin: 0; padding: 20px; }
-                                    .editable-card { box-shadow: none !important; }
-                                }
-                            </style>
-                        </head>
-                        <body>
-                            ${'${'}cardHTML}
-                        </body>
-                        </html>
-                    `);
-                    
-                    printWindow.document.close();
-                    printWindow.focus();
-                    setTimeout(() => {
-                        printWindow.print();
-                        printWindow.close();
-                    }, 250);
-                    break;
+
             }
         });
     });
     
-    // Profile picture upload functionality
-    const profileUploadBtn = document.querySelector('.profile-upload-btn');
-    if (profileUploadBtn) {
-        // Create hidden file input
-        const fileInput = document.createElement('input');
-        fileInput.type = 'file';
-        fileInput.accept = 'image/*';
-        fileInput.style.display = 'none';
-        document.body.appendChild(fileInput);
-        
-        profileUploadBtn.addEventListener('click', function() {
-            fileInput.click();
-        });
-        
-        fileInput.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    // Replace the SVG with the uploaded image
-                    profileUploadBtn.innerHTML = `<img src="${e.target.result}" alt="Profile" class="w-full h-full object-cover rounded-full">`;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-    }
+
 });
 </script>
 

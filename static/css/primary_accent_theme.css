@@ -1,15 +1,15 @@
 /* Primary Accent Theme CSS */
 :root {
-    --primary-950: #1a0b2e;
-    --primary-900: #2d1657;
-    --primary-800: #3b1a74;
-    --primary-700: #4c2889;
-    --accent-600: #0d9488;
-    --accent-500: #14b8a6;
-    --accent-400: #2dd4bf;
-    --accent-300: #5eead4;
-    --accent-200: #99f6e4;
-    --accent-100: #ccfbf1;
+    --primary-950: #0f0520;
+    --primary-900: #1a0b3d;
+    --primary-800: #2d1b5a;
+    --primary-700: #3f2b77;
+    --accent-600: #6b46c1;
+    --accent-500: #7c3aed;
+    --accent-400: #8b5cf6;
+    --accent-300: #a78bfa;
+    --accent-200: #c4b5fd;
+    --accent-100: #e0e7ff;
 }
 
 body {
