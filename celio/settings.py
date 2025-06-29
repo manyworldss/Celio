@@ -135,7 +135,11 @@ LANGUAGES = [
     ('it', _('Italian')),
     ('pt', _('Portuguese')),
     ('ja', _('Japanese')),
-    ('zh', _('Chinese')), 
+    ('zh', _('Chinese')),
+    ('ko', _('Korean')),
+    ('ar', _('Arabic')),
+    ('ru', _('Russian')),
+    ('hi', _('Hindi')), 
 ]
 
 LOCALE_PATHS = [

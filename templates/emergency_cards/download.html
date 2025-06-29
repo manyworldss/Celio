@@ -43,7 +43,9 @@
                         <select id="pdf-language" name="lang" class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-deep-teal focus:border-deep-teal">
                             {% for lang_code, lang_name in card.LANGUAGE_CHOICES %}
                                 {% if lang_code in card.translations %}
-                                    <option value="{{ lang_code }}" {% if card.language == lang_code %}selected{% endif %}>{{ lang_name }}</option>
+                                    <option value="{{ lang_code }}" {% if card.language == lang_code %}selected{% endif %}>
+                                        {% if lang_code == "en" %}🇺🇸 {% elif lang_code == "es" %}🇪🇸 {% elif lang_code == "fr" %}🇫🇷 {% elif lang_code == "de" %}🇩🇪 {% elif lang_code == "it" %}🇮🇹 {% elif lang_code == "zh" %}🇨🇳 {% elif lang_code == "ja" %}🇯🇵 {% elif lang_code == "ko" %}🇰🇷 {% elif lang_code == "pt" %}🇵🇹 {% elif lang_code == "ar" %}🇸🇦 {% elif lang_code == "ru" %}🇷🇺 {% elif lang_code == "hi" %}🇮🇳 {% endif %}{{ lang_name }}
+                                    </option>
                                 {% endif %}
                             {% endfor %}
                         </select>
@@ -89,7 +91,9 @@
                         <select id="wallet-language" name="lang" class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-deep-teal focus:border-deep-teal">
                             {% for lang_code, lang_name in card.LANGUAGE_CHOICES %}
                                 {% if lang_code in card.translations %}
-                                    <option value="{{ lang_code }}" {% if card.language == lang_code %}selected{% endif %}>{{ lang_name }}</option>
+                                    <option value="{{ lang_code }}" {% if card.language == lang_code %}selected{% endif %}>
+                                        {% if lang_code == "en" %}🇺🇸 {% elif lang_code == "es" %}🇪🇸 {% elif lang_code == "fr" %}🇫🇷 {% elif lang_code == "de" %}🇩🇪 {% elif lang_code == "it" %}🇮🇹 {% elif lang_code == "zh" %}🇨🇳 {% elif lang_code == "ja" %}🇯🇵 {% elif lang_code == "ko" %}🇰🇷 {% elif lang_code == "pt" %}🇵🇹 {% elif lang_code == "ar" %}🇸🇦 {% elif lang_code == "ru" %}🇷🇺 {% elif lang_code == "hi" %}🇮🇳 {% endif %}{{ lang_name }}
+                                    </option>
                                 {% endif %}
                             {% endfor %}
                         </select>

@@ -110,16 +110,22 @@
     background: linear-gradient(135deg, #a855f7, #8b5cf6);
     border-color: rgba(196, 181, 253, 0.5);
 }
-
-
-
-
+.card-dark .field-input {
+    background: rgba(88, 28, 135, 0.3);
+    border-color: rgba(147, 51, 234, 0.4);
+    color: white;
+}
+.card-dark .field-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
 
 .theme-dark .field-input,
 .theme-dark .field-input:focus {
     background-color: #1a0b3d !important;
     color: white !important;
     border: 1px solid #6b46c1 !important;
+    transition: none !important;
+    opacity: 1 !important;
 }
 
 .theme-dark .field-input::placeholder {
@@ -142,6 +148,46 @@
 }
 .card-dark .theme-btn:hover {
     border-color: rgba(147, 51, 234, 0.5);
+}
+
+.card-purple {
+    background: linear-gradient(135deg, #1e1b3a, #2d1b5a, #3f2b77);
+    color: white;
+    border-color: rgba(107, 70, 193, 0.3);
+    box-shadow: 0 25px 50px -12px rgba(107, 70, 193, 0.25);
+}
+.card-purple .card-header {
+    background: linear-gradient(90deg, #2d1b5a, #3f2b77);
+    border-color: rgba(107, 70, 193, 0.2);
+}
+.card-purple .profile-photo {
+    background: linear-gradient(135deg, #6b46c1, #7c3aed);
+    border-color: rgba(139, 92, 246, 0.5);
+}
+.card-purple .field-input {
+    background: rgba(30, 27, 58, 0.3);
+    border-color: rgba(107, 70, 193, 0.4);
+    color: white;
+}
+.card-purple .field-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+.card-purple .action-btn {
+    background: rgba(107, 70, 193, 0.2);
+    color: white;
+    border: 1px solid rgba(107, 70, 193, 0.3);
+}
+.card-purple .action-btn:hover {
+    background: rgba(107, 70, 193, 0.4);
+}
+.card-purple .theme-btn {
+    padding: 4px;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+.card-purple .theme-btn:hover {
+    border-color: rgba(107, 70, 193, 0.5);
 }
 
 /* Active theme button */
@@ -298,7 +344,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                     </svg>
                 </button>
-                <button class="action-btn p-2 rounded-lg transition-all duration-200" title="Print">
+                <button class="action-btn p-2 rounded-lg transition-all duration-200" title="Print" onclick="window.print()">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
                     </svg>
@@ -416,25 +462,34 @@
                             <div class="w-full h-6 rounded bg-gradient-to-r from-gray-200 to-gray-300 mb-1"></div>
                             <div class="text-xs font-medium">Light</div>
                         </button>
-                        <button class="theme-option p-2 rounded-lg border-2 border-transparent transition-all duration-200" data-theme="purple">
-                            <div class="w-full h-6 rounded bg-gradient-to-r from-gray-600 to-gray-700 mb-1"></div>
-                            <div class="text-xs font-medium">Dark</div>
-                        </button>
                         <button class="theme-option p-2 rounded-lg border-2 border-transparent transition-all duration-200" data-theme="dark">
-                            <div class="w-full h-6 rounded bg-gradient-to-r from-purple-900 to-indigo-900 mb-1"></div>
+                            <div class="w-full h-6 rounded bg-gradient-to-r from-gray-600 to-gray-700 mb-1"></div>
                             <div class="text-xs font-medium">Purple</div>
+                        </button>
+                        <button class="theme-option p-2 rounded-lg border-2 border-transparent transition-all duration-200" data-theme="purple">
+                            <div class="w-full h-6 rounded bg-gradient-to-r from-purple-900 to-indigo-900 mb-1"></div>
+                            <div class="text-xs font-medium">Dark</div>
                         </button>
                     </div>
                     <select class="field-input w-full p-2.5 rounded-lg border text-sm hidden" id="theme-select">
                         <option value="celio">Celio (Teal/Emerald)</option>
                         <option value="light">Light (Gray/White)</option>
-                        <option value="purple">Dark (Gray)</option>
-                        <option value="dark">Purple (Deep Purple)</option>
+                        <option value="dark">Purple (Gray)</option>
+                        <option value="purple">Dark (Deep Purple)</option>
                     </select>
                 </div>
             </div>
         </div>
     </div>
+    
+    <!-- QR Code Section -->
+    {% if qr_code_url %}
+    <div class="qr-code-section p-3 border-t text-center">
+        <h4 class="text-xs font-semibold opacity-90 mb-2">Scan for Digital Card</h4>
+        <img src="{{ qr_code_url }}" alt="QR Code" class="mx-auto" style="width: 80px; height: 80px;">
+        <p class="text-xs opacity-70 mt-1">Scan to view online</p>
+    </div>
+    {% endif %}
     
     <!-- Footer with Logo -->
      <div class="card-footer p-3 border-t text-center">
@@ -533,6 +588,8 @@ document.addEventListener('DOMContentLoaded', function() {
             'e-card': 'Carte-E',
             'medical-card': 'Carte Médicale',
             'celiac-message': 'J\'ai une maladie cœliaque sévère et j\'ai besoin d\'une préparation 100% sans gluten. Même des traces peuvent causer des réactions graves.',
+            'wheat-allergy-message': 'J\'ai une allergie sévère au blé. Veuillez vous assurer qu\'il n\'y a pas de produits de blé ou de contamination croisée avec le blé.',
+            'gluten-intolerance-message': 'J\'ai une intolérance au gluten et j\'ai besoin d\'une préparation sans gluten pour éviter les problèmes digestifs.',
             'allergy-message': 'J\'ai des allergies alimentaires sévères. Veuillez vous assurer qu\'il n\'y a pas de contamination croisée avec des allergènes.',
             'contact': 'Contact',
             'medical-alert': 'ALERTE MÉDICALE'
@@ -542,15 +599,19 @@ document.addEventListener('DOMContentLoaded', function() {
             'e-card': 'E-Karte',
             'medical-card': 'Medizinkarte',
             'celiac-message': 'Ich habe schwere Zöliakie und benötige 100% glutenfreie Zubereitung. Selbst Spuren können schwere Reaktionen verursachen.',
+            'wheat-allergy-message': 'Ich habe eine schwere Weizenallergie. Bitte stellen Sie sicher, dass keine Weizenprodukte oder Kreuzkontamination mit Weizen vorhanden sind.',
+            'gluten-intolerance-message': 'Ich habe eine Glutenunverträglichkeit und benötige glutenfreie Zubereitung, um Verdauungsprobleme zu vermeiden.',
             'allergy-message': 'Ich habe schwere Nahrungsmittelallergien. Bitte stellen Sie sicher, dass keine Kreuzkontamination mit Allergenen stattfindet.',
             'contact': 'Kontakt',
             'medical-alert': 'MEDIZINISCHER ALARM'
         },
         it: {
             'gluten-free-passport': 'Passaporto Senza Glutine',
-            'e-card': 'Carta-E',
+            'e-card': 'E-Card',
             'medical-card': 'Carta Medica',
             'celiac-message': 'Ho la celiachia grave e richiedo preparazione 100% senza glutine. Anche tracce possono causare reazioni gravi.',
+            'wheat-allergy-message': 'Ho un\'allergia grave al grano. Si prega di assicurarsi che non ci siano prodotti di grano o contaminazione incrociata con il grano.',
+            'gluten-intolerance-message': 'Ho intolleranza al glutine e richiedo preparazione senza glutine per evitare problemi digestivi.',
             'allergy-message': 'Ho allergie alimentari gravi. Si prega di assicurarsi che non ci sia contaminazione incrociata con allergeni.',
             'contact': 'Contatto',
             'medical-alert': 'ALLERTA MEDICA'
@@ -560,6 +621,8 @@ document.addEventListener('DOMContentLoaded', function() {
             'e-card': 'Eカード',
             'medical-card': '医療カード',
             'celiac-message': '重度のセリアック病があり、100%グルテンフリーの調理が必要です。微量でも重篤な反応を起こす可能性があります。',
+            'wheat-allergy-message': '重度の小麦アレルギーがあります。小麦製品や小麦との交差汚染がないことを確認してください。',
+            'gluten-intolerance-message': 'グルテン不耐症があり、消化器系の問題を避けるためにグルテンフリーの調理が必要です。',
             'allergy-message': '重度の食物アレルギーがあります。アレルゲンとの交差汚染がないことを確認してください。',
             'contact': '連絡先',
             'medical-alert': '医療警告'
@@ -569,15 +632,68 @@ document.addEventListener('DOMContentLoaded', function() {
             'e-card': '电子卡',
             'medical-card': '医疗卡',
             'celiac-message': '我患有严重的乳糜泻，需要100%无麸质食物制备。即使微量也可能引起严重反应。',
+            'wheat-allergy-message': '我有严重的小麦过敏。请确保没有小麦产品或与小麦的交叉污染。',
+            'gluten-intolerance-message': '我有麸质不耐受，需要无麸质制备以避免消化问题。',
             'allergy-message': '我有严重的食物过敏。请确保没有过敏原交叉污染。',
             'contact': '联系人',
             'medical-alert': '医疗警报'
+        },
+        ko: {
+            'gluten-free-passport': '글루텐 프리 여권',
+            'e-card': '전자 카드',
+            'medical-card': '의료 카드',
+            'celiac-message': '저는 심각한 셀리악병을 앓고 있어서 100% 글루텐 프리 조리가 필요합니다. 미량이라도 심각한 반응을 일으킬 수 있습니다.',
+            'wheat-allergy-message': '저는 심각한 밀 알레르기가 있습니다. 밀 제품이나 밀과의 교차 오염이 없도록 해주세요.',
+            'gluten-intolerance-message': '저는 글루텐 불내증이 있어서 소화 문제를 피하기 위해 글루텐 프리 조리가 필요합니다.',
+            'allergy-message': '저는 심각한 음식 알레르기가 있습니다. 알레르겐과의 교차 오염이 없도록 해주세요.',
+            'contact': '연락처',
+            'medical-alert': '의료 경보'
+        },
+        ar: {
+            'gluten-free-passport': 'جواز سفر خالي من الغلوتين',
+            'e-card': 'بطاقة إلكترونية',
+            'medical-card': 'بطاقة طبية',
+            'celiac-message': 'أعاني من مرض السيلياك الشديد وأحتاج إلى تحضير خالي من الغلوتين بنسبة 100%. حتى الكميات الضئيلة يمكن أن تسبب ردود فعل شديدة.',
+            'wheat-allergy-message': 'لدي حساسية شديدة من القمح. يرجى التأكد من عدم وجود منتجات القمح أو التلوث المتبادل مع القمح.',
+            'gluten-intolerance-message': 'لدي عدم تحمل للغلوتين وأحتاج إلى تحضير خالي من الغلوتين لتجنب مشاكل الهضم.',
+            'allergy-message': 'لدي حساسية غذائية شديدة. يرجى التأكد من عدم وجود تلوث متبادل مع مسببات الحساسية.',
+            'contact': 'جهة الاتصال',
+            'medical-alert': 'تنبيه طبي'
+        },
+        ru: {
+            'gluten-free-passport': 'Безглютеновый паспорт',
+            'e-card': 'Электронная карта',
+            'medical-card': 'Медицинская карта',
+            'celiac-message': 'У меня тяжелая целиакия, и мне требуется 100% безглютеновое приготовление. Даже следы могут вызвать серьезные реакции.',
+            'wheat-allergy-message': 'У меня тяжелая аллергия на пшеницу. Пожалуйста, убедитесь, что нет продуктов из пшеницы или перекрестного загрязнения пшеницей.',
+            'gluten-intolerance-message': 'У меня непереносимость глютена, и мне нужно безглютеновое приготовление, чтобы избежать проблем с пищеварением.',
+            'allergy-message': 'У меня тяжелые пищевые аллергии. Пожалуйста, убедитесь, что нет перекрестного загрязнения аллергенами.',
+            'contact': 'Контакт',
+            'medical-alert': 'МЕДИЦИНСКОЕ ПРЕДУПРЕЖДЕНИЕ'
+        },
+        hi: {
+            'gluten-free-passport': 'ग्लूटेन-फ्री पासपोर्ट',
+            'e-card': 'ई-कार्ड',
+            'medical-card': 'मेडिकल कार्ड',
+            'celiac-message': 'मुझे गंभीर सीलिएक रोग है और मुझे 100% ग्लूटेन-फ्री तैयारी की आवश्यकता है। थोड़ी मात्रा भी गंभीर प्रतिक्रिया का कारण बन सकती है।',
+            'wheat-allergy-message': 'मुझे गंभीर गेहूं एलर्जी है। कृपया सुनिश्चित करें कि कोई गेहूं उत्पाद या गेहूं के साथ क्रॉस-संदूषण न हो।',
+            'gluten-intolerance-message': 'मुझे ग्लूटेन असहनशीलता है और पाचन समस्याओं से बचने के लिए ग्लूटेन-फ्री तैयारी की आवश्यकता है।',
+            'allergy-message': 'मुझे गंभीर खाद्य एलर्जी है। कृपया सुनिश्चित करें कि एलर्जेन के साथ कोई क्रॉस-संदूषण न हो।',
+            'contact': 'संपर्क',
+            'medical-alert': 'चिकित्सा चेतावनी'
         }
     };
     
     // Set initial theme
     const currentTheme = card.dataset.theme || 'celio';
     themeSelect.value = currentTheme;
+    
+    // Define condition-to-language mapping based on awareness and support
+    const conditionLanguageMapping = {
+        'Celiac Disease': 'it', // Italy has the highest celiac awareness (5/5)
+        'Wheat Allergy': 'en', // English-speaking countries have good allergy awareness
+        'Gluten Intolerance': 'es' // Spain has good gluten-free support (4/5)
+    };
     
     // Handle custom condition input
     conditionSelect.addEventListener('change', function() {
@@ -588,10 +704,24 @@ document.addEventListener('DOMContentLoaded', function() {
             customConditionInput.classList.add('hidden');
             profileSubtitle.textContent = this.value;
             
-            // Update message based on selected condition
+            // Dynamically update language based on condition
+            const condition = this.value;
+            const suggestedLang = conditionLanguageMapping[condition];
+            
+            if (suggestedLang && languageSelect.value !== suggestedLang) {
+                // Check if the suggested language is available in the dropdown
+                const langOption = Array.from(languageSelect.options).find(option => option.value === suggestedLang);
+                if (langOption) {
+                    languageSelect.value = suggestedLang;
+                    // Trigger language change event to update the UI
+                    const langChangeEvent = new Event('change');
+                    languageSelect.dispatchEvent(langChangeEvent);
+                }
+            }
+            
+            // Update message based on selected condition (using the new language)
             const selectedLang = languageSelect.value;
             const trans = translations[selectedLang] || translations.en;
-            const condition = this.value;
             
             if (condition === 'Celiac Disease') {
                 messageTextarea.value = trans['celiac-message'];

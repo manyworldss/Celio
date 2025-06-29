@@ -157,6 +157,60 @@
 }
 
 /* Theme Specific Styles */
+/* Celio Theme */
+.card-celio {
+    background: linear-gradient(135deg, #0d9488 0%, #059669 100%);
+    color: #ffffff;
+}
+
+.card-celio .card-header {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.card-celio .card-id-message {
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.card-celio .card-id-message-content {
+    color: rgba(255, 255, 255, 0.95);
+}
+
+.card-celio .card-id-message-title {
+    color: #ffffff;
+}
+
+.card-celio .card-id-footer {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.card-celio .card-id-value {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Light Theme */
+.card-light {
+    background-color: #ffffff;
+    color: #1f2937;
+}
+
+.card-light .card-header {
+    background-color: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.card-light .card-id-message {
+    background-color: #f3f4f6;
+    border: 1px solid #d1d5db;
+}
+
+.card-light .card-id-footer {
+    background-color: #f3f4f6;
+    color: #6b7280;
+}
+
 /* Classic Theme */
 .card-classic {
     background-color: #ffffff;
@@ -349,6 +403,9 @@
     color: #f0e9ff !important;
     border-color: #6b46c1 !important;
     border: 1px solid #6b46c1 !important;
+    transition: none !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
 }
 
 .card-dark input::placeholder,
@@ -591,19 +648,91 @@
     color: rgba(255, 255, 255, 0.7);
 }
 
+/* Celio theme form inputs */
+.card-celio input,
+.card-celio textarea,
+.card-celio select,
+.card-celio .field-input,
+.card-celio input.field-input,
+.card-celio textarea.field-input,
+.card-celio select.field-input {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    transition: none !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+}
+
+.card-celio input::placeholder,
+.card-celio textarea::placeholder,
+.card-celio .field-input::placeholder,
+.card-celio input.field-input::placeholder,
+.card-celio textarea.field-input::placeholder {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.card-celio input:focus,
+.card-celio textarea:focus,
+.card-celio select:focus,
+.card-celio .field-input:focus,
+.card-celio input.field-input:focus,
+.card-celio textarea.field-input:focus,
+.card-celio select.field-input:focus {
+    border-color: rgba(255, 255, 255, 0.5) !important;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Light theme form inputs */
+.card-light input,
+.card-light textarea,
+.card-light select,
+.card-light .field-input,
+.card-light input.field-input,
+.card-light textarea.field-input,
+.card-light select.field-input {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    color: #1f2937 !important;
+    border-color: #d1d5db !important;
+    border: 1px solid #d1d5db !important;
+    transition: none !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+}
+
+.card-light input::placeholder,
+.card-light textarea::placeholder,
+.card-light .field-input::placeholder,
+.card-light input.field-input::placeholder,
+.card-light textarea.field-input::placeholder {
+    color: #9ca3af !important;
+}
+
+.card-light input:focus,
+.card-light textarea:focus,
+.card-light select:focus,
+.card-light .field-input:focus,
+.card-light input.field-input:focus,
+.card-light textarea.field-input:focus,
+.card-light select.field-input:focus {
+    border-color: #6b7280 !important;
+    box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.1) !important;
+}
+
 /* Purple theme form inputs */
-.card-purple input,
-.card-purple textarea,
-.card-purple select,
 .card-purple .field-input,
 .card-purple input.field-input,
 .card-purple textarea.field-input,
 .card-purple select.field-input {
-    background-color: #1e1b3a !important;
     background: #1e1b3a !important;
-    color: #e0dfff !important;
-    border-color: #4c4a7a !important;
     border: 1px solid #4c4a7a !important;
+    color: #e0dfff !important;
+    transition: none !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
 }
 
 .card-purple input::placeholder,

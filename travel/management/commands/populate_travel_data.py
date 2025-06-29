@@ -63,6 +63,46 @@ class Command(BaseCommand):
                 'celiac_awareness': 2,
                 'summary': 'Japan has limited celiac awareness as the condition is rare in the Japanese population. Soy sauce (which contains wheat) is ubiquitous in Japanese cuisine, making dining challenging. Language barriers can further complicate explaining dietary restrictions.',
                 'dining_tips': 'Pure sushi with just fish and rice is generally safe, but confirm no soy sauce is added. Traditional Japanese rice dishes without sauce can be safe options. Carry gluten-free soy sauce packets for your own use. Consider booking hotels with refrigerators to store safe snacks and breakfast items.'
+            },
+            {
+                'name': 'South Korea',
+                'code': 'KR',
+                'flag_emoji': '🇰🇷',
+                'language': 'Korean',
+                'language_code': 'ko',
+                'celiac_awareness': 2,
+                'summary': 'South Korea has limited celiac awareness as celiac disease is rare in the Korean population. Korean cuisine heavily features wheat-based noodles, soy sauce, and fermented products that may contain gluten. Language barriers can make communication challenging.',
+                'dining_tips': 'Rice-based dishes like bibimbap (without sauce) can be safer options. Be cautious with kimchi as some varieties contain wheat flour. Korean BBQ meat without marinades is generally safe. Consider staying in accommodations with kitchen facilities and shop at international supermarkets for gluten-free products.'
+            },
+            {
+                'name': 'Saudi Arabia',
+                'code': 'SA',
+                'flag_emoji': '🇸🇦',
+                'language': 'Arabic',
+                'language_code': 'ar',
+                'celiac_awareness': 3,
+                'summary': 'Saudi Arabia has moderate celiac awareness, particularly in major cities like Riyadh and Jeddah. Traditional Middle Eastern cuisine includes many wheat-based items, but rice dishes and grilled meats are common alternatives.',
+                'dining_tips': 'Rice-based dishes like kabsa are typically safe. Grilled meats and vegetables without marinades are good options. Be cautious with traditional breads and pastries. International hotels and restaurants in major cities are more likely to understand gluten-free requirements. Carry translation cards in Arabic.'
+            },
+            {
+                'name': 'Russia',
+                'code': 'RU',
+                'flag_emoji': '🇷🇺',
+                'language': 'Russian',
+                'language_code': 'ru',
+                'celiac_awareness': 2,
+                'summary': 'Russia has limited celiac awareness, though it is improving in major cities like Moscow and St. Petersburg. Traditional Russian cuisine relies heavily on bread, wheat-based soups, and pasta dishes.',
+                'dining_tips': 'Focus on simple grilled meats, fish, and vegetables. Traditional buckwheat dishes (grechka) are naturally gluten-free. Be cautious with soups as many contain flour thickeners. International restaurants and hotels in major cities may have better understanding of dietary restrictions.'
+            },
+            {
+                'name': 'India',
+                'code': 'IN',
+                'flag_emoji': '🇮🇳',
+                'language': 'Hindi',
+                'language_code': 'hi',
+                'celiac_awareness': 2,
+                'summary': 'India has limited celiac awareness, though rice-based dishes in South India and naturally gluten-free options like dal and vegetables are abundant. Wheat-based breads (roti, naan) are staples in North Indian cuisine.',
+                'dining_tips': 'South Indian cuisine with rice-based dishes is generally safer. Plain rice, dal (lentils), and vegetable curries are typically gluten-free. Avoid wheat-based breads and be cautious with spice mixes that may contain wheat flour. Communicate dietary needs clearly as cross-contamination is common in kitchens.'
             }
         ]
         
@@ -181,6 +221,86 @@ class Command(BaseCommand):
                     'description': 'Breaded cutlet of meat',
                     'ingredients': 'Breadcrumbs (panko), meat, sometimes flour'
                 }
+            ],
+            'KR': [
+                {
+                    'name': 'Jjajangmyeon',
+                    'local_name': '짜장면',
+                    'description': 'Noodles with black bean sauce',
+                    'ingredients': 'Wheat noodles, black bean sauce'
+                },
+                {
+                    'name': 'Mandu',
+                    'local_name': '만두',
+                    'description': 'Korean dumplings',
+                    'ingredients': 'Wheat flour wrapper, various fillings'
+                },
+                {
+                    'name': 'Korean Fried Chicken',
+                    'local_name': '치킨',
+                    'description': 'Crispy fried chicken with coating',
+                    'ingredients': 'Wheat flour coating, chicken'
+                }
+            ],
+            'SA': [
+                {
+                    'name': 'Shawarma Wrap',
+                    'local_name': 'شاورما',
+                    'description': 'Meat wrapped in flatbread',
+                    'ingredients': 'Wheat flatbread, meat, vegetables'
+                },
+                {
+                    'name': 'Falafel',
+                    'local_name': 'فلافل',
+                    'description': 'Deep-fried chickpea balls (often contains wheat)',
+                    'ingredients': 'Chickpeas, sometimes wheat flour as binder'
+                },
+                {
+                    'name': 'Kunafa',
+                    'local_name': 'كنافة',
+                    'description': 'Sweet pastry with cheese or cream',
+                    'ingredients': 'Wheat-based pastry, cheese, syrup'
+                }
+            ],
+            'RU': [
+                {
+                    'name': 'Borscht with Sour Cream',
+                    'local_name': 'Борщ',
+                    'description': 'Beet soup often thickened with flour',
+                    'ingredients': 'Vegetables, sometimes flour as thickener'
+                },
+                {
+                    'name': 'Blini',
+                    'local_name': 'Блины',
+                    'description': 'Thin pancakes',
+                    'ingredients': 'Wheat flour, milk, eggs'
+                },
+                {
+                    'name': 'Beef Stroganoff',
+                    'local_name': 'Бефстроганов',
+                    'description': 'Beef in sour cream sauce, often thickened with flour',
+                    'ingredients': 'Beef, sour cream, often wheat flour'
+                }
+            ],
+            'IN': [
+                {
+                    'name': 'Naan',
+                    'local_name': 'नान',
+                    'description': 'Leavened flatbread',
+                    'ingredients': 'Wheat flour, yogurt, yeast'
+                },
+                {
+                    'name': 'Roti/Chapati',
+                    'local_name': 'रोटी/चपाती',
+                    'description': 'Unleavened flatbread',
+                    'ingredients': 'Wheat flour, water'
+                },
+                {
+                    'name': 'Samosa',
+                    'local_name': 'समोसा',
+                    'description': 'Fried pastry with filling',
+                    'ingredients': 'Wheat flour pastry, various fillings'
+                }
             ]
         }
         
@@ -201,7 +321,11 @@ class Command(BaseCommand):
                     'FR': 'Je suis atteint(e) de la maladie cœliaque. Je ne peux pas manger de gluten.',
                     'ES': 'Tengo enfermedad celíaca. No puedo comer gluten.',
                     'US': 'I have celiac disease. I cannot eat gluten.',
-                    'JP': '私はセリアック病です。グルテンを食べることができません。'
+                    'JP': '私はセリアック病です。グルテンを食べることができません。',
+                    'KR': '저는 셀리악병이 있습니다. 글루텐을 먹을 수 없습니다.',
+                    'SA': 'أعاني من مرض السيلياك. لا أستطيع أكل الغلوتين.',
+                    'RU': 'У меня целиакия. Я не могу есть глютен.',
+                    'IN': 'मुझे सीलिएक रोग है। मैं ग्लूटेन नहीं खा सकता।'
                 }
             },
             {
@@ -212,7 +336,11 @@ class Command(BaseCommand):
                     'FR': 'Cette nourriture est-elle sans gluten?',
                     'ES': '¿Esta comida es sin gluten?',
                     'US': 'Is this food gluten-free?',
-                    'JP': 'この食べ物はグルテンフリーですか？'
+                    'JP': 'この食べ物はグルテンフリーですか？',
+                    'KR': '이 음식은 글루텐 프리인가요?',
+                    'SA': 'هل هذا الطعام خالي من الغلوتين؟',
+                    'RU': 'Эта еда без глютена?',
+                    'IN': 'क्या यह भोजन ग्लूटेन-फ्री है?'
                 }
             }
         ]
@@ -237,7 +365,11 @@ class Command(BaseCommand):
                     'FR': 'Pouvez-vous préparer ceci sans gluten?',
                     'ES': '¿Pueden preparar esto sin gluten?',
                     'US': 'Can you prepare this without gluten?',
-                    'JP': 'グルテンなしでこれを準備できますか？'
+                    'JP': 'グルテンなしでこれを準備できますか？',
+                    'KR': '글루텐 없이 이것을 준비해 주실 수 있나요?',
+                    'SA': 'هل يمكنكم تحضير هذا بدون غلوتين؟',
+                    'RU': 'Можете ли вы приготовить это без глютена?',
+                    'IN': 'क्या आप इसे ग्लूटेन के बिना तैयार कर सकते हैं?'
                 }
             }
         ]
@@ -262,7 +394,11 @@ class Command(BaseCommand):
                     'FR': 'Est-ce que cela contient du blé, de l\'orge ou du seigle?',
                     'ES': '¿Contiene trigo, cebada o centeno?',
                     'US': 'Does this contain wheat, barley, or rye?',
-                    'JP': 'これには小麦、大麦、またはライ麦が含まれていますか？'
+                    'JP': 'これには小麦、大麦、またはライ麦が含まれていますか？',
+                    'KR': '이것에 밀, 보리, 또는 호밀이 들어있나요?',
+                    'SA': 'هل يحتوي هذا على القمح أو الشعير أو الجاودار؟',
+                    'RU': 'Содержит ли это пшеницу, ячмень или рожь?',
+                    'IN': 'क्या इसमें गेहूं, जौ, या राई है?'
                 }
             }
         ]

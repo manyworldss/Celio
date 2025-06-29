@@ -100,7 +100,12 @@
     <div class="country-header rounded-2xl p-8 mb-8 backdrop-blur-sm">
         <div class="flex flex-col lg:flex-row lg:items-center gap-8">
             <div class="flex items-center gap-6">
-                <div class="text-7xl animate-pulse">{{ country.flag_emoji }}</div>
+                <div class="relative">
+                    <div class="absolute inset-0 bg-gradient-to-br from-accent-500/20 to-accent-600/10 rounded-3xl blur-sm opacity-70"></div>
+                    <div class="relative bg-gradient-to-br from-primary-700/50 to-primary-800/30 rounded-3xl p-6 border border-accent-500/20 backdrop-blur-sm">
+                        <div class="text-7xl animate-pulse">{{ country.flag_emoji }}</div>
+                    </div>
+                </div>
                 <div>
                     <h1 class="text-5xl font-bold bg-gradient-to-r from-white to-accent-200 bg-clip-text text-transparent mb-3">{{ country.name }}</h1>
                     <div class="flex items-center gap-4">
@@ -123,24 +128,21 @@
             <div class="lg:ml-auto">
                 <div class="info-card rounded-xl p-6">
                     <div class="text-sm font-semibold text-accent-300 mb-3 uppercase tracking-wide">Celiac Awareness Level</div>
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center">
-                            {% for i in "12345" %}
-                                {% if forloop.counter <= country.celiac_awareness %}
-                                    <div class="awareness-dot filled"></div>
-                                {% else %}
-                                    <div class="awareness-dot empty"></div>
+                    <div class="mb-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-accent-300">Celiac Awareness Level</span>
+                            <span class="text-sm font-medium text-white px-3 py-1 bg-accent-600/20 rounded-full border border-accent-500/30">
+                                {% if country.celiac_awareness == 1 %}Very Low
+                                {% elif country.celiac_awareness == 2 %}Low
+                                {% elif country.celiac_awareness == 3 %}Moderate
+                                {% elif country.celiac_awareness == 4 %}High
+                                {% elif country.celiac_awareness == 5 %}Very High
                                 {% endif %}
-                            {% endfor %}
+                            </span>
                         </div>
-                        <span class="text-sm font-medium text-white px-3 py-1 bg-accent-600/20 rounded-full border border-accent-500/30">
-                            {% if country.celiac_awareness == 1 %}Very Low
-                            {% elif country.celiac_awareness == 2 %}Low
-                            {% elif country.celiac_awareness == 3 %}Moderate
-                            {% elif country.celiac_awareness == 4 %}High
-                            {% elif country.celiac_awareness == 5 %}Very High
-                            {% endif %}
-                        </span>
+                        <div class="w-full bg-primary-800/50 rounded-full h-3">
+                            <div class="bg-gradient-to-r from-accent-500 to-accent-400 h-3 rounded-full transition-all duration-300" style="width: {% widthratio country.celiac_awareness 5 100 %}%"></div>
+                        </div>
                     </div>
                 </div>
             </div>

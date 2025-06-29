@@ -136,9 +136,12 @@
                             <button type="button" 
                                     data-target="card-message-{{ lang_code|lower }}" 
                                     data-lang="{{ lang_code }}"
-                                    class="{% if current_lang == lang_code %}border-deep-teal text-deep-teal{% else %}border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300{% endif %} whitespace-nowrap py-2 px-4 border-b-2 font-medium text-sm mr-8 language-tab"
+                                    class="{% if current_lang == lang_code %}border-deep-teal text-deep-teal{% else %}border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300{% endif %} whitespace-nowrap py-2 px-4 border-b-2 font-medium text-sm mr-8 language-tab flex items-center"
                                     aria-selected="{% if current_lang == lang_code %}true{% else %}false{% endif %}"
                                     role="tab">
+                                <span class="mr-1">
+                                    {% if lang_code == "en" %}🇺🇸{% elif lang_code == "es" %}🇪🇸{% elif lang_code == "fr" %}🇫🇷{% elif lang_code == "de" %}🇩🇪{% elif lang_code == "it" %}🇮🇹{% elif lang_code == "zh" %}🇨🇳{% elif lang_code == "ja" %}🇯🇵{% elif lang_code == "ko" %}🇰🇷{% elif lang_code == "pt" %}🇵🇹{% elif lang_code == "ar" %}🇸🇦{% elif lang_code == "ru" %}🇷🇺{% elif lang_code == "hi" %}🇮🇳{% endif %}
+                                </span>
                                 {{ lang_name }}
                             </button>
                         {% endfor %}

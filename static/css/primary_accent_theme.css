@@ -121,15 +121,17 @@ body {
 .theme-dark .form-textarea,
 .theme-dark .field-input {
     background-color: #1a0b3d !important;
-    color: white !important;
+    color: rgba(255, 255, 255, 0.8) !important; /* Darker color for text */
     border: 1px solid #6b46c1 !important;
 }
 
 .theme-dark .form-input::placeholder,
 .theme-dark .form-textarea::placeholder,
 .theme-dark .field-input::placeholder {
-    color: rgba(255, 255, 255, 0.6) !important;
+    color: rgba(255, 255, 255, 0.5) !important; /* Darker color for placeholder */
 }
+
+.form-select {
     display: block;
     width: 100%;
     padding: 0.75rem 1rem;

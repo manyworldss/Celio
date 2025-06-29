@@ -12,25 +12,31 @@
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
                 </svg>
-                <span class="text-sm font-medium mr-1">
+                <span class="text-sm font-medium mr-1 flex items-center">
                     {% if current_lang == "EN" %}
-                        English
+                        🇺🇸 English
                     {% elif current_lang == "ES" %}
-                        Español
+                        🇪🇸 Español
                     {% elif current_lang == "FR" %}
-                        Français
+                        🇫🇷 Français
                     {% elif current_lang == "DE" %}
-                        Deutsch
+                        🇩🇪 Deutsch
                     {% elif current_lang == "IT" %}
-                        Italiano
+                        🇮🇹 Italiano
                     {% elif current_lang == "ZH" %}
-                        中文
+                        🇨🇳 中文
                     {% elif current_lang == "JA" %}
-                        日本語
+                        🇯🇵 日本語
                     {% elif current_lang == "KO" %}
-                        한국어
+                        🇰🇷 한국어
                     {% elif current_lang == "PT" %}
-                        Português
+                        🇵🇹 Português
+                    {% elif current_lang == "AR" %}
+                        🇸🇦 العربية
+                    {% elif current_lang == "RU" %}
+                        🇷🇺 Русский
+                    {% elif current_lang == "HI" %}
+                        🇮🇳 हिन्दी
                     {% else %}
                         {{ current_lang }}
                     {% endif %}
@@ -41,11 +47,38 @@
             </button>
             
             <!-- Language dropdown menu -->
-            <div x-show="open" class="absolute top-full mt-2 w-40 bg-white rounded-lg shadow-xl overflow-hidden z-50">
+            <div x-show="open" class="absolute top-full mt-2 w-48 bg-white rounded-lg shadow-xl overflow-hidden z-50">
                 {% for lang_code, lang_name in language_choices %}
                     <button type="button" 
                             data-lang="{{ lang_code }}" 
-                            class="preview-language-selector-item w-full text-left px-4 py-2 text-gray-700 hover:bg-teal-500 hover:text-white transition-colors duration-150 {% if current_lang == lang_code %}bg-teal-100 font-medium{% endif %}">
+                            class="preview-language-selector-item w-full text-left px-4 py-2 text-gray-700 hover:bg-teal-500 hover:text-white transition-colors duration-150 flex items-center {% if current_lang == lang_code %}bg-teal-100 font-medium{% endif %}">
+                        <span class="mr-2">
+                            {% if lang_code == "en" %}
+                                🇺🇸
+                            {% elif lang_code == "es" %}
+                                🇪🇸
+                            {% elif lang_code == "fr" %}
+                                🇫🇷
+                            {% elif lang_code == "de" %}
+                                🇩🇪
+                            {% elif lang_code == "it" %}
+                                🇮🇹
+                            {% elif lang_code == "zh" %}
+                                🇨🇳
+                            {% elif lang_code == "ja" %}
+                                🇯🇵
+                            {% elif lang_code == "ko" %}
+                                🇰🇷
+                            {% elif lang_code == "pt" %}
+                                🇵🇹
+                            {% elif lang_code == "ar" %}
+                                🇸🇦
+                            {% elif lang_code == "ru" %}
+                                🇷🇺
+                            {% elif lang_code == "hi" %}
+                                🇮🇳
+                            {% endif %}
+                        </span>
                         {{ lang_name }}
                     </button>
                 {% endfor %}
@@ -111,7 +144,7 @@
                 </button>
                 <button type="button" data-theme="dark"
                     class="preview-theme-selector-item w-full text-left px-4 py-2 text-sm text-gray-800 hover:bg-teal-50 hover:text-teal-700 transition-colors {% if preview_theme == 'dark' or preview_theme == '' and card.theme == 'dark' %}bg-teal-100 text-teal-800 font-medium{% else %}text-gray-800{% endif %}">
-                    Dark
+                    Purple
                 </button>
             </div>
         </div>
@@ -127,7 +160,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
                     </svg>
                 </button>
-                <button class="card-action-btn" title="Print Card">
+                <button class="card-action-btn" title="Print Card" onclick="window.print()">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
                     </svg>
@@ -203,6 +236,15 @@
                 {% if card.emergency_contact_relationship %}{{ card.emergency_contact_relationship }}: {% endif %}
                 {{ card.emergency_contact_name }} • {{ card.emergency_contact_phone }}
             </p>
+        </div>
+        {% endif %}
+        
+        <!-- QR Code Section -->
+        {% if qr_code_url %}
+        <div class="qr-code-section mt-4 p-3 rounded-lg border border-opacity-30 text-center">
+            <h3 class="text-sm font-semibold mb-2">Scan for Digital Card</h3>
+            <img src="{{ qr_code_url }}" alt="QR Code for Digital Card" class="w-16 h-16 mx-auto">
+            <p class="text-xs mt-1 opacity-70">Scan to view online</p>
         </div>
         {% endif %}
         </div>

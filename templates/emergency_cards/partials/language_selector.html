@@ -7,8 +7,35 @@
                 hx-get="{% url 'message_cards:switch_language' %}?lang={{ lang_code }}"
                 hx-target="#card-message-content"
                 hx-swap="innerHTML"
-                class="px-3 py-1.5 text-sm font-medium rounded-md {% if lang_code == current_lang %}bg-deep-teal text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %}"
+                class="px-3 py-1.5 text-sm font-medium rounded-md flex items-center {% if lang_code == current_lang %}bg-deep-teal text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %}"
             >
+                <span class="mr-1">
+                    {% if lang_code == "en" %}
+                        🇺🇸
+                    {% elif lang_code == "es" %}
+                        🇪🇸
+                    {% elif lang_code == "fr" %}
+                        🇫🇷
+                    {% elif lang_code == "de" %}
+                        🇩🇪
+                    {% elif lang_code == "it" %}
+                        🇮🇹
+                    {% elif lang_code == "zh" %}
+                        🇨🇳
+                    {% elif lang_code == "ja" %}
+                        🇯🇵
+                    {% elif lang_code == "ko" %}
+                        🇰🇷
+                    {% elif lang_code == "pt" %}
+                        🇵🇹
+                    {% elif lang_code == "ar" %}
+                        🇸🇦
+                    {% elif lang_code == "ru" %}
+                        🇷🇺
+                    {% elif lang_code == "hi" %}
+                        🇮🇳
+                    {% endif %}
+                </span>
                 {{ lang_name }}
             </button>
         {% endfor %}

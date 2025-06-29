@@ -11,8 +11,8 @@ class EmergencyCard(models.Model):
 
     THEME_CHOICES = [
         (THEME_LIGHT, 'Light'),
-        (THEME_PURPLE, 'Purple'),
-        (THEME_DARK, 'Dark'),
+        (THEME_PURPLE, 'Dark'),
+        (THEME_DARK, 'Purple'),
     ]
 
     LANGUAGE_CHOICES = [
@@ -24,6 +24,10 @@ class EmergencyCard(models.Model):
         ('pt', 'Portuguese'),
         ('ja', 'Japanese'),
         ('zh', 'Chinese'),
+        ('ko', 'Korean'),
+        ('ar', 'Arabic'),
+        ('ru', 'Russian'),
+        ('hi', 'Hindi'),
     ]
     
     SEVERITY_CHOICES = [

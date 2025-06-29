@@ -29,7 +29,7 @@
         color: white;
     }
     
-    /* Responsive order */
+    /* Enhanced Mobile Responsiveness */
     @media (max-width: 1024px) {
         .order-1 {
             order: 2;
@@ -37,6 +37,43 @@
         
         .order-2 {
             order: 1;
+        }
+    }
+    
+    /* Mobile-first improvements */
+    @media (max-width: 640px) {
+        .primary-gradient-bg {
+            background-attachment: scroll;
+        }
+        
+        /* Improve card visibility on mobile */
+        .editable-card {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        
+        /* Better spacing for mobile */
+        .form-section {
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Optimize text sizes for mobile */
+        h1 {
+            line-height: 1.2;
+        }
+        
+        /* Improve button accessibility on mobile */
+        button, .btn {
+            min-height: 44px;
+            padding: 0.75rem 1rem;
+        }
+    }
+    
+    /* Tablet optimizations */
+    @media (min-width: 641px) and (max-width: 1024px) {
+        .max-w-4xl {
+            max-width: 90%;
         }
     }
     
@@ -259,63 +296,130 @@
     <div class="gradient-accent gradient-accent-2"></div>
 </div>
 
-<div class="min-h-screen py-8">
+<div class="min-h-screen py-4 sm:py-6 lg:py-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Page Header -->
-        <div class="mb-8 text-center">
-            <h1 class="text-4xl font-bold bg-gradient-to-r from-white to-teal-200 bg-clip-text text-transparent mb-4">{{ page_title }}</h1>
-            <p class="text-lg text-teal-300 mb-6">Create and customize your travel E-card for any situations.</p>
+        <!-- Page Header - Mobile Optimized -->
+        <div class="mb-6 sm:mb-8">
+            <div class="text-center mb-6">
+                <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-white to-teal-200 bg-clip-text text-transparent mb-2 sm:mb-4">{{ page_title }}</h1>
+                <p class="text-sm sm:text-base lg:text-lg text-teal-300 px-4">Create your personalized medical card for travel and dining</p>
+            </div>
             
-            <!-- Demo E-Card Section -->
-            <div class="mb-8">
-                <div class="flex justify-center mb-6">
-                    <div>
+            <!-- Interactive E-Card Section -->
+            <div class="mb-6">
+                <!-- Card Container with Mobile-First Design -->
+                <div class="flex justify-center px-4">
+                    <div class="w-full max-w-sm sm:max-w-md">
                         {% include "emergency_cards/partials/editable_card.html" with card=card preview_theme=preview_theme language_choices=language_choices current_lang=current_lang is_preview=True %}
                     </div>
                 </div>
                 
-                <!-- Instructions -->
-                <div class="max-w-2xl mx-auto bg-gradient-to-r from-teal-900/30 to-blue-900/30 backdrop-blur-sm rounded-xl p-6 border border-teal-700/50">
-                    <h3 class="text-xl font-semibold text-teal-200 mb-4 flex items-center justify-center">
-                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                <!-- Quick Action Hint -->
+                <div class="text-center mt-4">
+                    <p class="text-xs sm:text-sm text-teal-400 flex items-center justify-center space-x-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.122 2.122"></path>
                         </svg>
-                        How to Use Your E-Card
-                    </h3>
-                    <div class="grid md:grid-cols-2 gap-4 text-sm text-teal-100">
-                        <div class="flex items-start">
-                            <span class="bg-teal-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-0.5">1</span>
-                            <div>
-                                <strong class="text-white">Edit Information:</strong> Click on any text field to customize your medical information and contact details.
+                        <span>Tap any field above to start editing</span>
+                    </p>
+                </div>
+            </div>
+                
+                <!-- Quick Guide - Mobile Optimized -->
+                <div class="max-w-4xl mx-auto mb-8">
+                    <!-- Collapsible Guide Section -->
+                    <div class="bg-gradient-to-br from-spruce-800/60 to-spruce-900/60 backdrop-blur-sm rounded-xl border border-spruce-600/50 overflow-hidden">
+                        <button type="button" 
+                                onclick="toggleGuide()" 
+                                class="w-full p-4 sm:p-6 flex items-center justify-between text-left hover:bg-spruce-700/30 transition-all duration-300">
+                            <div class="flex items-center space-x-3">
+                                <div class="flex-shrink-0 w-10 h-10 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg sm:text-xl font-semibold text-white">How to Use Your E-Card</h3>
+                                    <p class="text-sm text-purple-300 mt-1">Quick setup guide • Tap to expand</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="flex items-start">
-                            <span class="bg-teal-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-0.5">2</span>
-                            <div>
-                                <strong class="text-white">Choose Theme:</strong> Select from different color themes to personalize your card appearance.
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <span class="bg-teal-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-0.5">3</span>
-                            <div>
-                                <strong class="text-white">Language Support:</strong> Switch between multiple languages for international travel.
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <span class="bg-teal-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-0.5">4</span>
-                            <div>
-                                <strong class="text-white">Save & Download:</strong> Save your card and download it for offline use during emergencies.
+                            <svg id="guide-chevron" class="w-5 h-5 text-purple-400 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        
+                        <div id="guide-content" class="hidden border-t border-spruce-600/50">
+                            <div class="p-4 sm:p-6">
+                                <!-- Mobile-First Step Cards -->
+                                <div class="space-y-4">
+                                    <div class="flex items-start space-x-3 p-3 sm:p-4 bg-spruce-700/30 rounded-lg border border-spruce-600/30">
+                                        <div class="flex-shrink-0 w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                                            1
+                                        </div>
+                                        <div class="min-w-0 flex-1">
+                                            <h4 class="text-white font-medium text-sm sm:text-base">Edit Your Information</h4>
+                                            <p class="text-purple-200 text-xs sm:text-sm mt-1">Tap any field on the card above to customize your medical details</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-start space-x-3 p-3 sm:p-4 bg-spruce-700/30 rounded-lg border border-spruce-600/30">
+                                        <div class="flex-shrink-0 w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                                            2
+                                        </div>
+                                        <div class="min-w-0 flex-1">
+                                            <h4 class="text-white font-medium text-sm sm:text-base">Choose Language & Theme</h4>
+                                            <p class="text-purple-200 text-xs sm:text-sm mt-1">Select your preferred language and visual style</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-start space-x-3 p-3 sm:p-4 bg-spruce-700/30 rounded-lg border border-spruce-600/30">
+                                        <div class="flex-shrink-0 w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                                            3
+                                        </div>
+                                        <div class="min-w-0 flex-1">
+                                            <h4 class="text-white font-medium text-sm sm:text-base">Save & Use</h4>
+                                            <p class="text-purple-200 text-xs sm:text-sm mt-1">Save your card and show it to restaurants, medical staff, or anyone who needs to understand your dietary restrictions</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Key Benefits -->
+                                <div class="mt-6 pt-4 border-t border-spruce-600/30">
+                                    <h4 class="text-white font-medium text-sm mb-3">Why Use an E-Card?</h4>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
+                                        <div class="flex items-center space-x-2 text-purple-200">
+                                            <svg class="w-4 h-4 text-purple-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                            </svg>
+                                            <span>Clear communication in any language</span>
+                                        </div>
+                                        <div class="flex items-center space-x-2 text-purple-200">
+                                            <svg class="w-4 h-4 text-purple-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                            </svg>
+                                            <span>Always accessible on your phone</span>
+                                        </div>
+                                        <div class="flex items-center space-x-2 text-purple-200">
+                                            <svg class="w-4 h-4 text-purple-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                            </svg>
+                                            <span>Professional medical format</span>
+                                        </div>
+                                        <div class="flex items-center space-x-2 text-purple-200">
+                                            <svg class="w-4 h-4 text-purple-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                            </svg>
+                                            <span>Perfect for travel & dining</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <!-- Travel E-Card Creation Section -->
-            <div class="mb-8">
-                <h2 class="text-2xl font-semibold text-white mb-4">Create Your Travel E-Card</h2>
-                <p class="text-teal-300 mb-6">Customize your medical card for safe travels worldwide.</p>
-            </div>
+
         </div>
 
         
@@ -344,6 +448,7 @@
 
                 <!-- Card Container (Full Screen) -->
                 <div class="card-fullscreen-container max-w-4xl mx-auto">
+                    
                     <!-- Card Preview Container (full-width) -->
                     <div id="card-preview-container" class="relative overflow-hidden bg-white bg-opacity-5 rounded-lg p-4 flex justify-center items-center">
                         <!-- This container will be populated by the editable card when editing -->
@@ -367,64 +472,8 @@
 
                 <!-- Hidden sections that were previously visible -->
                 <div class="hidden">
-                                    <!-- Profile Picture Options -->
-                                    <div class="p-5 bg-spruce-900 bg-opacity-40 rounded-lg border border-teal-900 hover:border-teal-800 transition-all duration-200">
-                                        <h3 class="text-teal-300 font-medium mb-4 flex items-center">
-                                            <svg class="w-5 h-5 mr-2 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                            </svg>
-                                            Profile Picture Options
-                                        </h3>
-                                        
-                                        <div class="flex items-center mb-3">
-                                            <label class="inline-flex items-center">
-                                                <input type="checkbox" name="{{ form.show_profile_pic.name }}" 
-                                                       {% if form.show_profile_pic.value %}checked{% endif %}
-                                                       class="rounded border-teal-300 text-teal-500 focus:ring-teal-400 h-5 w-5">
-                                                <span class="ml-3 text-base text-teal-300 font-medium">Show profile picture on my card</span>
-                                            </label>
-                                    </p>
-                                    
-                                    <!-- Hidden file input to maintain form functionality -->
-                                    <input type="file" name="{{ form.profile_picture.name }}" id="{{ form.profile_picture.id_for_label }}" hidden>
-                                </div>
-                                
-                                <!-- Card Accessibility Options -->
-                                <div class="p-5 bg-spruce-900 bg-opacity-40 rounded-lg border border-teal-900 hover:border-teal-800 transition-all duration-200">
-                                    <h3 class="text-teal-300 font-medium mb-4 flex items-center">
-                                        <svg class="w-5 h-5 mr-2 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                        </svg>
-                                        Visibility Options
-                                    </h3>
-                                    
-                                    <div class="space-y-3">
-                                        <div class="flex justify-between items-center p-3 bg-spruce-800 bg-opacity-30 rounded-md border border-teal-900 border-opacity-40">
-                                            <span class="text-teal-200">Dietary Information Only</span>
-                                            <span class="text-white bg-teal-700 px-2 py-1 rounded-md text-xs">Default</span>
-                                        </div>
-                                        <div class="flex justify-between items-center p-3 bg-spruce-800 bg-opacity-10 rounded-md">
-                                            <span class="text-teal-300">Include dietary history</span>
-                                            <span class="text-teal-300 text-xs">(Coming Soon)</span>
-                                        </div>
-                                        <div class="flex justify-between items-center p-3 bg-spruce-800 bg-opacity-10 rounded-md">
-                                            <span class="text-teal-300">Include medications</span>
-                                            <span class="text-teal-300 text-xs">(Coming Soon)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-
-                    
-                            </div>
-                        </div>
-                    </div>
-                    
-python -m venv .venv
+                    <!-- Hidden file input to maintain form functionality -->
+                    <input type="file" name="{{ form.profile_picture.name }}" id="{{ form.profile_picture.id_for_label }}" hidden>
                 </div>
             </div>
         </form>
@@ -593,6 +642,9 @@ python -m venv .venv
                 });
             }
             
+            // Set up theme dropdowns
+            setupThemeDropdowns();
+            
             // Apply initial translations based on the current language
             let currentLang = document.getElementById('active_language').value;
             // Ensure language code is lowercase
@@ -624,7 +676,7 @@ python -m venv .venv
                 'Medical Information': 'Dietary Information',
                 'Message': 'Message',
                 'Contact': 'Contact',
-                'No contact listed.': 'No contact listed.'
+                'No contact listed.': 'No contact listed.',
                 'No message available.': 'No message available.',
                 'Autoimmune disorder triggered by gluten': 'Autoimmune disorder triggered by gluten',
                 'Can cause severe intestinal damage': 'Can cause severe intestinal damage',
@@ -643,7 +695,7 @@ python -m venv .venv
                 'Medical Information': 'Información Dietética',
                 'Message': 'Mensaje',
                 'Contact': 'Contacto',
-                'No contact listed.': 'No hay contacto registrado.'
+                'No contact listed.': 'No hay contacto registrado.',
                 'No message available.': 'No hay mensaje disponible.',
                 'Autoimmune disorder triggered by gluten': 'Trastorno autoinmune desencadenado por el gluten',
                 'Can cause severe intestinal damage': 'Puede causar daño intestinal severo',
@@ -662,7 +714,7 @@ python -m venv .venv
                 'Medical Information': 'Informations Diététiques',
                 'Message': 'Message',
                 'Contact': 'Contact',
-                'No contact listed.': 'Aucun contact indiqué.'
+                'No contact listed.': 'Aucun contact indiqué.',
                 'No message available.': 'Aucun message disponible.',
                 'Autoimmune disorder triggered by gluten': 'Trouble auto-immun déclenché par le gluten',
                 'Can cause severe intestinal damage': 'Peut causer de graves lésions intestinales',
@@ -681,7 +733,7 @@ python -m venv .venv
                 'Medical Information': 'Diätetische Informationen',
                 'Message': 'Nachricht',
                 'Contact': 'Kontakt',
-                'No contact listed.': 'Kein Kontakt angegeben.'
+                'No contact listed.': 'Kein Kontakt angegeben.',
                 'No message available.': 'Keine Nachricht verfügbar.',
                 'Autoimmune disorder triggered by gluten': 'Durch Gluten ausgelöste Autoimmunerkrankung',
                 'Can cause severe intestinal damage': 'Kann schwere Darmschäden verursachen',
@@ -695,6 +747,139 @@ python -m venv .venv
                 'Requires avoidance of gluten-containing foods': 'Erfordert die Vermeidung glutenhaltiger Lebensmittel',
                 'Needs careful meal preparation': 'Erfordert sorgfältige Mahlzeitenzubereitung',
                 'Profile Picture': 'Profilbild'
+            },
+            'it': {
+                'Medical Information': 'Informazioni Dietetiche',
+                'Message': 'Messaggio',
+                'Contact': 'Contatto',
+                'No contact listed.': 'Nessun contatto elencato.',
+                'No message available.': 'Nessun messaggio disponibile.',
+                'Autoimmune disorder triggered by gluten': 'Disturbo autoimmune scatenato dal glutine',
+                'Can cause severe intestinal damage': 'Può causare gravi danni intestinali',
+                'Requires strict gluten-free diet': 'Richiede dieta rigorosamente senza glutine',
+                'Non-celiac gluten sensitivity': 'Sensibilità al glutine non celiaca',
+                'Causes discomfort but not intestinal damage': 'Causa disagio ma non danni intestinali',
+                'Requires gluten-free diet for symptom control': 'Richiede dieta senza glutine per il controllo dei sintomi',
+                'Immune system reaction to wheat proteins': 'Reazione del sistema immunitario alle proteine del grano',
+                'Can cause immediate allergy symptoms': 'Può causare sintomi allergici immediati',
+                'May require assistance if severe': 'Può richiedere assistenza se grave',
+                'Requires avoidance of gluten-containing foods': 'Richiede di evitare cibi contenenti glutine',
+                'Needs careful meal preparation': 'Richiede preparazione attenta dei pasti',
+                'Profile Picture': 'Foto del Profilo'
+            },
+            'ja': {
+                'Medical Information': '食事情報',
+                'Message': 'メッセージ',
+                'Contact': '連絡先',
+                'No contact listed.': '連絡先が登録されていません。',
+                'No message available.': 'メッセージがありません。',
+                'Autoimmune disorder triggered by gluten': 'グルテンによって引き起こされる自己免疫疾患',
+                'Can cause severe intestinal damage': '重篤な腸の損傷を引き起こす可能性があります',
+                'Requires strict gluten-free diet': '厳格なグルテンフリー食事が必要',
+                'Non-celiac gluten sensitivity': '非セリアック性グルテン過敏症',
+                'Causes discomfort but not intestinal damage': '不快感を引き起こしますが腸の損傷はありません',
+                'Requires gluten-free diet for symptom control': '症状管理のためグルテンフリー食事が必要',
+                'Immune system reaction to wheat proteins': '小麦タンパク質に対する免疫系の反応',
+                'Can cause immediate allergy symptoms': '即座にアレルギー症状を引き起こす可能性があります',
+                'May require assistance if severe': '重篤な場合は援助が必要な場合があります',
+                'Requires avoidance of gluten-containing foods': 'グルテンを含む食品の回避が必要',
+                'Needs careful meal preparation': '注意深い食事の準備が必要',
+                'Profile Picture': 'プロフィール写真'
+            },
+            'zh': {
+                'Medical Information': '饮食信息',
+                'Message': '消息',
+                'Contact': '联系人',
+                'No contact listed.': '未列出联系人。',
+                'No message available.': '没有可用的消息。',
+                'Autoimmune disorder triggered by gluten': '由麸质引发的自身免疫性疾病',
+                'Can cause severe intestinal damage': '可能导致严重的肠道损伤',
+                'Requires strict gluten-free diet': '需要严格的无麸质饮食',
+                'Non-celiac gluten sensitivity': '非乳糜泻麸质敏感性',
+                'Causes discomfort but not intestinal damage': '引起不适但不会造成肠道损伤',
+                'Requires gluten-free diet for symptom control': '需要无麸质饮食来控制症状',
+                'Immune system reaction to wheat proteins': '免疫系统对小麦蛋白的反应',
+                'Can cause immediate allergy symptoms': '可能引起即时过敏症状',
+                'May require assistance if severe': '如果严重可能需要协助',
+                'Requires avoidance of gluten-containing foods': '需要避免含麸质的食物',
+                'Needs careful meal preparation': '需要仔细的膳食准备',
+                'Profile Picture': '个人照片'
+            },
+            'ko': {
+                'Medical Information': '의료 정보',
+                'Message': '메시지',
+                'Contact': '연락처',
+                'No contact listed.': '등록된 연락처가 없습니다.',
+                'No message available.': '사용 가능한 메시지가 없습니다.',
+                'Autoimmune disorder triggered by gluten': '글루텐에 의해 유발되는 자가면역 질환',
+                'Can cause severe intestinal damage': '심각한 장 손상을 일으킬 수 있습니다',
+                'Requires strict gluten-free diet': '엄격한 글루텐 프리 식단이 필요합니다',
+                'Non-celiac gluten sensitivity': '비셀리악 글루텐 민감성',
+                'Causes discomfort but not intestinal damage': '불편함을 유발하지만 장 손상은 없습니다',
+                'Requires gluten-free diet for symptom control': '증상 조절을 위해 글루텐 프리 식단이 필요합니다',
+                'Immune system reaction to wheat proteins': '밀 단백질에 대한 면역계 반응',
+                'Can cause immediate allergy symptoms': '즉각적인 알레르기 증상을 일으킬 수 있습니다',
+                'May require assistance if severe': '심각한 경우 도움이 필요할 수 있습니다',
+                'Requires avoidance of gluten-containing foods': '글루텐 함유 식품의 회피가 필요합니다',
+                'Needs careful meal preparation': '신중한 식사 준비가 필요합니다',
+                'Profile Picture': '프로필 사진'
+            },
+            'ar': {
+                'Medical Information': 'المعلومات الطبية',
+                'Message': 'رسالة',
+                'Contact': 'جهة الاتصال',
+                'No contact listed.': 'لا توجد جهة اتصال مدرجة.',
+                'No message available.': 'لا توجد رسالة متاحة.',
+                'Autoimmune disorder triggered by gluten': 'اضطراب المناعة الذاتية الناجم عن الغلوتين',
+                'Can cause severe intestinal damage': 'يمكن أن يسبب ضررًا معويًا شديدًا',
+                'Requires strict gluten-free diet': 'يتطلب نظامًا غذائيًا صارمًا خاليًا من الغلوتين',
+                'Non-celiac gluten sensitivity': 'حساسية الغلوتين غير السيلياك',
+                'Causes discomfort but not intestinal damage': 'يسبب عدم الراحة ولكن ليس ضررًا معويًا',
+                'Requires gluten-free diet for symptom control': 'يتطلب نظامًا غذائيًا خاليًا من الغلوتين للسيطرة على الأعراض',
+                'Immune system reaction to wheat proteins': 'رد فعل الجهاز المناعي لبروتينات القمح',
+                'Can cause immediate allergy symptoms': 'يمكن أن يسبب أعراض حساسية فورية',
+                'May require assistance if severe': 'قد يتطلب المساعدة إذا كان شديدًا',
+                'Requires avoidance of gluten-containing foods': 'يتطلب تجنب الأطعمة التي تحتوي على الغلوتين',
+                'Needs careful meal preparation': 'يحتاج إلى إعداد وجبات بعناية',
+                'Profile Picture': 'صورة الملف الشخصي'
+            },
+            'ru': {
+                'Medical Information': 'Медицинская информация',
+                'Message': 'Сообщение',
+                'Contact': 'Контакт',
+                'No contact listed.': 'Контакт не указан.',
+                'No message available.': 'Сообщение недоступно.',
+                'Autoimmune disorder triggered by gluten': 'Аутоиммунное расстройство, вызванное глютеном',
+                'Can cause severe intestinal damage': 'Может вызвать серьезное повреждение кишечника',
+                'Requires strict gluten-free diet': 'Требует строгой безглютеновой диеты',
+                'Non-celiac gluten sensitivity': 'Нецелиакальная чувствительность к глютену',
+                'Causes discomfort but not intestinal damage': 'Вызывает дискомфорт, но не повреждение кишечника',
+                'Requires gluten-free diet for symptom control': 'Требует безглютеновой диеты для контроля симптомов',
+                'Immune system reaction to wheat proteins': 'Реакция иммунной системы на белки пшеницы',
+                'Can cause immediate allergy symptoms': 'Может вызвать немедленные аллергические симптомы',
+                'May require assistance if severe': 'Может потребоваться помощь при тяжелом течении',
+                'Requires avoidance of gluten-containing foods': 'Требует избегания продуктов, содержащих глютен',
+                'Needs careful meal preparation': 'Требует тщательного приготовления пищи',
+                'Profile Picture': 'Фотография профиля'
+            },
+            'hi': {
+                'Medical Information': 'चिकित्सा जानकारी',
+                'Message': 'संदेश',
+                'Contact': 'संपर्क',
+                'No contact listed.': 'कोई संपर्क सूचीबद्ध नहीं।',
+                'No message available.': 'कोई संदेश उपलब्ध नहीं।',
+                'Autoimmune disorder triggered by gluten': 'ग्लूटेन द्वारा ट्रिगर किया गया ऑटोइम्यून विकार',
+                'Can cause severe intestinal damage': 'गंभीर आंतों की क्षति का कारण बन सकता है',
+                'Requires strict gluten-free diet': 'सख्त ग्लूटेन-फ्री आहार की आवश्यकता है',
+                'Non-celiac gluten sensitivity': 'गैर-सीलिएक ग्लूटेन संवेदनशीलता',
+                'Causes discomfort but not intestinal damage': 'असुविधा का कारण बनता है लेकिन आंतों की क्षति नहीं',
+                'Requires gluten-free diet for symptom control': 'लक्षण नियंत्रण के लिए ग्लूटेन-फ्री आहार की आवश्यकता है',
+                'Immune system reaction to wheat proteins': 'गेहूं प्रोटीन के लिए प्रतिरक्षा प्रणाली की प्रतिक्रिया',
+                'Can cause immediate allergy symptoms': 'तत्काल एलर्जी के लक्षण पैदा कर सकता है',
+                'May require assistance if severe': 'गंभीर होने पर सहायता की आवश्यकता हो सकती है',
+                'Requires avoidance of gluten-containing foods': 'ग्लूटेन युक्त खाद्य पदार्थों से बचने की आवश्यकता है',
+                'Needs careful meal preparation': 'सावधानीपूर्वक भोजन तैयार करने की आवश्यकता है',
+                'Profile Picture': 'प्रोफ़ाइल चित्र'
             }
         };
         
@@ -1166,6 +1351,20 @@ python -m venv .venv
                 });
             });
         }
+        
+        // Toggle guide function for mobile-optimized collapsible section
+        window.toggleGuide = function() {
+            const content = document.getElementById('guide-content');
+            const chevron = document.getElementById('guide-chevron');
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                chevron.style.transform = 'rotate(180deg)';
+            } else {
+                content.classList.add('hidden');
+                chevron.style.transform = 'rotate(0deg)';
+            }
+        };
         
         // Call setupGlobalSelectors to initialize everything
         setupGlobalSelectors();

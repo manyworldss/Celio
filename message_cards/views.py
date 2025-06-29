@@ -65,6 +65,48 @@ def translate_text(text, target_language, source_language='en'):
             'If needed, please ensure all food and medication is gluten-free': '如有需要，请确保所有食物和药物都不含麸质',
             'I am allergic to gluten': '我对麸质过敏',
             'Please call my contact': '请联系我的联系人',
+        },
+        'it': {
+            'I have celiac disease': 'Ho la malattia celiaca',
+            'I have celiac disease and cannot consume any amount of gluten': 'Ho la malattia celiaca e non posso consumare alcuna quantità di glutine',
+            'If needed, please ensure all food and medication is gluten-free': 'Se necessario, assicurati che tutto il cibo e i farmaci siano senza glutine',
+            'I am allergic to gluten': 'Sono allergico al glutine',
+            'Please call my contact': 'Per favore chiama il mio contatto',
+        },
+        'ja': {
+            'I have celiac disease': 'セリアック病を患っています',
+            'I have celiac disease and cannot consume any amount of gluten': 'セリアック病を患っており、グルテンを一切摂取できません',
+            'If needed, please ensure all food and medication is gluten-free': '必要に応じて、すべての食べ物と薬がグルテンフリーであることを確認してください',
+            'I am allergic to gluten': 'グルテンアレルギーです',
+            'Please call my contact': '私の連絡先に電話してください',
+        },
+        'ko': {
+            'I have celiac disease': '저는 셀리악병을 앓고 있습니다',
+            'I have celiac disease and cannot consume any amount of gluten': '저는 셀리악병을 앓고 있어서 글루텐을 전혀 섭취할 수 없습니다',
+            'If needed, please ensure all food and medication is gluten-free': '필요시 모든 음식과 약물이 글루텐 프리인지 확인해 주세요',
+            'I am allergic to gluten': '저는 글루텐 알레르기가 있습니다',
+            'Please call my contact': '제 연락처로 전화해 주세요',
+        },
+        'ar': {
+            'I have celiac disease': 'أعاني من مرض السيلياك',
+            'I have celiac disease and cannot consume any amount of gluten': 'أعاني من مرض السيلياك ولا أستطيع تناول أي كمية من الغلوتين',
+            'If needed, please ensure all food and medication is gluten-free': 'إذا لزم الأمر، يرجى التأكد من أن جميع الأطعمة والأدوية خالية من الغلوتين',
+            'I am allergic to gluten': 'لدي حساسية من الغلوتين',
+            'Please call my contact': 'يرجى الاتصال بجهة الاتصال الخاصة بي',
+        },
+        'ru': {
+            'I have celiac disease': 'У меня целиакия',
+            'I have celiac disease and cannot consume any amount of gluten': 'У меня целиакия и я не могу употреблять глютен в любом количестве',
+            'If needed, please ensure all food and medication is gluten-free': 'При необходимости убедитесь, что вся еда и лекарства не содержат глютен',
+            'I am allergic to gluten': 'У меня аллергия на глютен',
+            'Please call my contact': 'Пожалуйста, позвоните моему контакту',
+        },
+        'hi': {
+            'I have celiac disease': 'मुझे सीलिएक रोग है',
+            'I have celiac disease and cannot consume any amount of gluten': 'मुझे सीलिएक रोग है और मैं किसी भी मात्रा में ग्लूटेन का सेवन नहीं कर सकता',
+            'If needed, please ensure all food and medication is gluten-free': 'यदि आवश्यक हो, तो कृपया सुनिश्चित करें कि सभी भोजन और दवाएं ग्लूटेन-फ्री हों',
+            'I am allergic to gluten': 'मुझे ग्लूटेन से एलर्जी है',
+            'Please call my contact': 'कृपया मेरे संपर्क को कॉल करें',
         }
     }
     
@@ -113,6 +155,72 @@ def translate_text(text, target_language, source_language='en'):
             'allergic': '过敏',
             'medical condition': '医疗状况',
             'message': '消息'
+        },
+        'it': {
+            'cannot consume': 'non posso consumare',
+            'any amount of gluten': 'alcuna quantità di glutine',
+            'if needed': 'se necessario',
+            'please ensure': 'assicurati',
+            'food and medication': 'cibo e farmaci',
+            'is gluten-free': 'senza glutine',
+            'allergic': 'allergico',
+            'medical condition': 'condizione medica',
+            'message': 'messaggio'
+        },
+        'ja': {
+            'cannot consume': '摂取できません',
+            'any amount of gluten': 'グルテンを一切',
+            'if needed': '必要に応じて',
+            'please ensure': '確認してください',
+            'food and medication': '食べ物と薬',
+            'is gluten-free': 'グルテンフリー',
+            'allergic': 'アレルギー',
+            'medical condition': '医療状態',
+            'message': 'メッセージ'
+        },
+        'ko': {
+            'cannot consume': '섭취할 수 없습니다',
+            'any amount of gluten': '글루텐을 전혀',
+            'if needed': '필요시',
+            'please ensure': '확인해 주세요',
+            'food and medication': '음식과 약물',
+            'is gluten-free': '글루텐 프리',
+            'allergic': '알레르기',
+            'medical condition': '의학적 상태',
+            'message': '메시지'
+        },
+        'ar': {
+            'cannot consume': 'لا أستطيع تناول',
+            'any amount of gluten': 'أي كمية من الغلوتين',
+            'if needed': 'إذا لزم الأمر',
+            'please ensure': 'يرجى التأكد',
+            'food and medication': 'الطعام والدواء',
+            'is gluten-free': 'خالي من الغلوتين',
+            'allergic': 'حساسية',
+            'medical condition': 'حالة طبية',
+            'message': 'رسالة'
+        },
+        'ru': {
+            'cannot consume': 'не могу употреблять',
+            'any amount of gluten': 'глютен в любом количестве',
+            'if needed': 'при необходимости',
+            'please ensure': 'убедитесь',
+            'food and medication': 'еда и лекарства',
+            'is gluten-free': 'без глютена',
+            'allergic': 'аллергия',
+            'medical condition': 'медицинское состояние',
+            'message': 'сообщение'
+        },
+        'hi': {
+            'cannot consume': 'सेवन नहीं कर सकता',
+            'any amount of gluten': 'किसी भी मात्रा में ग्लूटेन',
+            'if needed': 'यदि आवश्यक हो',
+            'please ensure': 'कृपया सुनिश्चित करें',
+            'food and medication': 'भोजन और दवा',
+            'is gluten-free': 'ग्लूटेन-फ्री',
+            'allergic': 'एलर्जी',
+            'medical condition': 'चिकित्सा स्थिति',
+            'message': 'संदेश'
         }
     }
     
@@ -1031,6 +1139,44 @@ def unified_card_management(request):
     if not preview_theme:
         preview_theme = card.theme if card else 'celio'
     
+    # Generate QR code if card exists or demo_card_id is available
+    qr_code_url = None
+    card_id_for_qr = None
+    
+    if card:
+        card_id_for_qr = card.card_id
+    elif 'demo_card_id' in request.session:
+        card_id_for_qr = request.session['demo_card_id']
+    
+    if card_id_for_qr:
+        try:
+            # Create a shareable URL for the public view
+            share_url = request.build_absolute_uri(
+                reverse('message_cards:public_card', args=[str(card_id_for_qr)])
+            )
+            
+            # Generate QR code
+            qr = qrcode.QRCode(
+                version=1,
+                error_correction=qrcode.constants.ERROR_CORRECT_L,
+                box_size=10,
+                border=4,
+            )
+            qr.add_data(share_url)
+            qr.make(fit=True)
+            
+            img = qr.make_image(fill_color="black", back_color="white")
+            
+            # Convert the QR code to a data URL
+            buffer = io.BytesIO()
+            img.save(buffer, format="PNG")
+            qr_code_data = base64.b64encode(buffer.getvalue()).decode('utf-8')
+            qr_code_url = f"data:image/png;base64,{qr_code_data}"
+            print(f"DEBUG: Generated QR code for card ID: {card_id_for_qr}")
+        except Exception as e:
+            print(f"DEBUG: Error generating QR code: {str(e)}")
+            qr_code_url = None
+    
     # Prepare context for template rendering
     context = {
         'form': form,
@@ -1042,6 +1188,7 @@ def unified_card_management(request):
         'show_tour': request.session.get('show_tour', True),
         'translations': card.translations if card else {},
         'preview_theme': preview_theme,
+        'qr_code_url': qr_code_url,
     }
     
     # Activate Django translation for this request
