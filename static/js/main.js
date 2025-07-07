@@ -20,16 +20,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Add shadow to header on scroll
+    // Add background effects to header on scroll
     const header = document.querySelector('header');
     if (header) {
         window.addEventListener('scroll', function() {
             if (window.scrollY > 10) {
-                header.classList.add('shadow-md');
                 header.classList.add('bg-white/95');
                 header.classList.add('backdrop-blur-sm');
             } else {
-                header.classList.remove('shadow-md');
                 header.classList.remove('bg-white/95');
                 header.classList.remove('backdrop-blur-sm');
             }

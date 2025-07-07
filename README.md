@@ -1,5 +1,26 @@
 
-# Celio: Multilingual Emergency Cards for Celiac Disease
+# Celio
+
+## Dynamic Country-Specific Card Colors
+
+This project now supports dynamic country-specific card colors for the travel guide list. Each travel guide card uses a unique color defined in the `Country` model's `color` field.
+
+### Features
+- Dynamic background colors for travel guide cards based on country.
+- Custom Django template filter `darken` to create darker shades for button styling.
+- Database migration added to include the `color` field in the `Country` model.
+
+### Usage
+- The `color` field in the `Country` model stores the hex color code.
+- The `darken` template filter is used in templates to adjust button colors dynamically.
+
+### Implementation Details
+- The color darkening uses HSV color space for natural color adjustments.
+- The feature enhances the visual distinction of travel guides by country.
+
+For more details, see the travel app's `templatetags/travel_filters.py` and the `travel_guide_list.html` template.
+
+: Multilingual Emergency Cards for Celiac Disease
 
 Medium Blog: https://raphealsuber.medium.com/836e1eca60dc
 

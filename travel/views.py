@@ -1,18 +1,18 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Country, DishesToAvoid, RestaurantPhrase
 
 def travel_guide_list(request):
     """View for listing available country guides"""
-    countries = Country.objects.all().order_by('name')
+    travel_guides = Country.objects.all().order_by('name')
     
     return render(request, 'travel/travel_guide_list.html', {
-        'countries': countries
+        'travel_guides': travel_guides
     })
 
-def country_detail(request, country_code):
+def country_detail(request, slug):
     """View for detailed country guide"""
-    country = get_object_or_404(Country, code=country_code.upper())
+    country = get_object_or_404(Country, slug=slug)
     
     # Get dishes to avoid
     dishes_to_avoid = DishesToAvoid.objects.filter(country=country)
@@ -32,9 +32,9 @@ def country_detail(request, country_code):
         'e_card_phrases': e_card_phrases
     })
 
-def restaurant_card(request, country_code):
+def restaurant_card(request, slug):
     """View for printable restaurant card"""
-    country = get_object_or_404(Country, code=country_code.upper())
+    country = get_object_or_404(Country, slug=slug)
     
     # Get key phrases for the restaurant card
     general_phrases = RestaurantPhrase.objects.filter(country=country, category='general')

@@ -1,64 +1,15 @@
 /* Primary Accent Theme CSS */
 :root {
-    --primary-950: #0f0520;
-    --primary-900: #1a0b3d;
-    --primary-800: #2d1b5a;
-    --primary-700: #3f2b77;
+    --primary-950: #f8f8f8; /* Light neutral background */
+    --primary-900: #e0e0e0;
+    --primary-800: #c0c0c0;
+    --primary-700: #a0a0a0;
     --accent-600: #6b46c1;
     --accent-500: #7c3aed;
     --accent-400: #8b5cf6;
     --accent-300: #a78bfa;
     --accent-200: #c4b5fd;
     --accent-100: #e0e7ff;
-}
-
-body {
-    background-color: var(--primary-950);
-    color: white;
-}
-
-/* Primary gradient background */
-.primary-gradient-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: -10;
-    background: var(--primary-950);
-    overflow: hidden;
-}
-
-.primary-gradient-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    opacity: 0.6;
-    background: radial-gradient(ellipse at center, var(--primary-900) 0%, transparent 70%);
-}
-
-.gradient-accent {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(80px);
-}
-
-.gradient-accent-1 {
-    width: 60vw;
-    height: 60vw;
-    background: rgba(20, 184, 166, 0.15);
-    top: -10%;
-    right: -10%;
-}
-
-.gradient-accent-2 {
-    width: 40vw;
-    height: 40vw;
-    background: rgba(45, 212, 191, 0.1);
-    bottom: -10%;
-    left: -10%;
 }
 
 /* Section styling */

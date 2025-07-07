@@ -10,24 +10,8 @@
 {% endblock %}
 
 {% block extra_css %}
-<style>
-    :root {
-        --spruce-950: #0a1613;
-        --spruce-900: #0f211c;
-        --spruce-800: #14322a;
-        --spruce-700: #1a4237;
-        --teal-600: #0d9488;
-        --teal-500: #14b8a6;
-        --teal-400: #2dd4bf;
-        --teal-300: #5eead4;
-        --teal-200: #99f6e4;
-        --teal-100: #ccfbf1;
-    }
-    
-    body {
-        background-color: var(--spruce-950);
-        color: white;
-    }
+    <style>
+        /* Removed inline CSS variables and body styles to avoid conflicts with external CSS */
     
     /* Enhanced Mobile Responsiveness */
     @media (max-width: 1024px) {
@@ -79,13 +63,10 @@
     
     /* Section styling */
     .form-section {
-        background-color: var(--spruce-800);
-        background-color: rgba(20, 50, 42, 0.2);
-        backdrop-filter: blur(8px);
+        background-color: #d3d3d3;
         border-radius: 0.75rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         padding: 1.75rem;
-        border: 1px solid rgba(26, 66, 55, 0.5);
+        border: 1px solid rgba(34, 197, 94, 0.3);
         margin-bottom: 1.5rem;
     }
     
@@ -113,7 +94,7 @@
         display: block;
         font-size: 0.95rem;
         font-weight: 500;
-        color: var(--teal-100);
+        color: white;
         margin-bottom: 0.75rem;
     }
     
@@ -133,7 +114,7 @@
     
     .form-input::placeholder,
     .form-textarea::placeholder {
-        color: rgba(94, 234, 212, 0.5);
+        color: rgba(255, 255, 255, 0.6);
     }
     
     .form-input:focus,
@@ -151,7 +132,7 @@
     .form-hint {
         margin-top: 0.75rem;
         font-size: 0.875rem;
-        color: var(--teal-300);
+        color: var(--teal-200);
     }
     
     .error-text {
@@ -188,20 +169,18 @@
         color: white;
         border: 1px solid var(--spruce-700);
     }
-    
+
     .action-button-secondary:hover {
         background-color: rgba(20, 50, 42, 0.6);
     }
     
     /* Intro panel */
     .intro-panel {
-        background-color: rgba(20, 50, 42, 0.25);
+        background-color: #d3d3d3;
         padding: 1.5rem;
         border-radius: 0.75rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        border: 1px solid rgba(26, 66, 55, 0.5);
+        border: 1px solid rgba(34, 197, 94, 0.3);
         margin-bottom: 2rem;
-        backdrop-filter: blur(8px);
     }
     
     .intro-panel h3 {
@@ -242,7 +221,7 @@
         border-radius: 0.5rem;
     }
     
-    /* Primary gradient background */
+    /* Travel-themed gradient background */
     .primary-gradient-bg {
         position: fixed;
         top: 0;
@@ -250,40 +229,50 @@
         right: 0;
         bottom: 0;
         z-index: -10;
-        background: var(--primary-950);
+        background: #e8f5e8;
         overflow: hidden;
     }
     
     .primary-gradient-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        opacity: 0.6;
-        background: radial-gradient(ellipse at center, var(--primary-900) 0%, transparent 70%);
+        display: none;
     }
     
     .gradient-accent {
-        position: absolute;
-        border-radius: 50%;
-        filter: blur(80px);
+        display: none;
+    }
+    
+    @keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-15px) rotate(90deg); }
+    }
+    
+    @media (max-width: 768px) {
+        .gradient-accent {
+            animation: floatMobile 8s ease-in-out infinite;
+        }
+        
+        @keyframes floatMobile {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(45deg); }
+        }
     }
     
     .gradient-accent-1 {
-        width: 60vw;
-        height: 60vw;
-        background: rgba(20, 184, 166, 0.15);
-        top: -10%;
-        right: -10%;
+        width: 50vw;
+        height: 50vw;
+        background: radial-gradient(circle, rgba(34, 197, 94, 0.25) 0%, rgba(16, 185, 129, 0.15) 50%, transparent 70%);
+        top: -15%;
+        right: -15%;
+        animation-delay: -2s;
     }
     
     .gradient-accent-2 {
-        width: 40vw;
-        height: 40vw;
-        background: rgba(45, 212, 191, 0.1);
-        bottom: -10%;
-        left: -10%;
+        width: 35vw;
+        height: 35vw;
+        background: radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, rgba(34, 197, 94, 0.12) 50%, transparent 70%);
+        bottom: -15%;
+        left: -15%;
+        animation-delay: -4s;
     }
 </style>
 {% endblock %}
@@ -301,8 +290,8 @@
         <!-- Page Header - Mobile Optimized -->
         <div class="mb-6 sm:mb-8">
             <div class="text-center mb-6">
-                <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-white to-teal-200 bg-clip-text text-transparent mb-2 sm:mb-4">{{ page_title }}</h1>
-                <p class="text-sm sm:text-base lg:text-lg text-teal-300 px-4">Create your personalized medical card for travel and dining</p>
+                <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2 sm:mb-4 tracking-tight">{{ page_title }}</h1>
+                <p class="text-sm sm:text-base lg:text-lg text-teal-300 px-4">Create your personalized e-card for safe travel and dining</p>
             </div>
             
             <!-- Interactive E-Card Section -->
@@ -328,7 +317,7 @@
                 <!-- Quick Guide - Mobile Optimized -->
                 <div class="max-w-4xl mx-auto mb-8">
                     <!-- Collapsible Guide Section -->
-                    <div class="bg-gradient-to-br from-spruce-800/60 to-spruce-900/60 backdrop-blur-sm rounded-xl border border-spruce-600/50 overflow-hidden">
+                    <div class="bg-gradient-to-br from-spruce-700/50 to-spruce-800/30 rounded-xl border border-spruce-600/30 backdrop-blur-sm overflow-hidden">
                         <button type="button" 
                                 onclick="toggleGuide()" 
                                 class="w-full p-4 sm:p-6 flex items-center justify-between text-left hover:bg-spruce-700/30 transition-all duration-300">
@@ -766,6 +755,25 @@
                 'Requires avoidance of gluten-containing foods': 'Richiede di evitare cibi contenenti glutine',
                 'Needs careful meal preparation': 'Richiede preparazione attenta dei pasti',
                 'Profile Picture': 'Foto del Profilo'
+            },
+            'pt': {
+                'Medical Information': 'Informações Dietéticas',
+                'Message': 'Mensagem',
+                'Contact': 'Contato',
+                'No contact listed.': 'Nenhum contato listado.',
+                'No message available.': 'Nenhuma mensagem disponível.',
+                'Autoimmune disorder triggered by gluten': 'Distúrbio autoimune desencadeado pelo glúten',
+                'Can cause severe intestinal damage': 'Pode causar danos intestinais graves',
+                'Requires strict gluten-free diet': 'Requer dieta rigorosamente sem glúten',
+                'Non-celiac gluten sensitivity': 'Sensibilidade ao glúten não celíaca',
+                'Causes discomfort but not intestinal damage': 'Causa desconforto mas não danos intestinais',
+                'Requires gluten-free diet for symptom control': 'Requer dieta sem glúten para controle dos sintomas',
+                'Immune system reaction to wheat proteins': 'Reação do sistema imunológico às proteínas do trigo',
+                'Can cause immediate allergy symptoms': 'Pode causar sintomas alérgicos imediatos',
+                'May require assistance if severe': 'Pode requerer assistência se grave',
+                'Requires avoidance of gluten-containing foods': 'Requer evitar alimentos contendo glúten',
+                'Needs careful meal preparation': 'Necessita preparação cuidadosa das refeições',
+                'Profile Picture': 'Foto do Perfil'
             },
             'ja': {
                 'Medical Information': '食事情報',

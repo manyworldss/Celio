@@ -101,6 +101,13 @@ def translate_text(text, target_language, source_language='en'):
             'I am allergic to gluten': 'У меня аллергия на глютен',
             'Please call my contact': 'Пожалуйста, позвоните моему контакту',
         },
+        'pt': {
+            'I have celiac disease': 'Tenho doença celíaca',
+            'I have celiac disease and cannot consume any amount of gluten': 'Tenho doença celíaca e não posso consumir nenhuma quantidade de glúten',
+            'If needed, please ensure all food and medication is gluten-free': 'Se necessário, por favor certifique-se de que todos os alimentos e medicamentos sejam sem glúten',
+            'I am allergic to gluten': 'Sou alérgico ao glúten',
+            'Please call my contact': 'Por favor ligue para meu contato',
+        },
         'hi': {
             'I have celiac disease': 'मुझे सीलिएक रोग है',
             'I have celiac disease and cannot consume any amount of gluten': 'मुझे सीलिएक रोग है और मैं किसी भी मात्रा में ग्लूटेन का सेवन नहीं कर सकता',
@@ -210,6 +217,17 @@ def translate_text(text, target_language, source_language='en'):
             'allergic': 'аллергия',
             'medical condition': 'медицинское состояние',
             'message': 'сообщение'
+        },
+        'pt': {
+            'cannot consume': 'não posso consumir',
+            'any amount of gluten': 'nenhuma quantidade de glúten',
+            'if needed': 'se necessário',
+            'please ensure': 'por favor certifique-se',
+            'food and medication': 'alimentos e medicamentos',
+            'is gluten-free': 'sem glúten',
+            'allergic': 'alérgico',
+            'medical condition': 'condição médica',
+            'message': 'mensagem'
         },
         'hi': {
             'cannot consume': 'सेवन नहीं कर सकता',

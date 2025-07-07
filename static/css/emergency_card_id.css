@@ -158,36 +158,36 @@
 
 /* Theme Specific Styles */
 /* Celio Theme */
-.card-celio {
-    background: linear-gradient(135deg, #0d9488 0%, #059669 100%);
-    color: #ffffff;
+.message-card-theme-celio {
+    background-color: #f8f8f8; /* Off-white background */
+    color: #333333; /* Darker text for contrast */
 }
 
-.card-celio .card-header {
-    background-color: rgba(0, 0, 0, 0.1);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+.message-card-theme-celio .card-header {
+    background-color: #f0f0f0; /* Slightly darker off-white for header */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.card-celio .card-id-message {
-    background-color: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+.message-card-theme-celio .card-id-message {
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.card-celio .card-id-message-content {
-    color: rgba(255, 255, 255, 0.95);
+.message-card-theme-celio .card-id-message-content {
+    color: #4b5563;
 }
 
-.card-celio .card-id-message-title {
-    color: #ffffff;
+.message-card-theme-celio .card-id-message-title {
+    color: #1f2937;
 }
 
-.card-celio .card-id-footer {
-    background-color: rgba(0, 0, 0, 0.1);
-    color: rgba(255, 255, 255, 0.9);
+.message-card-theme-celio .card-id-footer {
+    background-color: #f3f4f6;
+    color: #6b7280;
 }
 
-.card-celio .card-id-value {
-    color: rgba(255, 255, 255, 0.9);
+.message-card-theme-celio .card-id-value {
+    color: #4b5563;
 }
 
 /* Light Theme */
@@ -483,21 +483,21 @@
 
 /* Luxury Theme */
 .card-luxury {
-    background: linear-gradient(135deg, #92400e 0%, #b45309 100%);
-    color: #ffffff;
+    background-color: #f8f8f8; /* Light neutral background */
+    color: #333333; /* Darker text for contrast */
 }
 
 .card-luxury .card-id-message {
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 1px solid #d97706;
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .card-luxury .card-id-message-content {
-    color: rgba(255, 255, 255, 0.9);
+    color: #4b5563;
 }
 
 .card-luxury .card-id-message-title {
-    color: #ffffff;
+    color: #1f2937;
 }
 
 .card-luxury .card-id-footer {

@@ -186,18 +186,18 @@
 
 /* Luxury Theme */
 .message-card-theme-luxury {
-    background-color: #7d5a2e;
-    color: #ffffff;
+    background-color: #f8f8f8; /* Light neutral background */
+    color: #333333; /* Darker text for contrast */
 }
 
 .message-card-theme-luxury .card-header {
-    background-color: #96682c;
+    background-color: #f0f0f0; /* Slightly darker off-white for header */
 }
 
 .message-card-theme-luxury .language-pill {
-    background-color: #a3752f;
-    color: white;
-    border: 1px solid #ffd700;
+    background-color: #cccccc; /* Neutral grey for pill */
+    color: #333333;
+    border: 1px solid #bbbbbb;
 }
 
 .message-card-theme-luxury .action-icon {

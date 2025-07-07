@@ -18,45 +18,6 @@
     {% block extra_head %}{% endblock %}
     <style>
         /* Custom styles */
-        :root {
-            /* Modern Color Palette - Darker Purple Theme */
-            --primary-950: #0f0520;
-            --primary-900: #1a0b3d;
-            --primary-800: #2d1b5a;
-            --primary-700: #3f2b77;
-            --primary-600: #5239a0;
-            --primary-500: #6547c9;
-            --primary-400: #7c3aed;
-            --primary-300: #8b5cf6;
-            --primary-200: #a78bfa;
-            --primary-100: #c4b5fd;
-            
-            /* Accent Purple Colors */
-            --accent-600: #6b46c1;
-            --accent-500: #7c3aed;
-            --accent-400: #8b5cf6;
-            --accent-300: #a78bfa;
-            --accent-200: #c4b5fd;
-            --accent-100: #e0e7ff;
-            
-            /* Neutral Colors */
-            --neutral-900: #121212;
-            --neutral-800: #1f1f1f;
-            --neutral-700: #2e2e2e;
-            --neutral-600: #404040;
-            --neutral-500: #737373;
-            --neutral-400: #a3a3a3;
-            --neutral-300: #d4d4d4;
-            --neutral-200: #e5e5e5;
-            --neutral-100: #f5f5f5;
-            --white: #ffffff;
-            
-            /* Gradients */
-            --gradient-primary: linear-gradient(135deg, var(--primary-800), var(--primary-600));
-            --gradient-accent: linear-gradient(135deg, var(--accent-600), var(--accent-400));
-            --gradient-dark: linear-gradient(135deg, var(--primary-950), var(--primary-900));
-        }
-        
         /* Logo Styles */
         .celio-logo {
             font-family: 'Hex Franklin', sans-serif;
@@ -106,148 +67,21 @@
             line-height: 1.6;
         }
         
-
-        
-        /* Subtle gradient overlay */
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 30vh;
-            background: linear-gradient(to bottom, rgba(26, 11, 46, 0.8), transparent);
-            z-index: -5;
-            pointer-events: none;
-        }
-        
-        /* Animated accent elements */
-        .accent-orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(60px);
-            opacity: 0.15;
-            z-index: -8;
-            animation: orbFloat 20s ease-in-out infinite alternate;
-        }
-        
-        .accent-orb-1 {
-            width: 300px;
-            height: 300px;
-            background: var(--accent-500);
-            top: -100px;
-            right: 10%;
-            animation-delay: 0s;
-        }
-        
-        .accent-orb-2 {
-            width: 400px;
-            height: 400px;
-            background: var(--primary-600);
-            bottom: -150px;
-            left: -100px;
-            animation-delay: -5s;
-        }
-        
-        .accent-orb-3 {
-            width: 250px;
-            height: 250px;
-            background: var(--primary-400);
-            top: 40%;
-            right: -100px;
-            animation-delay: -10s;
-        }
-        
-        @keyframes orbFloat {
-            0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(-20px, 20px) scale(1.1); }
-            100% { transform: translate(20px, -20px) scale(0.9); }
-        }
-        
-        /* Animated Background Gradient */
-        /*body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, 
-                                       rgba(137, 212, 171, 0.4) 0%, 
-                                       rgba(53, 143, 128, 0.2) 50%, 
-                                       rgba(3, 102, 102, 0.3) 100%);
-            z-index: -10;
-            animation: gradientMove 15s ease infinite;
-        }*/
-        
-        @keyframes gradientMove {
-            0% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
-        }
-        
         /* Content area styling */
         .content-area {
-            background-color: rgba(45, 22, 87, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 1rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(10px);
             margin: 1.5rem auto;
             max-width: 100%;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
             overflow: hidden;
-        }
-        
-        .content-area::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(94, 234, 212, 0.3), transparent);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .content-area:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
-        }
-        
-        .content-area:hover::before {
-            opacity: 1;
         }
         
         /* Card styling */
         .card-bg {
-            background: rgba(59, 26, 116, 0.2);
             border-radius: 1rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
             transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(8px);
             position: relative;
             overflow: hidden;
         }
-        
-        .card-bg::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(45, 212, 191, 0.1) 0%, transparent 50%);
-            opacity: 0;
             transform: scale(0.5);
             transition: opacity 0.5s ease, transform 0.5s ease;
         }
@@ -579,7 +413,7 @@
     
 
     <!-- Navigation -->
-    <nav class="bg-neutral-900/90 backdrop-blur-lg text-white shadow-lg sticky top-0 z-50" x-data="{ mobileMenuOpen: false, showSageModal: false }">
+    <nav class="bg-neutral-900/90 text-white sticky top-0 z-50" x-data="{ mobileMenuOpen: false, showSageModal: false }">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-24">
                 <!-- Desktop Navigation -->
@@ -678,7 +512,7 @@
         </div>
         
         <!-- Mobile Navigation Menu -->
-        <div x-show="mobileMenuOpen" x-transition class="md:hidden bg-primary-900/95 backdrop-blur-lg shadow-lg rounded-b-lg border border-primary-700/30" id="mobile-menu">
+        <div x-show="mobileMenuOpen" x-transition class="md:hidden bg-primary-900/95 rounded-b-lg border border-primary-700/30" id="mobile-menu">
             <div class="px-2 pt-2 pb-4 space-y-1">
                 <a href="/" class="block px-4 py-3 text-base font-medium text-neutral-200 hover:bg-primary-800/50 hover:text-accent-300 rounded-lg transition-all {% if request.path == '/' %}bg-gradient-to-r from-accent-600/20 to-primary-600/20 text-accent-300 border-l-4 border-accent-500{% endif %}">
                     Home
@@ -857,26 +691,26 @@
                     
                     <!-- Quick links -->
                     <div class="md:ml-auto">
-                        <h3 class="text-accent-300 font-semibold mb-4 text-sm uppercase tracking-wider">Quick Links</h3>
+                        <h3 class="text-purple-400 font-semibold mb-4 text-sm uppercase tracking-wider">Quick Links</h3>
                         <ul class="space-y-2">
-                            <li><a href="/" class="text-neutral-300 hover:text-accent-300 transition-colors text-sm">Home</a></li>
-                            <li><a href="{% url 'message_cards:unified_card_management' %}" class="text-neutral-300 hover:text-accent-300 transition-colors text-sm">E-Card (Demo)</a></li>
-                            <li><a href="{% url 'travel:travel_guide_list' %}" class="text-neutral-300 hover:text-accent-300 transition-colors text-sm">Travel Guides</a></li>
-                            <li><a href="{% url 'sage:assistant' %}" class="text-neutral-400 hover:text-accent-300 text-sm transition-colors">Sage AI (Beta)</a></li>
+                            <li><a href="/" class="text-neutral-300 hover:text-purple-400 transition-colors text-sm">Home</a></li>
+                            <li><a href="{% url 'message_cards:unified_card_management' %}" class="text-neutral-300 hover:text-purple-400 transition-colors text-sm">E-Card (Demo)</a></li>
+                            <li><a href="{% url 'travel:travel_guide_list' %}" class="text-neutral-300 hover:text-purple-400 transition-colors text-sm">Travel Guides</a></li>
+                            <li><a href="{% url 'sage:assistant' %}" class="text-neutral-400 hover:text-purple-400 text-sm transition-colors">Sage AI (Beta)</a></li>
                         </ul>
                     </div>
                     
                     <!-- Social links -->
                     <div class="md:ml-auto">
-                        <h3 class="text-accent-300 font-semibold mb-4 text-sm uppercase tracking-wider">Connect</h3>
+                        <h3 class="text-purple-400 font-semibold mb-4 text-sm uppercase tracking-wider">Connect</h3>
                         <div class="flex space-x-4">
-                            <a href="https://www.linkedin.com/in/raphealsuber/" target="_blank" class="text-neutral-300 hover:text-accent-300 transition-colors group">
+                            <a href="https://www.linkedin.com/in/raphealsuber/" target="_blank" class="text-neutral-300 hover:text-purple-400 transition-colors group">
                                 <span class="sr-only">LinkedIn</span>
                                 <svg class="h-6 w-6 transform group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                     <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
                                 </svg>
                             </a>
-                            <a href="https://github.com/manyworldss" target="_blank" class="text-neutral-300 hover:text-accent-300 transition-colors group">
+                            <a href="https://github.com/manyworldss" target="_blank" class="text-neutral-300 hover:text-purple-400 transition-colors group">
                                 <span class="sr-only">GitHub</span>
                                 <svg class="h-6 w-6 transform group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                     <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />

@@ -3,11 +3,13 @@ from django.utils.translation import gettext_lazy as _
 
 # travel/models.py
 from django.db import models
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
 class Country(models.Model):
     """Model for storing country information"""
     name = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=100, unique=True, blank=True)
     code = models.CharField(max_length=2, unique=True)  # ISO country code (e.g., US, JP, FR)
     flag_emoji = models.CharField(max_length=10, blank=True)  # Flag emoji for display
     language = models.CharField(max_length=100)  # Primary language
@@ -22,10 +24,17 @@ class Country(models.Model):
         ],
         default=3
     )
+    color = models.CharField(max_length=7, default="#808080", help_text="Hex color code for the country card")
     
     # General information fields
     summary = models.TextField(help_text=_("General information about celiac awareness in this country"))
     dining_tips = models.TextField(help_text=_("Tips for dining safely in this country"))
+    color = models.CharField(max_length=7, default='#808080')  # Hex color code
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
     
     def __str__(self):
         return self.name

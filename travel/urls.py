@@ -6,6 +6,7 @@ app_name = 'travel'
 
 urlpatterns = [
     path('', views.travel_guide_list, name='travel_guide_list'),
-    path('<str:country_code>/', views.country_detail, name='country_detail'),
-    path('<str:country_code>/card/', views.restaurant_card, name='restaurant_card'),
+    path('<slug:slug>/', views.country_detail, name='country_detail'),
+    path('<slug:slug>/card/', views.restaurant_card, name='restaurant_card'),
+
 ]
