@@ -1,15 +1,15 @@
 /* Spruce Teal Theme CSS */
 :root {
     --spruce-950: #0c0a09;
-    --spruce-900: #f0f0f0;
-    --spruce-800: #e0e0e0;
-    --spruce-700: #d0d0d0;
+    --spruce-900: #d0d0d0;
+    --spruce-800: #a0a0a0;
+    --spruce-700: #707070;
     --teal-600: #0d9488;
     --teal-500: #14b8a6;
     --teal-400: #2dd4bf;
-    --teal-300: #5eead4;
-    --teal-200: #99f6e4;
-    --teal-100: #ccfbf1;
+    --teal-300: #3eaead;
+    --teal-200: #669f9a;
+    --teal-100: #8caeab;
 }
 
 body {
@@ -64,18 +64,18 @@ body {
 /* Section styling */
 .form-section {
     background-color: var(--spruce-800);
-    background-color: rgba(20, 50, 42, 0.2);
+    background-color: rgba(20, 50, 42, 0.3);
     backdrop-filter: blur(8px);
     border-radius: 0.75rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
     padding: 1.75rem;
-    border: 1px solid rgba(200, 200, 200, 0.5);
+    border: 1px solid rgba(150, 150, 150, 0.7);
     margin-bottom: 1.5rem;
 }
 
 .form-section-header {
     padding: 0;
-    border-bottom: 1px solid rgba(26, 66, 55, 0.7);
+    border-bottom: 1px solid rgba(26, 66, 55, 0.9);
     background-color: transparent;
     display: flex;
     align-items: center;
@@ -85,7 +85,7 @@ body {
 
 .form-section-header h2 {
     color: white;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 /* Form controls */
@@ -96,8 +96,8 @@ body {
 .form-label {
     display: block;
     font-size: 0.95rem;
-    font-weight: 500;
-    color: #666666; /* Darker text for labels */
+    font-weight: 600;
+    color: #bbbbbb; /* Darker text for labels */
     margin-bottom: 0.75rem;
 }
 
@@ -109,15 +109,15 @@ body {
     padding: 0.75rem 1rem;
     border: 1px solid var(--spruce-700);
     border-radius: 0.5rem;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
     margin-top: 0.25rem;
-    background-color: rgba(20, 50, 42, 0.2);
+    background-color: rgba(20, 50, 42, 0.3);
     color: white;
 }
 
 .form-input::placeholder,
 .form-textarea::placeholder {
-    color: #999999;
+    color: #bbbbbb;
 }
 
 .form-input:focus,
@@ -125,7 +125,7 @@ body {
 .form-textarea:focus {
     outline: none;
     border-color: var(--teal-400);
-    box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.2);
+    box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.3);
 }
 
 .form-textarea {
@@ -135,7 +135,15 @@ body {
 .form-hint {
     margin-top: 0.75rem;
     font-size: 0.875rem;
-    color: #666666;
+    color: #dddddd;
+}
+
+.text-neutral-200 {
+    color: #999999 !important;
+}
+
+.text-neutral-300 {
+    color: #888888 !important;
 }
 
 .error-text {

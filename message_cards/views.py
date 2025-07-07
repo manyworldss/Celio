@@ -303,6 +303,32 @@ def translate_text(text, target_language, source_language='en'):
         return text  # Return original text if translation fails
 
 
+def create_default_demo_card(request):
+    """
+    Creates a default demo emergency card for testing download functionality.
+    """
+    # Create a default demo card
+    card = EmergencyCard.objects.create(
+        user_name="Demo User",
+        condition="CEL",  # Celiac Disease
+        emergency_contact_name="Emergency Contact",
+        emergency_contact_relationship="Family",
+        emergency_contact_phone="+1-555-123-4567",
+        preferred_language="en",
+        language="en",
+        theme="medical"
+    )
+    
+    # Set a default custom note
+    card.set_custom_note("en", "This is a demo emergency card for testing purposes.")
+    card.save()
+    
+    # Store the card ID in the session
+    request.session['demo_card_id'] = str(card.card_id)
+    
+    return card
+
+
 def switch_language(request):
     # Get the card from the session
     card_id = request.session.get('demo_card_id')
@@ -447,14 +473,33 @@ def download_card(request):
         try:
             card = EmergencyCard.objects.get(card_id=uuid.UUID(card_id))
         except (EmergencyCard.DoesNotExist, ValueError):
-            # If the card doesn't exist, redirect to create a new one
-            return redirect('message_cards:unified_card_management')
+            # If the card doesn't exist, create a default demo card
+            card = create_default_demo_card(request)
     else:
-        # If no card in session, redirect to create a new one
-        return redirect('message_cards:unified_card_management')
+        # If no card in session, create a default demo card
+        card = create_default_demo_card(request)
     
     format_type = request.GET.get('format', 'pdf')
     language = request.GET.get('lang', card.preferred_language)
+    
+    # For mobile cards - mobile-friendly HTML version
+    if format_type == 'mobile':
+        # Get the requested theme or use card's theme
+        theme = request.GET.get('theme', card.theme or 'medical')
+        
+        response = render(request, 'emergency_cards/mobile_card.html', {
+            'card': card,
+            'current_lang': language,
+            'theme': theme,
+            'is_download': True  # Flag to indicate this is for download
+        })
+        
+        # Set headers for auto-download
+        filename = f"celio-card-{language}-{theme}.html"
+        response['Content-Disposition'] = f'attachment; filename="{filename}"'
+        response['Content-Type'] = 'text/html; charset=utf-8'
+        
+        return response
     
     # For wallet cards, will implement this later
     if format_type == 'wallet':

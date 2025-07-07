@@ -68,12 +68,61 @@
                 </form>
             </div>
             
+            <!-- Mobile Card Option -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="flex items-center mb-4">
+                    <div class="bg-mint-light p-2 rounded-lg mr-3">
+                        <svg class="w-6 h-6 text-deep-teal" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-xl font-semibold text-gray-900">Mobile Version</h2>
+                </div>
+                
+                <p class="text-gray-600 mb-6">
+                    Download a mobile-friendly HTML version that looks exactly like your card with the selected theme. Perfect for viewing on phones and tablets.
+                </p>
+                
+                <form action="{% url 'message_cards:download_card' card.card_id %}" method="GET" class="space-y-4">
+                    <input type="hidden" name="format" value="mobile">
+                    
+                    <div>
+                        <label for="mobile-language" class="block text-sm font-medium text-gray-700 mb-1">Language</label>
+                        <select id="mobile-language" name="lang" class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-deep-teal focus:border-deep-teal">
+                            {% for lang_code, lang_name in card.LANGUAGE_CHOICES %}
+                                {% if lang_code in card.translations %}
+                                    <option value="{{ lang_code }}" {% if card.language == lang_code %}selected{% endif %}>
+                                        {% if lang_code == "en" %}🇺🇸 {% elif lang_code == "es" %}🇪🇸 {% elif lang_code == "fr" %}🇫🇷 {% elif lang_code == "de" %}🇩🇪 {% elif lang_code == "it" %}🇮🇹 {% elif lang_code == "zh" %}🇨🇳 {% elif lang_code == "ja" %}🇯🇵 {% elif lang_code == "ko" %}🇰🇷 {% elif lang_code == "pt" %}🇵🇹 {% elif lang_code == "ar" %}🇸🇦 {% elif lang_code == "ru" %}🇷🇺 {% elif lang_code == "hi" %}🇮🇳 {% endif %}{{ lang_name }}
+                                    </option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="mobile-theme" class="block text-sm font-medium text-gray-700 mb-1">Theme</label>
+                        <select id="mobile-theme" name="theme" class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-deep-teal focus:border-deep-teal">
+                            <option value="medical" {% if card.theme == 'medical' %}selected{% endif %}>Medical (Blue)</option>
+                            <option value="dark" {% if card.theme == 'dark' %}selected{% endif %}>Dark</option>
+                            <option value="minimal" {% if card.theme == 'minimal' %}selected{% endif %}>Minimal</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="w-full flex justify-center items-center px-4 py-2 bg-deep-teal text-white rounded-lg hover:bg-deep-teal-2 transition-colors">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                        </svg>
+                        Download Mobile Version
+                    </button>
+                </form>
+            </div>
+            
             <!-- Wallet Card Option -->
             <div class="bg-white p-6 rounded-lg shadow-md">
                 <div class="flex items-center mb-4">
                     <div class="bg-mint-light p-2 rounded-lg mr-3">
                         <svg class="w-6 h-6 text-deep-teal" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 002 2z"/>
                         </svg>
                     </div>
                     <h2 class="text-xl font-semibold text-gray-900">Wallet Card</h2>

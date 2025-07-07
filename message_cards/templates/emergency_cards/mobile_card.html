@@ -1,0 +1,282 @@
+{% load static %}
+{% load emergency_card_filters %}
+<!DOCTYPE html>
+<html lang="{{ current_lang|default:'en' }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Medical Card - {{ card.user_name|default:'Demo User' }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="{% static 'css/emergency_card_themes.css' %}" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .mobile-card-container {
+            width: 100%;
+            max-width: 400px;
+            margin: 1rem;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .card-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        .condition-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .condition-cel {
+            background: rgba(239, 68, 68, 0.9);
+        }
+        
+        .condition-sen {
+            background: rgba(245, 158, 11, 0.9);
+        }
+        
+        .condition-all {
+            background: rgba(168, 85, 247, 0.9);
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .card-subtitle {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            margin: 0.5rem 0 0 0;
+        }
+        
+        .card-content {
+            padding: 1.5rem;
+        }
+        
+        .section {
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            margin-right: 0.5rem;
+            color: #6366f1;
+        }
+        
+        .message-content {
+            background: #f8fafc;
+            border-left: 4px solid #6366f1;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            color: #374151;
+            white-space: pre-line;
+        }
+        
+        .contact-info {
+            background: #f0f9ff;
+            border: 1px solid #e0f2fe;
+            border-radius: 0.5rem;
+            padding: 1rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e0f2fe;
+        }
+        
+        .contact-item:last-child {
+            border-bottom: none;
+        }
+        
+        .contact-label {
+            font-weight: 500;
+            color: #374151;
+            font-size: 0.875rem;
+        }
+        
+        .contact-value {
+            color: #1f2937;
+            font-size: 0.875rem;
+            text-align: right;
+        }
+        
+        .footer {
+            padding: 1rem 1.5rem;
+            background: #f9fafb;
+            border-top: 1px solid #e5e7eb;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+        
+        .language-indicator {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        /* Theme variations */
+        .theme-medical .card-header {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+        }
+        
+        .theme-light .card-header {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            color: #374151;
+        }
+        
+        .theme-dark .card-header {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+        }
+        
+        @media (max-width: 480px) {
+            .mobile-card-container {
+                margin: 0.5rem;
+                border-radius: 0.75rem;
+            }
+            
+            .card-header {
+                padding: 1.25rem;
+            }
+            
+            .card-content {
+                padding: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-card-container theme-{{ theme|default:'medical' }}">
+        <!-- Language indicator -->
+        <div class="language-indicator">
+            {{ current_lang|upper }}
+        </div>
+        
+        <!-- Card Header -->
+        <div class="card-header">
+            <div class="condition-badge condition-{{ card.condition|lower }}">
+                {{ card.get_condition_display }}
+            </div>
+            <h1 class="card-title">Medical Alert Card</h1>
+            <p class="card-subtitle">{{ card.user_name|default:'Demo User' }}</p>
+        </div>
+        
+        <!-- Card Content -->
+        <div class="card-content">
+            <!-- Medical Information Section -->
+            <div class="section">
+                <h2 class="section-title">
+                    <svg class="section-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    Medical Information
+                </h2>
+                <div class="message-content">
+                    {{ card|get_message:current_lang }}
+                </div>
+            </div>
+            
+            <!-- Emergency Contact Section -->
+            {% if card.emergency_contact_name %}
+            <div class="section">
+                <h2 class="section-title">
+                    <svg class="section-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                    </svg>
+                    Emergency Contact
+                </h2>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <span class="contact-label">Name:</span>
+                        <span class="contact-value">{{ card.emergency_contact_name }}</span>
+                    </div>
+                    {% if card.emergency_contact_relationship %}
+                    <div class="contact-item">
+                        <span class="contact-label">Relationship:</span>
+                        <span class="contact-value">{{ card.emergency_contact_relationship }}</span>
+                    </div>
+                    {% endif %}
+                    {% if card.emergency_contact_phone %}
+                    <div class="contact-item">
+                        <span class="contact-label">Phone:</span>
+                        <span class="contact-value">{{ card.emergency_contact_phone }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- Additional Medical Info -->
+            {% if card.allergies or card.medications or card.medical_conditions %}
+            <div class="section">
+                <h2 class="section-title">
+                    <svg class="section-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                    </svg>
+                    Additional Information
+                </h2>
+                <div class="message-content">
+                    {% if card.allergies %}
+                    <strong>Allergies:</strong> {{ card.allergies }}<br><br>
+                    {% endif %}
+                    {% if card.medications %}
+                    <strong>Medications:</strong> {{ card.medications }}<br><br>
+                    {% endif %}
+                    {% if card.medical_conditions %}
+                    <strong>Medical Conditions:</strong> {{ card.medical_conditions }}
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            Generated by Celio Card System<br>
+            Language: {{ current_lang|upper }} | Theme: {{ theme|title }}
+        </div>
+    </div>
+</body>
+</html>

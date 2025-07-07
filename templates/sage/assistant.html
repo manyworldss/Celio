@@ -7,7 +7,7 @@
 <script src="https://unpkg.com/htmx.org@1.9.10"></script>
 <style>
     :root {
-        --purple-600: #9333ea;
+        --purple-600: #8b5cf6;
         --purple-700: #7c3aed;
         --purple-800: #6b21a8;
         --purple-900: #581c87;
@@ -15,14 +15,15 @@
         --purple-200: #e9d5ff;
         --purple-300: #d8b4fe;
         --dark-bg: #1a1a1a;
-        --dark-gray: #2d2d2d;
-        --darker-gray: #404040;
-        --light-gray: #6b7280;
+        --dark-gray: #1a0d2e;
+        --darker-gray: #0f0519;
+        --light-gray: #c4b5fd;
         --gray-200: #374151;
         --gray-300: #4b5563;
-        --gray-600: #9ca3af;
+        --gray-600: #4b5563;
         --gray-700: #d1d5db;
         --gray-800: #f3f4f6;
+        --black: #000000;
     }
 
     body {
@@ -51,11 +52,11 @@
     }
     
     .assistant-avatar {
-        background-color: var(--purple-600);
+        background: linear-gradient(135deg, var(--purple-600), var(--purple-800));
     }
     
     .user-avatar {
-        background-color: var(--gray-600);
+        background: linear-gradient(135deg, var(--purple-700), var(--purple-900));
     }
 
     /* Dark theme for chat components */
@@ -88,7 +89,7 @@
     }
 
     .conversation-item.active {
-        background-color: var(--purple-800);
+        background: linear-gradient(135deg, var(--purple-800), var(--purple-900));
         border-color: var(--purple-600);
         color: white;
     }
@@ -101,7 +102,7 @@
 
     .chat-input:focus {
         border-color: var(--purple-600);
-        box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.2);
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
         background-color: var(--dark-gray);
     }
 
@@ -110,8 +111,9 @@
     }
 
     .sage-description {
-        background: linear-gradient(135deg, var(--purple-600), var(--purple-700));
+        background: linear-gradient(135deg, var(--purple-800), var(--purple-900), var(--black));
         color: white;
+        border: 1px solid var(--purple-700);
     }
 </style>
 {% endblock %}
@@ -151,8 +153,9 @@
             </div>
         </div>
         
-        <!-- Meet Sage Section -->
-        <div class="mb-6">
+        <!-- Main Content Area -->
+        <div class="flex-1 flex flex-col gap-6">
+            <!-- Meet Sage Section -->
             <div class="sage-description rounded-lg p-4 shadow-lg">
                 <div class="flex items-center space-x-4">
                     <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
@@ -174,9 +177,8 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Main Chat Area -->
+            <!-- Main Chat Area -->
         <div class="flex-1 flex flex-col chat-area rounded-lg shadow-sm border overflow-hidden">
             <!-- Chat Header -->
             <div class="p-4 chat-header border-b flex justify-between items-center">
@@ -186,19 +188,29 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
                     </div>
-                    <h1 class="text-lg font-semibold text-white">Sage Assistant (Web Beta)</h1>
+                    <div>
+                        <h1 class="text-lg font-semibold text-white">Sage Assistant (Demo)</h1>
+                        <p class="text-xs text-purple-300">Preview Mode - AI Not Active</p>
+                    </div>
                 </div>
                 
-                {% if current_conversation %}
-                <form method="POST" action="{% url 'sage:delete_conversation' current_conversation.id %}" class="inline" onsubmit="return confirm('Delete this conversation?');">
-                    {% csrf_token %}
-                    <button type="submit" class="text-red-400 hover:text-red-300">
+                <div class="flex items-center space-x-2">
+                    <button id="reset-chat-btn" class="text-purple-400 hover:text-purple-300 transition-colors" title="Reset Demo">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                         </svg>
                     </button>
-                </form>
-                {% endif %}
+                    {% if current_conversation %}
+                    <form method="POST" action="{% url 'sage:delete_conversation' current_conversation.id %}" class="inline" onsubmit="return confirm('Delete this conversation?');">
+                        {% csrf_token %}
+                        <button type="submit" class="text-red-400 hover:text-red-300">
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
             </div>
             
             <!-- Messages Area -->
@@ -226,13 +238,14 @@
                             </svg>
                         </div>
                     </div>
-                    <button type="submit" class="bg-purple-600 text-white rounded-lg p-2 hover:bg-purple-700">
+                    <button type="submit" class="bg-gradient-to-r from-purple-600 to-purple-800 text-white rounded-lg p-2 hover:from-purple-700 hover:to-purple-900 transition-all duration-200">
                         <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                         </svg>
                     </button>
                 </form>
             </div>
+        </div>
         </div>
     </div>
 </div>

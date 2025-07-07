@@ -7,165 +7,224 @@
 {% block extra_css %}
 <style>
     body {
-        background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+        background-color: #f8f9fa;
+        color: #333;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
     
-    .travel-card {
-        width: 450px;
-        height: 500px;
-        background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
-        border: 1px solid rgba(20, 184, 166, 0.2);
-        border-radius: 16px;
-        overflow: hidden;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    .page-header {
+        text-align: center;
+        margin-bottom: 3rem;
+        padding: 2rem 0;
+    }
+    
+    .page-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+    
+    .page-subtitle {
+        font-size: 1.1rem;
+        color: #666;
+        margin-bottom: 2rem;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .countries-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+    
+    .country-card {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        border-left: 4px solid;
+    }
+    
+    .country-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .country-header {
         display: flex;
-        flex-direction: column;
-        color: white;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        gap: 1rem;
     }
     
-    .travel-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
-        transition: all 0.3s ease;
+    .country-flag {
+        font-size: 2.5rem;
+        line-height: 1;
     }
     
-    .card-header {
-        padding: 16px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        background: rgba(0, 0, 0, 0.2);
-        text-align: center;
-    }
-    
-    .card-body {
+    .country-info {
         flex: 1;
-        padding: 20px;
-        text-align: center;
+    }
+    
+    .country-code {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 0.25rem;
+        line-height: 1;
     }
     
     .country-name {
-        font-size: 28px;
-        font-weight: 700;
-        margin-bottom: 10px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #666;
+        margin: 0;
     }
     
     .country-description {
-        font-size: 14px;
-        color: rgba(255, 255, 255, 0.8);
-        line-height: 1.5;
-        margin-bottom: 20px;
+        font-size: 0.95rem;
+        color: #555;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
     
-    .stats-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 15px;
-        margin-bottom: 20px;
-    }
-    
-    .stat-item {
-        background: rgba(255, 255, 255, 0.05);
-        padding: 12px;
+    .awareness-section {
+        background: #f8f9fa;
         border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
     }
     
-    .stat-label {
-        font-size: 11px;
-        color: rgba(255, 255, 255, 0.6);
+    .awareness-label {
+        font-size: 0.85rem;
+        color: #666;
+        margin-bottom: 0.5rem;
         text-transform: uppercase;
-        margin-bottom: 5px;
-    }
-    
-    .stat-value {
-        font-size: 16px;
+        letter-spacing: 0.5px;
         font-weight: 600;
     }
     
-    .explore-btn {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    .awareness-value {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #333;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .awareness-stars {
+        color: #ffc107;
+    }
+    
+    .explore-link {
+        display: inline-flex;
+        align-items: center;
+        background: #007bff;
         color: white;
-        padding: 12px 24px;
-        border-radius: 8px;
         text-decoration: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
         font-weight: 600;
-        display: inline-block;
-        transition: all 0.2s ease;
+        font-size: 0.9rem;
+        transition: background-color 0.2s ease, transform 0.2s ease;
+        width: 100%;
+        justify-content: center;
     }
     
-    .explore-btn:hover {
-        background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    .explore-link:hover {
+        background: #0056b3;
+        color: white;
+        text-decoration: none;
         transform: translateY(-1px);
     }
     
-    .card-footer {
-        padding: 16px;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        text-align: center;
-        background: rgba(0, 0, 0, 0.1);
+    .explore-link::after {
+        content: '→';
+        margin-left: 0.5rem;
+        transition: transform 0.2s ease;
     }
     
-    .logo {
-        font-weight: 900;
-        font-size: 16px;
-        color: white;
+    .explore-link:hover::after {
+        transform: translateX(2px);
     }
     
-    .subtitle {
-        font-size: 10px;
-        color: rgba(255, 255, 255, 0.6);
-        text-transform: uppercase;
-        letter-spacing: 1px;
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
     }
     
-
+    @media (max-width: 768px) {
+        .countries-grid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        
+        .country-card {
+            padding: 1.5rem;
+        }
+        
+        .page-title {
+            font-size: 2rem;
+        }
+    }
 </style>
 {% endblock %}
 
 {% block extra_js %}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const cards = document.querySelectorAll('.travel-card');
-
-        // Add hover effects
-        cards.forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-5px) scale(1.02)';
-            });
-
-            card.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0) scale(1)';
-            });
-        });
-    });
-</script>
 {% endblock %}
 
 {% block content %}
-    <div>
-    <!-- Simple Natural Header -->
-    <div class="text-center mb-20">
-        <div class="text-8xl mb-8">🌍</div>
-        <h1 class="text-5xl md:text-6xl font-light text-white mb-6">Travel Guides</h1>
-        <p class="text-xl text-neutral-400 max-w-2xl mx-auto mb-12 leading-relaxed">Safe gluten-free dining around the world</p>
+<div class="container">
+    <div class="page-header">
+        <h1 class="page-title">Travel Guides</h1>
+        <p class="page-subtitle">Discover safe gluten-free dining experiences around the world with our comprehensive country guides</p>
     </div>
-    
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 justify-items-center">
-        {% for guide in travel_guides %}
-        <div class="travel-card" style="background-color: {{ guide.color }};">
-            <div class="h-48 bg-gray-500"></div>
-            <div class="p-6">
-                <h2 class="text-2xl font-bold text-white mb-2">{{ guide.name }}</h2>
-                <p class="text-gray-300 mb-4">{{ guide.summary }}</p>
-                <div class="flex justify-between items-center mb-4">
-                    <span class="text-sm text-gray-400">Celiac Awareness</span>
-                    <span class="text-lg font-semibold text-white">{{ guide.celiac_awareness }}</span>
+
+    <div class="countries-grid">
+        {% for country in travel_guides %}
+        <div class="country-card" style="border-left-color: {{ country.color|default:'#007bff' }}">
+            <div class="country-header">
+                <div class="country-flag">{{ country.flag_emoji }}</div>
+                <div class="country-info">
+                    <div class="country-code">{{ country.code }}</div>
+                    <div class="country-name">{{ country.name }}</div>
                 </div>
-                <a href="{% url 'travel:country_detail' guide.slug %}" class="block w-full text-white font-bold py-2 px-4 rounded text-center" style="background-color: {{ guide.color|darken:0.15 }};">Explore More</a>
             </div>
+            
+            <div class="country-description">{{ country.summary }}</div>
+            
+            <div class="awareness-section">
+                <div class="awareness-label">Celiac Awareness Level</div>
+                <div class="awareness-value">
+                    {{ country.celiac_awareness }}/5
+                    <span class="awareness-stars">
+                        {% for i in "12345" %}
+                            {% if forloop.counter <= country.celiac_awareness %}
+                                ★
+                            {% else %}
+                                ☆
+                            {% endif %}
+                        {% endfor %}
+                    </span>
+                </div>
+            </div>
+            
+            <a href="{% url 'travel:country_detail' country.slug %}" class="explore-link">
+                Explore {{ country.name }}
+            </a>
         </div>
-        {% empty %}
-        <p class="text-white text-center text-xl">No travel guides available yet.</p>
         {% endfor %}
     </div>
-        
 </div>
 {% endblock %}

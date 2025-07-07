@@ -27,22 +27,150 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
         </svg>
     </div>
-    <h3 class="text-xl font-semibold text-gray-800 mb-2">Meet Sage, your celiac assistant</h3>
-    <p class="text-gray-600 mb-4">Ask Sage any questions about celiac disease, gluten-free travel, or managing your gluten-free lifestyle.</p>
+    <h3 class="text-xl font-semibold text-white mb-2">Meet Sage, your celiac assistant</h3>
+    <p class="text-gray-300 mb-2">Ask Sage any questions about celiac disease, gluten-free travel, or managing your gluten-free lifestyle.</p>
     
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 max-w-lg">
-        <div class="border border-gray-200 rounded-lg p-3 hover:bg-mint-light hover:border-deep-teal transition-colors cursor-pointer">
-            <p class="text-gray-800 font-medium">"What are hidden sources of gluten?"</p>
+    <!-- Demo Notice -->
+    <div class="bg-yellow-900/30 border border-yellow-600/50 rounded-lg p-3 mb-4 max-w-md">
+        <div class="flex items-center">
+            <svg class="h-5 w-5 text-yellow-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <p class="text-yellow-200 text-sm font-medium">Demo Mode</p>
         </div>
-        <div class="border border-gray-200 rounded-lg p-3 hover:bg-mint-light hover:border-deep-teal transition-colors cursor-pointer">
-            <p class="text-gray-800 font-medium">"Is soy sauce gluten-free?"</p>
+        <p class="text-yellow-100 text-xs mt-1">This is a preview showing example responses. The AI is not currently active.</p>
+    </div>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 max-w-lg mb-4">
+        <div class="border border-purple-600 rounded-lg p-3 hover:bg-gradient-to-r hover:from-purple-700 hover:to-purple-900 hover:border-purple-500 transition-all duration-200 cursor-pointer bg-gradient-to-r from-purple-800 to-purple-900 premade-question" data-question="What are hidden sources of gluten?">
+            <p class="text-white font-medium">"What are hidden sources of gluten?"</p>
         </div>
-        <div class="border border-gray-200 rounded-lg p-3 hover:bg-mint-light hover:border-deep-teal transition-colors cursor-pointer">
-            <p class="text-gray-800 font-medium">"How can I manage eating out safely?"</p>
+        <div class="border border-purple-600 rounded-lg p-3 hover:bg-gradient-to-r hover:from-purple-700 hover:to-purple-900 hover:border-purple-500 transition-all duration-200 cursor-pointer bg-gradient-to-r from-purple-800 to-purple-900 premade-question" data-question="Is soy sauce gluten-free?">
+            <p class="text-white font-medium">"Is soy sauce gluten-free?"</p>
         </div>
-        <div class="border border-gray-200 rounded-lg p-3 hover:bg-mint-light hover:border-deep-teal transition-colors cursor-pointer">
-            <p class="text-gray-800 font-medium">"What are the symptoms of gluten exposure?"</p>
+        <div class="border border-purple-600 rounded-lg p-3 hover:bg-gradient-to-r hover:from-purple-700 hover:to-purple-900 hover:border-purple-500 transition-all duration-200 cursor-pointer bg-gradient-to-r from-purple-800 to-purple-900 premade-question" data-question="How can I manage eating out safely?">
+            <p class="text-white font-medium">"How can I manage eating out safely?"</p>
+        </div>
+        <div class="border border-purple-600 rounded-lg p-3 hover:bg-gradient-to-r hover:from-purple-700 hover:to-purple-900 hover:border-purple-500 transition-all duration-200 cursor-pointer bg-gradient-to-r from-purple-800 to-purple-900 premade-question" data-question="What are the symptoms of gluten exposure?">
+            <p class="text-white font-medium">"What are the symptoms of gluten exposure?"</p>
         </div>
     </div>
+    
+    <p class="text-gray-400 text-xs mb-2">Click any question above to see example responses</p>
+
+    <script>
+     document.addEventListener('DOMContentLoaded', function() {
+         const premadeQuestions = document.querySelectorAll('.premade-question');
+         const messagesContainer = document.getElementById('messages-container');
+         const resetButton = document.getElementById('reset-chat-btn');
+         
+         // Store the original welcome content
+         const originalContent = messagesContainer.innerHTML;
+         
+         // Generic demo responses for each question
+         const demoResponses = {
+             "What are hidden sources of gluten?": "Hidden sources of gluten can be found in many unexpected places! Common ones include soy sauce (unless labeled gluten-free), processed meats, salad dressings, soups, seasonings, and even some medications and cosmetics. Always check labels for wheat, barley, rye, and malt ingredients. When dining out, ask about marinades, sauces, and cooking surfaces that might have cross-contamination.",
+             
+             "Is soy sauce gluten-free?": "Traditional soy sauce typically contains wheat and is NOT gluten-free. However, there are gluten-free alternatives available! Look for tamari (which is usually gluten-free but always check the label), or soy sauces specifically labeled as gluten-free. Brands like San-J and Kikkoman make excellent gluten-free versions. Always read labels carefully as formulations can vary.",
+             
+             "How can I manage eating out safely?": "Eating out safely with celiac disease requires some preparation! Here are key tips: Research restaurants beforehand and call ahead to discuss your needs. Look for restaurants with gluten-free menus or certifications. Communicate clearly with your server about celiac disease (not just preference). Ask about preparation methods and cross-contamination prevention. Consider dining during less busy times when kitchen staff can give more attention to your order.",
+             
+             "What are the symptoms of gluten exposure?": "Gluten exposure symptoms can vary greatly between individuals and may include: digestive issues (bloating, diarrhea, constipation, stomach pain), fatigue, headaches, brain fog, skin rashes, joint pain, and mood changes. Symptoms can appear within hours or take days to manifest. If you experience regular symptoms, keep a food diary and consult with a healthcare provider familiar with celiac disease for proper evaluation and management."
+         };
+         
+         // Reset chat functionality
+         if (resetButton) {
+             resetButton.addEventListener('click', function() {
+                 messagesContainer.innerHTML = originalContent;
+                 // Re-attach event listeners to the new premade question buttons
+                 attachPremadeQuestionListeners();
+             });
+         }
+         
+         function attachPremadeQuestionListeners() {
+             const questions = document.querySelectorAll('.premade-question');
+             questions.forEach(button => {
+                 button.addEventListener('click', function() {
+                     const question = this.dataset.question;
+                     const response = demoResponses[question];
+                     
+                     if (response) {
+                         // Create user message
+                         const userMessage = createMessageElement(question, 'user');
+                         
+                         // Create assistant response with demo notice
+                         const assistantMessage = createMessageElement(response, 'assistant');
+                         
+                         // Create reset notice
+                         const resetNotice = createResetNotice();
+                         
+                         // Clear the welcome screen and add messages
+                         messagesContainer.innerHTML = '';
+                         messagesContainer.appendChild(userMessage);
+                         messagesContainer.appendChild(assistantMessage);
+                         messagesContainer.appendChild(resetNotice);
+                         
+                         // Scroll to bottom
+                         messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                     }
+                 });
+             });
+         }
+         
+         function createResetNotice() {
+             const noticeDiv = document.createElement('div');
+             noticeDiv.className = 'flex justify-center mt-6 mb-4';
+             noticeDiv.innerHTML = `
+                 <div class="bg-purple-900/30 border border-purple-600/50 rounded-lg p-3 max-w-sm text-center">
+                     <p class="text-purple-200 text-sm mb-2">This was a demo response</p>
+                     <button onclick="document.getElementById('reset-chat-btn').click()" class="bg-gradient-to-r from-purple-600 to-purple-800 text-white text-xs px-3 py-1 rounded hover:from-purple-700 hover:to-purple-900 transition-all duration-200">
+                         Try Another Question
+                     </button>
+                 </div>
+             `;
+             return noticeDiv;
+         }
+         
+         function createMessageElement(content, role) {
+             const messageDiv = document.createElement('div');
+             messageDiv.className = `flex items-start mb-4 ${role === 'assistant' ? 'flex-row' : 'flex-row-reverse'}`;
+             
+             const avatarDiv = document.createElement('div');
+             avatarDiv.className = `h-8 w-8 rounded-full ${role}-avatar flex items-center justify-center text-white ${role === 'assistant' ? 'mr-3' : 'ml-3'}`;
+             
+             const svg = document.createElement('svg');
+             svg.className = 'h-5 w-5';
+             svg.setAttribute('fill', 'none');
+             svg.setAttribute('viewBox', '0 0 24 24');
+             svg.setAttribute('stroke', 'currentColor');
+             
+             const path = document.createElement('path');
+             path.setAttribute('stroke-linecap', 'round');
+             path.setAttribute('stroke-linejoin', 'round');
+             path.setAttribute('stroke-width', '2');
+             
+             if (role === 'assistant') {
+                 path.setAttribute('d', 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z');
+             } else {
+                 path.setAttribute('d', 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z');
+             }
+             
+             svg.appendChild(path);
+             avatarDiv.appendChild(svg);
+             
+             const bubbleDiv = document.createElement('div');
+             bubbleDiv.className = `message-bubble p-3 max-w-md break-words ${role}`;
+             bubbleDiv.innerHTML = content.replace(/\n/g, '<br>');
+             
+             messageDiv.appendChild(avatarDiv);
+             messageDiv.appendChild(bubbleDiv);
+             
+             return messageDiv;
+         }
+         
+         // Initial attachment of event listeners
+         attachPremadeQuestionListeners();
+     });
+     </script>
 </div>
 {% endif %}
