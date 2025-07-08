@@ -6,6 +6,7 @@
 
 *A comprehensive demo web application showcasing modern full-stack development, designed to become a mobile app later in 2025.*
 
+Demo Site: https://celio-patient-firefly-4552.fly.dev/
 Medium Blog: https://raphealsuber.medium.com/836e1eca60dc
 
 
