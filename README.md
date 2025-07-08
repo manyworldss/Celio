@@ -2,6 +2,8 @@
 # Celio
 **Multilingual E-Cards for Celiac Disease**
 
+![Screenshot 2025-07-08 171654](https://github.com/user-attachments/assets/b891d1ef-be56-4533-b480-76687eaa0cbb)
+
 *A comprehensive demo web application showcasing modern full-stack development, designed to become a mobile app later in 2025.*
 
 Medium Blog: https://raphealsuber.medium.com/836e1eca60dc
