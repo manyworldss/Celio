@@ -7,7 +7,7 @@
 Medium Blog: https://raphealsuber.medium.com/836e1eca60dc
 
 
-<![Screenshot 2025-07-08 171654](https://github.com/user-attachments/assets/cd50adff-cf62-4a41-bb46-fbccbfe685f5)/>
+![Screenshot 2025-07-08 171654](https://github.com/user-attachments/assets/cd50adff-cf62-4a41-bb46-fbccbfe685f5)
 
 
 
