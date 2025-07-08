@@ -67,7 +67,11 @@ Card Creation
 
  
 
-Travel Guides<img width="1374" alt="Screenshot 2025-03-29 at 8 23 43 PM" src="https://github.com/user-attachments/assets/213e5308-44f7-4e8c-af10-4a480c64eb30" />
+Travel Guides
+![Screenshot 2025-07-08 164954](https://github.com/user-attachments/assets/e02b106f-2ca9-4b4b-b877-ed80acc4bdd1)
+![Screenshot 2025-07-08 164938](https://github.com/user-attachments/assets/c0f95c8a-19c9-4330-b0ac-b16a0f11291e)
+![Screenshot 2025-07-08 165042](https://github.com/user-attachments/assets/dc768051-8799-408c-90fb-9fba87557f2a)
+
 
 
 Sage Assistant<![Screenshot 2025-07-08 122309](https://github.com/user-attachments/assets/c59dc3f3-c1e2-4fbb-a4b9-2a09c7a310ed)/>
