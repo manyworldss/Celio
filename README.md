@@ -1,13 +1,14 @@
 
 # Celio
-**Multilingual Emergency Cards for Celiac Disease**
+**Multilingual E-Cards for Celiac Disease**
 
 *A comprehensive demo web application showcasing modern full-stack development, designed to become a mobile app later in 2025.*
 
 Medium Blog: https://raphealsuber.medium.com/836e1eca60dc
 
 
-<img width="369" alt="Screenshot 2025-03-27 at 11 43 25 PM" src="https://github.com/user-attachments/assets/18abc19a-7b71-4b2e-a7f9-6f9ade307148" />
+<![Screenshot 2025-07-08 171654](https://github.com/user-attachments/assets/cd50adff-cf62-4a41-bb46-fbccbfe685f5)/>
+
 
 
 
@@ -56,13 +57,19 @@ This demo showcases modern full-stack development practices:
 
 ## Screenshots
 
-Card Creation <img width="1401" alt="Screenshot 2025-03-29 at 8 21 12 PM" src="https://github.com/user-attachments/assets/353dd83d-8f9b-4cb7-b364-2280534b9403" />
+Card Creation <!![Screenshot 2025-07-08 122132](https://github.com/user-attachments/assets/f9b40d65-963e-4f2f-bb5d-890899e985d6) ![Screenshot 2025-07-08 122153](https://github.com/user-attachments/assets/826eda6b-dc70-4177-960d-94ee642d05b0)
+![Screenshot 2025-07-08 122036](https://github.com/user-attachments/assets/e455ec33-b439-4551-b406-ebd869028805)![Screenshot 2025-07-08 122102](https://github.com/user-attachments/assets/85a6ca89-b575-409a-837b-25eeeaecc8c4)
+
+
+  />
+
  
 
 Travel Guides<img width="1374" alt="Screenshot 2025-03-29 at 8 23 43 PM" src="https://github.com/user-attachments/assets/213e5308-44f7-4e8c-af10-4a480c64eb30" />
 
 
-Sage Assistant<img width="1403" alt="Screenshot 2025-03-29 at 8 22 42 PM" src="https://github.com/user-attachments/assets/da1a40d8-ea6d-487a-91d6-560c2852dc24" />
+Sage Assistant<![Screenshot 2025-07-08 122309](https://github.com/user-attachments/assets/c59dc3f3-c1e2-4fbb-a4b9-2a09c7a310ed)/>
+
 
 
 
