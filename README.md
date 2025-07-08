@@ -7,9 +7,6 @@
 Medium Blog: https://raphealsuber.medium.com/836e1eca60dc
 
 
-![Screenshot 2025-07-08 171654](https://github.com/user-attachments/assets/cd50adff-cf62-4a41-bb46-fbccbfe685f5)
-
-
 
 
 ## Overview
@@ -57,11 +54,14 @@ This demo showcases modern full-stack development practices:
 
 ## Screenshots
 
-Card Creation <!![Screenshot 2025-07-08 122132](https://github.com/user-attachments/assets/f9b40d65-963e-4f2f-bb5d-890899e985d6) ![Screenshot 2025-07-08 122153](https://github.com/user-attachments/assets/826eda6b-dc70-4177-960d-94ee642d05b0)
-![Screenshot 2025-07-08 122036](https://github.com/user-attachments/assets/e455ec33-b439-4551-b406-ebd869028805)![Screenshot 2025-07-08 122102](https://github.com/user-attachments/assets/85a6ca89-b575-409a-837b-25eeeaecc8c4)
+Card Creation
 
+![Screenshot 2025-07-08 122102](https://github.com/user-attachments/assets/97ddf50e-e474-4011-9b9c-ea69d97925bf)
+![Screenshot 2025-07-08 122132](https://github.com/user-attachments/assets/8219939c-1a93-4fcc-81a5-c8d03888c25c)
 
-  />
+![Screenshot 2025-07-08 122036](https://github.com/user-attachments/assets/d68a354c-b6c2-4ed1-ac3a-f40a73a00748)
+![Screenshot 2025-07-08 121949](https://github.com/user-attachments/assets/3fc86239-f5d1-4c92-873b-ce9ac8b3eee1)
+![Screenshot 2025-07-08 122153](https://github.com/user-attachments/assets/1dab4b89-1c8b-4d03-a710-14931fcc9c04)
 
  
 
