@@ -18,7 +18,7 @@ Celio is a demo web application that empowers people with celiac disease and glu
 
 **This is currently a demonstration web application built to showcase full-stack development capabilities, with plans to transition to a native mobile app later in 2025.**
 
-**[Live Demo Coming Soon]**
+
 
 ## Key Features
 
