@@ -44,8 +44,17 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 # Secret key - using environment variable in production
-DEFAULT_SECRET_KEY = 'django-insecure-wp8+f+_i&5jljkhvd+z%9$95pkpy&0))2%996*kmx)9_t*^i4x'
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', DEFAULT_SECRET_KEY)
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+
+# Security settings for production
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 31536000  # 1 year
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
 
 # Login settings
 LOGIN_URL = 'accounts:login'
