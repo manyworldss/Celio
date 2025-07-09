@@ -6,7 +6,7 @@
 
 *A comprehensive demo web application showcasing modern full-stack development, designed to become a mobile app later in 2025.*
 
-Demo Site: https://celio-bkq9qq94b-manyworldss-projects.vercel.app/
+Demo Site: https://celio-aud6tb93g-manyworldss-projects.vercel.app
 Medium Blog: https://raphealsuber.medium.com/836e1eca60dc
 
 
@@ -18,7 +18,7 @@ Celio is a demo web application that empowers people with celiac disease and glu
 
 **This is currently a demonstration web application built to showcase full-stack development capabilities, with plans to transition to a native mobile app later in 2025.**
 
-**[Live Demo Coming Soon]**
+
 
 ## Key Features
 
