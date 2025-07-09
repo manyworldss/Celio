@@ -15,11 +15,14 @@ DEMO_USER = {
     'is_demo': True
 }
 
+import os
+
 def home(request):
     """Home view with demo mode enabled"""
+    video_url = os.environ.get('VIDEO_URL')
     # For now, we'll use the new landing page template
     # The demo functionality will be handled by the emergency_cards app
-    return render(request, 'core/landing.html')
+    return render(request, 'core/landing.html', {'video_url': video_url})
 
 def reset_demo(request):
     """Reset the demo to initial state"""
