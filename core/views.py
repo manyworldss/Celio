@@ -19,9 +19,8 @@ import os
 
 def home(request):
     """Home view with demo mode enabled"""
-    video_url = os.environ.get('VIDEO_URL')
-    # For now, we'll use the new landing page template
-    # The demo functionality will be handled by the emergency_cards app
+    # Use the new demo video for the landing page
+    video_url = '/media/emergency_cards/Recording 2025-07-09 194109.mp4'
     return render(request, 'core/landing.html', {'video_url': video_url})
 
 def reset_demo(request):
