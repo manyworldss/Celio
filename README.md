@@ -1,13 +1,14 @@
 
 # Celio
-**Multilingual Emergency Cards for Celiac Disease**
+**Multilingual E-Cards for Celiac Disease**
+
+![Screenshot 2025-07-08 171654](https://github.com/user-attachments/assets/b891d1ef-be56-4533-b480-76687eaa0cbb)
 
 *A comprehensive demo web application showcasing modern full-stack development, designed to become a mobile app later in 2025.*
 
+Demo Site: https://celio-bkq9qq94b-manyworldss-projects.vercel.app/
 Medium Blog: https://raphealsuber.medium.com/836e1eca60dc
 
-
-<img width="369" alt="Screenshot 2025-03-27 at 11 43 25 PM" src="https://github.com/user-attachments/assets/18abc19a-7b71-4b2e-a7f9-6f9ade307148" />
 
 
 
@@ -56,13 +57,26 @@ This demo showcases modern full-stack development practices:
 
 ## Screenshots
 
-Card Creation <img width="1401" alt="Screenshot 2025-03-29 at 8 21 12 PM" src="https://github.com/user-attachments/assets/353dd83d-8f9b-4cb7-b364-2280534b9403" />
+Card Creation
+
+![Screenshot 2025-07-08 122102](https://github.com/user-attachments/assets/97ddf50e-e474-4011-9b9c-ea69d97925bf)
+![Screenshot 2025-07-08 122132](https://github.com/user-attachments/assets/8219939c-1a93-4fcc-81a5-c8d03888c25c)
+
+![Screenshot 2025-07-08 122036](https://github.com/user-attachments/assets/d68a354c-b6c2-4ed1-ac3a-f40a73a00748)
+![Screenshot 2025-07-08 121949](https://github.com/user-attachments/assets/3fc86239-f5d1-4c92-873b-ce9ac8b3eee1)
+![Screenshot 2025-07-08 122153](https://github.com/user-attachments/assets/1dab4b89-1c8b-4d03-a710-14931fcc9c04)
+
  
 
-Travel Guides<img width="1374" alt="Screenshot 2025-03-29 at 8 23 43 PM" src="https://github.com/user-attachments/assets/213e5308-44f7-4e8c-af10-4a480c64eb30" />
+Travel Guides
+![Screenshot 2025-07-08 164954](https://github.com/user-attachments/assets/e02b106f-2ca9-4b4b-b877-ed80acc4bdd1)
+![Screenshot 2025-07-08 164938](https://github.com/user-attachments/assets/c0f95c8a-19c9-4330-b0ac-b16a0f11291e)
+![Screenshot 2025-07-08 165042](https://github.com/user-attachments/assets/dc768051-8799-408c-90fb-9fba87557f2a)
 
 
-Sage Assistant<img width="1403" alt="Screenshot 2025-03-29 at 8 22 42 PM" src="https://github.com/user-attachments/assets/da1a40d8-ea6d-487a-91d6-560c2852dc24" />
+
+Sage Assistant<![Screenshot 2025-07-08 122309](https://github.com/user-attachments/assets/c59dc3f3-c1e2-4fbb-a4b9-2a09c7a310ed)/>
+
 
 
 
