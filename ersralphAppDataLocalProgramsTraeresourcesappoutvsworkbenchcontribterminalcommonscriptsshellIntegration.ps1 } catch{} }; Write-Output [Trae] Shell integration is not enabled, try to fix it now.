@@ -1,0 +1,10 @@
+[33m8ac733a[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m feat: added mobile-friendly emergency card download functionality
+[33med1e1b8[m feat: add country color field and template filters
+[33m69a1b92[m feat: add support for 5 new languages, improve UI with country flags and QR codes, enhance travel guides, and fix theme styling
+[33md85ad2d[m refactor(theme): rename and reorganize theme options for clarity
+[33m35127e2[m feat(theme): add dark purple theme option and update color scheme
+[33m12ad262[m changed from emergency to card to message card
+[33m2c568ad[m fix: correct typo in base.html and update card naming
+[33m90e8bb6[m feat: implement demo mode for emergency cards and travel guides
+[33md4bbc0a[m Merge branch 'main' of https://github.com/manyworldss/Celio
+[33mb95392c[m ...

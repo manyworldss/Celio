@@ -29,7 +29,6 @@ class Country(models.Model):
     # General information fields
     summary = models.TextField(help_text=_("General information about celiac awareness in this country"))
     dining_tips = models.TextField(help_text=_("Tips for dining safely in this country"))
-    color = models.CharField(max_length=7, default='#808080')  # Hex color code
     
     def save(self, *args, **kwargs):
         if not self.slug:

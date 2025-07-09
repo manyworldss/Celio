@@ -20,29 +20,6 @@ def reset_demo(request):
     """Reset the demo to initial state"""
     messages.success(request, 'Demo has been reset to default settings.')
     return redirect('core:home')
-    permission_classes = [permissions.IsAuthenticated]
-    
-    def post(self, request):
-        """
-        Demo upgrade - instantly upgrade user to premium
-        (In production, this would create a Stripe checkout session)
-        """
-        # Get or create subscription
-        subscription, created = Subscription.objects.get_or_create(
-            user=request.user,
-            defaults={'plan': Subscription.FREE, 'status': Subscription.STATUS_ACTIVE}
-        )
-        
-        # Upgrade to premium
-        subscription.plan = Subscription.PREMIUM
-        subscription.status = Subscription.STATUS_ACTIVE
-        subscription.save()
-        
-        return Response({
-            'success': True,
-            'message': 'Upgraded to premium successfully!',
-            'redirect_url': '/dashboard/'  # Or wherever you want to redirect after upgrade
-        })
 
 # Update the upgrade_page view
 def upgrade_page(request):

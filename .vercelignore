@@ -1,0 +1,44 @@
+# Virtual environment
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Database
+db.sqlite3
+*.db
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Media files (optional - comment out if you need media files)
+media/
+
+# Local development files
+.env
+*.log
+
+# Documentation
+README.md
+
+# Fly.io specific files
+fly.toml
+Dockerfile
+.dockerignore
+
+# Test files
+test_*.py
+*_test.py
+tests/

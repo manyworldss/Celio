@@ -41,6 +41,13 @@
         overflow: hidden;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     }
+    
+    /* Emoji font fallbacks for flag rendering */
+    .language-selector button span,
+    select option {
+        font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Segoe UI Symbol', 'Android Emoji', 'EmojiSymbols', sans-serif;
+        font-feature-settings: 'liga' off;
+    }
 </style>
 {% endblock %}
 

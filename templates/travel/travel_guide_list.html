@@ -4,55 +4,82 @@
 
 {% block title %}Travel Guides - Celio{% endblock %}
 
-{% block extra_css %}
+{% block extra_head %}
 <style>
     body {
-        background-color: #f8f9fa;
-        color: #333;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: #000;
+        color: #ffffff;
+        font-family: 'Hex Franklin', sans-serif;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
     }
+    
+
     
     .page-header {
         text-align: center;
-        margin-bottom: 3rem;
-        padding: 2rem 0;
+        padding: 4rem 2rem;
+        background: transparent;
+        margin: 2rem auto 3rem;
+        max-width: 1200px;
+        position: relative;
     }
     
+
+    
     .page-title {
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: #333;
-        margin-bottom: 0.5rem;
+        font-size: 3.5rem;
+        font-weight: 900;
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, #ffffff 0%, #5eead4 50%, #2dd4bf 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        position: relative;
+        z-index: 1;
     }
     
     .page-subtitle {
-        font-size: 1.1rem;
-        color: #666;
+        font-size: 1.3rem;
+        color: #cbd5e1;
         margin-bottom: 2rem;
-        max-width: 600px;
+        max-width: 700px;
         margin-left: auto;
         margin-right: auto;
+        position: relative;
+        z-index: 1;
+        line-height: 1.6;
     }
     
     .countries-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-        gap: 2rem;
-        margin-bottom: 3rem;
+        grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+        gap: 2.5rem;
+        max-width: 1400px;
+        margin: 0 auto 3rem;
+        padding: 0 2rem;
+        position: relative;
+        z-index: 1;
     }
     
     .country-card {
-        background: white;
-        border-radius: 12px;
+        background-color: var(--card-color);
+        border-radius: 1rem;
         padding: 2rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-        border-left: 4px solid;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
     }
-    
+
     .country-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        transform: translateY(-5px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
     }
     
     .country-header {
@@ -65,6 +92,8 @@
     .country-flag {
         font-size: 2.5rem;
         line-height: 1;
+        font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Segoe UI Symbol', 'Android Emoji', 'EmojiSymbols', sans-serif;
+        font-feature-settings: 'liga' off;
     }
     
     .country-info {
@@ -74,21 +103,27 @@
     .country-code {
         font-size: 1.5rem;
         font-weight: 700;
-        color: #333;
+        color: #ffffff;
         margin-bottom: 0.25rem;
+        margin-top: 0;
         line-height: 1;
     }
     
     .country-name {
         font-size: 1.1rem;
         font-weight: 600;
-        color: #666;
+        color: #cccccc;
         margin: 0;
+    }
+    
+    .country-footer {
+        margin-top: auto;
+        padding-top: 1rem;
     }
     
     .country-description {
         font-size: 0.95rem;
-        color: #555;
+        color: #e0e0e0;
         line-height: 1.6;
         margin-bottom: 1.5rem;
         display: -webkit-box;
@@ -98,28 +133,35 @@
     }
     
     .awareness-section {
-        background: #f8f9fa;
-        border-radius: 8px;
-        padding: 1rem;
-        margin-bottom: 1.5rem;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 1rem;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        text-align: center;
     }
+    
+
     
     .awareness-label {
         font-size: 0.85rem;
-        color: #666;
+        color: #cbd5e1;
         margin-bottom: 0.5rem;
         text-transform: uppercase;
         letter-spacing: 0.5px;
         font-weight: 600;
+        position: relative;
+        z-index: 1;
     }
     
     .awareness-value {
         font-size: 1.25rem;
         font-weight: 700;
-        color: #333;
+        color: #5eead4;
         display: flex;
         align-items: center;
         gap: 0.5rem;
+        position: relative;
+        z-index: 1;
     }
     
     .awareness-stars {
@@ -129,33 +171,54 @@
     .explore-link {
         display: inline-flex;
         align-items: center;
-        background: #007bff;
+        justify-content: center;
+        background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
         color: white;
         text-decoration: none;
-        padding: 0.75rem 1.5rem;
-        border-radius: 8px;
-        font-weight: 600;
-        font-size: 0.9rem;
-        transition: background-color 0.2s ease, transform 0.2s ease;
+        padding: 1rem 2rem;
+        border-radius: 0.75rem;
+        font-weight: 700;
+        font-size: 1rem;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         width: 100%;
-        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+        box-shadow: 0 4px 20px rgba(20, 184, 166, 0.2);
     }
     
-    .explore-link:hover {
-        background: #0056b3;
-        color: white;
-        text-decoration: none;
-        transform: translateY(-1px);
+    .explore-link::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #2dd4bf 0%, #14b8a6 100%);
+        transition: all 0.4s ease;
+        z-index: -1;
     }
     
     .explore-link::after {
         content: '→';
         margin-left: 0.5rem;
-        transition: transform 0.2s ease;
+        font-size: 1.1em;
+        transition: transform 0.3s ease;
+    }
+    
+    .explore-link:hover {
+        color: white;
+        text-decoration: none;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 30px rgba(20, 184, 166, 0.4);
+    }
+    
+    .explore-link:hover::before {
+        left: 0;
     }
     
     .explore-link:hover::after {
-        transform: translateX(2px);
+        transform: translateX(5px);
     }
     
     .container {
@@ -167,7 +230,8 @@
     @media (max-width: 768px) {
         .countries-grid {
             grid-template-columns: 1fr;
-            gap: 1.5rem;
+            gap: 2rem;
+            padding: 0 1rem;
         }
         
         .country-card {
@@ -193,14 +257,14 @@
 
     <div class="countries-grid">
         {% for country in travel_guides %}
-        <div class="country-card" style="border-left-color: {{ country.color|default:'#007bff' }}">
-            <div class="country-header">
+        <section class="country-card" style="--card-color: {{ country.color|default:'#007bff' }}">
+            <header class="country-header">
                 <div class="country-flag">{{ country.flag_emoji }}</div>
                 <div class="country-info">
-                    <div class="country-code">{{ country.code }}</div>
-                    <div class="country-name">{{ country.name }}</div>
+                    <h2 class="country-code">{{ country.code }}</h2>
+                    <h3 class="country-name">{{ country.name }}</h3>
                 </div>
-            </div>
+            </header>
             
             <div class="country-description">{{ country.summary }}</div>
             
@@ -220,10 +284,12 @@
                 </div>
             </div>
             
-            <a href="{% url 'travel:country_detail' country.slug %}" class="explore-link">
-                Explore {{ country.name }}
-            </a>
-        </div>
+            <footer class="country-footer">
+                <a href="{% url 'travel:country_detail' country.slug %}" class="explore-link">
+                    Explore {{ country.name }}
+                </a>
+            </footer>
+        </section>
         {% endfor %}
     </div>
 </div>
