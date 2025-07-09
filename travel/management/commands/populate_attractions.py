@@ -214,6 +214,36 @@ class Command(BaseCommand):
                     'category': 'monument',
                     'gluten_free_info': 'Mumbai offers excellent South Indian rice dishes and restaurants with dedicated gluten-free menus.'
                 }
+            ],
+            'Australia': [
+                {
+                    'name': 'Sydney Opera House',
+                    'local_name': 'Sydney Opera House',
+                    'description': 'Multi-venue performing arts center and UNESCO World Heritage Site, iconic symbol of Australia.',
+                    'category': 'landmark',
+                    'gluten_free_info': 'The Opera House restaurants offer gluten-free options, and Sydney has numerous celiac-friendly dining establishments.'
+                },
+                {
+                    'name': 'Uluru',
+                    'local_name': 'Ayers Rock',
+                    'description': 'Large sandstone rock formation sacred to Aboriginal Australians, located in Uluru-Kata Tjuta National Park.',
+                    'category': 'landmark',
+                    'gluten_free_info': 'Resort dining offers gluten-free options, and Alice Springs has several restaurants catering to celiac needs.'
+                },
+                {
+                    'name': 'Great Barrier Reef',
+                    'local_name': 'Great Barrier Reef',
+                    'description': 'World\'s largest coral reef system and UNESCO World Heritage Site, visible from outer space.',
+                    'category': 'landmark',
+                    'gluten_free_info': 'Cairns and Port Douglas offer excellent gluten-free seafood restaurants and tour operators provide celiac-safe meals.'
+                },
+                {
+                    'name': 'Royal Botanic Gardens',
+                    'local_name': 'Royal Botanic Gardens Sydney',
+                    'description': 'Historic botanical garden in Sydney with stunning harbor views and diverse plant collections.',
+                    'category': 'park',
+                    'gluten_free_info': 'Garden cafe offers gluten-free options, and nearby Circular Quay has many celiac-friendly restaurants.'
+                }
             ]
         }
         

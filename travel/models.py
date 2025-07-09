@@ -69,10 +69,37 @@ class RestaurantPhrase(models.Model):
             ('ordering', _('Ordering')),
             ('ingredients', _('Ingredients')),
             ('emergency', _('Emergency')),
+            ('message', _('E-Card Messages')),
         ],
         default='general'
     )
     
     def __str__(self):
         return f"{self.english_text[:30]}... ({self.country.name})"
-# Create your models here.
+
+class Attraction(models.Model):
+    """Model for storing tourist attractions and monuments"""
+    country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name='attractions')
+    name = models.CharField(max_length=200)
+    local_name = models.CharField(max_length=200, blank=True, help_text="Name in local language")
+    description = models.TextField()
+    category = models.CharField(
+        max_length=20,
+        choices=[
+            ('monument', 'Monument'),
+            ('museum', 'Museum'),
+            ('landmark', 'Landmark'),
+            ('park', 'Park/Garden'),
+            ('religious', 'Religious Site'),
+            ('cultural', 'Cultural Site'),
+        ],
+        default='landmark'
+    )
+    gluten_free_info = models.TextField(blank=True, help_text="Information about gluten-free options at or near this attraction")
+    
+    def __str__(self):
+        return f"{self.name} ({self.country.name})"
+    
+    class Meta:
+        verbose_name_plural = "Attractions"
+        ordering = ['name']

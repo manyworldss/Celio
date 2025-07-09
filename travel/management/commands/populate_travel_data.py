@@ -103,6 +103,16 @@ class Command(BaseCommand):
                 'celiac_awareness': 2,
                 'summary': 'India has limited celiac awareness, though rice-based dishes in South India and naturally gluten-free options like dal and vegetables are abundant. Wheat-based breads (roti, naan) are staples in North Indian cuisine.',
                 'dining_tips': 'South Indian cuisine with rice-based dishes is generally safer. Plain rice, dal (lentils), and vegetable curries are typically gluten-free. Avoid wheat-based breads and be cautious with spice mixes that may contain wheat flour. Communicate dietary needs clearly as cross-contamination is common in kitchens.'
+            },
+            {
+                'name': 'Australia',
+                'code': 'AU',
+                'flag_emoji': '🇦🇺',
+                'language': 'English',
+                'language_code': 'en',
+                'celiac_awareness': 5,
+                'summary': 'Australia has very high level of celiac awareness, supported by Coeliac Australia. The country has excellent gluten-free labeling laws and widespread availability of certified gluten-free products in supermarkets and restaurants.',
+                'dining_tips': 'Look for certified gluten-free products with the crossed grain symbol. Major supermarket chains like Woolworths and Coles have extensive gluten-free sections. Many restaurants offer gluten-free menus, and staff are generally well-trained about cross-contamination. Australian cafes often have gluten-free bread and cake options.'
             }
         ]
         
@@ -301,6 +311,26 @@ class Command(BaseCommand):
                     'description': 'Fried pastry with filling',
                     'ingredients': 'Wheat flour pastry, various fillings'
                 }
+            ],
+            'AU': [
+                {
+                    'name': 'Meat Pie',
+                    'local_name': 'Meat Pie',
+                    'description': 'Traditional Australian pastry filled with meat',
+                    'ingredients': 'Wheat flour pastry, meat filling'
+                },
+                {
+                    'name': 'Lamington',
+                    'local_name': 'Lamington',
+                    'description': 'Sponge cake coated in chocolate and coconut',
+                    'ingredients': 'Wheat flour, chocolate, coconut'
+                },
+                {
+                    'name': 'Fish and Chips (battered)',
+                    'local_name': 'Fish and Chips',
+                    'description': 'Battered fish with chips',
+                    'ingredients': 'Wheat flour batter, fish, potatoes'
+                }
             ]
         }
         
@@ -325,7 +355,8 @@ class Command(BaseCommand):
                     'KR': '저는 셀리악병이 있습니다. 글루텐을 먹을 수 없습니다.',
                     'SA': 'أعاني من مرض السيلياك. لا أستطيع أكل الغلوتين.',
                     'RU': 'У меня целиакия. Я не могу есть глютен.',
-                    'IN': 'मुझे सीलिएक रोग है। मैं ग्लूटेन नहीं खा सकता।'
+                    'IN': 'मुझे सीलिएक रोग है। मैं ग्लूटेन नहीं खा सकता।',
+                    'AU': 'I have celiac disease. I cannot eat gluten.'
                 }
             },
             {
@@ -340,7 +371,8 @@ class Command(BaseCommand):
                     'KR': '이 음식은 글루텐 프리인가요?',
                     'SA': 'هل هذا الطعام خالي من الغلوتين؟',
                     'RU': 'Эта еда без глютена?',
-                    'IN': 'क्या यह भोजन ग्लूटेन-फ्री है?'
+                    'IN': 'क्या यह भोजन ग्लूटेन-फ्री है?',
+                    'AU': 'Is this food gluten-free?'
                 }
             }
         ]
@@ -369,7 +401,8 @@ class Command(BaseCommand):
                     'KR': '글루텐 없이 이것을 준비해 주실 수 있나요?',
                     'SA': 'هل يمكنكم تحضير هذا بدون غلوتين؟',
                     'RU': 'Можете ли вы приготовить это без глютена?',
-                    'IN': 'क्या आप इसे ग्लूटेन के बिना तैयार कर सकते हैं?'
+                    'IN': 'क्या आप इसे ग्लूटेन के बिना तैयार कर सकते हैं?',
+                    'AU': 'Can you prepare this without gluten?'
                 }
             }
         ]
@@ -398,13 +431,60 @@ class Command(BaseCommand):
                     'KR': '이것에 밀, 보리, 또는 호밀이 들어있나요?',
                     'SA': 'هل يحتوي هذا على القمح أو الشعير أو الجاودار؟',
                     'RU': 'Содержит ли это пшеницу, ячмень или рожь?',
-                    'IN': 'क्या इसमें गेहूं, जौ, या राई है?'
+                    'IN': 'क्या इसमें गेहूं, जौ, या राई है?',
+                    'AU': 'Does this contain wheat, barley, or rye?'
                 }
             }
         ]
         
         # Add ingredient phrases
         for phrase_data in ingredient_phrases:
+            if country.code in phrase_data['translations']:
+                RestaurantPhrase.objects.create(
+                    country=country,
+                    category=phrase_data['category'],
+                    english_text=phrase_data['english_text'],
+                    translated_text=phrase_data['translations'][country.code]
+                )
+                
+        # Add e-card message phrases
+        message_phrases = [
+            {
+                'category': 'message',
+                'english_text': 'I have celiac disease and cannot eat gluten. Please help me find safe food options.',
+                'translations': {
+                    'IT': 'Ho la celiachia e non posso mangiare glutine. Per favore aiutatemi a trovare opzioni alimentari sicure.',
+                    'FR': 'Je suis atteint(e) de la maladie cœliaque et ne peux pas manger de gluten. Aidez-moi s\'il vous plaît à trouver des options alimentaires sûres.',
+                    'ES': 'Tengo enfermedad celíaca y no puedo comer gluten. Por favor ayúdenme a encontrar opciones de comida segura.',
+                    'US': 'I have celiac disease and cannot eat gluten. Please help me find safe food options.',
+                    'JP': '私はセリアック病でグルテンを食べることができません。安全な食べ物の選択肢を見つけるのを手伝ってください。',
+                    'KR': '저는 셀리악병이 있어서 글루텐을 먹을 수 없습니다. 안전한 음식 옵션을 찾는 것을 도와주세요.',
+                    'SA': 'أعاني من مرض السيلياك ولا أستطيع أكل الغلوتين. من فضلكم ساعدوني في العثور على خيارات طعام آمنة.',
+                    'RU': 'У меня целиакия, и я не могу есть глютен. Пожалуйста, помогите мне найти безопасные варианты питания.',
+                    'IN': 'मुझे सीलिएक रोग है और मैं ग्लूटेन नहीं खा सकता। कृपया मुझे सुरक्षित भोजन विकल्प खोजने में मदद करें।',
+                    'AU': 'I have celiac disease and cannot eat gluten. Please help me find safe food options.'
+                }
+            },
+            {
+                'category': 'message',
+                'english_text': 'Emergency: I need gluten-free food immediately due to celiac disease.',
+                'translations': {
+                    'IT': 'Emergenza: Ho bisogno immediatamente di cibo senza glutine a causa della celiachia.',
+                    'FR': 'Urgence: J\'ai besoin immédiatement de nourriture sans gluten à cause de la maladie cœliaque.',
+                    'ES': 'Emergencia: Necesito comida sin gluten inmediatamente debido a la enfermedad celíaca.',
+                    'US': 'Emergency: I need gluten-free food immediately due to celiac disease.',
+                    'JP': '緊急事態：セリアック病のため、すぐにグルテンフリーの食べ物が必要です。',
+                    'KR': '응급상황: 셀리악병 때문에 즉시 글루텐 프리 음식이 필요합니다.',
+                    'SA': 'طوارئ: أحتاج إلى طعام خالي من الغلوتين فوراً بسبب مرض السيلياك.',
+                    'RU': 'Экстренная ситуация: Мне срочно нужна еда без глютена из-за целиакии.',
+                    'IN': 'आपातकाल: सीलिएक रोग के कारण मुझे तुरंत ग्लूटेन-फ्री भोजन की आवश्यकता है।',
+                    'AU': 'Emergency: I need gluten-free food immediately due to celiac disease.'
+                }
+            }
+        ]
+        
+        # Add message phrases
+        for phrase_data in message_phrases:
             if country.code in phrase_data['translations']:
                 RestaurantPhrase.objects.create(
                     country=country,
