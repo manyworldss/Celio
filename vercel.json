@@ -2,6 +2,11 @@
   "version": 2,
   "buildCommand": "bash build_files.sh",
   "outputDirectory": "staticfiles",
+  "functions": {
+    "vercel_app.py": {
+      "runtime": "python3.9"
+    }
+  },
   "routes": [
     {
       "src": "/static/(.*)",
@@ -13,7 +18,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "vercel_app.py"
+      "dest": "/vercel_app.py"
     }
   ]
 }

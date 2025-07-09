@@ -28,10 +28,10 @@ load_dotenv(BASE_DIR / '.env.development.local')
 
 
 # SECURITY WARNING: don't run with debug turned on in production! Set to false when production ready
-DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
+DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 
 # Environment-based settings
-ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,.vercel.app').split(',')
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,*.vercel.app').split(',')
 
 # Configure CSRF protection to work with browser previews
 CSRF_TRUSTED_ORIGINS = [
@@ -44,7 +44,7 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 # Secret key - using environment variable in production
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-fallback-key-for-development-only')
 
 # Security settings for production
 if not DEBUG:
