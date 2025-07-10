@@ -28,14 +28,14 @@ load_dotenv(BASE_DIR / '.env.development.local')
 
 
 # SECURITY WARNING: don't run with debug turned on in production! Set to false when production ready
-# Set DEBUG to False in production, especially on Vercel
-if os.environ.get('VERCEL') == '1':
+# Set DEBUG to False in production, especially on Railway
+if os.environ.get('RAILWAY_ENVIRONMENT'):
     DEBUG = False
 else:
     DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 
 # Environment-based settings
-ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,*.vercel.app').split(',')
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,.railway.app').split(',')
 
 # Configure CSRF protection to work with browser previews
 CSRF_TRUSTED_ORIGINS = [
@@ -44,7 +44,7 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8002',
     'http://localhost:8001',
     'http://127.0.0.1:*',  # Allow any port on 127.0.0.1 for development
-    'https://*.vercel.app',  # Allow Vercel domains
+    'https://*.railway.app',  # Allow Railway domains
 ]
 
 # Secret key - using environment variable in production
@@ -187,7 +187,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
-# WhiteNoise configuration for Vercel
+# WhiteNoise configuration for Railway
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Media files configuration
