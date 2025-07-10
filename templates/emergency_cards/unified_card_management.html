@@ -143,7 +143,7 @@
         margin-top: 0.5rem;
     }
     
-    /* Action buttons with improved styling */
+    /* Action buttons with improved styling and green animations */
     .action-button {
         display: inline-flex;
         align-items: center;
@@ -154,26 +154,33 @@
         padding: 0.75rem 1.25rem;
         font-size: 0.875rem;
         transition: all 0.2s ease;
+        animation: green-pulse 2s infinite;
     }
     
     .action-button-primary {
         background-color: var(--teal-600);
         color: white;
         border: none;
+        animation: green-pulse 2s infinite;
+        box-shadow: 0 0 10px rgba(45, 212, 191, 0.3);
     }
     
     .action-button-primary:hover {
         background-color: var(--teal-500);
+        animation-play-state: paused;
+        box-shadow: 0 0 15px rgba(45, 212, 191, 0.5);
     }
     
     .action-button-secondary {
         background-color: rgba(20, 50, 42, 0.4);
         color: white;
         border: 1px solid var(--spruce-700);
+        animation: green-pulse 2.5s infinite;
     }
 
     .action-button-secondary:hover {
         background-color: rgba(20, 50, 42, 0.6);
+        animation-play-state: paused;
     }
     
     /* Intro panel */
@@ -238,11 +245,20 @@
     }
     
     .primary-gradient-overlay {
-        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(45, 212, 191, 0.03) 0%, rgba(16, 185, 129, 0.02) 100%);
+        z-index: -2;
     }
     
     .gradient-accent {
-        display: none;
+        position: absolute;
+        border-radius: 50%;
+        animation: float 12s ease-in-out infinite;
+        z-index: -1;
     }
     
     @keyframes float {
@@ -308,51 +324,346 @@
     .star-emoji:last-child {
         animation-delay: 1s;
     }
+    
+    /* Floating orbs for CTA background animation */
+    .floating-orb {
+        position: absolute;
+        border-radius: 50%;
+        background: linear-gradient(45deg, rgba(45, 212, 191, 0.3), rgba(16, 185, 129, 0.2));
+        animation: floatOrb 8s ease-in-out infinite;
+        filter: blur(1px);
+    }
+    
+    .floating-orb-1 {
+        width: 60px;
+        height: 60px;
+        top: 10%;
+        left: 15%;
+        animation-delay: 0s;
+    }
+    
+    .floating-orb-2 {
+        width: 40px;
+        height: 40px;
+        top: 60%;
+        right: 20%;
+        animation-delay: -3s;
+    }
+    
+    .floating-orb-3 {
+        width: 30px;
+        height: 30px;
+        bottom: 20%;
+        left: 70%;
+        animation-delay: -6s;
+    }
+    
+    @keyframes floatOrb {
+        0%, 100% {
+            transform: translateY(0px) translateX(0px) scale(1);
+            opacity: 0.3;
+        }
+        25% {
+            transform: translateY(-20px) translateX(10px) scale(1.1);
+            opacity: 0.5;
+        }
+        50% {
+            transform: translateY(-10px) translateX(-15px) scale(0.9);
+            opacity: 0.4;
+        }
+        75% {
+            transform: translateY(-30px) translateX(5px) scale(1.05);
+            opacity: 0.6;
+        }
+    }
+    
+    /* Enhanced mobile-friendly green background animations */
+    .primary-gradient-bg::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+            radial-gradient(circle at 20% 80%, rgba(45, 212, 191, 0.08) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(16, 185, 129, 0.08) 0%, transparent 50%),
+            radial-gradient(circle at 40% 40%, rgba(34, 197, 94, 0.06) 0%, transparent 50%);
+        animation: subtleBackgroundShift 20s ease-in-out infinite;
+        z-index: -1;
+    }
+    
+    .primary-gradient-bg::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+            radial-gradient(circle at 60% 30%, rgba(45, 212, 191, 0.04) 0%, transparent 60%),
+            radial-gradient(circle at 30% 70%, rgba(16, 185, 129, 0.04) 0%, transparent 60%);
+        animation: subtleBackgroundShift 25s ease-in-out infinite reverse;
+        z-index: -1;
+    }
+    
+    @keyframes subtleBackgroundShift {
+        0%, 100% {
+            transform: translateX(0) translateY(0) scale(1);
+            opacity: 0.8;
+        }
+        25% {
+            transform: translateX(-15px) translateY(-8px) scale(1.03);
+            opacity: 0.9;
+        }
+        50% {
+            transform: translateX(8px) translateY(-12px) scale(0.97);
+            opacity: 1;
+        }
+        75% {
+            transform: translateX(-8px) translateY(8px) scale(1.02);
+            opacity: 0.85;
+        }
+    }
+    
+    /* Enhanced floating green particles */
+    .green-particle {
+        position: absolute;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(45, 212, 191, 0.8) 0%, rgba(45, 212, 191, 0.4) 50%, transparent 100%);
+        animation: floatParticle 12s ease-in-out infinite;
+        pointer-events: none;
+        z-index: -1;
+        box-shadow: 0 0 10px rgba(45, 212, 191, 0.3);
+    }
+    
+    .green-particle-1 {
+        width: 6px;
+        height: 6px;
+        top: 15%;
+        left: 10%;
+        animation-delay: 0s;
+    }
+    
+    .green-particle-2 {
+        width: 8px;
+        height: 8px;
+        top: 25%;
+        right: 15%;
+        animation-delay: -3s;
+    }
+    
+    .green-particle-3 {
+        width: 5px;
+        height: 5px;
+        bottom: 30%;
+        left: 20%;
+        animation-delay: -6s;
+    }
+    
+    .green-particle-4 {
+        width: 7px;
+        height: 7px;
+        top: 60%;
+        right: 25%;
+        animation-delay: -9s;
+    }
+    
+    @keyframes floatParticle {
+        0%, 100% {
+            transform: translateY(0px) translateX(0px) scale(1);
+            opacity: 0.4;
+        }
+        25% {
+            transform: translateY(-25px) translateX(15px) scale(1.2);
+            opacity: 0.8;
+        }
+        50% {
+            transform: translateY(-15px) translateX(-20px) scale(0.8);
+            opacity: 0.6;
+        }
+        75% {
+            transform: translateY(-35px) translateX(10px) scale(1.1);
+            opacity: 0.9;
+        }
+    }
+    
+    /* Green pulse animation for buttons */
+    .green-pulse {
+        animation: greenPulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes greenPulse {
+        0%, 100% {
+            box-shadow: 0 0 0 0 rgba(45, 212, 191, 0.7);
+        }
+        50% {
+            box-shadow: 0 0 0 10px rgba(45, 212, 191, 0);
+        }
+    }
+    
+    /* Green glow effect for cards */
+    .green-glow {
+        box-shadow: 0 0 20px rgba(45, 212, 191, 0.3), 0 0 40px rgba(45, 212, 191, 0.1);
+        transition: box-shadow 0.3s ease;
+    }
+    
+    .green-glow:hover {
+        box-shadow: 0 0 30px rgba(45, 212, 191, 0.5), 0 0 60px rgba(45, 212, 191, 0.2);
+    }
+    
+    .green-particle-2 {
+        width: 6px;
+        height: 6px;
+        top: 45%;
+        right: 15%;
+        animation-delay: -3s;
+    }
+    
+    .green-particle-3 {
+        width: 3px;
+        height: 3px;
+        bottom: 25%;
+        left: 25%;
+        animation-delay: -6s;
+    }
+    
+    .green-particle-4 {
+        width: 5px;
+        height: 5px;
+        top: 70%;
+        right: 30%;
+        animation-delay: -9s;
+    }
+    
+    .green-particle-5 {
+        width: 4px;
+        height: 4px;
+        bottom: 40%;
+        right: 10%;
+        animation-delay: -12s;
+    }
+    
+    @keyframes floatParticle {
+        0%, 100% {
+            transform: translateY(0px) translateX(0px) scale(1);
+            opacity: 0.3;
+        }
+        25% {
+            transform: translateY(-30px) translateX(15px) scale(1.2);
+            opacity: 0.6;
+        }
+        50% {
+            transform: translateY(-15px) translateX(-20px) scale(0.8);
+            opacity: 0.4;
+        }
+        75% {
+            transform: translateY(-45px) translateX(10px) scale(1.1);
+            opacity: 0.7;
+        }
+    }
+    
+    /* Mobile optimizations for particles */
+    @media (max-width: 768px) {
+        .green-particle {
+            animation-duration: 15s;
+        }
+        
+        @keyframes floatParticle {
+            0%, 100% {
+                transform: translateY(0px) translateX(0px) scale(1);
+                opacity: 0.2;
+            }
+            25% {
+                transform: translateY(-20px) translateX(10px) scale(1.1);
+                opacity: 0.4;
+            }
+            50% {
+                transform: translateY(-10px) translateX(-15px) scale(0.9);
+                opacity: 0.3;
+            }
+            75% {
+                transform: translateY(-30px) translateX(8px) scale(1.05);
+                opacity: 0.5;
+            }
+        }
+    }
+    
+    /* Enhanced CTA hover effects */
+    .cta-soft-box:hover .floating-orb {
+        animation-duration: 6s;
+        filter: blur(0.5px);
+    }
+    
+    .feature-item {
+        transition: all 0.3s ease;
+    }
+    
+    /* Reduce motion for users who prefer it */
+    @media (prefers-reduced-motion: reduce) {
+        .floating-orb,
+        .primary-gradient-bg::before,
+        .star-emoji {
+            animation: none;
+        }
+        
+        .cta-soft-box:hover .floating-orb {
+            animation: none;
+        }
+    }
 </style>
 {% endblock %}
 
 {% block content %}
-<!-- Hero Banner Section -->
-<div class="bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 relative overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-r from-blue-900/20 via-transparent to-purple-900/20"></div>
-    <div class="max-w-4xl mx-auto px-6 py-12 relative text-center">
-        <div class="mb-6">
-            <div class="flex items-center justify-center mb-4">
-                <span class="star-emoji text-3xl mr-3">🌟</span>
-                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white">Celio E-Card! Try it yourself!</h1>
-                <span class="star-emoji text-3xl ml-3">🌟</span>
-            </div>
-            <p class="text-lg sm:text-xl text-gray-300 mb-8">Create your personalized medical card in minutes</p>
+<!-- Soft CTA Box Section -->
+<div class="max-w-4xl mx-auto px-6 py-8 relative">
+    <div class="cta-soft-box bg-black/40 backdrop-blur-md rounded-2xl p-8 border border-white/10 shadow-2xl relative overflow-hidden group hover:bg-black/50 transition-all duration-500">
+        <!-- Subtle animated background elements -->
+        <div class="absolute inset-0 opacity-20">
+            <div class="floating-orb floating-orb-1"></div>
+            <div class="floating-orb floating-orb-2"></div>
+            <div class="floating-orb floating-orb-3"></div>
         </div>
         
-        <div class="flex flex-wrap items-center justify-center gap-8 text-gray-300">
-            <div class="flex items-center space-x-3">
-                <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
-                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                    </svg>
+        <div class="relative z-10 text-center">
+            <div class="mb-6">
+                <div class="flex items-center justify-center mb-4">
+                    <span class="star-emoji text-2xl mr-3 group-hover:scale-110 transition-transform duration-300">🌟</span>
+                    <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white group-hover:text-teal-200 transition-colors duration-300">Celio E-Card! Try it yourself!</h1>
+                    <span class="star-emoji text-2xl ml-3 group-hover:scale-110 transition-transform duration-300">🌟</span>
                 </div>
-                <span class="text-sm font-medium">Quick Setup</span>
+                <p class="text-base sm:text-lg text-gray-300 mb-6 group-hover:text-gray-200 transition-colors duration-300">Create your personalized medical card in minutes</p>
             </div>
-            <div class="flex items-center space-x-3">
-                <div class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
-                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
-                    </svg>
+            
+            <div class="flex flex-wrap items-center justify-center gap-6 text-gray-300">
+                <div class="flex items-center space-x-3 feature-item group-hover:scale-105 transition-transform duration-300">
+                    <div class="w-7 h-7 bg-blue-500/80 rounded-lg flex items-center justify-center group-hover:bg-blue-400 transition-colors duration-300">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <span class="text-sm font-medium">Quick Setup</span>
                 </div>
-                <span class="text-sm font-medium">Multi-Language</span>
-            </div>
-            <div class="flex items-center space-x-3">
-                <div class="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center">
-                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                    </svg>
+                <div class="flex items-center space-x-3 feature-item group-hover:scale-105 transition-transform duration-300">
+                    <div class="w-7 h-7 bg-green-500/80 rounded-lg flex items-center justify-center group-hover:bg-green-400 transition-colors duration-300">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
+                        </svg>
+                    </div>
+                    <span class="text-sm font-medium">Multi-Language</span>
                 </div>
-                <span class="text-sm font-medium">Always Secure</span>
+                <div class="flex items-center space-x-3 feature-item group-hover:scale-105 transition-transform duration-300">
+                    <div class="w-7 h-7 bg-purple-500/80 rounded-lg flex items-center justify-center group-hover:bg-purple-400 transition-colors duration-300">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                    </div>
+                    <span class="text-sm font-medium">Always Secure</span>
+                </div>
             </div>
+            
+            <p class="text-gray-400 mt-6 text-sm max-w-2xl mx-auto group-hover:text-gray-300 transition-colors duration-300">Perfect for travelers, people with allergies, and anyone who wants to communicate their medical needs clearly</p>
         </div>
-        
-        <p class="text-gray-400 mt-8 text-sm max-w-2xl mx-auto">Perfect for travelers, people with allergies, and anyone who wants to communicate their medical needs clearly</p>
     </div>
 </div>
 
@@ -361,6 +672,13 @@
         <div class="primary-gradient-overlay"></div>
     <div class="gradient-accent gradient-accent-1"></div>
     <div class="gradient-accent gradient-accent-2"></div>
+    
+    <!-- Floating green particles for subtle animation -->
+    <div class="green-particle green-particle-1"></div>
+    <div class="green-particle green-particle-2"></div>
+    <div class="green-particle green-particle-3"></div>
+    <div class="green-particle green-particle-4"></div>
+    <div class="green-particle green-particle-5"></div>
 </div>
 
 <div class="min-h-screen py-4 sm:py-6 lg:py-8">
@@ -376,7 +694,7 @@
             <div class="mb-6">
                 <!-- Card Container with Mobile-First Design -->
                 <div class="flex justify-center px-4">
-                    <div class="w-full max-w-sm sm:max-w-md">
+                    <div class="w-full max-w-sm sm:max-w-md green-glow">
                         {% include "emergency_cards/partials/editable_card.html" with card=card preview_theme=preview_theme language_choices=language_choices current_lang=current_lang is_preview=True %}
                     </div>
                 </div>
@@ -398,7 +716,7 @@
                     <div class="bg-gradient-to-br from-spruce-700/50 to-spruce-800/30 rounded-xl border border-spruce-600/30 backdrop-blur-sm overflow-hidden">
                         <button type="button" 
                                 onclick="toggleGuide()" 
-                                class="w-full p-4 sm:p-6 flex items-center justify-between text-left hover:bg-spruce-700/30 transition-all duration-300">
+                                class="w-full p-4 sm:p-6 flex items-center justify-between text-left hover:bg-spruce-700/30 transition-all duration-300 green-pulse">
                             <div class="flex items-center space-x-3">
                                 <div class="flex-shrink-0 w-10 h-10 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
                                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -512,30 +830,6 @@
             
 
                 </div> <!-- End of hidden sections -->
-
-                <!-- Card Container (Full Screen) -->
-                <div class="card-fullscreen-container max-w-4xl mx-auto">
-                    
-                    <!-- Card Preview Container (full-width) -->
-                    <div id="card-preview-container" class="relative overflow-hidden bg-white bg-opacity-5 rounded-lg p-4 flex justify-center items-center">
-                        <!-- This container will be populated by the editable card when editing -->
-                    </div>
-                    
-                    <!-- Hidden theme input that will be updated by JavaScript -->
-                    {% with current_theme=preview_theme %}
-                        {% if not current_theme and card and card.theme %}
-                            {% with current_theme=card.theme %}
-                                <input type="hidden" name="theme" id="selected-theme" value="{{ current_theme }}">
-                            {% endwith %}
-                        {% elif not current_theme %}
-                            {% with current_theme='light' %}
-                                <input type="hidden" name="theme" id="selected-theme" value="{{ current_theme }}">
-                            {% endwith %}
-                        {% else %}
-                            <input type="hidden" name="theme" id="selected-theme" value="{{ current_theme }}">
-                        {% endif %}
-                    {% endwith %}
-                </div>
 
                 <!-- Hidden sections that were previously visible -->
                 <div class="hidden">

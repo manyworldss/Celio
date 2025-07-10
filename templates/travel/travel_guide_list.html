@@ -1,296 +1,494 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load travel_filters %}
 
 {% block title %}Travel Guides - Celio{% endblock %}
 
 {% block extra_head %}
 <style>
-    body {
-        background: #000;
-        color: #ffffff;
-        font-family: 'Hex Franklin', sans-serif;
-        margin: 0;
-        padding: 0;
-        min-height: 100vh;
-        position: relative;
-        overflow-x: hidden;
-    }
-    
-
-    
     .page-header {
         text-align: center;
-        padding: 4rem 2rem;
-        background: transparent;
-        margin: 2rem auto 3rem;
+        padding: 4rem 2rem 3rem;
         max-width: 1200px;
+        margin: 0 auto;
         position: relative;
+        overflow: hidden;
     }
     
-
+    .page-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+            radial-gradient(circle at 20% 30%, rgba(45, 212, 191, 0.08) 0%, transparent 50%),
+            radial-gradient(circle at 80% 70%, rgba(16, 185, 129, 0.06) 0%, transparent 50%);
+        animation: headerGlow 8s ease-in-out infinite;
+        z-index: -1;
+    }
+    
+    @keyframes headerGlow {
+        0%, 100% {
+            transform: scale(1) rotate(0deg);
+            opacity: 0.6;
+        }
+        50% {
+            transform: scale(1.1) rotate(2deg);
+            opacity: 0.8;
+        }
+    }
+    
+    .title-container {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 1.5rem;
+    }
     
     .page-title {
         font-size: 3.5rem;
         font-weight: 900;
-        margin-bottom: 1rem;
-        background: linear-gradient(135deg, #ffffff 0%, #5eead4 50%, #2dd4bf 100%);
+        margin: 0;
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 30%, #334155 60%, #475569 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
         position: relative;
-        z-index: 1;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        animation: titleFloat 6s ease-in-out infinite;
     }
+    
+    @keyframes titleFloat {
+        0%, 100% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-5px);
+        }
+    }
+    
+
     
     .page-subtitle {
         font-size: 1.3rem;
-        color: #cbd5e1;
-        margin-bottom: 2rem;
+        color: #64748b;
+        margin-bottom: 3rem;
         max-width: 700px;
         margin-left: auto;
         margin-right: auto;
+        line-height: 1.7;
+        font-weight: 500;
         position: relative;
-        z-index: 1;
-        line-height: 1.6;
+        animation: subtitleFade 3s ease-out;
+    }
+    
+    @keyframes subtitleFade {
+        0% {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .subtitle-highlight {
+        background: linear-gradient(135deg, #10b981, #06d6a0);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: 600;
+    }
+    
+    .travel-icons {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-bottom: 2rem;
+        opacity: 0.7;
+    }
+    
+    .travel-icon {
+        font-size: 1.5rem;
+        animation: iconBounce 3s ease-in-out infinite;
+    }
+    
+    .travel-icon:nth-child(1) { animation-delay: 0s; }
+    .travel-icon:nth-child(2) { animation-delay: 0.5s; }
+    .travel-icon:nth-child(3) { animation-delay: 1s; }
+    .travel-icon:nth-child(4) { animation-delay: 1.5s; }
+    .travel-icon:nth-child(5) { animation-delay: 2s; }
+    
+    @keyframes iconBounce {
+        0%, 20%, 50%, 80%, 100% {
+            transform: translateY(0);
+        }
+        40% {
+            transform: translateY(-10px);
+        }
+        60% {
+            transform: translateY(-5px);
+        }
     }
     
     .countries-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-        gap: 2.5rem;
-        max-width: 1400px;
-        margin: 0 auto 3rem;
-        padding: 0 2rem;
-        position: relative;
-        z-index: 1;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem 4rem;
     }
     
     .country-card {
-        background-color: var(--card-color);
+        background: var(--card-bg, #22c55e);
         border-radius: 1rem;
         padding: 2rem;
+        color: white;
         transition: all 0.3s ease;
         position: relative;
         overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     }
 
     .country-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
     }
     
     .country-header {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
+        justify-content: space-between;
         margin-bottom: 1.5rem;
-        gap: 1rem;
     }
     
     .country-flag {
-        font-size: 2.5rem;
+        font-size: 3rem;
         line-height: 1;
-        font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Segoe UI Symbol', 'Android Emoji', 'EmojiSymbols', sans-serif;
-        font-feature-settings: 'liga' off;
-    }
-    
-    .country-info {
-        flex: 1;
-    }
-    
-    .country-code {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #ffffff;
-        margin-bottom: 0.25rem;
-        margin-top: 0;
-        line-height: 1;
+        margin-bottom: 0.5rem;
+        display: block;
+        font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Segoe UI Symbol', sans-serif;
+        font-variant-emoji: emoji;
+        text-rendering: optimizeQuality;
+        -webkit-font-feature-settings: "liga" off;
+        font-feature-settings: "liga" off;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
     
     .country-name {
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: #cccccc;
-        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0 0 0.25rem 0;
+        color: white;
     }
     
-    .country-footer {
-        margin-top: auto;
-        padding-top: 1rem;
+    .country-language {
+        font-size: 0.9rem;
+        opacity: 0.9;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+    
+    .awareness-section {
+        text-align: right;
+    }
+    
+    .awareness-label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+        opacity: 0.9;
+    }
+    
+    .awareness-value {
+        font-size: 1.1rem;
+        font-weight: 700;
     }
     
     .country-description {
         font-size: 0.95rem;
-        color: #e0e0e0;
-        line-height: 1.6;
+        line-height: 1.5;
         margin-bottom: 1.5rem;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
+        opacity: 0.95;
     }
     
-    .awareness-section {
-        background: rgba(0, 0, 0, 0.2);
-        border-radius: 1rem;
-        padding: 1.5rem;
-        margin: 1.5rem 0;
-        text-align: center;
+    .dining-tips {
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 0.75rem;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
     }
     
-
-    
-    .awareness-label {
-        font-size: 0.85rem;
-        color: #cbd5e1;
-        margin-bottom: 0.5rem;
+    .dining-tips-label {
+        font-size: 0.75rem;
         text-transform: uppercase;
         letter-spacing: 0.5px;
         font-weight: 600;
-        position: relative;
-        z-index: 1;
+        margin-bottom: 0.5rem;
+        opacity: 0.9;
     }
     
-    .awareness-value {
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: #5eead4;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        position: relative;
-        z-index: 1;
-    }
-    
-    .awareness-stars {
-        color: #ffc107;
+    .dining-tips-text {
+        font-size: 0.9rem;
+        line-height: 1.4;
+        opacity: 0.95;
     }
     
     .explore-link {
         display: inline-flex;
         align-items: center;
-        justify-content: center;
-        background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+        justify-content: space-between;
+        background: rgba(255, 255, 255, 0.15);
         color: white;
         text-decoration: none;
-        padding: 1rem 2rem;
-        border-radius: 0.75rem;
-        font-weight: 700;
-        font-size: 1rem;
-        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        padding: 0.75rem 1.25rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
         width: 100%;
-        position: relative;
-        overflow: hidden;
-        z-index: 1;
-        box-shadow: 0 4px 20px rgba(20, 184, 166, 0.2);
-    }
-    
-    .explore-link::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(135deg, #2dd4bf 0%, #14b8a6 100%);
-        transition: all 0.4s ease;
-        z-index: -1;
-    }
-    
-    .explore-link::after {
-        content: '→';
-        margin-left: 0.5rem;
-        font-size: 1.1em;
-        transition: transform 0.3s ease;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
     }
     
     .explore-link:hover {
+        background: rgba(255, 255, 255, 0.25);
         color: white;
         text-decoration: none;
-        transform: translateY(-3px);
-        box-shadow: 0 8px 30px rgba(20, 184, 166, 0.4);
+        transform: translateY(-2px);
     }
     
-    .explore-link:hover::before {
-        left: 0;
+    .explore-arrow {
+        font-size: 1.1rem;
+        transition: transform 0.3s ease;
     }
     
-    .explore-link:hover::after {
-        transform: translateX(5px);
+    .explore-link:hover .explore-arrow {
+        transform: translateX(3px);
     }
     
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 2rem;
+    /* Country-specific card colors based on flag colors */
+    .country-card.au {
+        background: linear-gradient(135deg, #012169 0%, #00843d 100%);
+        color: white;
+    }
+    
+    .country-card.ca {
+        background: linear-gradient(135deg, #ff0000 0%, #d40000 100%);
+        color: white;
+    }
+    
+    .country-card.fr {
+        background: linear-gradient(135deg, #002654 0%, #ce1126 100%);
+        color: white;
+    }
+    
+    .country-card.de {
+        background: linear-gradient(135deg, #000000 0%, #dd0000 100%);
+        color: white;
+    }
+    
+    .country-card.ie {
+        background: linear-gradient(135deg, #009639 0%, #ff7900 100%);
+        color: white;
+    }
+    
+    .country-card.it {
+        background: linear-gradient(135deg, #009246 0%, #ce2b37 100%);
+        color: white;
+    }
+    
+    .country-card.gb {
+        background: linear-gradient(135deg, #012169 0%, #c8102e 100%);
+        color: white;
+    }
+    
+    .country-card.us {
+        background: linear-gradient(135deg, #b22234 0%, #3c3b6e 100%);
+        color: white;
+    }
+    
+    .country-card.sa {
+        background: linear-gradient(135deg, #006c35 0%, #ffffff 50%, #000000 100%);
+        color: #333;
+    }
+    
+    .country-card.kr {
+        background: linear-gradient(135deg, #cd2e3a 0%, #0047a0 100%);
+        color: white;
+    }
+    
+    .country-card.es {
+        background: linear-gradient(135deg, #aa151b 0%, #f1bf00 100%);
+        color: white;
+    }
+    
+    .country-card.mx {
+        background: linear-gradient(135deg, #006847 0%, #ce1126 100%);
+        color: white;
+    }
+    
+    .country-card.pt {
+        background: linear-gradient(135deg, #046a38 0%, #da020e 100%);
+        color: white;
+    }
+    
+    .country-card.ru {
+        background: linear-gradient(135deg, #ffffff 0%, #0039a6 50%, #d52b1e 100%);
+        color: #333;
+    }
+    
+    .country-card.jp {
+        background: linear-gradient(135deg, #ffffff 0%, #bc002d 100%);
+        color: #333;
+    }
+    
+    .country-card.in {
+        background: linear-gradient(135deg, #ff9933 0%, #ffffff 50%, #138808 100%);
+        color: #333;
+    }
+    
+    .country-card.cn {
+        background: linear-gradient(135deg, #de2910 0%, #ffde00 100%);
+        color: white;
     }
     
     @media (max-width: 768px) {
         .countries-grid {
             grid-template-columns: 1fr;
-            gap: 2rem;
-            padding: 0 1rem;
+            gap: 1.5rem;
+            padding: 0 1rem 3rem;
         }
         
         .country-card {
             padding: 1.5rem;
         }
         
+        .page-header {
+            padding: 3rem 1rem 2rem;
+        }
+        
+        .page-title {
+            font-size: 2.5rem;
+        }
+        
+        .page-subtitle {
+            font-size: 1.1rem;
+            max-width: 90%;
+        }
+        
+        .travel-icons {
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .travel-icon {
+            font-size: 1.2rem;
+        }
+        
+        
+    }
+    
+    @media (max-width: 480px) {
         .page-title {
             font-size: 2rem;
         }
+        
+        .travel-icons {
+            gap: 1rem;
+        }
+        
+        .travel-icon {
+            font-size: 1rem;
+        }
+        
+        
     }
 </style>
-{% endblock %}
-
-{% block extra_js %}
+    
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="page-header">
-        <h1 class="page-title">Travel Guides</h1>
-        <p class="page-subtitle">Discover safe gluten-free dining experiences around the world with our comprehensive country guides</p>
+<div class="page-header">
+    <div class="travel-icons">
+        <span class="travel-icon">✈️</span>
+        <span class="travel-icon">🌍</span>
+        <span class="travel-icon">🗺️</span>
+        <span class="travel-icon">📸</span>
+        <span class="travel-icon">🎒</span>
     </div>
+    <div class="title-container">
+            <h1 class="page-title">Travel Guides</h1>
+        </div>
+    <p class="page-subtitle">
+        Discover <span class="subtitle-highlight">safe gluten-free dining experiences</span> around the world with our comprehensive <span class="subtitle-highlight">country guides</span>
+    </p>
+</div>
 
-    <div class="countries-grid">
-        {% for country in travel_guides %}
-        <section class="country-card" style="--card-color: {{ country.color|default:'#007bff' }}">
-            <header class="country-header">
-                <div class="country-flag">{{ country.flag_emoji }}</div>
-                <div class="country-info">
-                    <h2 class="country-code">{{ country.code }}</h2>
-                    <h3 class="country-name">{{ country.name }}</h3>
+<div class="countries-grid">
+    {% for country in travel_guides %}
+    <div class="country-card {{ country.code|lower }}">
+        <div class="country-header">
+            <div>
+                <div class="country-flag">
+                    {% if country.flag_emoji %}
+                        {{ country.flag_emoji }}
+                    {% else %}
+                        {% if country.code == 'AU' %}🇦🇺
+                        {% elif country.code == 'CA' %}🇨🇦
+                        {% elif country.code == 'FR' %}🇫🇷
+                        {% elif country.code == 'DE' %}🇩🇪
+                        {% elif country.code == 'IE' %}🇮🇪
+                        {% elif country.code == 'IT' %}🇮🇹
+                        {% elif country.code == 'GB' %}🇬🇧
+                        {% elif country.code == 'US' %}🇺🇸
+                        {% elif country.code == 'SA' %}🇸🇦
+                        {% elif country.code == 'KR' %}🇰🇷
+                        {% elif country.code == 'ES' %}🇪🇸
+                        {% elif country.code == 'MX' %}🇲🇽
+                        {% elif country.code == 'PT' %}🇵🇹
+                        {% elif country.code == 'RU' %}🇷🇺
+                        {% elif country.code == 'JP' %}🇯🇵
+                        {% elif country.code == 'IN' %}🇮🇳
+                        {% elif country.code == 'CN' %}🇨🇳
+                        {% else %}🌍{% endif %}
+                    {% endif %}
                 </div>
-            </header>
-            
-            <div class="country-description">{{ country.summary }}</div>
-            
-            <div class="awareness-section">
-                <div class="awareness-label">Celiac Awareness Level</div>
-                <div class="awareness-value">
-                    {{ country.celiac_awareness }}/5
-                    <span class="awareness-stars">
-                        {% for i in "12345" %}
-                            {% if forloop.counter <= country.celiac_awareness %}
-                                ★
-                            {% else %}
-                                ☆
-                            {% endif %}
-                        {% endfor %}
-                    </span>
-                </div>
+                <h2 class="country-name">{{ country.name }}</h2>
+                <p class="country-language">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/>
+                    </svg>
+                    {{ country.language }}
+                </p>
             </div>
-            
-            <footer class="country-footer">
-                <a href="{% url 'travel:country_detail' country.slug %}" class="explore-link">
-                    Explore {{ country.name }}
-                </a>
-            </footer>
-        </section>
-        {% endfor %}
+            <div class="awareness-section">
+                <div class="awareness-label">Celiac Awareness</div>
+                <div class="awareness-value">{{ country.get_celiac_awareness_display }}</div>
+            </div>
+        </div>
+        
+        <div class="country-description">{{ country.summary }}</div>
+        
+        {% if country.dining_tips %}
+        <div class="dining-tips">
+            <div class="dining-tips-label">Dining Tips:</div>
+            <div class="dining-tips-text">{{ country.dining_tips|truncatewords:20 }}</div>
+        </div>
+        {% endif %}
+        
+        <a href="{% url 'travel:country_detail' country.slug %}" class="explore-link">
+            <span>Explore Guide</span>
+            <span class="explore-arrow">→</span>
+        </a>
     </div>
+    {% endfor %}
 </div>
 {% endblock %}

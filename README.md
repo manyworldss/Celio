@@ -6,7 +6,7 @@
 
 *A comprehensive demo web application showcasing modern full-stack development, designed to become a mobile app later in 2025.*
 
-Demo Site: https://celio-bkq9qq94b-manyworldss-projects.vercel.app/
+Demo Site: https://celio-app.vercel.app/
 Medium Blog: https://raphealsuber.medium.com/836e1eca60dc
 
 
@@ -44,6 +44,7 @@ Celio is a demo web application that empowers people with celiac disease and glu
 - **PDF Generation**: ReportLab for downloadable emergency cards
 - **Mobile Optimization**: Progressive Web App features for mobile experience
 - **AI Integration**: Prepared for AI assistant functionality
+- **Deployment**: Docker containerization for flexible deployment options
 
 ## Development Approach
 
@@ -82,6 +83,8 @@ Sage Assistant<![Screenshot 2025-07-08 122309](https://github.com/user-attachmen
 
 ## Installation and Setup
 
+### Local Development
+
 ```bash
 # Clone the repository
 git clone https://github.com/yourusername/celio.git
@@ -105,6 +108,30 @@ python manage.py runserver
 ```
 
 Visit `http://127.0.0.1:8000/` in your browser to view the application.
+
+### Vercel Deployment
+
+```bash
+# Install Vercel CLI
+npm i -g vercel
+
+# Deploy to Vercel
+vercel --prod
+```
+
+For detailed Vercel deployment instructions, see `VERCEL_DEPLOYMENT.md`.
+
+### Docker Deployment
+
+```bash
+# Build the Docker image
+docker build -t celio .
+
+# Run the container
+docker run -p 8000:8000 celio
+```
+
+The application includes a Dockerfile for containerized deployment to any Docker-compatible platform.
 
 ## What This Demo Showcases
 

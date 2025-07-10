@@ -13,10 +13,14 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 from django.utils.translation import gettext_lazy as _
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 print("BASE_DIR is:" , BASE_DIR)
+
+# Load environment variables from .env.development.local for local development
+load_dotenv(BASE_DIR / '.env.development.local')
 
 
 # Quick-start development settings - unsuitable for production
@@ -24,10 +28,14 @@ print("BASE_DIR is:" , BASE_DIR)
 
 
 # SECURITY WARNING: don't run with debug turned on in production! Set to false when production ready
-DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
+# Set DEBUG to False in production, especially on Railway
+if os.environ.get('RAILWAY_ENVIRONMENT'):
+    DEBUG = False
+else:
+    DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 
 # Environment-based settings
-ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,.vercel.app').split(',')
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,.railway.app,.vercel.app').split(',')
 
 # Configure CSRF protection to work with browser previews
 CSRF_TRUSTED_ORIGINS = [
@@ -36,12 +44,47 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8002',
     'http://localhost:8001',
     'http://127.0.0.1:*',  # Allow any port on 127.0.0.1 for development
+    'https://*.railway.app',  # Allow Railway domains
     'https://*.vercel.app',  # Allow Vercel domains
 ]
 
 # Secret key - using environment variable in production
-DEFAULT_SECRET_KEY = 'django-insecure-wp8+f+_i&5jljkhvd+z%9$95pkpy&0))2%996*kmx)9_t*^i4x'
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', DEFAULT_SECRET_KEY)
+# SECURITY WARNING: Keep the secret key used in production secret!
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+if not SECRET_KEY:
+    if DEBUG:
+        SECRET_KEY = 'django-insecure-fallback-key-for-development-only-do-not-use-in-production'
+    else:
+        raise ValueError('DJANGO_SECRET_KEY environment variable must be set in production')
+
+# Security settings for production
+if not DEBUG:
+    # HTTPS and SSL settings
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    
+    # HSTS (HTTP Strict Transport Security)
+    SECURE_HSTS_SECONDS = 31536000  # 1 year
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    
+    # Additional security headers
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
+    
+    # X-Frame-Options to prevent clickjacking
+    X_FRAME_OPTIONS = 'DENY'
+    
+    # Session security
+    SESSION_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_SAMESITE = 'Strict'
+    CSRF_COOKIE_HTTPONLY = True
+    CSRF_COOKIE_SAMESITE = 'Strict'
+    
+    # Disable server tokens
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Login settings
 LOGIN_URL = 'accounts:login'
@@ -161,26 +204,107 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Logging configuration to prevent sensitive data exposure
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        }
+    },
+    'root': {
+        'handlers': ['console'],
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'mail_admins'],
+            'level': 'INFO',
+        },
+        'django.security': {
+            'handlers': ['console', 'mail_admins'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}
+
+# Additional security settings
+if not DEBUG:
+    # Prevent information disclosure
+    ADMINS = []
+    MANAGERS = []
+    
+    # Additional security headers
+    SECURE_CROSS_ORIGIN_OPENER_POLICY = 'same-origin'
+    
+    # Content Security Policy (basic)
+    # Note: You may need to adjust this based on your specific needs
+    CSP_DEFAULT_SRC = ("'self'",)
+    CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'")
+    CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
+    CSP_IMG_SRC = ("'self'", "data:", "https:")
+    CSP_FONT_SRC = ("'self'", "https:")
+
 
 # Add these settings at the bottom of the file
 import os
 
 # Static files configuration
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = BASE_DIR / 'staticfiles_build' / 'static'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
-# WhiteNoise configuration for Vercel
+# WhiteNoise configuration
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Media files configuration
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Temporarily use SQLite for development
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Database configuration - PostgreSQL for production, SQLite for development
+if os.environ.get('DATABASE_URL'):
+    # Production database (PostgreSQL)
+    try:
+        import dj_database_url
+        DATABASES = {
+            'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
+        }
+    except ImportError:
+        # Fallback to SQLite if dj_database_url is not available
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
+            }
+        }
+else:
+    # Development database (SQLite)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}

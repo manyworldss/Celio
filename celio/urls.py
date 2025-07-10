@@ -27,9 +27,9 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),  # User authentication
     path('travel/', include('travel.urls', namespace='travel')),
     path('sage/', include('sage.urls', namespace='sage')),
+
 ]
 
-# Serve media and static files in development
+# Serve static files in development
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

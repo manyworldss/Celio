@@ -510,8 +510,12 @@ def download_card(request):
         })
     
     # For showing the modal via HTMX
-    if request.headers.get('HX-Request') and not request.GET.get('download', ''):
+    if request.headers.get('HX-Request') and 'download' not in request.GET:
         return render(request, 'emergency_cards/download.html', {'card': card})
+
+    # If it's not a download request, redirect to the card detail page
+    if 'download' not in request.GET:
+        return redirect('message_cards:card_detail')
     
     # Get page size
     page_size_param = request.GET.get('size', 'letter')

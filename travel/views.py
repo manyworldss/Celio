@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Country, DishesToAvoid, RestaurantPhrase
+from .models import Country, DishesToAvoid, RestaurantPhrase, Attraction
 
 def travel_guide_list(request):
     """View for listing available country guides"""
@@ -17,6 +17,9 @@ def country_detail(request, slug):
     # Get dishes to avoid
     dishes_to_avoid = DishesToAvoid.objects.filter(country=country)
     
+    # Get attractions/monuments
+    attractions = Attraction.objects.filter(country=country)
+    
     # Get restaurant phrases by category
     general_phrases = RestaurantPhrase.objects.filter(country=country, category='general')
     ordering_phrases = RestaurantPhrase.objects.filter(country=country, category='ordering')
@@ -26,6 +29,7 @@ def country_detail(request, slug):
     return render(request, 'travel/country_detail.html', {
         'country': country,
         'dishes_to_avoid': dishes_to_avoid,
+        'attractions': attractions,
         'general_phrases': general_phrases,
         'ordering_phrases': ordering_phrases,
         'ingredient_phrases': ingredient_phrases,

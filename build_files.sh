@@ -1,7 +1,29 @@
 #!/bin/bash
 
-# Install dependencies
-pip3 install -r requirements.txt
+set -e
 
-# Collect static files
-python3 manage.py collectstatic --noinput --clear
+echo "Starting build process..."
+
+# Ensure python3.11 is available
+if ! command -v python3.9 &> /dev/null
+then
+    echo "python3.9 could not be found"
+    exit 1
+fi
+
+echo "Found python3.9"
+echo "Path to python3.9: $(which python3.9)"
+
+# Ensure pip is installed
+python3.11 -m ensurepip --upgrade
+
+echo "Installing dependencies from requirements.txt..."
+python3.11 -m pip install -r requirements.txt
+
+echo "Dependencies installed successfully. Listing installed packages:"
+python3.11 -m pip freeze
+
+echo "Running collectstatic..."
+python3.11 manage.py collectstatic --noinput --clear
+
+echo "collectstatic finished successfully."

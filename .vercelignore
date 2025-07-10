@@ -30,11 +30,8 @@ media/
 .env
 *.log
 
-# Documentation
-README.md
-
-# Fly.io specific files
-fly.toml
+# Railway specific files
+railway.json
 Dockerfile
 .dockerignore
 
