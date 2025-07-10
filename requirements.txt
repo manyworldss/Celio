@@ -1,6 +1,6 @@
 asgiref==3.8.1
 chardet==5.2.0
-Django==5.2.4
+Django==4.2.11
 django-htmx==1.21.0
 djangorestframework==3.16.0
 pillow==11.3.0
