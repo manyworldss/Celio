@@ -28,7 +28,11 @@ load_dotenv(BASE_DIR / '.env.development.local')
 
 
 # SECURITY WARNING: don't run with debug turned on in production! Set to false when production ready
-DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
+# Set DEBUG to False in production, especially on Vercel
+if os.environ.get('VERCEL') == '1':
+    DEBUG = False
+else:
+    DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 
 # Environment-based settings
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,*.vercel.app').split(',')
