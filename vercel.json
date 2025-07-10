@@ -3,7 +3,7 @@
   "buildCommand": "sh build_files.sh",
   "outputDirectory": "staticfiles",
   "functions": {
-    "vercel_app.py": {
+    "api/vercel_app.py": {
       "runtime": "python@3.10.0"
     }
   },
