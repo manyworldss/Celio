@@ -4,6 +4,7 @@
   },
   "deploy": {
     "startCommand": "gunicorn celio.wsgi:application --bind 0.0.0.0:$PORT",
-    "healthcheckPath": "/"
+    "healthcheckPath": "/health/",
+    "healthcheckTimeout": 300
   }
 }

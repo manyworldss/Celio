@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_protect
+from django.http import JsonResponse, HttpResponse
+from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.views.decorators.http import require_http_methods
 from .models import EarlyAccessSignup
 import json
@@ -16,6 +16,11 @@ DEMO_USER = {
 }
 
 import os
+
+@csrf_exempt
+def health_check(request):
+    """Simple health check endpoint for Railway deployment"""
+    return HttpResponse('OK', status=200, content_type='text/plain')
 
 def home(request):
     """Home view with demo mode enabled"""
