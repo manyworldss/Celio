@@ -109,6 +109,18 @@ python manage.py runserver
 
 Visit `http://127.0.0.1:8000/` in your browser to view the application.
 
+### Vercel Deployment
+
+```bash
+# Install Vercel CLI
+npm i -g vercel
+
+# Deploy to Vercel
+vercel --prod
+```
+
+For detailed Vercel deployment instructions, see `VERCEL_DEPLOYMENT.md`.
+
 ### Docker Deployment
 
 ```bash

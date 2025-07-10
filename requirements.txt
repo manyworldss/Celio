@@ -13,4 +13,5 @@ gunicorn==23.0.0
 sqlparse==0.5.3
 whitenoise==6.8.2
 dj-database-url==2.3.0
+vercel-blob==0.1.0
 

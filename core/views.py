@@ -25,7 +25,7 @@ def health_check(request):
 def home(request):
     """Home view with demo mode enabled"""
     # Use the new demo video for the landing page
-    video_url = '/media/emergency_cards/Recording 2025-07-09 194109.mp4'
+    video_url = 'emergency_cards/Recording 2025-07-09 194109.mp4'
     return render(request, 'core/landing.html', {'video_url': video_url})
 
 def reset_demo(request):
