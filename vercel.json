@@ -1,7 +1,6 @@
 {
   "version": 2,
   "buildCommand": "sh build_files.sh",
-  "outputDirectory": "staticfiles",
 
   "routes": [
     {

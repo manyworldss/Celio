@@ -16,6 +16,11 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'celio.settings')
 os.environ.setdefault('DJANGO_DEBUG', 'False')
 os.environ.setdefault('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,*.vercel.app')
 
+# Run Django migrations and collect static files
+# These commands are typically run during deployment/startup in serverless environments
+execute_from_command_line([sys.executable, 'manage.py', 'migrate', '--noinput'])
+execute_from_command_line([sys.executable, 'manage.py', 'collectstatic', '--noinput'])
+
 # Get the WSGI application for Vercel
 app = get_wsgi_application()
 
