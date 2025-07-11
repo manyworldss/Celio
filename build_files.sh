@@ -5,14 +5,14 @@ set -e
 echo "Starting build process..."
 
 # Ensure python3.11 is available
-if ! command -v python3.9 &> /dev/null
+if ! command -v python3.11 &> /dev/null
 then
-    echo "python3.9 could not be found"
+    echo "python3.11 could not be found"
     exit 1
 fi
 
-echo "Found python3.9"
-echo "Path to python3.9: $(which python3.9)"
+echo "Found python3.11"
+echo "Path to python3.11: $(which python3.11)"
 
 # Ensure pip is installed
 python3.11 -m ensurepip --upgrade
