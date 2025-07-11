@@ -6,7 +6,7 @@
 
 *A comprehensive demo web application showcasing modern full-stack development, designed to become a mobile app later in 2025.*
 
-Demo Site: https://celio-app.vercel.app/
+Demo Site: https://celio-coral.vercel.app/
 Medium Blog: https://raphealsuber.medium.com/836e1eca60dc
 
 
