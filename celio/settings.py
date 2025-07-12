@@ -32,7 +32,7 @@ load_dotenv(BASE_DIR / '.env.development.local')
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 
 # Environment-based settings
-ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,.vercel.app').split(',')
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,.vercel.app,celio-coral.vercel.app').split(',')
 
 # Configure CSRF protection to work with browser previews
 CSRF_TRUSTED_ORIGINS = [
