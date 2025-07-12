@@ -28,14 +28,11 @@ load_dotenv(BASE_DIR / '.env.development.local')
 
 
 # SECURITY WARNING: don't run with debug turned on in production! Set to false when production ready
-# Set DEBUG to False in production, especially on Railway
-if os.environ.get('RAILWAY_ENVIRONMENT'):
-    DEBUG = False
-else:
-    DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
+# Set DEBUG to False in production
+DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 
 # Environment-based settings
-ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,.railway.app,.vercel.app').split(',')
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,.vercel.app').split(',')
 
 # Configure CSRF protection to work with browser previews
 CSRF_TRUSTED_ORIGINS = [
@@ -44,7 +41,7 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8002',
     'http://localhost:8001',
     'http://127.0.0.1:*',  # Allow any port on 127.0.0.1 for development
-    'https://*.railway.app',  # Allow Railway domains
+    
     'https://*.vercel.app',  # Allow Vercel domains
 ]
 
@@ -146,6 +143,22 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'celio.wsgi.application'
+
+# Database
+# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+import dj_database_url
+
+if 'DATABASE_URL' in os.environ:
+    DATABASES = {
+        'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
