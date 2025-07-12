@@ -12,6 +12,7 @@ class Country(models.Model):
     slug = models.SlugField(max_length=100, unique=True, blank=True)
     code = models.CharField(max_length=2, unique=True)  # ISO country code (e.g., US, JP, FR)
     flag_emoji = models.CharField(max_length=10, blank=True)  # Flag emoji for display
+    flag_svg = models.TextField(blank=True, null=True)  # SVG flag for display
     language = models.CharField(max_length=100)  # Primary language
     language_code = models.CharField(max_length=2)  # ISO language code (e.g., en, ja, fr)
     celiac_awareness = models.IntegerField(

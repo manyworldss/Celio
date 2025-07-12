@@ -4,7 +4,11 @@ from .models import Country, DishesToAvoid, RestaurantPhrase, Attraction
 
 def travel_guide_list(request):
     """View for listing available country guides"""
-    travel_guides = Country.objects.all().order_by('name')
+    allowed_countries = [
+        "Spain", "Germany", "India", "South Korea", "Japan", "Saudi Arabia",
+        "Russia", "United States", "Portugal", "Italy", "China", "France"
+    ]
+    travel_guides = Country.objects.filter(name__in=allowed_countries).order_by('name')
     
     return render(request, 'travel/travel_guide_list.html', {
         'travel_guides': travel_guides
@@ -13,9 +17,6 @@ def travel_guide_list(request):
 def country_detail(request, slug):
     """View for detailed country guide"""
     country = get_object_or_404(Country, slug=slug)
-    
-    # Get dishes to avoid
-    dishes_to_avoid = DishesToAvoid.objects.filter(country=country)
     
     # Get attractions/monuments
     attractions = Attraction.objects.filter(country=country)
@@ -28,7 +29,6 @@ def country_detail(request, slug):
     
     return render(request, 'travel/country_detail.html', {
         'country': country,
-        'dishes_to_avoid': dishes_to_avoid,
         'attractions': attractions,
         'general_phrases': general_phrases,
         'ordering_phrases': ordering_phrases,

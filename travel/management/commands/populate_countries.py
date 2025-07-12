@@ -1,3 +1,4 @@
+import requests
 from django.core.management.base import BaseCommand
 from travel.models import Country, DishesToAvoid, RestaurantPhrase
 
@@ -94,6 +95,15 @@ class Command(BaseCommand):
         
         # Create countries
         for country_data in countries_data:
+            code = country_data['code'].lower()
+            flag_url = f'https://flagcdn.com/{code}.svg'
+            try:
+                response = requests.get(flag_url)
+                if response.status_code == 200:
+                    country_data['flag_svg'] = response.text
+            except requests.RequestException as e:
+                self.stdout.write(self.style.ERROR(f'Could not fetch flag for {country_data["name"]}: {e}'))
+
             country = Country.objects.create(**country_data)
             self.stdout.write(
                 self.style.SUCCESS(f'Successfully created country: {country.name}')
