@@ -57,12 +57,7 @@ CSRF_TRUSTED_ORIGINS = [
 
 # Secret key - using environment variable in production
 # SECURITY WARNING: Keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
-if not SECRET_KEY:
-    if DEBUG:
-        SECRET_KEY = 'django-insecure-fallback-key-for-development-only-do-not-use-in-production'
-    else:
-        raise ValueError('DJANGO_SECRET_KEY environment variable must be set in production')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'a30a2a8c82ce8ec9dbeeabcbacd3f70b34c1e6c2edcd4505f9fcc858f6a91c5b03b3c98e837b9a3b0e479b243557b34a5757')
 
 # Security settings for production
 if not DEBUG:
@@ -159,22 +154,13 @@ WSGI_APPLICATION = 'celio.wsgi.application'
 import dj_database_url
 
 # Database configuration
-if os.environ.get('DATABASE_URL'):
-    # Production database (PostgreSQL)
-    DATABASES = {
-        'default': dj_database_url.config(
-            conn_max_age=600,
-            ssl_require=True
-        )
-    }
-else:
-    # Development database (SQLite)
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+DATABASES = {
+    'default': dj_database_url.config(
+        default='postgres://neondb_owner:npg_k29lNBSOMPVU@ep-withered-bird-adapgx99-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require',
+        conn_max_age=600,
+        ssl_require=True
+    )
+}
 
 
 # Password validation
