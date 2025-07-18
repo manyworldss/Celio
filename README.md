@@ -17,7 +17,7 @@ Medium Blog: https://raphealsuber.medium.com/836e1eca60dc
 
 ## Overview
 
-Celio is a demo web application that empowers people with celiac disease and gluten sensitivities to safely communicate their dietary needs while traveling internationally. The platform enables users to create personalized emergency medical cards with crucial information translated into multiple languages including English, Spanish, French, Chinese, Japanese, and Portuguese.
+Celio is a demo web application that empowers people with celiac disease and gluten sensitivities to safely communicate their dietary needs while traveling internationally. The platform enables users to create personalized e-cards with crucial information translated into multiple languages including English, Spanish, French, Chinese, Japanese, and Portuguese.
 
 **This is currently a demonstration web application built to showcase full-stack development capabilities, with plans to transition to a native mobile app later in 2025.**
 
