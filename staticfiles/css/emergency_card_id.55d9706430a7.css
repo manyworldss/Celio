@@ -1,0 +1,784 @@
+/* Emergency Card ID Styles */
+/* Creating ID and passport style cards based on the designs */
+
+/* Base ID Card Container */
+.card-id-container {
+    position: relative;
+    width: 100%;
+    max-width: 450px;
+    margin: 0 auto;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+}
+
+/* Card Header */
+.card-header {
+    position: relative;
+    padding: 1rem;
+}
+
+.card-id-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.card-id-title {
+    flex: 1;
+}
+
+.card-id-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* Card Body with ID-card layout */
+.card-id-body {
+    padding: 1rem;
+    flex: 1;
+}
+
+.card-id-photo-section {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.card-id-photo {
+    width: 80px;
+    height: 100px;
+    border-radius: 6px;
+    overflow: hidden;
+    background-color: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.card-id-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card-id-photo-placeholder svg {
+    width: 50%;
+    height: 50%;
+    color: #9ca3af;
+}
+
+.card-id-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.card-id-detail {
+    margin: 0.25rem 0;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+}
+
+.card-id-label {
+    font-weight: 600;
+    margin-right: 0.25rem;
+}
+
+.card-id-value {
+    color: #4b5563;
+}
+
+/* Message Section */
+.card-id-message {
+    background-color: rgba(249, 250, 251, 0.8);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.card-id-message-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.card-id-language-tag {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #fff;
+    background-color: #10b981;
+    padding: 0.2rem 0.5rem;
+    border-radius: 9999px;
+    margin-right: 0.5rem;
+}
+
+.card-id-message-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+    color: #1f2937;
+}
+
+.card-id-message-content {
+    font-size: 0.875rem;
+    line-height: 1.375rem;
+    color: #4b5563;
+}
+
+/* Card Footer */
+.card-id-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    background-color: rgba(243, 244, 246, 0.7);
+    font-size: 0.75rem;
+    color: #6b7280;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.card-id-date {
+    font-style: italic;
+}
+
+.card-id-issuer {
+    font-weight: 600;
+}
+
+/* Theme Specific Styles */
+/* Celio Theme */
+.message-card-theme-celio {
+    background-color: #f8f8f8; /* Off-white background */
+    color: #333333; /* Darker text for contrast */
+}
+
+.message-card-theme-celio .card-header {
+    background-color: #f0f0f0; /* Slightly darker off-white for header */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.message-card-theme-celio .card-id-message {
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.message-card-theme-celio .card-id-message-content {
+    color: #4b5563;
+}
+
+.message-card-theme-celio .card-id-message-title {
+    color: #1f2937;
+}
+
+.message-card-theme-celio .card-id-footer {
+    background-color: #f3f4f6;
+    color: #6b7280;
+}
+
+.message-card-theme-celio .card-id-value {
+    color: #4b5563;
+}
+
+/* Light Theme */
+.card-light {
+    background-color: #ffffff;
+    color: #1f2937;
+}
+
+.card-light .card-header {
+    background-color: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.card-light .card-id-message {
+    background-color: #f3f4f6;
+    border: 1px solid #d1d5db;
+}
+
+.card-light .card-id-footer {
+    background-color: #f3f4f6;
+    color: #6b7280;
+}
+
+/* Classic Theme */
+.card-classic {
+    background-color: #ffffff;
+    color: #1f2937;
+}
+
+.card-classic .card-header {
+    background-color: #f3f4f6;
+    border-bottom: 3px solid #4b5563;
+}
+
+/* Modern Theme */
+.card-modern {
+    background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+    color: #ffffff;
+}
+
+.card-modern .card-id-message {
+    background-color: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.card-modern .card-id-message-content {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.card-modern .card-id-message-title {
+    color: #ffffff;
+}
+
+.card-modern .card-id-footer {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: rgba(255, 255, 255, 0.8);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.card-modern .card-id-value {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Minimal Theme */
+.card-minimal {
+    background-color: #ffffff;
+    color: #1f2937;
+}
+
+.card-minimal .card-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.card-minimal .card-id-message {
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+}
+
+/* Nature Theme */
+.card-nature {
+    background: linear-gradient(135deg, #4ade80 0%, #16a34a 100%);
+    color: #ffffff;
+}
+
+.card-nature .card-header {
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+}
+
+.card-nature .card-id-message {
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.card-nature .card-id-message-content {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.card-nature .card-id-message-title {
+    color: #ffffff;
+}
+
+.card-nature .card-id-footer {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.card-nature .card-id-value {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Vintage Theme */
+.card-vintage {
+    background-color: #f7f2e5;
+    color: #6b4f2d;
+}
+
+.card-vintage .card-header {
+    background-color: #d3b88c;
+    border-bottom: 2px solid #6b4f2d;
+}
+
+.card-vintage .card-id-message {
+    background-color: rgba(211, 184, 140, 0.2);
+    border: 1px solid #d3b88c;
+}
+
+.card-vintage .card-id-footer {
+    background-color: #d3b88c;
+    color: #6b4f2d;
+}
+
+/* Playful Theme */
+.card-playful {
+    background: linear-gradient(135deg, #c026d3 0%, #8b5cf6 100%);
+    color: #ffffff;
+}
+
+.card-playful .card-id-message {
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.card-playful .card-id-message-content {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.card-playful .card-id-message-title {
+    color: #ffffff;
+}
+
+.card-playful .card-id-footer {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.card-playful .card-id-value {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Dark Theme */
+.card-dark {
+    background: linear-gradient(135deg, #0f0520 0%, #1a0b3d 100%);
+    color: #ffffff;
+    box-shadow: 0 8px 32px rgba(107, 70, 193, 0.4);
+}
+
+.card-dark .card-header {
+    background-color: #1a0b3d;
+    border-bottom: 1px solid #6b46c1;
+}
+
+.card-dark .card-id-name {
+    color: #a78bfa;
+    font-weight: 600;
+}
+
+.card-dark .card-id-message {
+    background-color: rgba(107, 70, 193, 0.15);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.card-dark .card-id-message-content {
+    color: rgba(255, 255, 255, 0.95);
+}
+
+.card-dark .card-id-message-title {
+    color: #8b5cf6;
+}
+
+.card-dark .card-id-footer {
+    background-color: #2d1b5a;
+    color: #c4b5fd;
+}
+
+.card-dark .card-id-value {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Dark theme form inputs */
+.card-dark input,
+.card-dark textarea,
+.card-dark select,
+.card-dark .field-input,
+.card-dark input.field-input,
+.card-dark textarea.field-input,
+.card-dark select.field-input {
+    background-color: #2d1b5a !important;
+    background: #2d1b5a !important;
+    color: #f0e9ff !important;
+    border-color: #6b46c1 !important;
+    border: 1px solid #6b46c1 !important;
+    transition: none !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+}
+
+.card-dark input::placeholder,
+.card-dark textarea::placeholder,
+.card-dark .field-input::placeholder,
+.card-dark input.field-input::placeholder,
+.card-dark textarea.field-input::placeholder {
+    color: #d6c9f8 !important;
+}
+
+.card-dark input:focus,
+.card-dark textarea:focus,
+.card-dark select:focus,
+.card-dark .field-input:focus,
+.card-dark input.field-input:focus,
+.card-dark textarea.field-input:focus,
+.card-dark select.field-input:focus {
+    border-color: #8b5cf6 !important;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1) !important;
+}
+
+/* Pastel Theme */
+.card-pastel {
+    background-color: #f0f9ff;
+    color: #0369a1;
+}
+
+.card-pastel .card-header {
+    background-color: #bae6fd;
+    border-bottom: 2px solid #0ea5e9;
+}
+
+.card-pastel .card-id-message {
+    background-color: rgba(186, 230, 253, 0.3);
+    border: 1px solid #bae6fd;
+}
+
+.card-pastel .card-id-footer {
+    background-color: #bae6fd;
+    color: #0369a1;
+}
+
+/* Medical Theme */
+.card-medical {
+    background-color: #ffffff;
+    color: #1f2937;
+    border: 2px solid #ef4444;
+}
+
+.card-medical .card-header {
+    background-color: #ef4444;
+}
+
+.card-medical .card-id-name {
+    color: #ffffff;
+}
+
+.card-medical .card-id-message {
+    background-color: #fee2e2;
+    border: 1px solid #ef4444;
+}
+
+.card-medical .card-id-message-title {
+    color: #b91c1c;
+}
+
+.card-medical .card-id-language-tag {
+    background-color: #b91c1c;
+}
+
+.card-medical .card-id-footer {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+/* Luxury Theme */
+.card-luxury {
+    background-color: #f8f8f8; /* Light neutral background */
+    color: #333333; /* Darker text for contrast */
+}
+
+.card-luxury .card-id-message {
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.card-luxury .card-id-message-content {
+    color: #4b5563;
+}
+
+.card-luxury .card-id-message-title {
+    color: #1f2937;
+}
+
+.card-luxury .card-id-footer {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.card-luxury .card-id-value {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Neon Theme */
+.card-neon {
+    background-color: #000000;
+    color: #ffffff;
+    box-shadow: 0 0 15px rgba(34, 197, 94, 0.7);
+}
+
+.card-neon .card-header {
+    background-color: #111111;
+    border-bottom: 2px solid #22c55e;
+}
+
+.card-neon .card-id-name {
+    text-shadow: 0 0 5px #22c55e;
+}
+
+.card-neon .card-id-message {
+    background-color: rgba(34, 197, 94, 0.1);
+    border: 1px solid #22c55e;
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.3) inset;
+}
+
+.card-neon .card-id-message-content {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.card-neon .card-id-message-title {
+    color: #22c55e;
+    text-shadow: 0 0 3px #22c55e;
+}
+
+.card-neon .card-id-footer {
+    background-color: #111111;
+    color: #22c55e;
+}
+
+.card-neon .card-id-value {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Geometric Theme */
+.card-geometric {
+    background-color: #ffffff;
+    color: #1f2937;
+    background-image: 
+        radial-gradient(#d1d5db 1px, transparent 1px),
+        radial-gradient(#d1d5db 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px;
+}
+
+.card-geometric .card-header {
+    background-color: #ffffff;
+    border-bottom: 3px solid #6366f1;
+}
+
+.card-geometric .card-id-message {
+    background-color: #ffffff;
+    border: 2px solid #6366f1;
+}
+
+.card-geometric .card-id-footer {
+    background-color: #ffffff;
+    border-top: 2px solid #6366f1;
+}
+
+/* Cyberpunk Theme */
+.card-cyberpunk {
+    background: linear-gradient(135deg, #18181b 0%, #27272a 100%);
+    color: #ffffff;
+    box-shadow: 0 0 20px rgba(217, 70, 239, 0.6);
+}
+
+.card-cyberpunk .card-header {
+    background-color: #18181b;
+    border-bottom: 2px solid #d946ef;
+}
+
+.card-cyberpunk .card-id-name {
+    color: #d946ef;
+    text-shadow: 0 0 5px rgba(217, 70, 239, 0.7);
+}
+
+.card-cyberpunk .card-id-message {
+    background-color: rgba(217, 70, 239, 0.1);
+    border: 1px solid #d946ef;
+    box-shadow: 0 0 10px rgba(217, 70, 239, 0.3) inset;
+}
+
+.card-cyberpunk .card-id-message-content {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.card-cyberpunk .card-id-message-title {
+    color: #d946ef;
+}
+
+.card-cyberpunk .card-id-footer {
+    background-color: #18181b;
+    color: #d946ef;
+}
+
+.card-cyberpunk .card-id-value {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Purple Theme */
+.card-purple {
+    background-color: #1f2937;
+    color: #ffffff;
+}
+
+.card-purple .card-header {
+    background-color: #111827;
+    border-bottom: 2px solid #374151;
+}
+
+.card-purple .card-id-message {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid #374151;
+}
+
+.card-purple .card-id-message-content {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.card-purple .card-id-message-title {
+    color: #ffffff;
+}
+
+.card-purple .card-id-footer {
+    background-color: #111827;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.card-purple .card-id-value {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Celio theme form inputs */
+.card-celio input,
+.card-celio textarea,
+.card-celio select,
+.card-celio .field-input,
+.card-celio input.field-input,
+.card-celio textarea.field-input,
+.card-celio select.field-input {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    transition: none !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+}
+
+.card-celio input::placeholder,
+.card-celio textarea::placeholder,
+.card-celio .field-input::placeholder,
+.card-celio input.field-input::placeholder,
+.card-celio textarea.field-input::placeholder {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.card-celio input:focus,
+.card-celio textarea:focus,
+.card-celio select:focus,
+.card-celio .field-input:focus,
+.card-celio input.field-input:focus,
+.card-celio textarea.field-input:focus,
+.card-celio select.field-input:focus {
+    border-color: rgba(255, 255, 255, 0.5) !important;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Light theme form inputs */
+.card-light input,
+.card-light textarea,
+.card-light select,
+.card-light .field-input,
+.card-light input.field-input,
+.card-light textarea.field-input,
+.card-light select.field-input {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    color: #1f2937 !important;
+    border-color: #d1d5db !important;
+    border: 1px solid #d1d5db !important;
+    transition: none !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+}
+
+.card-light input::placeholder,
+.card-light textarea::placeholder,
+.card-light .field-input::placeholder,
+.card-light input.field-input::placeholder,
+.card-light textarea.field-input::placeholder {
+    color: #9ca3af !important;
+}
+
+.card-light input:focus,
+.card-light textarea:focus,
+.card-light select:focus,
+.card-light .field-input:focus,
+.card-light input.field-input:focus,
+.card-light textarea.field-input:focus,
+.card-light select.field-input:focus {
+    border-color: #6b7280 !important;
+    box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.1) !important;
+}
+
+/* Purple theme form inputs */
+.card-purple .field-input,
+.card-purple input.field-input,
+.card-purple textarea.field-input,
+.card-purple select.field-input {
+    background: #1e1b3a !important;
+    border: 1px solid #4c4a7a !important;
+    color: #e0dfff !important;
+    transition: none !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+}
+
+.card-purple input::placeholder,
+.card-purple textarea::placeholder,
+.card-purple .field-input::placeholder,
+.card-purple input.field-input::placeholder,
+.card-purple textarea.field-input::placeholder {
+    color: #b0aee0 !important;
+}
+
+.card-purple input:focus,
+.card-purple textarea:focus,
+.card-purple select:focus,
+.card-purple .field-input:focus,
+.card-purple input.field-input:focus,
+.card-purple textarea.field-input:focus,
+.card-purple select.field-input:focus {
+    border-color: #6b7280 !important;
+    box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.1) !important;
+}
+
+/* Language Button Styles */
+.language-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+
+.language-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    background-color: #f3f4f6;
+    color: #4b5563;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.language-button:hover {
+    background-color: #e5e7eb;
+    color: #1f2937;
+}
+
+.language-button.active {
+    background-color: #10b981;
+    color: #ffffff;
+}

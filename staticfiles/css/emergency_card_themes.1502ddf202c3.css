@@ -1,0 +1,402 @@
+/* Message Card Themes CSS */
+
+/* Font rendering improvements */
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* Base Card Styles */
+.card-inner {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    max-width: 400px;
+    margin: 0 auto;
+    transition: all 0.3s ease;
+}
+
+/* Language Pill Style */
+.language-pill {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Action Icons */
+.action-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Avatar Circle */
+.avatar-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar-circle-large {
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar-inner {
+    width: 88%;
+    height: 88%;
+    border-radius: 50%;
+    background-color: #f0f0f0;
+}
+
+/* Condition display in Medical Info */
+.condition-display {
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
+}
+
+/* Section Titles */
+.section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+/* Message content styling */
+.message-content {
+    padding: 0.75rem !important;
+    background-color: rgba(0, 0, 0, 0.05) !important;
+    border-radius: 6px !important;
+    line-height: 1.5 !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    margin-top: 0.25rem !important;
+}
+
+/* For light themes, ensure message text is dark enough */
+.message-card-theme-pastel .message-content,
+.message-card-theme-medical .message-content,
+.card-pastel .message-content,
+.card-medical .message-content {
+    color: #2c3e50 !important;
+    background-color: rgba(0, 0, 0, 0.03) !important;
+}
+
+/* For dark themes, ensure message text is light enough */
+.message-card-theme-luxury .message-content,
+.card-luxury .message-content {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Bullet Lists */
+.bullet-list {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+}
+
+.bullet-list li {
+    margin-bottom: 0.25rem;
+    line-height: 1.4;
+}
+
+.contact-info {
+    padding: 0.5rem 0;
+    font-weight: 500;
+}
+
+/* Card Title */
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.person-name {
+    font-size: 0.95rem;
+    opacity: 0.9;
+}
+
+/* Info Section */
+.info-section {
+    padding: 0.75rem;
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+}
+
+/* Pastel Theme */
+.message-card-theme-pastel {
+    background-color: #e6f2ff;
+    color: #2c3e50;
+}
+
+.message-card-theme-pastel .card-header {
+    background-color: #e6f2ff;
+}
+
+.message-card-theme-pastel .language-pill {
+    background-color: #4b7bec;
+    color: white;
+}
+
+.message-card-theme-pastel .action-icon {
+    background-color: #ffffff;
+    color: #4b7bec;
+}
+
+.message-card-theme-pastel .action-icon:hover {
+    background-color: #f2f6ff;
+}
+
+.message-card-theme-pastel .avatar-circle {
+    border: 2px solid #4b7bec;
+}
+
+.message-card-theme-pastel .avatar-inner {
+    background-color: #e6e9f0;
+}
+
+.message-card-theme-pastel .section-title {
+    color: #4b7bec;
+}
+
+.message-card-theme-pastel .info-section {
+    background-color: #ffffff;
+    border: 1px solid rgba(75, 123, 236, 0.2);
+}
+
+/* Luxury Theme */
+.message-card-theme-luxury {
+    background-color: #7d5a2e;
+    color: #ffffff;
+}
+
+.message-card-theme-luxury .card-header {
+    background-color: #96682c;
+}
+
+.message-card-theme-luxury .language-pill {
+    background-color: #a3752f;
+    color: white;
+    border: 1px solid #ffd700;
+}
+
+.card-inner {
+    display: grid;
+    grid-template-rows: auto 1fr auto; /* Basic grid for header, content, footer */
+    transition: all 0.5s ease-in-out; /* Smooth animation for all changes */
+}
+}
+
+.message-card-theme-luxury .action-icon {
+    background-color: rgba(255, 215, 0, 0.2);
+    color: #ffd700;
+}
+
+.message-card-theme-luxury .action-icon:hover {
+    background-color: rgba(255, 215, 0, 0.3);
+}
+
+.message-card-theme-luxury .avatar-circle {
+    border: 2px solid #ffd700;
+}
+
+.message-card-theme-luxury .avatar-inner {
+    background-color: rgba(255, 215, 0, 0.1);
+}
+
+.message-card-theme-luxury .section-title {
+    color: #ffd700;
+}
+
+.message-card-theme-luxury .info-section {
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+/* Medical Theme */
+.message-card-theme-medical {
+    background-color: #ffffff;
+    color: #333333;
+    border: 2px solid #2b87d9;
+}
+
+.message-card-theme-medical .card-header {
+    background-color: #f9f9f9;
+}
+
+.message-card-theme-medical .language-pill {
+    background-color: #2b87d9;
+    color: white;
+}
+
+.message-card-theme-medical .action-icon {
+    background-color: #f0f7ff;
+    color: #2b87d9;
+}
+
+.message-card-theme-medical .action-icon:hover {
+    background-color: #e1efff;
+}
+
+.message-card-theme-medical .avatar-circle {
+    border: 2px solid #2b87d9;
+}
+
+.message-card-theme-medical .avatar-inner {
+    background-color: #f0f7ff;
+}
+
+.message-card-theme-medical .section-title {
+    color: #2b87d9;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 0.25rem;
+}
+
+.message-card-theme-medical .info-section {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+}
+
+.message-card-theme-medical .bullet-list li::marker {
+    color: #2b87d9;
+}
+
+/* Backward compatibility for other themes */
+.card-pastel, .card-luxury, .card-medical, .card-dark, .card-light, .card-teal, .card-purple, .card-red, .card-mint, .card-nature, .card-vintage, .card-neon {
+    background-color: inherit;
+    color: inherit;
+}
+
+/* Apply theme classes to old theme naming scheme for compatibility */
+.card-pastel { 
+    background-color: #e6f2ff;
+    color: #2c3e50;
+}
+
+.card-pastel .card-header {
+    background-color: #e6f2ff;
+}
+
+.card-pastel .language-pill {
+    background-color: #4b7bec;
+    color: white;
+}
+
+.card-pastel .avatar-circle {
+    border: 2px solid #4b7bec;
+}
+
+.card-pastel .section-title {
+    color: #4b7bec;
+}
+
+.card-pastel .info-section {
+    background-color: #ffffff;
+    border: 1px solid rgba(75, 123, 236, 0.2);
+}
+
+.card-luxury {
+    background-color: #7d5a2e;
+    color: #ffffff;
+}
+
+.card-luxury .card-header {
+    background-color: #96682c;
+}
+
+.card-luxury .language-pill {
+    background-color: #a3752f;
+    color: white;
+    border: 1px solid #ffd700;
+}
+
+.card-luxury .avatar-circle {
+    border: 2px solid #ffd700;
+}
+
+.card-luxury .section-title {
+    color: #ffd700;
+}
+
+.card-luxury .info-section {
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.card-luxury .message-content {
+    color: #fff;
+}
+
+.card-medical {
+    background-color: #ffffff;
+    color: #333333;
+    border: 2px solid #2b87d9;
+}
+
+.card-medical .card-header {
+    background-color: #f9f9f9;
+}
+
+.card-medical .language-pill {
+    background-color: #2b87d9;
+    color: white;
+}
+
+.card-medical .avatar-circle {
+    border: 2px solid #2b87d9;
+}
+
+.card-medical .section-title {
+    color: #2b87d9;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 0.25rem;
+}
+
+.card-medical .info-section {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+}
+
+/* Loading indicator */
+.loading-indicator {
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    .card-inner {
+        max-width: 100%;
+    }
+    
+    .bullet-list li {
+        font-size: 0.9rem;
+    }
+    
+    .section-title {
+        font-size: 0.95rem;
+    }
+}
