@@ -32,7 +32,7 @@ load_dotenv(BASE_DIR / '.env.development.local')
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 
 # Environment-based settings
-ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,.fly.dev,.internal').split(',')
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,.fly.dev,.internal,.railway.app').split(',')
 
 # Add Fly.io internal IP ranges for health checks
 if not DEBUG:
@@ -52,6 +52,7 @@ CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1:*',  # Allow any port on 127.0.0.1 for development
     
     'https://*.fly.dev',  # Allow Fly.io domains
+    'https://*.railway.app',  # Allow Railway domains
 ]
 
 # Secret key - using environment variable in production
