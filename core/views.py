@@ -19,7 +19,7 @@ import os
 
 
 
-def home(request):
+def landing(request):
     """Home view with demo mode enabled"""
     # Use the new demo video for the landing page
     video_url = 'emergency_cards/Recording 2025-07-09 194109.mp4'
