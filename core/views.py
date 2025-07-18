@@ -17,10 +17,7 @@ DEMO_USER = {
 
 import os
 
-@csrf_exempt
-def health_check(request):
-    """Simple health check endpoint for Railway deployment"""
-    return HttpResponse('OK', status=200, content_type='text/plain')
+
 
 def home(request):
     """Home view with demo mode enabled"""

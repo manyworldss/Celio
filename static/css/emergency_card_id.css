@@ -275,8 +275,7 @@
 }
 
 .card-nature .card-header {
-    background: url('/static/images/nature-pattern.jpg') center center;
-    background-size: cover;
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
 }
 
 .card-nature .card-id-message {

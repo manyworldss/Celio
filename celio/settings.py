@@ -32,7 +32,16 @@ load_dotenv(BASE_DIR / '.env.development.local')
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 
 # Environment-based settings
-ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,.vercel.app,celio-coral.vercel.app').split(',')
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,.fly.dev,.internal,.vercel.app').split(',')
+
+# Add Fly.io internal IP ranges for health checks
+if not DEBUG:
+    ALLOWED_HOSTS.extend([
+        '172.19.31.210',  # Current Fly.io internal IP
+        '172.19.0.0',     # Fly.io internal network
+        '10.0.0.0',       # Additional internal network
+        '*',              # Allow all hosts in production for Fly.io
+    ])
 
 # Configure CSRF protection to work with browser previews
 CSRF_TRUSTED_ORIGINS = [
@@ -42,7 +51,7 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8001',
     'http://127.0.0.1:*',  # Allow any port on 127.0.0.1 for development
     
-    'https://*.vercel.app',  # Allow Vercel domains
+    'https://*.fly.dev',  # Allow Fly.io domains
 ]
 
 # Secret key - using environment variable in production
@@ -100,7 +109,7 @@ INSTALLED_APPS = [
     'core',
     'accounts',
     'message_cards',
-    'travel',
+    # 'travel',  # Travel guides temporarily disabled
     'subscription',
     'demo',
 
@@ -148,11 +157,18 @@ WSGI_APPLICATION = 'celio.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 import dj_database_url
 
-if 'DATABASE_URL' in os.environ:
+# Database configuration - PostgreSQL for production, SQLite for development
+if os.environ.get('DATABASE_URL'):
+    # Production database (PostgreSQL)
     DATABASES = {
-        'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
+        'default': dj_database_url.config(
+            default=os.environ.get('DATABASE_URL'),
+            conn_max_age=600,
+            ssl_require=True
+        )
     }
 else:
+    # Development database (SQLite)
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -282,12 +298,9 @@ if not DEBUG:
     CSP_FONT_SRC = ("'self'", "https:")
 
 
-# Add these settings at the bottom of the file
-import os
-
 # Static files configuration
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles_build' / 'static'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
 # WhiteNoise configuration
@@ -297,27 +310,4 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Database configuration - PostgreSQL for production, SQLite for development
-if os.environ.get('DATABASE_URL'):
-    # Production database (PostgreSQL)
-    try:
-        import dj_database_url
-        DATABASES = {
-            'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
-        }
-    except ImportError:
-        # Fallback to SQLite if dj_database_url is not available
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.sqlite3',
-                'NAME': BASE_DIR / 'db.sqlite3',
-            }
-        }
-else:
-    # Development database (SQLite)
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+# Database configuration is handled above - no duplicate needed

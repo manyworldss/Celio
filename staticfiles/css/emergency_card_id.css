@@ -157,6 +157,60 @@
 }
 
 /* Theme Specific Styles */
+/* Celio Theme */
+.message-card-theme-celio {
+    background-color: #f8f8f8; /* Off-white background */
+    color: #333333; /* Darker text for contrast */
+}
+
+.message-card-theme-celio .card-header {
+    background-color: #f0f0f0; /* Slightly darker off-white for header */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.message-card-theme-celio .card-id-message {
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.message-card-theme-celio .card-id-message-content {
+    color: #4b5563;
+}
+
+.message-card-theme-celio .card-id-message-title {
+    color: #1f2937;
+}
+
+.message-card-theme-celio .card-id-footer {
+    background-color: #f3f4f6;
+    color: #6b7280;
+}
+
+.message-card-theme-celio .card-id-value {
+    color: #4b5563;
+}
+
+/* Light Theme */
+.card-light {
+    background-color: #ffffff;
+    color: #1f2937;
+}
+
+.card-light .card-header {
+    background-color: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.card-light .card-id-message {
+    background-color: #f3f4f6;
+    border: 1px solid #d1d5db;
+}
+
+.card-light .card-id-footer {
+    background-color: #f3f4f6;
+    color: #6b7280;
+}
+
 /* Classic Theme */
 .card-classic {
     background-color: #ffffff;
@@ -221,8 +275,7 @@
 }
 
 .card-nature .card-header {
-    background: url('/static/images/nature-pattern.jpg') center center;
-    background-size: cover;
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
 }
 
 .card-nature .card-id-message {
@@ -298,35 +351,79 @@
 
 /* Dark Theme */
 .card-dark {
-    background-color: #1f2937;
+    background: linear-gradient(135deg, #0f0520 0%, #1a0b3d 100%);
     color: #ffffff;
+    box-shadow: 0 8px 32px rgba(107, 70, 193, 0.4);
 }
 
 .card-dark .card-header {
-    background-color: #111827;
-    border-bottom: 2px solid #374151;
+    background-color: #1a0b3d;
+    border-bottom: 1px solid #6b46c1;
+}
+
+.card-dark .card-id-name {
+    color: #a78bfa;
+    font-weight: 600;
 }
 
 .card-dark .card-id-message {
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 1px solid #374151;
+    background-color: rgba(107, 70, 193, 0.15);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    backdrop-filter: blur(10px);
 }
 
 .card-dark .card-id-message-content {
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.95);
 }
 
 .card-dark .card-id-message-title {
-    color: #ffffff;
+    color: #8b5cf6;
 }
 
 .card-dark .card-id-footer {
-    background-color: #111827;
-    color: rgba(255, 255, 255, 0.7);
+    background-color: #2d1b5a;
+    color: #c4b5fd;
 }
 
 .card-dark .card-id-value {
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Dark theme form inputs */
+.card-dark input,
+.card-dark textarea,
+.card-dark select,
+.card-dark .field-input,
+.card-dark input.field-input,
+.card-dark textarea.field-input,
+.card-dark select.field-input {
+    background-color: #2d1b5a !important;
+    background: #2d1b5a !important;
+    color: #f0e9ff !important;
+    border-color: #6b46c1 !important;
+    border: 1px solid #6b46c1 !important;
+    transition: none !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+}
+
+.card-dark input::placeholder,
+.card-dark textarea::placeholder,
+.card-dark .field-input::placeholder,
+.card-dark input.field-input::placeholder,
+.card-dark textarea.field-input::placeholder {
+    color: #d6c9f8 !important;
+}
+
+.card-dark input:focus,
+.card-dark textarea:focus,
+.card-dark select:focus,
+.card-dark .field-input:focus,
+.card-dark input.field-input:focus,
+.card-dark textarea.field-input:focus,
+.card-dark select.field-input:focus {
+    border-color: #8b5cf6 !important;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1) !important;
 }
 
 /* Pastel Theme */
@@ -385,21 +482,21 @@
 
 /* Luxury Theme */
 .card-luxury {
-    background: linear-gradient(135deg, #92400e 0%, #b45309 100%);
-    color: #ffffff;
+    background-color: #f8f8f8; /* Light neutral background */
+    color: #333333; /* Darker text for contrast */
 }
 
 .card-luxury .card-id-message {
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 1px solid #d97706;
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .card-luxury .card-id-message-content {
-    color: rgba(255, 255, 255, 0.9);
+    color: #4b5563;
 }
 
 .card-luxury .card-id-message-title {
-    color: #ffffff;
+    color: #1f2937;
 }
 
 .card-luxury .card-id-footer {
@@ -515,6 +612,145 @@
 
 .card-cyberpunk .card-id-value {
     color: rgba(255, 255, 255, 0.8);
+}
+
+/* Purple Theme */
+.card-purple {
+    background-color: #1f2937;
+    color: #ffffff;
+}
+
+.card-purple .card-header {
+    background-color: #111827;
+    border-bottom: 2px solid #374151;
+}
+
+.card-purple .card-id-message {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid #374151;
+}
+
+.card-purple .card-id-message-content {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.card-purple .card-id-message-title {
+    color: #ffffff;
+}
+
+.card-purple .card-id-footer {
+    background-color: #111827;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.card-purple .card-id-value {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Celio theme form inputs */
+.card-celio input,
+.card-celio textarea,
+.card-celio select,
+.card-celio .field-input,
+.card-celio input.field-input,
+.card-celio textarea.field-input,
+.card-celio select.field-input {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    transition: none !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+}
+
+.card-celio input::placeholder,
+.card-celio textarea::placeholder,
+.card-celio .field-input::placeholder,
+.card-celio input.field-input::placeholder,
+.card-celio textarea.field-input::placeholder {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.card-celio input:focus,
+.card-celio textarea:focus,
+.card-celio select:focus,
+.card-celio .field-input:focus,
+.card-celio input.field-input:focus,
+.card-celio textarea.field-input:focus,
+.card-celio select.field-input:focus {
+    border-color: rgba(255, 255, 255, 0.5) !important;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Light theme form inputs */
+.card-light input,
+.card-light textarea,
+.card-light select,
+.card-light .field-input,
+.card-light input.field-input,
+.card-light textarea.field-input,
+.card-light select.field-input {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    color: #1f2937 !important;
+    border-color: #d1d5db !important;
+    border: 1px solid #d1d5db !important;
+    transition: none !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+}
+
+.card-light input::placeholder,
+.card-light textarea::placeholder,
+.card-light .field-input::placeholder,
+.card-light input.field-input::placeholder,
+.card-light textarea.field-input::placeholder {
+    color: #9ca3af !important;
+}
+
+.card-light input:focus,
+.card-light textarea:focus,
+.card-light select:focus,
+.card-light .field-input:focus,
+.card-light input.field-input:focus,
+.card-light textarea.field-input:focus,
+.card-light select.field-input:focus {
+    border-color: #6b7280 !important;
+    box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.1) !important;
+}
+
+/* Purple theme form inputs */
+.card-purple .field-input,
+.card-purple input.field-input,
+.card-purple textarea.field-input,
+.card-purple select.field-input {
+    background: #1e1b3a !important;
+    border: 1px solid #4c4a7a !important;
+    color: #e0dfff !important;
+    transition: none !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+}
+
+.card-purple input::placeholder,
+.card-purple textarea::placeholder,
+.card-purple .field-input::placeholder,
+.card-purple input.field-input::placeholder,
+.card-purple textarea.field-input::placeholder {
+    color: #b0aee0 !important;
+}
+
+.card-purple input:focus,
+.card-purple textarea:focus,
+.card-purple select:focus,
+.card-purple .field-input:focus,
+.card-purple input.field-input:focus,
+.card-purple textarea.field-input:focus,
+.card-purple select.field-input:focus {
+    border-color: #6b7280 !important;
+    box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.1) !important;
 }
 
 /* Language Button Styles */

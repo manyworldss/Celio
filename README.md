@@ -6,7 +6,7 @@
 
 *A comprehensive demo web application showcasing modern full-stack development, designed to become a mobile app later in 2025.*
 
-Demo Site: https://celio-coral.vercel.app/
+
 Medium Blog: https://raphealsuber.medium.com/836e1eca60dc
 
 
@@ -109,17 +109,6 @@ python manage.py runserver
 
 Visit `http://127.0.0.1:8000/` in your browser to view the application.
 
-### Vercel Deployment
-
-```bash
-# Install Vercel CLI
-npm i -g vercel
-
-# Deploy to Vercel
-vercel --prod
-```
-
-For detailed Vercel deployment instructions, see `VERCEL_DEPLOYMENT.md`.
 
 ### Docker Deployment
 

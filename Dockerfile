@@ -1,48 +1,34 @@
-# Use a multi-stage build to keep the final image small
-FROM python:3.13-slim as builder
+# Use Python 3.13 slim image
+FROM python:3.13-slim
 
 # Set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV DJANGO_SETTINGS_MODULE=celio.settings
 
-# Set the working directory
-WORKDIR /app
+# Set work directory
+WORKDIR /code
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends build-essential libpq-dev
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        build-essential \
+        libpq-dev \
+        curl \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
 COPY requirements.txt .
-RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Final stage
-FROM python:3.13-slim
-
-# Create a non-root user
-RUN addgroup --system app && adduser --system --group app
-
-# Set the working directory
-WORKDIR /home/app/web
-
-# Install dependencies from the builder stage
-COPY --from=builder /app/wheels /wheels
-COPY --from=builder /app/requirements.txt .
-RUN pip install --no-cache /wheels/*
-
-# Copy the application code
+# Copy project
 COPY . .
 
-# Change ownership of the files
-RUN chown -R app:app /home/app/web
-
-# Switch to the non-root user
-USER app
-
-# Expose the port
-EXPOSE 8000
-
-# Run collectstatic
+# Collect static files
 RUN python manage.py collectstatic --noinput
 
-# Run the application with Gunicorn
-CMD gunicorn celio.wsgi:application --bind 0.0.0.0:$PORT
+# Expose port
+EXPOSE 8000
+
+# Run the application
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "2", "celio.wsgi:application"]
