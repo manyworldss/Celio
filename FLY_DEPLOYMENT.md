@@ -38,7 +38,7 @@ Set the required environment variables:
 
 ```bash
 # Django Secret Key (generate a new one)
-flyctl secrets set DJANGO_SECRET_KEY="top82@bg#g9*qexs91&6@av7&vwn96h)$*ohne=_eq7c$d$fa8"
+flyctl secrets set DJANGO_SECRET_KEY="your-super-secret-key"
 
 # Database URL (if using external database)
 flyctl secrets set DATABASE_URL="postgres://username:password@host:port/database"
