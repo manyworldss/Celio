@@ -1,5 +1,5 @@
 
-# Celio - https://celio.fly.dev/
+# Celio - https://celioapp.up.railway.app/
 
 **Multilingual E-Cards for Celiac Disease**
 
@@ -8,7 +8,7 @@
 *A comprehensive demo web application showcasing modern full-stack development, designed to become a mobile app later in 2025.*
 
 DEMO SITE
-https://celio.fly.dev/
+https://celioapp.up.railway.app/
 
 Medium Blog: https://raphealsuber.medium.com/836e1eca60dc
 
