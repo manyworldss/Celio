@@ -6,8 +6,8 @@
 
 *A comprehensive demo web application showcasing modern full-stack development, designed to become a mobile app later in 2025.*
 
-DEMO SITE
->>>> https://celio.fly.dev/ <<<<<
+##DEMO SITE
+https://celio.fly.dev/
 
 Medium Blog: https://raphealsuber.medium.com/836e1eca60dc
 
