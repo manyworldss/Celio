@@ -32,7 +32,7 @@ load_dotenv(BASE_DIR / '.env.development.local')
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 
 # Environment-based settings
-ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,.fly.dev,.internal,.vercel.app').split(',')
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,.fly.dev,.internal').split(',')
 
 # Add Fly.io internal IP ranges for health checks
 if not DEBUG:
@@ -160,12 +160,17 @@ import dj_database_url
 # Database configuration - PostgreSQL for production, SQLite for development
 if os.environ.get('DATABASE_URL'):
     # Production database (PostgreSQL)
+    db_config = dj_database_url.config(
+        default=os.environ.get('DATABASE_URL'),
+        conn_max_age=600,
+        ssl_require=False
+    )
+    # Add SSL configuration for Fly.io
+    db_config['OPTIONS'] = {
+        'sslmode': 'disable',  # Disable SSL for Fly.io internal network
+    }
     DATABASES = {
-        'default': dj_database_url.config(
-            default=os.environ.get('DATABASE_URL'),
-            conn_max_age=600,
-            ssl_require=True
-        )
+        'default': db_config
     }
 else:
     # Development database (SQLite)
@@ -305,6 +310,17 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 
 # WhiteNoise configuration
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Configure WhiteNoise for video files
+WHITENOISE_MIMETYPES = {
+    '.mp4': 'video/mp4',
+    '.webm': 'video/webm',
+    '.ogg': 'video/ogg'
+}
+
+# Add MIME type for video files
+import mimetypes
+mimetypes.add_type('video/mp4', '.mp4', True)
 
 # Media files configuration
 MEDIA_URL = '/media/'
