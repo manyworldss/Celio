@@ -158,30 +158,23 @@ WSGI_APPLICATION = 'celio.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 import dj_database_url
 
-# Database configuration - Using SQLite for now to fix 500 errors
-# TODO: Add PostgreSQL database service in Railway for production
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Database configuration
+if os.environ.get('DATABASE_URL'):
+    # Production database (PostgreSQL)
+    DATABASES = {
+        'default': dj_database_url.config(
+            conn_max_age=600,
+            ssl_require=True
+        )
     }
-}
-
-# Commented out PostgreSQL configuration until DATABASE_URL is properly set
-# if os.environ.get('DATABASE_URL'):
-#     # Production database (PostgreSQL)
-#     db_config = dj_database_url.config(
-#         default=os.environ.get('DATABASE_URL'),
-#         conn_max_age=600,
-#         ssl_require=False
-#     )
-#     # Add SSL configuration for Fly.io
-#     db_config['OPTIONS'] = {
-#         'sslmode': 'disable',  # Disable SSL for Fly.io internal network
-#     }
-#     DATABASES = {
-#         'default': db_config
-#     }
+else:
+    # Development database (SQLite)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
