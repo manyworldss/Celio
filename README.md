@@ -11,7 +11,7 @@
 
 # Celio
 
-Celio is an app I made because I needed something like it and couldn’t find it anywhere. I have celiac disease, and when I travel, it’s hard to explain what that means — especially in a different language. It gets exhausting fast. Sometimes scary.
+Celio is an app I made because I needed something like it and couldn’t find it anywhere. I have celiac disease, and when I travel, it’s hard to explain what that means especially in a different language. It gets exhausting fast. Sometimes scary.
 
 This tool creates a downloadable card that explains your condition in multiple languages so you can stay safe, eat with confidence, and not have to explain your whole medical history every time you sit down at a table.
 
