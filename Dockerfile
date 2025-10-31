@@ -25,7 +25,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Collect static files
-RUN python manage.py collectstatic --noinput
+# Provide a temporary secret key only during build so collectstatic can run.
+# Runtime must provide a proper DJANGO_SECRET_KEY via environment variables.
+RUN DJANGO_SECRET_KEY=build-temp-secret python manage.py collectstatic --noinput
 
 # Expose port
 EXPOSE 8000
