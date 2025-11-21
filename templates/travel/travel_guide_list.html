@@ -5,63 +5,69 @@
 
 {% block extra_css %}
 <style>
-    /* Modern CSS Variables */
+    /* Sage Theme Variables */
     :root {
-        --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        --accent-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        --glass-bg: rgba(255, 255, 255, 0.1);
-        --glass-border: rgba(255, 255, 255, 0.2);
-        --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.1);
-        --shadow-strong: 0 20px 60px rgba(0, 0, 0, 0.15);
+        --primary-gradient: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+        /* Violet 600 -> 700 */
+        --accent-gradient: linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%);
+        /* Violet 400 -> 600 */
+        --glass-bg: rgba(124, 58, 237, 0.03);
+        --glass-border: rgba(124, 58, 237, 0.15);
+        --glass-hover: rgba(124, 58, 237, 0.08);
+        --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.2);
+        --shadow-strong: 0 20px 60px rgba(0, 0, 0, 0.4);
+        --text-primary: #ffffff;
+        --text-secondary: rgba(255, 255, 255, 0.6);
+    }
+
+    body {
+        background-color: #000000;
+        color: var(--text-primary);
     }
 
     /* Page Header */
     .page-header {
-        background: var(--primary-gradient);
         padding: 4rem 2rem;
         text-align: center;
         position: relative;
         overflow: hidden;
     }
 
+    /* Background Orbs (Simplified from Sage) */
     .page-header::before {
         content: '';
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-        opacity: 0.3;
-    }
-
-    .page-header-content {
-        position: relative;
-        z-index: 10;
+        top: -50%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 800px;
+        height: 800px;
+        background: radial-gradient(circle, rgba(124, 58, 237, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+        z-index: -1;
+        pointer-events: none;
     }
 
     .page-title {
         font-size: 3.5rem;
-        font-weight: 900;
-        color: white;
+        font-weight: 800;
+        letter-spacing: -0.02em;
         margin-bottom: 1rem;
-        text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        background: linear-gradient(to right, #fff, #a78bfa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
 
     .page-subtitle {
-        font-size: 1.25rem;
-        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.125rem;
+        color: var(--text-secondary);
         max-width: 600px;
         margin: 0 auto;
         line-height: 1.6;
     }
 
     .subtitle-highlight {
-        background: var(--accent-gradient);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        font-weight: 700;
+        color: #a78bfa;
+        font-weight: 600;
     }
 
     /* Travel Icons */
@@ -73,99 +79,63 @@
     }
 
     .travel-icon {
-        font-size: 2rem;
-        animation: float 3s ease-in-out infinite;
+        color: rgba(167, 139, 250, 0.6);
+        /* Violet-400 with opacity */
+        transition: color 0.3s ease;
     }
 
-    .travel-icon:nth-child(2) {
-        animation-delay: 0.5s;
-    }
-
-    .travel-icon:nth-child(3) {
-        animation-delay: 1s;
-    }
-
-    .travel-icon:nth-child(4) {
-        animation-delay: 1.5s;
-    }
-
-    .travel-icon:nth-child(5) {
-        animation-delay: 2s;
-    }
-
-    @keyframes float {
-
-        0%,
-        100% {
-            transform: translateY(0px);
-        }
-
-        50% {
-            transform: translateY(-10px);
-        }
+    .travel-icon:hover {
+        color: #a78bfa;
     }
 
     /* Countries Grid */
     .countries-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-        gap: 2rem;
-        padding: 3rem 2rem;
+        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+        gap: 1.5rem;
+        padding: 2rem;
         max-width: 1400px;
         margin: 0 auto;
     }
 
     .country-card {
         background: var(--glass-bg);
-        backdrop-filter: blur(20px);
+        backdrop-filter: blur(12px);
         border: 1px solid var(--glass-border);
-        border-radius: 20px;
+        border-radius: 24px;
         padding: 2rem;
-        transition: all 0.3s ease;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         cursor: pointer;
         position: relative;
         overflow: hidden;
-    }
-
-    .country-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: var(--primary-gradient);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        z-index: -1;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
     }
 
     .country-card:hover {
-        transform: translateY(-8px);
-        box-shadow: var(--shadow-strong);
-        border-color: rgba(255, 255, 255, 0.4);
-    }
-
-    .country-card:hover::before {
-        opacity: 0.1;
+        transform: translateY(-4px);
+        background: var(--glass-hover);
+        border-color: rgba(124, 58, 237, 0.3);
+        box-shadow: 0 12px 40px rgba(124, 58, 237, 0.1);
     }
 
     /* Country Header */
     .country-header {
         display: flex;
         align-items: center;
-        gap: 1.5rem;
+        gap: 1.25rem;
         margin-bottom: 1.5rem;
     }
 
     .country-flag {
-        width: 80px;
-        height: 60px;
+        width: 64px;
+        height: 48px;
         border-radius: 12px;
         overflow: hidden;
-        box-shadow: var(--shadow-soft);
-        border: 2px solid rgba(255, 255, 255, 0.3);
-        background: white;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: #1a1a1a;
         flex-shrink: 0;
     }
 
@@ -177,77 +147,78 @@
 
     .country-info {
         flex: 1;
+        min-width: 0;
+        /* Prevent text overflow */
     }
 
     .country-name {
-        font-size: 1.5rem;
+        font-size: 1.25rem;
         font-weight: 700;
         color: white;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.25rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .country-language {
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        color: rgba(255, 255, 255, 0.8);
-        font-size: 0.9rem;
+        color: var(--text-secondary);
+        font-size: 0.875rem;
     }
 
     .country-language svg {
-        width: 16px;
-        height: 16px;
+        width: 14px;
+        height: 14px;
+        color: #a78bfa;
     }
 
-    /* Awareness Section */
-    .awareness-section {
-        text-align: right;
-    }
-
-    .awareness-label {
-        font-size: 0.8rem;
-        color: rgba(255, 255, 255, 0.6);
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-bottom: 0.25rem;
-    }
-
-    .awareness-value {
-        font-size: 0.9rem;
-        font-weight: 600;
-        color: white;
+    /* Awareness Badge */
+    .awareness-badge {
+        display: inline-flex;
+        align-items: center;
         padding: 0.25rem 0.75rem;
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 20px;
-        display: inline-block;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        background: rgba(124, 58, 237, 0.1);
+        border: 1px solid rgba(124, 58, 237, 0.2);
+        color: #a78bfa;
+        margin-left: auto;
     }
 
     /* Country Description */
     .country-description {
-        color: rgba(255, 255, 255, 0.8);
+        color: var(--text-secondary);
+        font-size: 0.9375rem;
         line-height: 1.6;
         margin-bottom: 1.5rem;
+        flex-grow: 1;
     }
 
-    /* Dining Tips */
+    /* Dining Tips Preview */
     .dining-tips {
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 12px;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 16px;
         padding: 1rem;
         margin-bottom: 1.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .dining-tips-label {
-        font-size: 0.8rem;
-        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.75rem;
+        color: #a78bfa;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.05em;
         margin-bottom: 0.5rem;
+        font-weight: 600;
     }
 
     .dining-tips-text {
-        color: rgba(255, 255, 255, 0.9);
-        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.875rem;
         line-height: 1.5;
     }
 
@@ -256,94 +227,59 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 1rem 1.5rem;
-        background: var(--accent-gradient);
+        padding: 0.875rem 1.25rem;
+        background: rgba(124, 58, 237, 0.1);
         color: white;
         text-decoration: none;
-        border-radius: 12px;
+        border-radius: 14px;
         font-weight: 600;
-        transition: all 0.3s ease;
-        box-shadow: var(--shadow-soft);
+        font-size: 0.9375rem;
+        transition: all 0.2s ease;
+        border: 1px solid rgba(124, 58, 237, 0.2);
+        margin-top: auto;
     }
 
     .explore-link:hover {
-        transform: translateY(-2px);
-        box-shadow: var(--shadow-strong);
-        color: white;
+        background: rgba(124, 58, 237, 0.2);
+        border-color: rgba(124, 58, 237, 0.4);
+        transform: translateX(2px);
     }
 
     .explore-arrow {
-        font-size: 1.2rem;
-        transition: transform 0.3s ease;
+        font-size: 1.1rem;
+        transition: transform 0.2s ease;
+        color: #a78bfa;
     }
 
     .explore-link:hover .explore-arrow {
-        transform: translateX(5px);
+        transform: translateX(4px);
+        color: white;
     }
 
     /* Responsive Design */
     @media (max-width: 768px) {
         .page-header {
-            padding: 3rem 1rem;
+            padding: 3rem 1.5rem;
         }
 
         .page-title {
             font-size: 2.5rem;
         }
 
-        .page-subtitle {
-            font-size: 1.1rem;
-        }
-
-        .travel-icons {
-            gap: 1.5rem;
-        }
-
-        .travel-icon {
-            font-size: 1.5rem;
-        }
-
         .countries-grid {
             grid-template-columns: 1fr;
-            gap: 1.5rem;
-            padding: 2rem 1rem;
+            padding: 1rem;
         }
 
         .country-card {
             padding: 1.5rem;
         }
-
-        .country-header {
-            gap: 1rem;
-        }
-
-        .country-flag {
-            width: 60px;
-            height: 45px;
-        }
-
-        .country-name {
-            font-size: 1.25rem;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .page-title {
-            font-size: 2rem;
-        }
-
-        .travel-icons {
-            gap: 1rem;
-        }
-
-        .travel-icon {
-            font-size: 1.25rem;
-        }
     }
 
     /* Animation Classes */
     .fade-in {
-        animation: fadeIn 0.6s ease-in-out;
+        animation: fadeIn 0.6s ease-out forwards;
+        opacity: 0;
     }
 
     @keyframes fadeIn {
@@ -362,37 +298,36 @@
 
 {% block content %}
 <div class="page-header">
-    <div class="page-header-content">
-        <div class="travel-icons flex justify-center gap-8 mb-8 text-white/80">
-            <svg class="w-8 h-8 travel-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                    d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
-                </path>
-            </svg>
-            <svg class="w-8 h-8 travel-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                    d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7">
-                </path>
-            </svg>
-            <svg class="w-8 h-8 travel-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                    d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z">
-                </path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                    d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
-            </svg>
-        </div>
-        <h1 class="page-title">Travel Guides</h1>
-        <p class="page-subtitle">
-            Discover <span class="subtitle-highlight">safe gluten-free dining experiences</span> around the world with
-            our comprehensive <span class="subtitle-highlight">country guides</span>
-        </p>
+    <div class="travel-icons">
+        <svg class="w-8 h-8 travel-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+            </path>
+        </svg>
+        <svg class="w-8 h-8 travel-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7">
+            </path>
+        </svg>
+        <svg class="w-8 h-8 travel-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z">
+            </path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+        </svg>
     </div>
+    <h1 class="page-title">Travel Guides</h1>
+    <p class="page-subtitle">
+        Discover <span class="subtitle-highlight">safe gluten-free dining experiences</span> around the world with our
+        comprehensive <span class="subtitle-highlight">country guides</span>
+    </p>
 </div>
 
 <div class="countries-grid">
     {% for country in travel_guides %}
-    <div class="country-card" onclick="window.location.href='{% url 'travel:country_detail' country.slug %}'">
+    <div class="country-card fade-in" style="animation-delay: {{ forloop.counter0|add:1|stringformat:'d' }}00ms"
+        onclick="window.location.href='{% url 'travel:country_detail' country.slug %}'">
         <div class="country-header">
             <div class="country-flag">
                 <img src="https://flagcdn.com/w160/{{ country.code|lower }}.png" alt="{{ country.name }} flag"
@@ -408,18 +343,17 @@
                     {{ country.language }}
                 </p>
             </div>
-            <div class="awareness-section">
-                <div class="awareness-label">Celiac Awareness</div>
-                <div class="awareness-value">{{ country.get_celiac_awareness_display }}</div>
+            <div class="awareness-badge">
+                {{ country.get_celiac_awareness_display }}
             </div>
         </div>
 
-        <div class="country-description">{{ country.summary }}</div>
+        <div class="country-description">{{ country.summary|truncatewords:20 }}</div>
 
         {% if country.dining_tips %}
         <div class="dining-tips">
-            <div class="dining-tips-label">Dining Tips:</div>
-            <div class="dining-tips-text">{{ country.dining_tips|truncatewords:20 }}</div>
+            <div class="dining-tips-label">Dining Tips</div>
+            <div class="dining-tips-text">{{ country.dining_tips|truncatewords:15 }}</div>
         </div>
         {% endif %}
 
@@ -430,14 +364,4 @@
     </div>
     {% endfor %}
 </div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Add animation classes to country cards
-        document.querySelectorAll('.country-card').forEach(function (el, index) {
-            el.style.animationDelay = (index * 0.1) + 's';
-            el.classList.add('fade-in');
-        });
-    });
-</script>
 {% endblock %}

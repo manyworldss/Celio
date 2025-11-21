@@ -3,6 +3,8 @@
 
 {% block title %}Sage AI - Celio{% endblock %}
 
+{% block navbar %}{% endblock %}
+
 {% block extra_head %}
 <script src="https://unpkg.com/htmx.org@1.9.10"></script>
 <style>
@@ -70,6 +72,86 @@
         50% {
             transform: translate(30px, 30px);
         }
+    }
+
+    /* Logo Glow Animation */
+    @keyframes logoPulse {
+
+        0%,
+        100% {
+            box-shadow: 0 0 20px rgba(124, 58, 237, 0.4);
+            transform: scale(1);
+        }
+
+        50% {
+            box-shadow: 0 0 40px rgba(124, 58, 237, 0.7);
+            transform: scale(1.05);
+        }
+    }
+
+    .sage-logo-container {
+        position: relative;
+        width: 64px;
+        /* w-16 */
+        height: 64px;
+        /* h-16 */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 16px;
+        /* rounded-2xl */
+        background: linear-gradient(45deg, #7c3aed, #14b8a6, #8b5cf6, #2dd4bf);
+        background-size: 300% 300%;
+        animation: gradient-shift 6s ease infinite, logoPulse 4s infinite ease-in-out;
+        padding: 3px;
+        /* Border width */
+    }
+
+    /* Inner content background */
+    .sage-logo-inner {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to bottom right, #7c3aed, #5b21b6);
+        /* violet-600 to violet-800 */
+        border-radius: 13px;
+        /* Slightly less than container to fit snug */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        z-index: 1;
+    }
+
+    @keyframes gradient-shift {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    /* Background Hover Effect */
+    .sage-bg-hover {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+        background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(139, 92, 246, 0.15), transparent 50%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    body:hover .sage-bg-hover {
+        opacity: 1;
     }
 
     /* Glass Panel */
@@ -321,52 +403,233 @@
             display: none;
         }
     }
+
+    /* Dynamic Island Menu */
+    .dynamic-island-container {
+        position: fixed;
+        top: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 100;
+        display: flex;
+        justify-content: center;
+    }
+
+    .dynamic-island {
+        background: rgba(20, 20, 20, 0.8);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(124, 58, 237, 0.2);
+        border-radius: 100px;
+        padding: 5px;
+        /* Balanced padding */
+        display: flex;
+        align-items: center;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+        height: 50px;
+        /* Comfortable touch target */
+        min-width: 110px;
+        /* Ensure space for "Menu" */
+        overflow: hidden;
+    }
+
+    .dynamic-island:hover {
+        background: rgba(30, 30, 30, 0.95);
+        border-color: rgba(124, 58, 237, 0.4);
+        box-shadow: 0 12px 40px rgba(124, 58, 237, 0.2);
+        padding: 5px 32px 5px 5px;
+        /* Increased right padding */
+    }
+
+    .island-logo {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Menu Label (Flex Item) */
+    .menu-label {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 0.95rem;
+        font-weight: 600;
+        white-space: nowrap;
+        margin-left: 12px;
+        margin-right: 16px;
+        opacity: 1;
+        max-width: 100px;
+        /* Allow width */
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+
+    .dynamic-island:hover .menu-label {
+        opacity: 0;
+        max-width: 0;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .island-content {
+        display: flex;
+        align-items: center;
+        gap: 32px;
+        /* Restored and increased gap */
+        opacity: 0;
+        width: 0;
+        margin-left: 0;
+        transform: translateX(20px);
+        transition: all 0.3s ease;
+        pointer-events: none;
+    }
+
+    .dynamic-island:hover .island-content {
+        opacity: 1;
+        width: auto;
+        margin-left: 24px;
+        /* Add spacing from logo */
+        transform: translateX(0);
+        pointer-events: auto;
+        transition-delay: 0.1s;
+    }
+
+    .island-link {
+        color: rgba(255, 255, 255, 0.6);
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+        white-space: nowrap;
+        transition: color 0.2s ease;
+        display: flex;
+        align-items: center;
+        position: relative;
+    }
+
+    .island-link:hover {
+        color: white;
+    }
+
+    .island-link.active {
+        color: white;
+    }
+
+    .island-link.active::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 4px;
+        height: 4px;
+        background: #7c3aed;
+        border-radius: 50%;
+    }
+
+    /* Page Layout Adjustments */
+    .sage-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 90px 20px 20px 20px;
+        /* Increased top padding */
+        min-height: calc(100vh - 80px);
+        /* Account for footer roughly */
+        display: flex;
+        flex-direction: column;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
 <!-- Background -->
 <div class="sage-bg"></div>
+<div class="sage-bg-hover"></div>
+
+<!-- Dynamic Island Menu -->
+<div class="dynamic-island-container">
+    <div class="dynamic-island">
+        <div class="island-logo">
+            <svg class="w-5 h-5 text-white" viewBox="0 -6 96 96" xmlns="http://www.w3.org/2000/svg" fill="none">
+                <g stroke-linecap="round" stroke-linejoin="round">
+                    <g transform="translate(-434 -708)">
+                        <path
+                            d="M449,730v19a15,15,0,0,0,9,13.744V780a10,10,0,0,0,10,10h28a10,10,0,0,0,10-10V762.744A15,15,0,0,0,515,749V730Z"
+                            fill="currentColor" class="text-violet-900/50" stroke="currentColor" class="text-white"
+                            stroke-width="4"></path>
+                        <path d="M459,764h-1v16a10,10,0,0,0,10,10h1V774A10,10,0,0,0,459,764Z" fill="currentColor"
+                            class="text-violet-950" stroke="currentColor" class="text-white" stroke-width="4"></path>
+                        <path d="M505,764h1v16a10,10,0,0,1-10,10h-1V774A10,10,0,0,1,505,764Z" fill="currentColor"
+                            class="text-violet-950" stroke="currentColor" class="text-white" stroke-width="4"></path>
+                        <circle cx="11" cy="11" r="11" transform="translate(482 731)" fill="currentColor"
+                            class="text-white" stroke="currentColor" class="text-white" stroke-width="4"></circle>
+                        <circle cx="11" cy="11" r="11" transform="translate(460 731)" fill="currentColor"
+                            class="text-white" stroke="currentColor" class="text-white" stroke-width="4"></circle>
+                        <path
+                            d="M523,710H504v2a9.973,9.973,0,0,1-4.016,8l.016,0h-.018a9.942,9.942,0,0,1-5.64,1.983l-.015.017H469.673l-.015-.017a9.942,9.942,0,0,1-5.64-1.983H464l.016,0A9.973,9.973,0,0,1,460,712v-2H441a5,5,0,0,0,0,10h6a5,5,0,0,0,0,10h11.222a26.6,26.6,0,0,0,3.278,0A15.5,15.5,0,0,1,477,745.5c0,.506-.028,1.006-.076,1.5H477v13.7a5,5,0,0,0,10,0V747h.076c-.048-.494-.076-.994-.076-1.5A15.5,15.5,0,0,1,502.5,730a26.6,26.6,0,0,0,3.278,0H517a5,5,0,0,0,0-10h6a5,5,0,0,0,0-10Z"
+                            fill="currentColor" class="text-violet-800" stroke="currentColor" class="text-white"
+                            stroke-width="4"></path>
+                        <rect width="10" height="21" rx="5" transform="translate(477 744)" fill="currentColor"
+                            class="text-violet-950" stroke="currentColor" class="text-white" stroke-width="4"></rect>
+                    </g>
+                </g>
+            </svg>
+        </div>
+        <span class="menu-label">Menu</span>
+        <div class="island-content">
+            <a href="{% url 'core:landing' %}" class="island-link">Home</a>
+            <a href="{% url 'message_cards:unified_card_management' %}" class="island-link">My Card</a>
+            <a href="{% url 'sage:assistant' %}" class="island-link active">Sage AI</a>
+            {% if user.is_authenticated %}
+            <form method="post" action="{% url 'logout' %}" class="inline-block">
+                {% csrf_token %}
+                <button type="submit" class="island-link text-red-400 hover:text-red-300">Sign Out</button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('mousemove', (e) => {
+        document.documentElement.style.setProperty('--mouse-x', e.clientX + 'px');
+        document.documentElement.style.setProperty('--mouse-y', e.clientY + 'px');
+    });
+</script>
 
 <div class="sage-container">
-    <!-- Header -->
-    <header class="mb-6 flex justify-between items-center">
-        <div class="flex items-center gap-3">
-            <div
-                class="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-violet-800 flex items-center justify-center shadow-lg">
-                <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                </svg>
-            </div>
-            <div class="flex items-center gap-3">
-                <h1 class="text-xl font-bold text-white tracking-tight">Sage AI</h1>
-                <div
-                    class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-yellow-500/10 border border-yellow-500/30">
-                    <div class="w-1.5 h-1.5 rounded-full bg-yellow-400 animate-pulse"></div>
-                    <span class="text-xs font-semibold text-yellow-200 uppercase tracking-wider">Demo</span>
-                </div>
-            </div>
-        </div>
-
-        <a href="{% url 'message_cards:unified_card_management' %}"
-            class="px-5 py-2.5 h-10 rounded-xl bg-violet-900/20 hover:bg-violet-800/30 border border-violet-700/30 hover:border-violet-600/50 text-sm font-medium text-white transition-all flex items-center">
-            My Card
-        </a>
-    </header>
-
     <!-- Main Grid -->
-    <div class="sage-main">
+    <div class="sage-main h-full">
         <!-- Sidebar -->
         <aside class="sage-sidebar glass-panel rounded-2xl p-5">
             <div class="flex justify-between items-center mb-5">
                 <h2 class="text-sm font-bold text-white/40 uppercase tracking-wider">Conversations</h2>
-                <a href="{% url 'sage:new_conversation' %}"
-                    class="p-2 rounded-lg hover:bg-white/5 text-violet-400 transition-colors" title="New Chat">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                    </svg>
-                </a>
+                <div class="flex gap-2">
+                    <form method="POST" action="{% url 'sage:assistant' %}" class="inline">
+                        {% csrf_token %}
+                        <input type="hidden" name="clear_chat" value="true">
+                        <button type="submit" hx-post="{% url 'sage:assistant' %}" hx-target="#messages-container"
+                            hx-swap="innerHTML"
+                            class="p-2 rounded-lg hover:bg-white/5 text-violet-400 transition-colors"
+                            title="Clear Chat">
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                        </button>
+                    </form>
+                    <a href="{% url 'sage:new_conversation' %}"
+                        class="p-2 rounded-lg hover:bg-white/5 text-violet-400 transition-colors" title="New Chat">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                    </a>
+                </div>
             </div>
 
             <div class="flex-1 overflow-y-auto custom-scrollbar">
@@ -394,7 +657,7 @@
         <main class="sage-chat-area glass-panel rounded-2xl overflow-hidden">
             <!-- Messages -->
             <div class="flex-1 overflow-y-auto custom-scrollbar p-6" id="messages-container">
-                {% include 'sage/partials/messages.html' with messages=messages %}
+                {% include 'sage/partials/messages.html' %}
             </div>
 
             <!-- Input Area -->

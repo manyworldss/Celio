@@ -1,0 +1,163 @@
+<div class="travel-card-container my-6 max-w-2xl w-full mx-auto">
+    <!-- Card Header -->
+    <div class="relative h-48 rounded-t-2xl overflow-hidden group">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/80 z-10"></div>
+        <img src="{{ country.image_url }}" alt="{{ country.name }}"
+            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+
+        <div class="absolute top-4 left-4 z-20">
+            <div
+                class="flex items-center gap-2 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
+                <img src="https://flagcdn.com/w40/{{ country.code|lower }}.png" alt="{{ country.name }} flag"
+                    class="w-5 h-auto rounded-sm">
+                <span class="text-white font-bold tracking-wide text-sm">{{ country.name }}</span>
+            </div>
+        </div>
+
+        <div class="absolute bottom-4 left-4 right-4 z-20">
+            <h3 class="text-3xl font-black text-white mb-2">{{ country.greeting }}</h3>
+            <div class="flex items-center gap-4 text-xs font-medium text-white/80">
+                <div class="flex items-center gap-1.5">
+                    <div class="flex gap-0.5">
+                        {% for i in "12345" %}
+                        <div
+                            class="w-2 h-2 rounded-full {% if forloop.counter <= country.awareness_level %}bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)]{% else %}bg-white/20{% endif %}">
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <span>Celiac Awareness</span>
+                </div>
+                <div class="w-1 h-1 rounded-full bg-white/40"></div>
+                <span>{{ country.language }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card Body -->
+    <div class="bg-[#0a0a0a] border border-white/10 border-t-0 rounded-b-2xl overflow-hidden">
+        <!-- Tabs -->
+        <div class="flex border-b border-white/10" x-data="{ activeTab: 'overview' }">
+            <button @click="activeTab = 'overview'"
+                :class="{ 'text-violet-400 border-b-2 border-violet-500 bg-white/5': activeTab === 'overview', 'text-white/60 hover:text-white hover:bg-white/5': activeTab !== 'overview' }"
+                class="flex-1 py-3 text-sm font-medium transition-all">Overview</button>
+            <button @click="activeTab = 'dining'"
+                :class="{ 'text-violet-400 border-b-2 border-violet-500 bg-white/5': activeTab === 'dining', 'text-white/60 hover:text-white hover:bg-white/5': activeTab !== 'dining' }"
+                class="flex-1 py-3 text-sm font-medium transition-all">Dining</button>
+            <button @click="activeTab = 'phrases'"
+                :class="{ 'text-violet-400 border-b-2 border-violet-500 bg-white/5': activeTab === 'phrases', 'text-white/60 hover:text-white hover:bg-white/5': activeTab !== 'phrases' }"
+                class="flex-1 py-3 text-sm font-medium transition-all">Phrases</button>
+        </div>
+
+        <!-- Content Areas (using simple ID-based toggling if Alpine isn't available, but assuming Alpine or vanilla JS handler) -->
+        <div class="p-5">
+            <!-- Overview Tab -->
+            <div class="tab-content" data-tab="overview">
+                <p class="text-white/80 text-sm leading-relaxed mb-4">{{ country.overview }}</p>
+
+                <div class="grid grid-cols-2 gap-3 mb-4">
+                    <div class="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-3">
+                        <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider block mb-1">Safe
+                            Bets</span>
+                        <ul class="text-sm text-white/90 space-y-1">
+                            {% for item in country.safe_bets %}
+                            <li class="flex items-start gap-2">
+                                <span class="text-emerald-400 mt-1">✓</span> {{ item }}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="bg-red-500/10 border border-red-500/20 rounded-xl p-3">
+                        <span class="text-xs font-bold text-red-400 uppercase tracking-wider block mb-1">Avoid</span>
+                        <ul class="text-sm text-white/90 space-y-1">
+                            {% for item in country.avoid %}
+                            <li class="flex items-start gap-2">
+                                <span class="text-red-400 mt-1">✕</span> {{ item }}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dining Tab -->
+            <div class="tab-content hidden" data-tab="dining">
+                <div class="space-y-4">
+                    <div class="bg-white/5 rounded-xl p-3 border border-white/10">
+                        <h4 class="text-violet-300 text-xs font-bold uppercase mb-2">Restaurant Tips</h4>
+                        <ul class="space-y-2">
+                            {% for tip in country.dining_tips %}
+                            <li class="flex gap-3 text-sm text-white/80">
+                                <span class="w-1.5 h-1.5 rounded-full bg-violet-500 mt-1.5 flex-shrink-0"></span>
+                                {{ tip }}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    {% if country.apps %}
+                    <div>
+                        <h4 class="text-white/40 text-xs font-bold uppercase mb-2">Recommended Apps</h4>
+                        <div class="flex gap-2">
+                            {% for app in country.apps %}
+                            <span class="px-2 py-1 bg-white/10 rounded-md text-xs text-white border border-white/10">{{
+                                app }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Phrases Tab -->
+            <div class="tab-content hidden" data-tab="phrases">
+                <div class="space-y-3">
+                    {% for phrase in country.phrases %}
+                    <div
+                        class="bg-white/5 rounded-xl p-3 border border-white/10 hover:bg-white/10 transition-colors group cursor-pointer">
+                        <div class="flex justify-between items-start mb-1">
+                            <span class="text-xs text-white/40 font-medium">{{ phrase.english }}</span>
+                            <svg class="w-4 h-4 text-white/20 group-hover:text-violet-400 transition-colors" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z">
+                                </path>
+                            </svg>
+                        </div>
+                        <div class="text-lg font-bold text-white mb-0.5">{{ phrase.native }}</div>
+                        <div class="text-xs text-violet-300 italic">{{ phrase.pronunciation }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Simple tab switcher for this card instance
+    (function () {
+        const container = document.currentScript.previousElementSibling;
+        const buttons = container.querySelectorAll('button');
+        const contents = container.querySelectorAll('.tab-content');
+
+        buttons.forEach((btn, idx) => {
+            btn.addEventListener('click', () => {
+                // Reset all
+                buttons.forEach(b => {
+                    b.classList.remove('text-violet-400', 'border-b-2', 'border-violet-500', 'bg-white/5');
+                    b.classList.add('text-white/60');
+                });
+                contents.forEach(c => c.classList.add('hidden'));
+
+                // Activate clicked
+                btn.classList.remove('text-white/60');
+                btn.classList.add('text-violet-400', 'border-b-2', 'border-violet-500', 'bg-white/5');
+
+                // Show content (mapping index 0->overview, 1->dining, 2->phrases)
+                // A more robust way is using data attributes if indices might change
+                const tabName = ['overview', 'dining', 'phrases'][idx];
+                container.querySelector(`[data-tab="${tabName}"]`).classList.remove('hidden');
+            });
+        });
+    })();
+</script>

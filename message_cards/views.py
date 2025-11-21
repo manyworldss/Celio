@@ -1032,6 +1032,24 @@ def unified_card_management(request):
     
     # Get or create a form instance
     if request.method == 'POST':
+        # Check if this is a theme preview request (HTMX partial update)
+        if request.POST.get('preview_theme'):
+            preview_theme = request.POST.get('preview_theme')
+            
+            # Update the card's theme if a card exists
+            if card:
+                card.theme = preview_theme
+                card.save()
+            
+            # Get current language
+            current_lang = card.preferred_language.lower() if card else 'en'
+            
+            # Prepare context for preview
+            preview_context = prepare_preview_context(request, card, current_lang)
+            
+            # Return only the editable card partial for HTMX to swap
+            return render(request, 'emergency_cards/partials/editable_card.html', preview_context)
+        
         # Check if this is a language switch request
         if request.POST.get('switch_language') == 'true':
             # First check if there's a lang in the GET parameters as it takes precedence
@@ -1121,6 +1139,12 @@ def unified_card_management(request):
         if form.is_valid():
             try:
                 card = form.save(commit=False)
+                
+                # Handle theme update from preview_theme parameter
+                # The form expects 'theme' but the buttons send 'preview_theme'
+                preview_theme = request.POST.get('preview_theme')
+                if preview_theme:
+                    card.theme = preview_theme
                 
                 # Get current language from form
                 current_lang = request.POST.get('active_language', 'en').lower()

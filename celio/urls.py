@@ -25,7 +25,7 @@ urlpatterns = [
     path('', include('core.urls')),  # Main demo landing page
     path('m_cards/', include('message_cards.urls', namespace='message_cards')),  # Card functionality
     path('accounts/', include('accounts.urls')),  # User authentication
-    # path('travel/', include('travel.urls', namespace='travel')),  # Travel guides temporarily disabled
+    # path('travel/', include('travel.urls', namespace='travel')),  # Travel guides enabled
     path('sage/', include('sage.urls', namespace='sage')),
 ]
 

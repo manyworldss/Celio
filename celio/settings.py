@@ -32,7 +32,7 @@ load_dotenv(BASE_DIR / '.env.development.local')
 DEBUG = True
 
 # Environment-based settings
-ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,.fly.dev,.internal,.railway.app').split(',')
+ALLOWED_HOSTS = ['*']
 
 # Add Fly.io internal IP ranges for health checks
 if not DEBUG:

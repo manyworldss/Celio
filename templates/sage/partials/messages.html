@@ -1,13 +1,33 @@
 {% load static %}
 
-{% if messages %}
-{% for message in messages %}
+{% if chat_messages %}
+{% for message in chat_messages %}
 <div class="flex gap-3 mb-6 {% if message.role == 'user' %}flex-row-reverse{% endif %}">
     <div class="avatar">
         {% if message.role == 'assistant' %}
-        <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+        <svg class="w-5 h-5" viewBox="0 -6 96 96" xmlns="http://www.w3.org/2000/svg" fill="none">
+            <g stroke-linecap="round" stroke-linejoin="round">
+                <g transform="translate(-434 -708)">
+                    <path
+                        d="M449,730v19a15,15,0,0,0,9,13.744V780a10,10,0,0,0,10,10h28a10,10,0,0,0,10-10V762.744A15,15,0,0,0,515,749V730Z"
+                        fill="currentColor" class="text-violet-900/50" stroke="currentColor" class="text-white"
+                        stroke-width="4"></path>
+                    <path d="M459,764h-1v16a10,10,0,0,0,10,10h1V774A10,10,0,0,0,459,764Z" fill="currentColor"
+                        class="text-violet-950" stroke="currentColor" class="text-white" stroke-width="4"></path>
+                    <path d="M505,764h1v16a10,10,0,0,1-10,10h-1V774A10,10,0,0,1,505,764Z" fill="currentColor"
+                        class="text-violet-950" stroke="currentColor" class="text-white" stroke-width="4"></path>
+                    <circle cx="11" cy="11" r="11" transform="translate(482 731)" fill="currentColor" class="text-white"
+                        stroke="currentColor" class="text-white" stroke-width="4"></circle>
+                    <circle cx="11" cy="11" r="11" transform="translate(460 731)" fill="currentColor" class="text-white"
+                        stroke="currentColor" class="text-white" stroke-width="4"></circle>
+                    <path
+                        d="M523,710H504v2a9.973,9.973,0,0,1-4.016,8l.016,0h-.018a9.942,9.942,0,0,1-5.64,1.983l-.015.017H469.673l-.015-.017a9.942,9.942,0,0,1-5.64-1.983H464l.016,0A9.973,9.973,0,0,1,460,712v-2H441a5,5,0,0,0,0,10h6a5,5,0,0,0,0,10h11.222a26.6,26.6,0,0,0,3.278,0A15.5,15.5,0,0,1,477,745.5c0,.506-.028,1.006-.076,1.5H477v13.7a5,5,0,0,0,10,0V747h.076c-.048-.494-.076-.994-.076-1.5A15.5,15.5,0,0,1,502.5,730a26.6,26.6,0,0,0,3.278,0H517a5,5,0,0,0,0-10h6a5,5,0,0,0,0-10Z"
+                        fill="currentColor" class="text-violet-800" stroke="currentColor" class="text-white"
+                        stroke-width="4"></path>
+                    <rect width="10" height="21" rx="5" transform="translate(477 744)" fill="currentColor"
+                        class="text-violet-950" stroke="currentColor" class="text-white" stroke-width="4"></rect>
+                </g>
+            </g>
         </svg>
         {% else %}
         <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -32,9 +52,29 @@
     <div class="flex justify-center mb-6">
         <div
             class="w-20 h-20 rounded-2xl bg-gradient-to-br from-violet-600 to-violet-800 flex items-center justify-center shadow-2xl">
-            <svg class="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            <svg class="w-10 h-10" viewBox="0 -6 96 96" xmlns="http://www.w3.org/2000/svg" fill="none">
+                <g stroke-linecap="round" stroke-linejoin="round">
+                    <g transform="translate(-434 -708)">
+                        <path
+                            d="M449,730v19a15,15,0,0,0,9,13.744V780a10,10,0,0,0,10,10h28a10,10,0,0,0,10-10V762.744A15,15,0,0,0,515,749V730Z"
+                            fill="currentColor" class="text-violet-900/50" stroke="currentColor" class="text-white"
+                            stroke-width="4"></path>
+                        <path d="M459,764h-1v16a10,10,0,0,0,10,10h1V774A10,10,0,0,0,459,764Z" fill="currentColor"
+                            class="text-violet-950" stroke="currentColor" class="text-white" stroke-width="4"></path>
+                        <path d="M505,764h1v16a10,10,0,0,1-10,10h-1V774A10,10,0,0,1,505,764Z" fill="currentColor"
+                            class="text-violet-950" stroke="currentColor" class="text-white" stroke-width="4"></path>
+                        <circle cx="11" cy="11" r="11" transform="translate(482 731)" fill="currentColor"
+                            class="text-white" stroke="currentColor" class="text-white" stroke-width="4"></circle>
+                        <circle cx="11" cy="11" r="11" transform="translate(460 731)" fill="currentColor"
+                            class="text-white" stroke="currentColor" class="text-white" stroke-width="4"></circle>
+                        <path
+                            d="M523,710H504v2a9.973,9.973,0,0,1-4.016,8l.016,0h-.018a9.942,9.942,0,0,1-5.64,1.983l-.015.017H469.673l-.015-.017a9.942,9.942,0,0,1-5.64-1.983H464l.016,0A9.973,9.973,0,0,1,460,712v-2H441a5,5,0,0,0,0,10h6a5,5,0,0,0,0,10h11.222a26.6,26.6,0,0,0,3.278,0A15.5,15.5,0,0,1,477,745.5c0,.506-.028,1.006-.076,1.5H477v13.7a5,5,0,0,0,10,0V747h.076c-.048-.494-.076-.994-.076-1.5A15.5,15.5,0,0,1,502.5,730a26.6,26.6,0,0,0,3.278,0H517a5,5,0,0,0,0-10h6a5,5,0,0,0,0-10Z"
+                            fill="currentColor" class="text-violet-800" stroke="currentColor" class="text-white"
+                            stroke-width="4"></path>
+                        <rect width="10" height="21" rx="5" transform="translate(477 744)" fill="currentColor"
+                            class="text-violet-950" stroke="currentColor" class="text-white" stroke-width="4"></rect>
+                    </g>
+                </g>
             </svg>
         </div>
     </div>

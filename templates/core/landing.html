@@ -1,6 +1,232 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block navbar %}
+<nav class="absolute top-0 w-full z-50" x-data="{ mobileMenuOpen: false, showSageModal: false }">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-32 relative">
+            <!-- Logo Section (Absolute Left) -->
+            <div class="flex-shrink-0 z-50">
+                <a href="/" class="flex items-start group gap-1">
+                    <span
+                        class="text-white font-black text-4xl tracking-tight group-hover:text-teal-400 transition-colors leading-none">Celio</span>
+                    <div
+                        class="w-5 h-5 rounded-full flex items-center justify-center bg-teal-500 group-hover:bg-teal-400 transition-colors shadow-[0_0_10px_rgba(20,184,166,0.3)] -mt-1">
+                        <svg class="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Centered Floating Navigation (Desktop) -->
+            <div class="hidden lg:flex absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                <div
+                    class="flex items-center gap-2 p-1.5 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full shadow-2xl">
+                    <a href="/"
+                        class="px-6 py-2.5 text-sm font-medium text-white hover:bg-white/10 rounded-full transition-all">
+                        Home
+                    </a>
+
+                    <a href="{% url 'message_cards:unified_card_management' %}"
+                        class="px-6 py-2.5 text-sm font-medium text-white hover:bg-white/10 rounded-full transition-all">
+                        E-Card
+                    </a>
+
+                    <a href="{% url 'sage:assistant' %}"
+                        class="pl-6 pr-2 py-2 text-sm font-medium text-white bg-teal-500/10 hover:bg-teal-500/20 border border-teal-500/20 rounded-full transition-all hover:scale-105 flex items-center gap-3 group ml-2">
+                        Sage AI
+                        <div
+                            class="w-8 h-8 rounded-full bg-teal-500/20 flex items-center justify-center group-hover:bg-teal-500/30 transition-colors">
+                            <!-- Teal Owl SVG -->
+                            <svg class="w-5 h-5" viewBox="0 -6 96 96" xmlns="http://www.w3.org/2000/svg" fill="none">
+                                <g stroke-linecap="round" stroke-linejoin="round">
+                                    <g transform="translate(-434 -708)">
+                                        <path
+                                            d="M449,730v19a15,15,0,0,0,9,13.744V780a10,10,0,0,0,10,10h28a10,10,0,0,0,10-10V762.744A15,15,0,0,0,515,749V730Z"
+                                            fill="currentColor" class="text-teal-900/50" stroke="currentColor"
+                                            class="text-white" stroke-width="4"></path>
+                                        <path d="M459,764h-1v16a10,10,0,0,0,10,10h1V774A10,10,0,0,0,459,764Z"
+                                            fill="currentColor" class="text-teal-950" stroke="currentColor"
+                                            class="text-white" stroke-width="4"></path>
+                                        <path d="M505,764h1v16a10,10,0,0,1-10,10h-1V774A10,10,0,0,1,505,764Z"
+                                            fill="currentColor" class="text-teal-950" stroke="currentColor"
+                                            class="text-white" stroke-width="4"></path>
+                                        <circle cx="11" cy="11" r="11" transform="translate(482 731)"
+                                            fill="currentColor" class="text-white" stroke="currentColor"
+                                            class="text-white" stroke-width="4"></circle>
+                                        <circle cx="11" cy="11" r="11" transform="translate(460 731)"
+                                            fill="currentColor" class="text-white" stroke="currentColor"
+                                            class="text-white" stroke-width="4"></circle>
+                                        <path
+                                            d="M523,710H504v2a9.973,9.973,0,0,1-4.016,8l.016,0h-.018a9.942,9.942,0,0,1-5.64,1.983l-.015.017H469.673l-.015-.017a9.942,9.942,0,0,1-5.64-1.983H464l.016,0A9.973,9.973,0,0,1,460,712v-2H441a5,5,0,0,0,0,10h6a5,5,0,0,0,0,10h11.222a26.6,26.6,0,0,0,3.278,0A15.5,15.5,0,0,1,477,745.5c0,.506-.028,1.006-.076,1.5H477v13.7a5,5,0,0,0,10,0V747h.076c-.048-.494-.076-.994-.076-1.5A15.5,15.5,0,0,1,502.5,730a26.6,26.6,0,0,0,3.278,0H517a5,5,0,0,0,0-10h6a5,5,0,0,0,0-10Z"
+                                            fill="currentColor" class="text-teal-600" stroke="currentColor"
+                                            class="text-white" stroke-width="4"></path>
+                                        <rect width="10" height="21" rx="5" transform="translate(477 744)"
+                                            fill="currentColor" class="text-teal-950" stroke="currentColor"
+                                            class="text-white" stroke-width="4"></rect>
+                                    </g>
+                                </g>
+                            </svg>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Mobile Navigation Toggle (Right) -->
+            <div class="lg:hidden flex items-center z-50">
+                <button type="button" @click="mobileMenuOpen = !mobileMenuOpen"
+                    class="relative inline-flex items-center justify-center p-3 rounded-xl text-neutral-300 hover:text-white hover:bg-gradient-to-r hover:from-accent-600/20 hover:to-primary-600/20 focus:outline-none focus:ring-2 focus:ring-accent-500/50 transition-all duration-300 transform hover:scale-105 border border-neutral-700/50 hover:border-accent-500/30">
+                    <span class="sr-only">Open main menu</span>
+                    <div class="relative w-6 h-6">
+                        <svg x-show="!mobileMenuOpen" x-transition:enter="transition ease-in-out duration-200"
+                            x-transition:enter-start="opacity-0 rotate-180"
+                            x-transition:enter-end="opacity-100 rotate-0"
+                            x-transition:leave="transition ease-in-out duration-200"
+                            x-transition:leave-start="opacity-100 rotate-0"
+                            x-transition:leave-end="opacity-0 rotate-180" class="absolute inset-0 h-6 w-6"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <svg x-show="mobileMenuOpen" x-transition:enter="transition ease-in-out duration-200"
+                            x-transition:enter-start="opacity-0 rotate-180"
+                            x-transition:enter-end="opacity-100 rotate-0"
+                            x-transition:leave="transition ease-in-out duration-200"
+                            x-transition:leave-start="opacity-100 rotate-0"
+                            x-transition:leave-end="opacity-0 rotate-180" class="absolute inset-0 h-6 w-6"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Navigation Menu -->
+    <div x-show="mobileMenuOpen" x-transition:enter="transition ease-out duration-300 transform"
+        x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
+        x-transition:leave="transition ease-in duration-200 transform"
+        x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2"
+        class="lg:hidden absolute top-full left-0 right-0 z-50" id="mobile-menu">
+        <div
+            class="mx-4 mt-2 bg-gradient-to-br from-neutral-900/98 to-neutral-800/98 backdrop-blur-xl rounded-2xl border border-neutral-700/50 shadow-2xl overflow-hidden">
+            <!-- Menu Header -->
+            <div class="px-6 py-4 border-b border-neutral-700/30">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-semibold text-white">Navigation</h3>
+                    <div class="w-8 h-1 bg-gradient-to-r from-accent-500 to-primary-500 rounded-full"></div>
+                </div>
+            </div>
+
+            <!-- Menu Items -->
+            <div class="px-4 py-4 space-y-2">
+                <a href="/" @click="mobileMenuOpen = false"
+                    class="group flex items-center px-4 py-4 text-base font-medium text-neutral-200 hover:bg-gradient-to-r hover:from-accent-600/10 hover:to-primary-600/10 hover:text-white rounded-xl transition-all duration-300 {% if request.path == '/' %}bg-gradient-to-r from-accent-600/20 to-primary-600/20 text-white border border-accent-500/30{% else %}border border-transparent{% endif %}">
+                    <div class="flex items-center justify-between w-full">
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 mr-3 text-accent-400" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                                </path>
+                            </svg>
+                            <span>Home</span>
+                        </div>
+                        <svg class="w-4 h-4 text-neutral-400 group-hover:text-accent-400 transition-colors" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                            </path>
+                        </svg>
+                    </div>
+                </a>
+
+                <a href="{% url 'message_cards:unified_card_management' %}" @click="mobileMenuOpen = false"
+                    class="group flex items-center px-4 py-4 text-base font-medium text-neutral-200 hover:bg-gradient-to-r hover:from-accent-600/10 hover:to-primary-600/10 hover:text-white rounded-xl transition-all duration-300 {% if 'message_cards' in request.path or 'm_cards' in request.path %}bg-gradient-to-r from-accent-600/20 to-primary-600/20 text-white border border-accent-500/30{% else %}border border-transparent{% endif %}">
+                    <div class="flex items-center justify-between w-full">
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 mr-3 text-accent-400" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2m-9 0h10m-10 0a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V6a2 2 0 00-2-2">
+                                </path>
+                            </svg>
+                            <div>
+                                <span>E-Card</span>
+                                <span
+                                    class="ml-2 text-xs bg-accent-600/30 text-accent-300 px-2 py-0.5 rounded-full">Demo</span>
+                            </div>
+                        </div>
+                        <svg class="w-4 h-4 text-neutral-400 group-hover:text-accent-400 transition-colors" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                            </path>
+                        </svg>
+                    </div>
+                </a>
+
+                <a href="{% url 'sage:assistant' %}" @click="mobileMenuOpen = false"
+                    class="group flex items-center px-4 py-4 text-base font-medium text-neutral-200 hover:bg-gradient-to-r hover:from-accent-600/10 hover:to-primary-600/10 hover:text-white rounded-xl transition-all duration-300 {% if 'sage' in request.path %}bg-gradient-to-r from-accent-600/20 to-primary-600/20 text-white border border-accent-500/30{% else %}border border-transparent{% endif %}">
+                    <div class="flex items-center justify-between w-full">
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 mr-3 text-accent-400" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                            <div class="flex flex-col">
+                                <div class="flex items-center">
+                                    <span>Sage AI Assistant</span>
+                                    <span
+                                        class="ml-2 text-xs bg-accent-600/30 text-accent-300 px-2 py-0.5 rounded-full">Beta</span>
+                                </div>
+                                <p class="text-sm text-neutral-400 mt-0.5">AI assistant for celiac travelers</p>
+                            </div>
+                        </div>
+                        <svg class="w-4 h-4 text-neutral-400 group-hover:text-accent-400 transition-colors" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                            </path>
+                        </svg>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Social Links -->
+            <div
+                class="px-6 py-4 border-t border-neutral-700/30 bg-gradient-to-r from-neutral-800/50 to-neutral-700/50">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm font-medium text-neutral-400">Connect with us</span>
+                    <div class="flex space-x-4">
+                        <a href="https://www.linkedin.com/in/raphealsuber/" target="_blank"
+                            class="p-2 text-neutral-400 hover:text-accent-300 hover:bg-accent-600/10 rounded-lg transition-all duration-300">
+                            <span class="sr-only">LinkedIn</span>
+                            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path
+                                    d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                            </svg>
+                        </a>
+                        <a href="https://github.com/manyworldss" target="_blank"
+                            class="p-2 text-neutral-400 hover:text-accent-300 hover:bg-accent-600/10 rounded-lg transition-all duration-300">
+                            <span class="sr-only">GitHub</span>
+                            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+{% endblock %}
+
 {% block content %}
 
 <style>
@@ -64,6 +290,37 @@
         animation-delay: 2s;
     }
 
+    /* Slow Blob Animation */
+    @keyframes blob {
+        0% {
+            transform: translate(0px, 0px) scale(1);
+        }
+
+        33% {
+            transform: translate(30px, -50px) scale(1.1);
+        }
+
+        66% {
+            transform: translate(-20px, 20px) scale(0.9);
+        }
+
+        100% {
+            transform: translate(0px, 0px) scale(1);
+        }
+    }
+
+    .animate-blob {
+        animation: blob 20s infinite;
+    }
+
+    .animation-delay-2000 {
+        animation-delay: 2s;
+    }
+
+    .animation-delay-4000 {
+        animation-delay: 4s;
+    }
+
     /* 3D Card Tilt Effect */
     .tilt-card {
         transition: transform 0.1s ease;
@@ -114,16 +371,9 @@
 <div id="mouse-glow"></div>
 
 <!-- Hero Section -->
-<div class="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+<div class="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-32">
     <!-- Background Elements -->
-    <div class="absolute inset-0 bg-black">
-        <div
-            class="absolute top-1/4 left-1/4 w-96 h-96 bg-teal-900/20 rounded-full blur-[100px] animate-pulse animate-float">
-        </div>
-        <div
-            class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-green-dark/20 rounded-full blur-[100px] animate-pulse delay-1000 animate-float-delayed">
-        </div>
-    </div>
+    <!-- Background Elements (Handled globally in base.html) -->
 
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h1 class="text-6xl md:text-8xl font-bold mb-8 tracking-tight animate-on-scroll is-visible">
@@ -175,88 +425,103 @@
                     class="absolute -inset-4 bg-gradient-to-r from-teal-500/20 to-blue-500/20 rounded-2xl blur-xl opacity-75 animate-pulse">
                 </div>
                 <div
-                    class="relative glass-card rounded-2xl p-8 overflow-hidden min-h-[400px] flex flex-col justify-center">
-                    <!-- Abstract Representation of a Menu/Waiter -->
-                    <div class="space-y-8">
-                        <!-- Location Badge -->
-                        <div class="flex items-center gap-4 mb-8 bubble-pop" style="animation-delay: 0.2s;">
-                            <div
-                                class="w-12 h-12 rounded-full bg-neutral-800 flex items-center justify-center border border-white/10">
-                                <svg class="w-6 h-6 text-teal-400" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 class="text-white font-medium">Lisbon, Portugal</h3>
-                                <p class="text-neutral-400 text-sm">Dinner at a local Tasca</p>
-                            </div>
+                    class="relative glass-card rounded-2xl p-8 overflow-hidden min-h-[400px] flex flex-col justify-center group">
+                    <!-- Background Image -->
+                    <div class="absolute inset-0 z-0">
+                        <img src="{% static 'images/lisbon_restaurant.png' %}" alt="Lisbon Restaurant"
+                            class="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-neutral-900 via-neutral-900/80 to-neutral-900/40">
                         </div>
+                    </div>
 
-                        <!-- Waiter Interaction -->
-                        <div class="bg-neutral-800/50 rounded-xl p-6 border border-white/5 space-y-8 bubble-pop"
-                            style="animation-delay: 0.5s;">
-                            <!-- Waiter Speech -->
-                            <div class="flex gap-4 items-start">
+                    <!-- Content Container -->
+                    <div class="relative z-10">
+                        <!-- Abstract Representation of a Menu/Waiter -->
+                        <div class="space-y-8">
+                            <!-- Location Badge -->
+                            <div class="flex items-center gap-4 mb-8 bubble-pop" style="animation-delay: 0.2s;">
                                 <div
-                                    class="w-10 h-10 rounded-full bg-neutral-700 flex-shrink-0 flex items-center justify-center border border-white/10">
-                                    <svg class="w-5 h-5 text-neutral-400" fill="none" stroke="currentColor"
+                                    class="w-12 h-12 rounded-full bg-neutral-800 flex items-center justify-center border border-white/10">
+                                    <svg class="w-6 h-6 text-teal-400" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                    </svg>
-                                </div>
-                                <div class="space-y-2 w-full max-w-[80%]">
-                                    <div class="bg-neutral-700 rounded-2xl rounded-tl-none p-4 relative">
-                                        <p class="text-neutral-200 text-sm italic">"Olá, boa noite. O nosso prato
-                                            especial hoje é Bacalhau com Natas."</p>
-                                    </div>
-                                    <p class="text-xs text-neutral-500 ml-1">Waiter (Portuguese)</p>
-                                </div>
-                            </div>
-
-                            <!-- User Thought (The Doubt) -->
-                            <div class="flex gap-4 items-start justify-end">
-                                <div class="space-y-2 w-full max-w-[80%] flex flex-col items-end">
-                                    <div
-                                        class="bg-teal-900/30 border border-teal-500/30 rounded-2xl rounded-tr-none p-4 animate-pulse relative">
-                                        <div class="flex items-center gap-2 text-teal-200 text-sm font-medium">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            </svg>
-                                            <span>Cross-contamination?</span>
-                                        </div>
-                                    </div>
-                                    <p class="text-xs text-neutral-500 mr-1">You</p>
-                                </div>
-                                <div
-                                    class="w-10 h-10 rounded-full bg-teal-900/50 flex-shrink-0 flex items-center justify-center border border-teal-500/30">
-                                    <svg class="w-5 h-5 text-teal-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
+                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                     </svg>
                                 </div>
-                            </div>
-                        </div>
-
-                        <!-- The Problem -->
-                        <div class="p-4 bg-red-500/10 border border-red-500/20 rounded-lg bubble-pop"
-                            style="animation-delay: 0.8s;">
-                            <div class="flex items-start gap-3">
-                                <svg class="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                </svg>
                                 <div>
-                                    <p class="text-red-200 text-sm italic font-medium">"Tem glúten?"</p>
-                                    <p class="text-neutral-500 text-xs mt-1">Does the waiter understand the severity?
-                                    </p>
+                                    <h3 class="text-white font-medium">Lisbon, Portugal</h3>
+                                    <p class="text-neutral-400 text-sm">Dinner at a local Tasca</p>
+                                </div>
+                            </div>
+
+                            <!-- Waiter Interaction -->
+                            <div class="bg-neutral-800/50 rounded-xl p-6 border border-white/5 space-y-8 bubble-pop"
+                                style="animation-delay: 0.5s;">
+                                <!-- Waiter Speech -->
+                                <div class="flex gap-4 items-start">
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-neutral-700 flex-shrink-0 flex items-center justify-center border border-white/10">
+                                        <svg class="w-5 h-5 text-neutral-400" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                        </svg>
+                                    </div>
+                                    <div class="space-y-2 w-full max-w-[80%]">
+                                        <div class="bg-neutral-700 rounded-2xl rounded-tl-none p-4 relative">
+                                            <p class="text-neutral-200 text-sm italic">"Olá, boa noite. O nosso prato
+                                                especial hoje é Bacalhau com Natas."</p>
+                                        </div>
+                                        <p class="text-xs text-neutral-500 ml-1">Waiter (Portuguese)</p>
+                                    </div>
+                                </div>
+
+                                <!-- User Thought (The Doubt) -->
+                                <div class="flex gap-4 items-start justify-end">
+                                    <div class="space-y-2 w-full max-w-[80%] flex flex-col items-end">
+                                        <div
+                                            class="bg-teal-900/30 border border-teal-500/30 rounded-2xl rounded-tr-none p-4 animate-pulse relative">
+                                            <div class="flex items-center gap-2 text-teal-200 text-sm font-medium">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                                <span>Cross-contamination?</span>
+                                            </div>
+                                        </div>
+                                        <p class="text-xs text-neutral-500 mr-1">You</p>
+                                    </div>
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-teal-900/50 flex-shrink-0 flex items-center justify-center border border-teal-500/30">
+                                        <svg class="w-5 h-5 text-teal-400" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- The Problem -->
+                            <div class="p-4 bg-red-500/10 border border-red-500/20 rounded-lg bubble-pop"
+                                style="animation-delay: 0.8s;">
+                                <div class="flex items-start gap-3">
+                                    <svg class="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                    </svg>
+                                    <div>
+                                        <p class="text-red-200 text-sm italic font-medium">"Tem glúten?"</p>
+                                        <p class="text-neutral-500 text-xs mt-1">Does the waiter understand the
+                                            severity?
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -271,11 +536,13 @@
                 </h2>
                 <div class="space-y-6 text-lg text-neutral-300 font-light">
                     <p>
-                        You've just sat down at a beautiful restaurant in Lisbon. The menu is entirely in Portuguese.
+                        You've just sat down at a beautiful restaurant in Lisbon. The menu is entirely in
+                        Portuguese.
                         The waiter approaches, friendly but speaking only basic English.
                     </p>
                     <p>
-                        You have Celiac disease. A simple miscommunication here isn't just awkward—it's a health risk.
+                        You have Celiac disease. A simple miscommunication here isn't just awkward—it's a health
+                        risk.
                     </p>
                     <p class="text-white font-medium pt-4 border-l-4 border-teal-500 pl-4">
                         How do you explain "cross-contamination" when you don't speak the language?
@@ -363,13 +630,15 @@
 <!-- Tech Stack / Recruiter Note -->
 <div class="py-20 border-t border-white/5 bg-neutral-900/30">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <p class="text-sm text-neutral-500 uppercase tracking-widest mb-8 animate-on-scroll">Built with Modern Standards
+        <p class="text-sm text-neutral-500 uppercase tracking-widest mb-8 animate-on-scroll">Built with Modern
+            Standards
         </p>
         <div
             class="flex flex-wrap justify-center gap-8 md:gap-16 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500 animate-on-scroll delay-200">
             <!-- Django -->
             <div class="flex flex-col items-center gap-2 group">
-                <span class="text-white font-bold text-xl group-hover:text-teal-400 transition-colors">Django 5</span>
+                <span class="text-white font-bold text-xl group-hover:text-teal-400 transition-colors">Django
+                    5</span>
             </div>
             <!-- HTMX -->
             <div class="flex flex-col items-center gap-2 group">

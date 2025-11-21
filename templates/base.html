@@ -54,10 +54,10 @@
 
         /* Glassmorphism Utilities */
         .glass {
-            background: rgba(20, 50, 42, 0.6);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .glass-card {
@@ -121,13 +121,18 @@
 </head>
 
 <body class="min-h-screen flex flex-col bg-black text-off-white selection:bg-teal-500 selection:text-white">
-    <!-- Animated accent orbs -->
-    <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+    <!-- Animated Global Background -->
+    <div class="fixed inset-0 -z-50 bg-black overflow-hidden">
+        <!-- Subtle Gradient Orb 1 -->
         <div
-            class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-teal-900/20 blur-[100px] animate-pulse">
+            class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-teal-900/10 blur-[120px] animate-pulse">
         </div>
-        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-blue-green-dark/20 blur-[100px] animate-pulse"
+        <!-- Subtle Gradient Orb 2 -->
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-emerald-900/10 blur-[120px] animate-pulse"
             style="animation-delay: 2s;"></div>
+        <!-- Subtle Gradient Orb 3 -->
+        <div class="absolute top-[40%] left-[40%] w-[40%] h-[40%] rounded-full bg-cyan-900/5 blur-[100px] animate-pulse"
+            style="animation-delay: 4s;"></div>
     </div>
 
     <!-- Demo Banner -->
@@ -135,121 +140,76 @@
 
 
     <!-- Navigation -->
+    {% block navbar %}
     <nav class="glass sticky top-0 z-50 border-b border-white/5"
         x-data="{ mobileMenuOpen: false, showSageModal: false }">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-32">
+            <div class="flex justify-between items-center h-20">
                 <!-- Desktop Navigation -->
-                <div class="hidden lg:flex w-full justify-center items-center">
-                    <!-- Centered Layout with Logo and Navigation -->
-                    <div class="flex flex-col items-center space-y-4">
-                        <!-- Logo Section -->
-                        <div class="flex flex-col items-center justify-center relative group">
-                            <div
-                                class="absolute -inset-4 bg-gradient-to-r from-accent-500/20 via-primary-400/20 to-accent-500/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition duration-500">
-                            </div>
-                            <a href="/" class="flex flex-col items-center relative">
-                                <!-- Clean Celio Logo -->
-                                <div class="flex flex-col items-center">
-                                    <!-- Logo content -->
-                                    <div class="flex items-start">
-                                        <span class="text-white font-black text-3xl tracking-tight">Celio</span>
-                                        <div class="relative ml-1 mt-1 w-5 h-5 rounded-full flex items-center justify-center"
-                                            style="background-color: #14b8a6;">
-                                            <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd"
-                                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                        </div>
-                                    </div>
-
-                                    <!-- Tagline -->
-                                    <div class="mt-1">
-                                        <span
-                                            class="text-neutral-400 text-xs font-medium uppercase tracking-widest">GLUTEN-FREE
-                                            PASSPORT</span>
-                                    </div>
-                                </div>
-                            </a>
+                <div class="hidden lg:flex w-full justify-between items-center">
+                    <!-- Logo Section (Left) -->
+                    <a href="/" class="flex items-start group gap-1">
+                        <span
+                            class="text-white font-bold text-2xl tracking-tight group-hover:text-teal-400 transition-colors leading-none">Celio</span>
+                        <div
+                            class="w-4 h-4 rounded-full flex items-center justify-center bg-teal-500 group-hover:bg-teal-400 transition-colors shadow-[0_0_8px_rgba(20,184,166,0.3)] -mt-0.5">
+                            <svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd" />
+                            </svg>
                         </div>
+                    </a>
 
-                        <!-- Navigation Items - Horizontal Layout -->
-                        <div class="flex items-center space-x-8">
-                            <a href="/"
-                                class="group relative px-6 py-3 text-sm font-medium text-white transition-all duration-300 hover:text-accent-300">
-                                <span class="relative z-10">Home</span>
-                                <div
-                                    class="absolute inset-0 bg-gradient-to-r from-accent-600/10 to-primary-600/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                </div>
-                                {% if request.path == '/' %}
-                                <div
-                                    class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-gradient-to-r from-accent-500 to-primary-500 rounded-full">
-                                </div>
-                                {% endif %}
-                            </a>
+                    <!-- Navigation Items (Right) -->
+                    <div class="flex items-center space-x-8">
+                        <a href="/"
+                            class="text-sm font-medium text-white hover:text-teal-400 transition-colors relative group">
+                            Home
+                            <span
+                                class="absolute -bottom-1 left-0 w-0 h-0.5 bg-teal-400 transition-all group-hover:w-full"></span>
+                        </a>
 
-                            <a href="{% url 'message_cards:unified_card_management' %}"
-                                class="group relative px-6 py-3 text-sm font-medium text-white transition-all duration-300 hover:text-accent-300">
-                                <span class="relative z-10">E-Card (Demo)</span>
-                                <div
-                                    class="absolute inset-0 bg-gradient-to-r from-accent-600/10 to-primary-600/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                </div>
-                                {% if 'message_cards' in request.path or 'm_cards' in request.path %}
-                                <div
-                                    class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-gradient-to-r from-accent-500 to-primary-500 rounded-full">
-                                </div>
-                                {% endif %}
-                            </a>
+                        <a href="{% url 'message_cards:unified_card_management' %}"
+                            class="text-sm font-medium text-white hover:text-teal-400 transition-colors relative group">
+                            E-Card (Demo)
+                            <span
+                                class="absolute -bottom-1 left-0 w-0 h-0.5 bg-teal-400 transition-all group-hover:w-full"></span>
+                        </a>
 
-                            <a href="{% url 'sage:assistant' %}"
-                                class="group relative px-6 py-3 text-sm font-medium text-white transition-all duration-300 hover:text-accent-300 hover:scale-105">
-                                <span class="relative z-10 flex items-center">
-                                    Sage AI
-                                    <svg class="ml-2 h-4 w-4 text-accent-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                                    </svg>
-                                </span>
-                                <div
-                                    class="absolute inset-0 bg-gradient-to-r from-accent-600/20 to-primary-600/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                </div>
-                                <div
-                                    class="absolute -inset-1 bg-gradient-to-r from-accent-500 to-primary-500 rounded-lg opacity-0 group-hover:opacity-20 blur transition-opacity duration-300">
-                                </div>
-                                {% if 'sage' in request.path %}
-                                <div
-                                    class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-gradient-to-r from-accent-500 to-primary-500 rounded-full">
-                                </div>
-                                {% endif %}
-                            </a>
-                        </div>
+                        <a href="{% url 'sage:assistant' %}"
+                            class="px-4 py-2 text-sm font-medium text-white bg-white/10 hover:bg-white/20 border border-white/10 rounded-full transition-all hover:scale-105 flex items-center gap-2">
+                            Sage AI
+                            <svg class="w-4 h-4 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </a>
                     </div>
                 </div>
 
                 <!-- Mobile Navigation -->
                 <div class="lg:hidden flex w-full justify-between items-center">
                     <!-- Mobile Logo -->
-                    <a href="/" class="flex flex-col items-start">
-                        <div class="flex items-start">
-                            <span class="text-white font-black text-xl tracking-tight">Celio</span>
-                            <div class="relative ml-1 mt-1 w-3.5 h-3.5 rounded-full flex items-center justify-center"
-                                style="background-color: #14b8a6;">
-                                <svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                        clip-rule="evenodd" />
-                                </svg>
+                    <a href="/" class="flex flex-col items-start group">
+                        <div class="relative inline-flex items-start">
+                            <span class="text-white font-bold text-xl tracking-tight">Celio</span>
+                            <div class="relative -mt-0.5 ml-1">
+                                <div
+                                    class="w-3 h-3 rounded-full flex items-center justify-center bg-teal-500 shadow-[0_0_5px_rgba(20,184,166,0.4)]">
+                                    <svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </div>
                             </div>
                         </div>
-                        <span class="text-neutral-400 text-xs font-medium uppercase tracking-widest mt-0.5">GLUTEN-FREE
-                            PASSPORT</span>
                     </a>
 
                     <!-- Mobile menu button -->
                     <button type="button" @click="mobileMenuOpen = !mobileMenuOpen"
-                        class="relative inline-flex items-center justify-center p-3 rounded-xl text-neutral-300 hover:text-white hover:bg-gradient-to-r hover:from-accent-600/20 hover:to-primary-600/20 focus:outline-none focus:ring-2 focus:ring-accent-500/50 transition-all duration-300 transform hover:scale-105 border border-neutral-700/50 hover:border-accent-500/30">
+                        class="relative inline-flex items-center justify-center p-2 rounded-lg text-neutral-300 hover:text-white hover:bg-white/10 focus:outline-none transition-all duration-300">
                         <span class="sr-only">Open main menu</span>
                         <div class="relative w-6 h-6">
                             <svg x-show="!mobileMenuOpen" x-transition:enter="transition ease-in-out duration-200"
@@ -285,119 +245,20 @@
             x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
             x-transition:leave="transition ease-in duration-200 transform"
             x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2"
-            class="lg:hidden absolute top-full left-0 right-0 z-50" id="mobile-menu">
-            <div
-                class="mx-4 mt-2 bg-gradient-to-br from-neutral-900/98 to-neutral-800/98 backdrop-blur-xl rounded-2xl border border-neutral-700/50 shadow-2xl overflow-hidden">
-                <!-- Menu Header -->
-                <div class="px-6 py-4 border-b border-neutral-700/30">
-                    <div class="flex items-center justify-between">
-                        <h3 class="text-lg font-semibold text-white">Navigation</h3>
-                        <div class="w-8 h-1 bg-gradient-to-r from-accent-500 to-primary-500 rounded-full"></div>
-                    </div>
-                </div>
-
-                <!-- Menu Items -->
-                <div class="px-4 py-4 space-y-2">
-                    <a href="/" @click="mobileMenuOpen = false"
-                        class="group flex items-center px-4 py-4 text-base font-medium text-neutral-200 hover:bg-gradient-to-r hover:from-accent-600/10 hover:to-primary-600/10 hover:text-white rounded-xl transition-all duration-300 {% if request.path == '/' %}bg-gradient-to-r from-accent-600/20 to-primary-600/20 text-white border border-accent-500/30{% else %}border border-transparent{% endif %}">
-                        <div class="flex items-center justify-between w-full">
-                            <div class="flex items-center">
-                                <svg class="w-5 h-5 mr-3 text-accent-400" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
-                                    </path>
-                                </svg>
-                                <span>Home</span>
-                            </div>
-                            <svg class="w-4 h-4 text-neutral-400 group-hover:text-accent-400 transition-colors"
-                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
-                                </path>
-                            </svg>
-                        </div>
-                    </a>
-
-                    <a href="{% url 'message_cards:unified_card_management' %}" @click="mobileMenuOpen = false"
-                        class="group flex items-center px-4 py-4 text-base font-medium text-neutral-200 hover:bg-gradient-to-r hover:from-accent-600/10 hover:to-primary-600/10 hover:text-white rounded-xl transition-all duration-300 {% if 'message_cards' in request.path or 'm_cards' in request.path %}bg-gradient-to-r from-accent-600/20 to-primary-600/20 text-white border border-accent-500/30{% else %}border border-transparent{% endif %}">
-                        <div class="flex items-center justify-between w-full">
-                            <div class="flex items-center">
-                                <svg class="w-5 h-5 mr-3 text-accent-400" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2m-9 0h10m-10 0a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V6a2 2 0 00-2-2">
-                                    </path>
-                                </svg>
-                                <div>
-                                    <span>E-Card</span>
-                                    <span
-                                        class="ml-2 text-xs bg-accent-600/30 text-accent-300 px-2 py-0.5 rounded-full">Demo</span>
-                                </div>
-                            </div>
-                            <svg class="w-4 h-4 text-neutral-400 group-hover:text-accent-400 transition-colors"
-                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
-                                </path>
-                            </svg>
-                        </div>
-                    </a>
-
-                    <a href="{% url 'sage:assistant' %}" @click="mobileMenuOpen = false"
-                        class="group flex items-center px-4 py-4 text-base font-medium text-neutral-200 hover:bg-gradient-to-r hover:from-accent-600/10 hover:to-primary-600/10 hover:text-white rounded-xl transition-all duration-300 {% if 'sage' in request.path %}bg-gradient-to-r from-accent-600/20 to-primary-600/20 text-white border border-accent-500/30{% else %}border border-transparent{% endif %}">
-                        <div class="flex items-center justify-between w-full">
-                            <div class="flex items-center">
-                                <svg class="w-5 h-5 mr-3 text-accent-400" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                                </svg>
-                                <div class="flex flex-col">
-                                    <div class="flex items-center">
-                                        <span>Sage AI Assistant</span>
-                                        <span
-                                            class="ml-2 text-xs bg-accent-600/30 text-accent-300 px-2 py-0.5 rounded-full">Beta</span>
-                                    </div>
-                                    <p class="text-sm text-neutral-400 mt-0.5">AI assistant for celiac travelers</p>
-                                </div>
-                            </div>
-                            <svg class="w-4 h-4 text-neutral-400 group-hover:text-accent-400 transition-colors"
-                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
-                                </path>
-                            </svg>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Social Links -->
-                <div
-                    class="px-6 py-4 border-t border-neutral-700/30 bg-gradient-to-r from-neutral-800/50 to-neutral-700/50">
-                    <div class="flex items-center justify-between">
-                        <span class="text-sm font-medium text-neutral-400">Connect with us</span>
-                        <div class="flex space-x-4">
-                            <a href="https://www.linkedin.com/in/raphealsuber/" target="_blank"
-                                class="p-2 text-neutral-400 hover:text-accent-300 hover:bg-accent-600/10 rounded-lg transition-all duration-300">
-                                <span class="sr-only">LinkedIn</span>
-                                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                    <path
-                                        d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                                </svg>
-                            </a>
-                            <a href="https://github.com/manyworldss" target="_blank"
-                                class="p-2 text-neutral-400 hover:text-accent-300 hover:bg-accent-600/10 rounded-lg transition-all duration-300">
-                                <span class="sr-only">GitHub</span>
-                                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                    <path fill-rule="evenodd"
-                                        d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+            class="lg:hidden absolute top-full left-0 right-0 z-50 bg-black/95 backdrop-blur-xl border-b border-white/10"
+            id="mobile-menu">
+            <div class="px-4 py-4 space-y-2">
+                <a href="/"
+                    class="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-white/10">Home</a>
+                <a href="{% url 'message_cards:unified_card_management' %}"
+                    class="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-white/10">E-Card
+                    (Demo)</a>
+                <a href="{% url 'sage:assistant' %}"
+                    class="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-white/10">Sage AI</a>
             </div>
         </div>
     </nav>
+    {% endblock %}
 
     <!-- Main Content -->
     <main class="flex-grow">
@@ -544,88 +405,91 @@
     </div>
 
     <!-- Footer -->
-    <footer class="py-10 relative overflow-hidden bg-black border-t border-white/10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="relative z-10">
-                <!-- Top section with logo and links -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-                    <!-- Logo and tagline -->
-                    <div class="flex flex-col space-y-4">
-                        <a href="/" class="flex flex-col items-start group">
-                            <div class="flex items-start">
-                                <span class="text-white font-black text-xl tracking-tight">Celio</span>
-                                <div
-                                    class="relative ml-1 mt-1 w-4 h-4 bg-teal-500 rounded-full flex items-center justify-center">
-                                    <svg class="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd"
-                                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </div>
-                            </div>
-                            <div class="text-left mt-1">
-                                <span class="text-xs uppercase tracking-widest text-neutral-400 font-medium">GLUTEN-FREE
-                                    PASSPORT</span>
-                            </div>
-                        </a>
-                        <p class="text-neutral-300 text-sm">Celio is more than a translation tool—it's a comprehensive
-                            dietary communication platform that understands cultural nuances and travel requirements.
-                        </p>
-                    </div>
-
-                    <!-- Quick links -->
-                    <div class="md:ml-auto">
-                        <h3 class="text-purple-400 font-semibold mb-4 text-sm uppercase tracking-wider">Quick Links</h3>
-                        <ul class="space-y-2">
-                            <li><a href="/"
-                                    class="text-neutral-300 hover:text-purple-400 transition-colors text-sm">Home</a>
-                            </li>
-                            <li><a href="{% url 'message_cards:unified_card_management' %}"
-                                    class="text-neutral-300 hover:text-purple-400 transition-colors text-sm">E-Card
-                                    (Demo)</a></li>
-                            <li><a href="{% url 'sage:assistant' %}"
-                                    class="text-neutral-400 hover:text-purple-400 text-sm transition-colors">Sage AI
-                                    (Beta)</a></li>
-                        </ul>
-                    </div>
-
-                    <!-- Social links -->
-                    <div class="md:ml-auto">
-                        <h3 class="text-purple-400 font-semibold mb-4 text-sm uppercase tracking-wider">Connect</h3>
-                        <div class="flex space-x-4">
-                            <a href="https://www.linkedin.com/in/raphealsuber/" target="_blank"
-                                class="text-neutral-300 hover:text-purple-400 transition-colors group">
-                                <span class="sr-only">LinkedIn</span>
-                                <svg class="h-6 w-6 transform group-hover:scale-110 transition-transform"
-                                    fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                    <path
-                                        d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                                </svg>
-                            </a>
-                            <a href="https://github.com/manyworldss" target="_blank"
-                                class="text-neutral-300 hover:text-purple-400 transition-colors group">
-                                <span class="sr-only">GitHub</span>
-                                <svg class="h-6 w-6 transform group-hover:scale-110 transition-transform"
-                                    fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                    <path fill-rule="evenodd"
-                                        d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </a>
+    {% block footer %}
+    <footer class="relative z-10 border-t border-white/5 bg-black/40 backdrop-blur-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <!-- Brand column -->
+                <div class="col-span-1 md:col-span-1">
+                    <a href="/" class="flex items-center gap-2 mb-4">
+                        <span class="text-white font-bold text-xl tracking-tight">Celio</span>
+                        <div
+                            class="w-5 h-5 rounded-full flex items-center justify-center bg-teal-500 shadow-[0_0_10px_rgba(20,184,166,0.3)]">
+                            <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd" />
+                            </svg>
                         </div>
-                    </div>
+                    </a>
+                    <p class="text-neutral-400 text-sm leading-relaxed">
+                        Empowering celiac travelers to explore the world with confidence and safety.
+                    </p>
                 </div>
 
-                <!-- Bottom section with copyright -->
-                <div class="pt-8 flex flex-col md:flex-row justify-between items-center">
-                    <p class="text-neutral-400 text-sm">© 2025 Celio. All rights reserved.</p>
-                    <p class="text-neutral-400 text-sm mt-2 md:mt-0">Designed with ❤️ for travelers</p>
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-teal-400 font-semibold mb-4 text-sm uppercase tracking-wider">Product</h3>
+                    <ul class="space-y-2">
+                        <li><a href="{% url 'message_cards:unified_card_management' %}"
+                                class="text-neutral-300 hover:text-teal-400 transition-colors text-sm">E-Card Demo</a>
+                        </li>
+                        <li><a href="{% url 'sage:assistant' %}"
+                                class="text-neutral-300 hover:text-teal-400 transition-colors text-sm">Sage AI</a></li>
+                        <li><a href="#"
+                                class="text-neutral-300 hover:text-teal-400 transition-colors text-sm">Features</a></li>
+                    </ul>
+                </div>
+
+                <!-- Resources -->
+                <div>
+                    <h3 class="text-teal-400 font-semibold mb-4 text-sm uppercase tracking-wider">Resources</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-neutral-300 hover:text-teal-400 transition-colors text-sm">Travel
+                                Guides</a></li>
+                        <li><a href="#" class="text-neutral-300 hover:text-teal-400 transition-colors text-sm">Blog</a>
+                        </li>
+                        <li><a href="#"
+                                class="text-neutral-300 hover:text-teal-400 transition-colors text-sm">Support</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Social links -->
+                <div class="md:ml-auto">
+                    <h3 class="text-teal-400 font-semibold mb-4 text-sm uppercase tracking-wider">Connect</h3>
+                    <div class="flex space-x-4">
+                        <a href="https://www.linkedin.com/in/raphealsuber/" target="_blank"
+                            class="text-neutral-300 hover:text-teal-400 transition-colors group">
+                            <span class="sr-only">LinkedIn</span>
+                            <svg class="h-6 w-6 transform group-hover:scale-110 transition-transform"
+                                fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path
+                                    d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                            </svg>
+                        </a>
+                        <a href="https://github.com/manyworldss" target="_blank"
+                            class="text-neutral-300 hover:text-teal-400 transition-colors group">
+                            <span class="sr-only">GitHub</span>
+                            <svg class="h-6 w-6 transform group-hover:scale-110 transition-transform"
+                                fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                    </div>
                 </div>
             </div>
 
-
+            <!-- Bottom section with copyright -->
+            <div class="pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-neutral-400 text-sm">© 2025 Celio. All rights reserved.</p>
+                <p class="text-neutral-400 text-sm mt-2 md:mt-0">Designed with ❤️ for travelers</p>
+            </div>
         </div>
     </footer>
+    {% endblock %}
 
     <!-- Alpine.js (for dropdowns and mobile menu) -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
