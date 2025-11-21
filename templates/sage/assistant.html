@@ -287,8 +287,8 @@
 
     .sage-main {
         flex: 1;
-        display: flex;
-        /* Changed from grid to flex for better stability */
+        display: grid;
+        grid-template-columns: 280px 1fr;
         gap: 20px;
         min-height: 0;
         /* Critical for nested scrolling */
@@ -296,14 +296,11 @@
     }
 
     .sage-sidebar {
-        width: 280px;
-        flex-shrink: 0;
         display: flex;
         flex-direction: column;
     }
 
     .sage-chat-area {
-        flex: 1;
         min-width: 0;
         /* Prevent flex child overflow */
         display: flex;
@@ -316,9 +313,12 @@
             padding: 10px;
         }
 
+        .sage-main {
+            grid-template-columns: 1fr;
+        }
+
         .sage-sidebar {
             display: none;
-            /* Hide sidebar on mobile */
         }
     }
 </style>
