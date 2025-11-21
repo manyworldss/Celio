@@ -6,90 +6,290 @@ import re
 
 # Pre-cached responses for the demo version
 DEMO_RESPONSES = {
-    "restaurant|dining|eat|restaurant|waiter|menu": 
-        "When dining at restaurants with celiac disease, always:\n\n"
-        "1. Call ahead to check if they can accommodate gluten-free needs\n"
-        "2. Clearly inform your server about your celiac disease (not just a preference)\n"
-        "3. Ask about dedicated preparation areas and cross-contamination protocols\n"
-        "4. Consider dining during off-peak hours when kitchen staff has more time to be careful\n"
-        "5. Use apps like Find Me Gluten Free to locate celiac-friendly restaurants\n\n"
-        "Remember that even 'gluten-free menu' items can be contaminated if proper protocols aren't followed.",
+    # Travel Guide Cards - Italy
+    "italy|italian|rome|milan|venice|florence|naples": 
+        """<div class="travel-card max-w-md my-5">
+            <div class="relative h-40" style="background: linear-gradient(135deg, #059669 0%, #10b981 50%, #dc2626 100%);">
+                <div class="absolute inset-0 bg-black/40"></div>
+                <div class="absolute inset-0 flex flex-col items-center justify-center text-center z-10">
+                    <div class="px-4 py-1.5 bg-white/20 backdrop-blur-sm rounded-lg border border-white/30 mb-3">
+                        <span class="text-xs font-bold text-white tracking-widest">IT</span>
+                    </div>
+                    <h3 class="text-4xl font-bold text-white tracking-tight">ITALY</h3>
+                </div>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="flex items-center justify-between pb-3 border-b border-white/10">
+                    <span class="text-xs font-bold uppercase tracking-wider text-white/40">Celiac Awareness</span>
+                    <div class="flex gap-1.5">
+                        <div class="w-3 h-3 rounded-full bg-emerald-400"></div>
+                        <div class="w-3 h-3 rounded-full bg-emerald-400"></div>
+                        <div class="w-3 h-3 rounded-full bg-emerald-400"></div>
+                        <div class="w-3 h-3 rounded-full bg-emerald-400"></div>
+                        <div class="w-3 h-3 rounded-full bg-emerald-400"></div>
+                    </div>
+                </div>
+                
+                <p class="text-white/90 text-sm leading-relaxed"><strong class="text-white">Paradise for celiacs!</strong> Italy has exceptional awareness, government-subsidized GF food, and strict labeling laws. Look for the AIC certification logo.</p>
+                
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-white/5 border border-white/10 rounded-lg p-3 hover:bg-violet-500/10 hover:border-violet-500/30 transition-all">
+                        <div class="text-xs text-white/40 uppercase mb-1 font-semibold">Must Try</div>
+                        <div class="text-sm font-medium text-white">GF Pizza & Pasta</div>
+                    </div>
+                    <div class="bg-white/5 border border-white/10 rounded-lg p-3 hover:bg-violet-500/10 hover:border-violet-500/30 transition-all">
+                        <div class="text-xs text-white/40 uppercase mb-1 font-semibold">Language</div>
+                        <div class="text-sm font-medium text-white">Italian</div>
+                    </div>
+                </div>
+                
+                <div class="bg-violet-500/10 border border-violet-500/30 rounded-lg p-4">
+                    <div class="text-xs text-violet-300 uppercase mb-2 font-bold">Useful Phrase</div>
+                    <div class="text-sm font-semibold text-white italic">"Sono celiaco/a"</div>
+                    <div class="text-xs text-white/50 mt-1">(I am celiac)</div>
+                </div>
+                
+                <div class="text-center py-3 bg-white/5 rounded-lg border border-white/5">
+                    <span class="text-xs text-white/30">Full detailed guides coming soon</span>
+                </div>
+            </div>
+        </div>""",
     
+    # Travel Guide Cards - France
+    "france|french|paris|lyon|marseille|nice": 
+        """<div class="travel-card max-w-md my-5">
+            <div class="relative h-40" style="background: linear-gradient(135deg, #1e3a8a 0%, #ffffff 50%, #dc2626 100%);">
+                <div class="absolute inset-0 bg-black/40"></div>
+                <div class="absolute inset-0 flex flex-col items-center justify-center text-center z-10">
+                    <div class="px-4 py-1.5 bg-white/20 backdrop-blur-sm rounded-lg border border-white/30 mb-3">
+                        <span class="text-xs font-bold text-white tracking-widest">FR</span>
+                    </div>
+                    <h3 class="text-4xl font-bold text-white tracking-tight">FRANCE</h3>
+                </div>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="flex items-center justify-between pb-3 border-b border-white/10">
+                    <span class="text-xs font-bold uppercase tracking-wider text-white/40">Celiac Awareness</span>
+                    <div class="flex gap-1.5">
+                        <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                        <div class="w-3 h-3 rounded-full bg-gray-600"></div>
+                        <div class="w-3 h-3 rounded-full bg-gray-600"></div>
+                    </div>
+                </div>
+                
+                <p class="text-white/90 text-sm leading-relaxed"><strong class="text-white">Growing awareness!</strong> The AFDIAG association provides helpful resources. Look for "sans gluten" options, but always communicate your needs clearly.</p>
+                
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-white/5 border border-white/10 rounded-lg p-3 hover:bg-violet-500/10 hover:border-violet-500/30 transition-all">
+                        <div class="text-xs text-white/40 uppercase mb-1 font-semibold">Must Try</div>
+                        <div class="text-sm font-medium text-white">GF Crêpes</div>
+                    </div>
+                    <div class="bg-white/5 border border-white/10 rounded-lg p-3 hover:bg-violet-500/10 hover:border-violet-500/30 transition-all">
+                        <div class="text-xs text-white/40 uppercase mb-1 font-semibold">Language</div>
+                        <div class="text-sm font-medium text-white">French</div>
+                    </div>
+                </div>
+                
+                <div class="bg-violet-500/10 border border-violet-500/30 rounded-lg p-4">
+                    <div class="text-xs text-violet-300 uppercase mb-2 font-bold">Useful Phrase</div>
+                    <div class="text-sm font-semibold text-white italic">"Je suis cœliaque"</div>
+                    <div class="text-xs text-white/50 mt-1">(I am celiac)</div>
+                </div>
+                
+                <div class="bg-orange-500/10 border border-orange-500/30 rounded-lg p-3">
+                    <span class="block text-xs text-orange-200 font-medium">Tip: Be cautious with sauces and soups!</span>
+                </div>
+                
+                <div class="text-center py-3 bg-white/5 rounded-lg border border-white/5">
+                    <span class="text-xs text-white/30">Full detailed guides coming soon</span>
+                </div>
+            </div>
+        </div>""",
+    
+    # Travel Guide Cards - Japan
+    "japan|japanese|tokyo|kyoto|osaka|hiroshima": 
+        """<div class="travel-card max-w-md my-5">
+            <div class="relative h-40" style="background: linear-gradient(180deg, #BC002D 0%, #FFFFFF 50%, #FFFFFF 100%);">
+                <div class="absolute inset-0 bg-black/50"></div>
+                <div class="absolute inset-0 flex flex-col items-center justify-center text-center z-10">
+                    <div class="px-4 py-1.5 bg-white/20 backdrop-blur-sm rounded-lg border border-white/30 mb-3">
+                        <span class="text-xs font-bold text-white tracking-widest">JP</span>
+                    </div>
+                    <h3 class="text-4xl font-bold text-white tracking-tight">JAPAN</h3>
+                </div>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="flex items-center justify-between pb-3 border-b border-white/10">
+                    <span class="text-xs font-bold uppercase tracking-wider text-white/40">Celiac Awareness</span>
+                    <div class="flex gap-1.5">
+                        <div class="w-3 h-3 rounded-full bg-orange-400"></div>
+                        <div class="w-3 h-3 rounded-full bg-orange-400"></div>
+                        <div class="w-3 h-3 rounded-full bg-gray-600"></div>
+                        <div class="w-3 h-3 rounded-full bg-gray-600"></div>
+                        <div class="w-3 h-3 rounded-full bg-gray-600"></div>
+                    </div>
+                </div>
+                
+                <p class="text-white/90 text-sm leading-relaxed"><strong class="text-white">Challenging but doable!</strong> Lower celiac awareness. Soy sauce contains wheat and is in many dishes. Language barriers exist, but preparation helps!</p>
+                
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-white/5 border border-white/10 rounded-lg p-3 hover:bg-violet-500/10 hover:border-violet-500/30 transition-all">
+                        <div class="text-xs text-white/40 uppercase mb-1 font-semibold">Safe Option</div>
+                        <div class="text-sm font-medium text-white">Sashimi & Rice</div>
+                    </div>
+                    <div class="bg-white/5 border border-white/10 rounded-lg p-3 hover:bg-violet-500/10 hover:border-violet-500/30 transition-all">
+                        <div class="text-xs text-white/40 uppercase mb-1 font-semibold">Language</div>
+                        <div class="text-sm font-medium text-white">Japanese</div>
+                    </div>
+                </div>
+                
+                <div class="bg-violet-500/10 border border-violet-500/30 rounded-lg p-4">
+                    <div class="text-xs text-violet-300 uppercase mb-2 font-bold">Useful Phrase</div>
+                    <div class="text-sm font-semibold text-white mb-1">私はセリアック病です</div>
+                    <div class="text-xs text-white/50 italic">(Watashi wa seriakku byō desu)</div>
+                    <div class="text-xs text-white/40 mt-1">"I have celiac disease"</div>
+                </div>
+                
+                <div class="bg-red-500/10 border border-red-500/30 rounded-lg p-3">
+                    <span class="block text-xs text-red-200 font-medium">Avoid: Ramen, tempura, soy sauce!</span>
+                </div>
+                
+                <div class="text-center py-3 bg-white/5 rounded-lg border border-white/5">
+                    <span class="text-xs text-white/30">Full detailed guides coming soon</span>
+                </div>
+            </div>
+        </div>""",
+    
+    # General travel query - show all three
+    "travel guide|where to travel|travel tips|destination": 
+        "I can help you with celiac-friendly travel guides!\n\n"
+        "Try asking about specific destinations like:\n"
+        "• Italy (excellent celiac awareness!)\n"
+        "• France (growing awareness)\n"
+        "• Japan (challenging but doable)\n\n"
+        "Just say something like 'Tell me about traveling to Italy' or 'Japan travel guide' and I'll show you detailed information!",
+    
+    "restaurant|dining|eat out|waiter|menu": 
+        "**Dining Out Safely with Celiac Disease**\n\n"
+        "**Before You Go:**\n"
+        "• Call ahead to verify gluten-free options\n"
+        "• Use apps like Find Me Gluten-Free\n"
+        "• Check restaurant reviews from other celiacs\n\n"
+        "**At the Restaurant:**\n"
+        "• Specify 'celiac disease' not just 'gluten-free preference'\n"
+        "• Ask about cross-contamination protocols\n"
+        "• Request dedicated preparation areas\n"
+        "• Inquire about separate fryers for allergen-free items\n\n"
+        "**Best Times:**\n"
+        "• Dine during off-peak hours when staff can focus on your needs\n\n"
+        "*Tip*: Even 'gluten-free menu' items can be unsafe if proper protocols aren't followed!",
+
     "travel|trip|vacation|abroad|country|flight|plane|hotel": 
-        "When traveling with celiac disease:\n\n"
-        "1. Research gluten-free options at your destination before you go\n"
-        "2. Pack emergency snacks and gluten-free essentials\n"
-        "3. Consider booking accommodations with kitchen access to prepare safe meals\n"
-        "4. Download translation cards explaining celiac disease in the local language\n"
-        "5. Join online celiac groups for destination-specific advice\n"
-        "6. Bring a doctor's note explaining your condition for customs/security\n\n"
-        "The Celio app's travel guides provide country-specific information about celiac awareness and safe dining options in many destinations.",
+        "**Traveling with Celiac Disease**\n\n"
+        "**Before Your Trip:**\n"
+        "• Research GF options at your destination\n"
+        "• Download translation cards in local language\n"
+        "• Join celiac travel groups for insider tips\n"
+        "• Get a doctor's note (helpful for customs)\n\n"
+        "**Packing Essentials:**\n"
+        "• Emergency snacks (protein bars, crackers)\n"
+        "• Portable allergen test kit\n"
+        "• Medication for accidental exposure\n\n"
+        "**Accommodation Tips:**\n"
+        "• Book places with kitchen access\n"
+        "• Research nearby GF grocery stores\n\n"
+        "*Ask me about specific countries for detailed guides!*",
     
-    "symptom|reaction|sick|pain|bloat|diarrhea|headache|rash|fatigue": 
-        "Common symptoms of celiac disease and gluten exposure include:\n\n"
-        "1. Digestive issues: bloating, diarrhea, constipation, abdominal pain\n"
-        "2. Fatigue and weakness\n"
-        "3. Headaches or brain fog\n"
-        "4. Joint or bone pain\n"
-        "5. Skin rashes (dermatitis herpetiformis)\n"
-        "6. Anemia or nutritional deficiencies\n\n"
-        "If you've been exposed to gluten, focus on staying hydrated, resting, and following your doctor's recommendations. Symptoms typically resolve within a few days to weeks.",
+    "symptom|reaction|sick|pain|bloat|diarrhea|headache|rash|fatigue|gluten exposure": 
+        "**Gluten Exposure & Symptoms**\n\n"
+        "**Common Symptoms Include:**\n"
+        "• Digestive: Bloating, diarrhea, constipation, stomach pain\n"
+        "• Energy: Extreme fatigue, weakness\n"
+        "• Mental: Brain fog, headaches, mood changes\n"
+        "• Physical: Joint pain, skin rashes (DH)\n"
+        "• Other: Anemia, nutritional deficiencies\n\n"
+        "**If You've Been Exposed:**\n"
+        "• Stay hydrated (water, electrolytes)\n"
+        "• Rest and be gentle with yourself\n"
+        "• Stick to simple, safe foods\n"
+        "• Follow your doctor's recommendations\n\n"
+        "Symptoms typically resolve in a few days to weeks.",
     
-    "food|ingredient|safe|avoid|eat|label|product|grocery": 
-        "Foods to always avoid with celiac disease:\n\n"
-        "1. Wheat (including durum, semolina, spelt, kamut, einkorn, farro)\n"
-        "2. Rye and barley\n"
-        "3. Most oats (unless certified gluten-free)\n"
-        "4. Malt and malt flavoring\n"
-        "5. Many processed foods with hidden gluten\n\n"
-        "Safe foods include:\n"
-        "- Fresh fruits and vegetables\n"
-        "- Unprocessed meats, fish, and poultry\n"
-        "- Most dairy products\n"
-        "- Beans, legumes, and nuts\n"
-        "- Gluten-free grains like rice, corn, quinoa, millet, and certified GF oats\n\n"
-        "Always carefully read product labels and look for certified gluten-free products.",
+    "food|ingredient|safe|avoid|label|product|grocery|what can i eat": 
+        "**Safe vs. Unsafe Foods**\n\n"
+        "**Always Avoid:**\n"
+        "• Wheat (all types: durum, semolina, spelt, kamut)\n"
+        "• Rye and barley\n"
+        "• Most oats (unless certified GF)\n"
+        "• Malt and malt flavoring\n"
+        "• Many processed foods with hidden gluten\n\n"
+        "**Safe to Eat:**\n"
+        "• Fresh fruits and vegetables\n"
+        "• Unprocessed meats, fish, poultry\n"
+        "• Most dairy products\n"
+        "• Beans, legumes, nuts\n"
+        "• GF grains: rice, corn, quinoa, millet\n"
+        "• Certified gluten-free oats\n\n"
+        "**Always** read labels carefully and look for certified GF symbols!",
+    
+    "cross contamination|kitchen|prepare|cook|utensil|toaster|cutting board": 
+        "**Preventing Cross-Contamination**\n\n"
+        "**Essential Kitchen Practices:**\n\n"
+        "**Separate Equipment:**\n"
+        "• Dedicated cutting boards\n"
+        "• Separate toaster (or toaster bags)\n"
+        "• Individual utensils\n"
+        "• Distinct colanders and strainers\n\n"
+        "**Storage Tips:**\n"
+        "• GF products on UPPER shelves\n"
+        "• Dedicated containers for condiments\n"
+        "• Clear labeling system\n\n"
+        "**Cleaning:**\n"
+        "• Thoroughly clean surfaces before GF prep\n"
+        "• Use separate sponges/cloths\n\n"
+        "Even *tiny* amounts of gluten can trigger reactions!",
     
     "family|gene|genetic|hereditary|parent|child|test|diagnose|diagnosis": 
-        "Celiac disease has a genetic component:\n\n"
-        "1. It runs in families - first-degree relatives have a 1 in 10 risk\n"
-        "2. Celiac disease requires the presence of HLA-DQ2 or HLA-DQ8 genes\n"
-        "3. Having these genes doesn't guarantee developing celiac (40% of the population has them)\n"
-        "4. Environmental factors like infections, stress, or pregnancy can trigger onset\n\n"
-        "Diagnosis typically involves:\n"
-        "- Blood tests for specific antibodies\n"
-        "- Small intestine biopsy\n"
-        "- Genetic testing to rule out celiac disease\n\n"
-        "If you have a family history, consider getting tested even without symptoms, as early detection prevents complications.",
-    
-    "cross.?contamination|kitchen|prepare|cook|utensil|toaster|cutting": 
-        "Preventing cross-contamination at home:\n\n"
-        "1. Maintain separate cooking utensils, cutting boards, and toasters\n"
-        "2. Use different containers for condiments to prevent crumb transfer\n"
-        "3. Clean surfaces thoroughly before preparing gluten-free foods\n"
-        "4. Consider having designated gluten-free preparation areas\n"
-        "5. Store gluten-free products on upper shelves to prevent crumbs falling from above\n"
-        "6. Label gluten-free items clearly\n\n"
-        "Even tiny amounts of gluten from cross-contamination can cause reactions in people with celiac disease.",
+        "**Celiac Disease & Genetics**\n\n"
+        "**Family Connection:**\n"
+        "• First-degree relatives: 1 in 10 risk\n"
+        "• Requires HLA-DQ2 or HLA-DQ8 genes\n"
+        "• 40% of people have these genes (not all develop celiac)\n"
+        "• Environmental triggers: infections, stress, pregnancy\n\n"
+        "**Diagnosis Process:**\n"
+        "1. Blood tests (antibody screening)\n"
+        "2. Small intestine biopsy\n"
+        "3. Genetic testing (to rule out)\n\n"
+        "**Important**: Get tested *before* going gluten-free, even without symptoms!\n\n"
+        "Early detection prevents long-term complications.",
     
     "hello|hi|hey|greetings|start|intro|welcome":
-        "Hello! I'm Sage, your personal gluten and celiac disease assistant. I can help with information about:\n\n"
-        "- Safely dining out with celiac disease\n"
-        "- Traveling with dietary restrictions\n"
-        "- Understanding symptoms and managing accidental exposure\n"
-        "- Safe and unsafe ingredients\n"
-        "- Cross-contamination prevention\n\n"
-        "What would you like to know about today? This is a demo version with pre-made responses, but I'm still learning to be more helpful!",
+        "**Hello! I'm Sage** - Your personal celiac & gluten-free assistant!\n\n"
+        "I'm here to help with:\n\n"
+        "**Travel Guides** - Italy, France, Japan & more\n"
+        "**Dining Out** - Restaurant strategies & safety\n"
+        "**Health Info** - Symptoms, diagnosis, management\n"
+        "**Food Safety** - What to eat, what to avoid\n"
+        "**Cross-Contamination** - Kitchen best practices\n\n"
+        "Try asking:\n"
+        "• 'Tell me about traveling to Italy'\n"
+        "• 'How do I eat safely at restaurants?'\n"
+        "• 'What foods should I avoid?'\n\n"
+        "*This is a demo with pre-made responses - full AI coming soon!*",
         
     "default":
-        "Thank you for your question. In this demo version, I have a limited set of pre-made responses about celiac disease topics like:\n\n"
-        "- Restaurant dining strategies\n"
-        "- Travel tips for celiacs\n"
-        "- Symptom management\n" 
-        "- Safe and unsafe foods\n"
-        "- Genetic/family information\n"
-        "- Cross-contamination prevention\n\n"
-        "Try asking about one of these topics, or check back when the premium version launches with full Claude AI integration for more personalized assistance!"
+        "I'm still learning!\n\n"
+        "**I can help with:**\n"
+        "Travel guides (Italy, France, Japan)\n"
+        "Restaurant dining strategies\n"
+        "Symptom management\n"
+        "Safe vs unsafe foods\n"
+        "Genetic/family information\n"
+        "Cross-contamination prevention\n\n"
+        "Try asking about one of these topics!\n\n"
+        "*Premium version with full Claude AI integration coming soon!*"
 }
 
 def sage_assistant(request):

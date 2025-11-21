@@ -1,6 +1,7 @@
 /* Primary Accent Theme CSS */
 :root {
-    --primary-950: #f8f8f8; /* Light neutral background */
+    --primary-950: #f8f8f8;
+    /* Light neutral background */
     --primary-900: #e0e0e0;
     --primary-800: #c0c0c0;
     --primary-700: #a0a0a0;
@@ -10,11 +11,33 @@
     --accent-300: #a78bfa;
     --accent-200: #c4b5fd;
     --accent-100: #e0e7ff;
+
+    /* Restored Teal/Spruce Variables */
+    --mint-light: #99E2B4;
+    --mint: #88D4AB;
+    --seafoam: #78C6A3;
+    --teal-medium: #67B99A;
+    --teal: #56AB91;
+    --teal-dark: #469D89;
+    --deep-teal: #358F80;
+    --deep-teal-2: #248277;
+    --blue-green: #14746F;
+    --blue-green-dark: #036666;
+    --off-white: #F5F5F0;
+    --spruce-950: #0a1613;
+    --spruce-900: #0f211c;
+    --spruce-800: #14322a;
+    --spruce-700: #1a4237;
+    --teal-600: #0d9488;
+    --teal-500: #14b8a6;
+    --teal-400: #2dd4bf;
+    --teal-300: #5eead4;
+    --teal-200: #99f6e4;
+    --teal-100: #ccfbf1;
 }
 
 /* Section styling */
 .form-section {
-    background-color: var(--spruce-800);
     background-color: rgba(20, 50, 42, 0.2);
     backdrop-filter: blur(8px);
     border-radius: 0.75rem;
@@ -72,14 +95,14 @@
 .theme-dark .form-textarea,
 .theme-dark .field-input {
     background-color: #1a0b3d !important;
-    color: rgba(255, 255, 255, 0.8) !important; /* Darker color for text */
+    color: rgba(255, 255, 255, 0.8) !important;
     border: 1px solid #6b46c1 !important;
 }
 
 .theme-dark .form-input::placeholder,
 .theme-dark .form-textarea::placeholder,
 .theme-dark .field-input::placeholder {
-    color: rgba(255, 255, 255, 0.5) !important; /* Darker color for placeholder */
+    color: rgba(255, 255, 255, 0.5) !important;
 }
 
 .form-select {
@@ -215,7 +238,7 @@
     .order-1 {
         order: 2;
     }
-    
+
     .order-2 {
         order: 1;
     }

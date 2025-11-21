@@ -29,7 +29,7 @@ load_dotenv(BASE_DIR / '.env.development.local')
 
 # SECURITY WARNING: don't run with debug turned on in production! Set to false when production ready
 # Set DEBUG to False in production
-DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
+DEBUG = True
 
 # Environment-based settings
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,.fly.dev,.internal,.railway.app').split(',')
@@ -69,7 +69,7 @@ if not SECRET_KEY:
 # Security settings for production
 if not DEBUG:
     # HTTPS and SSL settings
-    SECURE_SSL_REDIRECT = True
+    SECURE_SSL_REDIRECT = False
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     

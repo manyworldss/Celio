@@ -1,863 +1,446 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
 
-
-
-<!-- Hero Section -->
-<div class="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
-    <!-- Premium Animated Background Elements -->
-    <div class="absolute inset-0 overflow-hidden">
-        <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-cyan-500/20 to-blue-500/15 rounded-full blur-3xl animate-pulse"></div>
-        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-purple-500/20 to-pink-500/15 rounded-full blur-3xl animate-pulse delay-1000"></div>
-
-    </div>
-    
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <!-- Main Title -->
-        <div class="text-center mb-24 mt-8">
-            <!-- Premium Badge -->
-            <div class="inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-400/30 backdrop-blur-md mb-6">
-                <span class="text-purple-300 font-semibold text-sm tracking-wide">🚀 MOBILE APP LAUNCHING 2025</span>
-            </div>
-            <h1 class="text-5xl md:text-7xl font-bold leading-tight mb-6">
-                <span class="bg-gradient-to-br from-white via-cyan-100 to-blue-400 bg-clip-text text-transparent">
-                    Celio Travel<br>
-                    E-Cards Platform
-                </span>
-            </h1>
-            <p class="text-xl text-gray-100 max-w-3xl mx-auto mb-6">
-                Break language barriers with intelligent travel communication cards
-            </p>
-            <!-- Mobile App 2025 Features Preview -->
-            <div class="flex flex-wrap justify-center gap-4 mb-8">
-                <div class="flex items-center px-4 py-2 rounded-full bg-black/30 border border-cyan-400/30 backdrop-blur-sm">
-                    <div class="w-2 h-2 bg-cyan-400 rounded-full mr-2 animate-pulse"></div>
-                    <span class="text-cyan-300 text-sm font-medium">Mobile App 2025: AI Assistant Sage</span>
-                </div>
-                <div class="flex items-center px-4 py-2 rounded-full bg-black/30 border border-purple-400/30 backdrop-blur-sm">
-                    <div class="w-2 h-2 bg-purple-400 rounded-full mr-2 animate-pulse"></div>
-                    <span class="text-purple-300 text-sm font-medium">Mobile App 2025: Audio Translations</span>
-                </div>
-                <div class="flex items-center px-4 py-2 rounded-full bg-black/30 border border-emerald-400/30 backdrop-blur-sm">
-                    <div class="w-2 h-2 bg-emerald-400 rounded-full mr-2 animate-pulse"></div>
-                    <span class="text-emerald-300 text-sm font-medium">Building Towards: Enterprise Vision</span>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Demo Container -->
-         <div class="max-w-4xl mx-auto">
-            <!-- Central Demo Video -->
-            <div class="mb-12">
-                <div class="bg-black/80 backdrop-blur-xl rounded-2xl border border-neutral-700/50 overflow-hidden shadow-2xl transform hover:scale-105 transition-transform duration-300 max-w-2xl mx-auto">
-                    <div class="relative bg-gradient-to-br from-neutral-800 to-neutral-900 rounded-xl overflow-hidden">
-                         <!-- Mobile Demo Video -->
-                         <!-- Central Demo Video -->
-                         <video autoplay loop muted playsinline preload="auto" controls class="w-full max-w-2xl mx-auto aspect-video object-contain border-4 border-cyan-400/70 shadow-2xl rounded-3xl transition-all duration-300 hover:scale-105" style="background:linear-gradient(135deg,#2d3748 30%,#0ea5e9 100%);">
-    {% load static %}
-    <source src="{% static video_url %}" type="video/mp4">
-    <p class="text-white text-center p-8">
-        Your browser does not support the video tag.
-    </p>
-</video>
-                     </div>
-                </div>
-            </div>
-            
-            <!-- Feature Buttons Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 max-w-4xl mx-auto">
-                <!-- Instant Translation Button -->
-                <div class="group bg-gradient-to-r from-purple-500/20 to-blue-500/20 backdrop-blur-xl rounded-xl p-4 border border-purple-400/30 shadow-xl hover:from-purple-500/30 hover:to-blue-500/30 transition-all duration-300 cursor-pointer">
-                    <div class="flex flex-col items-center text-center space-y-3">
-                        <div class="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                            <div class="text-2xl">⚡</div>
-                        </div>
-                        <div>
-                            <h4 class="text-white font-semibold text-sm mb-1">Instant Translation</h4>
-                            <p class="text-purple-300 text-xs">Real-time communication</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Food Passport Button -->
-                <div class="group bg-gradient-to-r from-green-500/20 to-emerald-500/20 backdrop-blur-xl rounded-xl p-4 border border-green-400/30 shadow-xl hover:from-green-500/30 hover:to-emerald-500/30 transition-all duration-300 cursor-pointer">
-                    <div class="flex flex-col items-center text-center space-y-3">
-                        <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                            <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <h4 class="text-white font-semibold text-sm mb-1">Your Food Passport</h4>
-                            <p class="text-green-300 text-xs">Dining preferences ready</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Global Access Button -->
-                <div class="group bg-gradient-to-r from-amber-500/20 to-orange-500/20 backdrop-blur-xl rounded-xl p-4 border border-amber-400/30 shadow-xl hover:from-amber-500/30 hover:to-orange-500/30 transition-all duration-300 cursor-pointer">
-                    <div class="flex flex-col items-center text-center space-y-3">
-                        <div class="w-12 h-12 bg-amber-500/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                            <div class="text-2xl">🌍</div>
-                        </div>
-                        <div>
-                            <h4 class="text-white font-semibold text-sm mb-1">Global Access</h4>
-                            <p class="text-amber-300 text-xs">Worldwide compatibility</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- CTA Section -->
-        <div class="text-center mt-20 mb-16">
-            <div class="flex flex-col sm:flex-row gap-6 justify-center">
-                <a href="{% url 'message_cards:unified_card_management' %}" class="group relative bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 hover:from-cyan-400 hover:via-blue-500 hover:to-purple-500 text-white px-6 py-3 rounded-2xl font-semibold text-base transition-all duration-500 shadow-2xl hover:shadow-cyan-500/25 transform hover:scale-105 overflow-hidden">
-                    <div class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-                    <span class="relative flex items-center justify-center">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                        </svg>
-                        Try Demo Now
-                    </span>
-                </a>
-                <a href="#features" class="group border-2 border-white/30 hover:border-purple-400/50 text-white hover:bg-gradient-to-r hover:from-purple-500/10 hover:to-pink-500/10 px-6 py-3 rounded-2xl font-medium text-base transition-all duration-300 backdrop-blur-sm relative overflow-hidden">
-                    <span class="relative flex items-center justify-center">
-                        <svg class="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
-                        </svg>
-                        Learn More →
-                    </span>
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Custom Animations -->
 <style>
-@keyframes float-1 {
-    0%, 100% { transform: translate(-2rem, -2rem) translateY(0px); }
-    50% { transform: translate(-2rem, -2rem) translateY(-10px); }
-}
-@keyframes float-2 {
-    0%, 100% { transform: translate(2rem, -1rem) translateY(0px); }
-    50% { transform: translate(2rem, -1rem) translateY(-15px); }
-}
-@keyframes float-3 {
-    0%, 100% { transform: translate(1rem, 2rem) translateY(0px); }
-    50% { transform: translate(1rem, 2rem) translateY(-8px); }
-}
-@keyframes float-4 {
-    0%, 100% { transform: translate(-1rem, 1rem) translateY(0px); }
-    50% { transform: translate(-1rem, 1rem) translateY(-12px); }
-}
-@keyframes float-5 {
-    0%, 100% { transform: translate(-3rem, -50%) translateY(0px); }
-    50% { transform: translate(-3rem, -50%) translateY(-10px); }
-}
-@keyframes float-6 {
-    0%, 100% { transform: translate(3rem, -50%) translateY(0px); }
-    50% { transform: translate(3rem, -50%) translateY(-8px); }
-}
-.animate-float-1 { animation: float-1 6s ease-in-out infinite; }
-.animate-float-2 { animation: float-2 5s ease-in-out infinite 0.5s; }
-.animate-float-3 { animation: float-3 7s ease-in-out infinite 1s; }
-.animate-float-4 { animation: float-4 6s ease-in-out infinite 1.5s; }
-.animate-float-5 { animation: float-5 8s ease-in-out infinite 2s; }
-.animate-float-6 { animation: float-6 5.5s ease-in-out infinite 2.5s; }
+    /* Animation Utilities */
+    .animate-on-scroll {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        will-change: opacity, transform;
+    }
+
+    .animate-on-scroll.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Stagger Delays */
+    .delay-100 {
+        transition-delay: 100ms;
+    }
+
+    .delay-200 {
+        transition-delay: 200ms;
+    }
+
+    .delay-300 {
+        transition-delay: 300ms;
+    }
+
+    .delay-400 {
+        transition-delay: 400ms;
+    }
+
+    .delay-500 {
+        transition-delay: 500ms;
+    }
+
+    .delay-700 {
+        transition-delay: 700ms;
+    }
+
+    /* Custom Animations */
+    @keyframes float {
+
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-20px);
+        }
+    }
+
+    .animate-float {
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .animate-float-delayed {
+        animation: float 8s ease-in-out infinite;
+        animation-delay: 2s;
+    }
+
+    /* 3D Card Tilt Effect */
+    .tilt-card {
+        transition: transform 0.1s ease;
+        transform-style: preserve-3d;
+    }
+
+    .tilt-card-content {
+        transform: translateZ(20px);
+    }
+
+    /* Conversation Bubble Animation */
+    @keyframes popIn {
+        0% {
+            opacity: 0;
+            transform: scale(0.8) translateY(10px);
+        }
+
+        100% {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+    }
+
+    .bubble-pop {
+        opacity: 0;
+    }
+
+    .is-visible .bubble-pop {
+        animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    /* Mouse Glow Effect */
+    #mouse-glow {
+        position: fixed;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(45, 212, 191, 0.15) 0%, rgba(45, 212, 191, 0) 70%);
+        border-radius: 50%;
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+        z-index: 0;
+        transition: opacity 0.5s ease;
+        mix-blend-mode: screen;
+    }
 </style>
 
-<!-- Features Section -->
-<div id="features" class="relative py-32 overflow-hidden">
-    <!-- Animated Background -->
-    <div class="absolute inset-0 bg-gradient-to-br from-purple-900/30 via-pink-900/20 to-orange-900/30"></div>
-    <div class="absolute inset-0 bg-gradient-to-tr from-cyan-900/20 via-transparent to-blue-900/30"></div>
-    
-    <!-- Floating Glass Orbs -->
-    <div class="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-xl animate-pulse"></div>
-    <div class="absolute bottom-20 right-10 w-40 h-40 bg-gradient-to-br from-cyan-400/20 to-blue-400/20 rounded-full blur-xl animate-pulse" style="animation-delay: 1s;"></div>
-    <div class="absolute top-1/2 left-1/3 w-24 h-24 bg-gradient-to-br from-orange-400/20 to-yellow-400/20 rounded-full blur-xl animate-pulse" style="animation-delay: 2s;"></div>
-    
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="text-center mb-20">
-            <div class="inline-block mb-8">
-                <div class="bg-gradient-to-r from-green-500/20 to-emerald-500/20 backdrop-blur-sm rounded-full px-6 py-2 border border-green-400/30">
-                    <span class="text-green-300 font-semibold text-sm tracking-wide uppercase">✅ AVAILABLE NOW - DEMO SITE</span>
-                </div>
-            </div>
-            <h2 class="text-5xl md:text-7xl font-bold mb-8">
-                <span class="bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 bg-clip-text text-transparent">
-                    E-Cards
-                </span><br>
-                <span class="text-white">for Safe Travel</span>
-            </h2>
-            <p class="text-xl md:text-2xl text-gray-100 max-w-4xl mx-auto leading-relaxed">
-                <span class="text-green-400 font-bold">Try our live demo</span> showcasing current e-card functionality while we build towards 
-                <span class="text-orange-500 font-bold">enterprise-ready travel solutions</span> with AI-powered assistance coming in 2025.
-            </p>
+<!-- Mouse Glow Element -->
+<div id="mouse-glow"></div>
+
+<!-- Hero Section -->
+<div class="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+    <!-- Background Elements -->
+    <div class="absolute inset-0 bg-black">
+        <div
+            class="absolute top-1/4 left-1/4 w-96 h-96 bg-teal-900/20 rounded-full blur-[100px] animate-pulse animate-float">
         </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto items-stretch">
-            <!-- Dynamic Translations -->
-            <div class="flex">
-                <div class="group relative flex flex-col w-full">
-                    <div class="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500 opacity-50 group-hover:opacity-75"></div>
-                    <div class="relative bg-black/30 backdrop-blur-xl rounded-3xl p-8 border border-white/30 hover:border-purple-400/50 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl flex flex-col h-full">
-                        <div class="flex justify-center mb-6">
-                            <div class="w-16 h-16 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
-                                </svg>
-                            </div>
-                        </div>
-                        <h3 class="text-white font-bold text-xl mb-4 group-hover:text-purple-300 transition-colors duration-300 text-center">Dynamic Translations</h3>
-                        <p class="text-gray-100 text-base mb-6 leading-relaxed text-center flex-grow">
-                            Transform dietary restrictions into culturally-appropriate cards that healthcare providers and restaurants understand instantly across any language barrier.
-                        </p>
-                        <div class="bg-black/20 backdrop-blur-sm rounded-2xl p-4 border border-white/10 mt-auto">
-                            <div class="text-xs text-purple-300 mb-2 font-semibold uppercase tracking-wide text-center">Live Translation</div>
-                            <div class="text-purple-200 text-sm font-mono bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg p-2 text-center">
-                                "Celiac Disease" → "セリアック病"
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Travel Ready -->
-            <div class="flex">
-                <div class="group relative flex flex-col w-full">
-                    <div class="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500 opacity-50 group-hover:opacity-75"></div>
-                    <div class="relative bg-black/30 backdrop-blur-xl rounded-3xl p-8 border border-white/30 hover:border-cyan-400/50 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl flex flex-col h-full">
-                        <div class="flex justify-center mb-6">
-                            <div class="w-16 h-16 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-300">
-                                <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-                                </svg>
-                            </div>
-                        </div>
-                        <h3 class="text-white font-bold text-xl mb-4 group-hover:text-cyan-300 transition-colors duration-300 text-center">Travel Ready</h3>
-                        <p class="text-neutral-300 text-base mb-6 leading-relaxed text-center flex-grow">
-                            Smart cards with emergency contacts, severity indicators, and cross-contamination warnings tailored for different cultural contexts worldwide.
-                        </p>
-                        <div class="bg-black/20 backdrop-blur-sm rounded-2xl p-4 border border-white/10 mt-auto">
-                            <div class="text-xs text-cyan-300 mb-2 font-semibold uppercase tracking-wide text-center">Global Coverage</div>
-                            <div class="text-cyan-200 text-sm font-mono bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-lg p-2 text-center">
-                                🇺🇸 🇪🇸 🇫🇷 🇨🇳 🇯🇵 🇵🇹 + More
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Portfolio Showcase -->
-            <div class="flex">
-                <div class="group relative flex flex-col w-full">
-                    <div class="absolute inset-0 bg-gradient-to-r from-orange-500/20 to-yellow-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500 opacity-50 group-hover:opacity-75"></div>
-                    <div class="relative bg-black/30 backdrop-blur-xl rounded-3xl p-8 border border-white/30 hover:border-orange-400/50 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl flex flex-col h-full">
-                        <div class="flex justify-center mb-6">
-                            <div class="w-16 h-16 bg-gradient-to-br from-orange-400 to-yellow-400 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-                                </svg>
-                            </div>
-                        </div>
-                        <h3 class="text-white font-bold text-xl mb-4 group-hover:text-orange-300 transition-colors duration-300 text-center">Portfolio Showcase</h3>
-                        <p class="text-neutral-300 text-base mb-6 leading-relaxed text-center flex-grow">
-                            Full-stack mastery with Django, TailwindCSS, and HTMX. Features authentication, PDF generation, QR codes, and mobile-first responsive design.
-                        </p>
-                        <div class="bg-black/20 backdrop-blur-sm rounded-2xl p-4 border border-white/10 mt-auto">
-                            <div class="text-xs text-orange-300 mb-2 font-semibold uppercase tracking-wide text-center">Tech Stack</div>
-                            <div class="text-orange-200 text-sm font-mono bg-gradient-to-r from-orange-500/20 to-yellow-500/20 rounded-lg p-2 text-center">
-                                Django + TailwindCSS + HTMX
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div
+            class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-green-dark/20 rounded-full blur-[100px] animate-pulse delay-1000 animate-float-delayed">
         </div>
-        
-        <!-- Call to Action -->
-        <div class="text-center mt-20">
-            <div class="relative inline-block">
-                <div class="absolute inset-0 bg-gradient-to-r from-purple-500/30 to-pink-500/30 rounded-3xl blur-xl"></div>
-                <div class="relative bg-black/30 backdrop-blur-xl rounded-3xl p-8 border border-white/30">
-                    <h3 class="text-2xl font-bold text-white mb-4">Experience the Future of Travel Safety</h3>
-                    <p class="text-gray-100 mb-6 max-w-2xl mx-auto">
-                        See how cutting-edge technology transforms travel accessibility and safety for everyone.
+    </div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-6xl md:text-8xl font-bold mb-8 tracking-tight animate-on-scroll is-visible">
+            <span class="block text-white mb-2">Your Gluten-Free</span>
+            <span class="block text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-teal-200">Passport</span>
+        </h1>
+        <p
+            class="text-xl md:text-2xl text-neutral-400 max-w-3xl mx-auto mb-12 font-light leading-relaxed animate-on-scroll is-visible delay-200">
+            Travel with confidence. Communicate your dietary needs clearly in any language, anywhere in the world.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-6 justify-center items-center animate-on-scroll is-visible delay-400">
+            <a href="{% url 'message_cards:unified_card_management' %}"
+                class="group relative px-8 py-4 bg-teal-600 hover:bg-teal-500 text-white rounded-full font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(20,184,166,0.3)]">
+                <span class="relative z-10 flex items-center">
+                    Create Your Card
+                    <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                </span>
+            </a>
+            <a href="#scenario"
+                class="text-neutral-400 hover:text-white transition-colors flex items-center gap-2 group">
+                See how it works
+                <svg class="w-4 h-4 transform group-hover:translate-y-1 transition-transform" fill="none"
+                    stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce opacity-50">
+        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7-7-7" />
+        </svg>
+    </div>
+</div>
+
+<!-- Scenario Section: The Portugal Story -->
+<div id="scenario" class="py-32 relative bg-neutral-900/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+            <!-- Visual Side -->
+            <div class="relative animate-on-scroll">
+                <div
+                    class="absolute -inset-4 bg-gradient-to-r from-teal-500/20 to-blue-500/20 rounded-2xl blur-xl opacity-75 animate-pulse">
+                </div>
+                <div
+                    class="relative glass-card rounded-2xl p-8 overflow-hidden min-h-[400px] flex flex-col justify-center">
+                    <!-- Abstract Representation of a Menu/Waiter -->
+                    <div class="space-y-8">
+                        <!-- Location Badge -->
+                        <div class="flex items-center gap-4 mb-8 bubble-pop" style="animation-delay: 0.2s;">
+                            <div
+                                class="w-12 h-12 rounded-full bg-neutral-800 flex items-center justify-center border border-white/10">
+                                <svg class="w-6 h-6 text-teal-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-white font-medium">Lisbon, Portugal</h3>
+                                <p class="text-neutral-400 text-sm">Dinner at a local Tasca</p>
+                            </div>
+                        </div>
+
+                        <!-- Waiter Interaction -->
+                        <div class="bg-neutral-800/50 rounded-xl p-6 border border-white/5 space-y-8 bubble-pop"
+                            style="animation-delay: 0.5s;">
+                            <!-- Waiter Speech -->
+                            <div class="flex gap-4 items-start">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-neutral-700 flex-shrink-0 flex items-center justify-center border border-white/10">
+                                    <svg class="w-5 h-5 text-neutral-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                    </svg>
+                                </div>
+                                <div class="space-y-2 w-full max-w-[80%]">
+                                    <div class="bg-neutral-700 rounded-2xl rounded-tl-none p-4 relative">
+                                        <p class="text-neutral-200 text-sm italic">"Olá, boa noite. O nosso prato
+                                            especial hoje é Bacalhau com Natas."</p>
+                                    </div>
+                                    <p class="text-xs text-neutral-500 ml-1">Waiter (Portuguese)</p>
+                                </div>
+                            </div>
+
+                            <!-- User Thought (The Doubt) -->
+                            <div class="flex gap-4 items-start justify-end">
+                                <div class="space-y-2 w-full max-w-[80%] flex flex-col items-end">
+                                    <div
+                                        class="bg-teal-900/30 border border-teal-500/30 rounded-2xl rounded-tr-none p-4 animate-pulse relative">
+                                        <div class="flex items-center gap-2 text-teal-200 text-sm font-medium">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                            <span>Cross-contamination?</span>
+                                        </div>
+                                    </div>
+                                    <p class="text-xs text-neutral-500 mr-1">You</p>
+                                </div>
+                                <div
+                                    class="w-10 h-10 rounded-full bg-teal-900/50 flex-shrink-0 flex items-center justify-center border border-teal-500/30">
+                                    <svg class="w-5 h-5 text-teal-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- The Problem -->
+                        <div class="p-4 bg-red-500/10 border border-red-500/20 rounded-lg bubble-pop"
+                            style="animation-delay: 0.8s;">
+                            <div class="flex items-start gap-3">
+                                <svg class="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                </svg>
+                                <div>
+                                    <p class="text-red-200 text-sm italic font-medium">"Tem glúten?"</p>
+                                    <p class="text-neutral-500 text-xs mt-1">Does the waiter understand the severity?
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Narrative Side -->
+            <div class="animate-on-scroll delay-200">
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-8 leading-tight">
+                    Imagine you're in <span class="text-teal-400">Portugal</span>.
+                </h2>
+                <div class="space-y-6 text-lg text-neutral-300 font-light">
+                    <p>
+                        You've just sat down at a beautiful restaurant in Lisbon. The menu is entirely in Portuguese.
+                        The waiter approaches, friendly but speaking only basic English.
                     </p>
-                    <a href="{% url 'message_cards:unified_card_management' %}" class="inline-block bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-8 py-4 rounded-2xl font-bold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl">
-                        Try Live Demo
-                    </a>
+                    <p>
+                        You have Celiac disease. A simple miscommunication here isn't just awkward—it's a health risk.
+                    </p>
+                    <p class="text-white font-medium pt-4 border-l-4 border-teal-500 pl-4">
+                        How do you explain "cross-contamination" when you don't speak the language?
+                    </p>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-
-
-<!-- Educational Institutions Section -->
-<div class="bg-gradient-to-br from-blue-900/60 to-indigo-900/70 py-20 relative overflow-hidden">
-    <!-- Background Glass Effect -->
-    <div class="absolute inset-0 bg-gradient-to-r from-black/10 to-transparent backdrop-blur-sm"></div>
-    
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="text-center mb-16">
-            <div class="inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-400/30 backdrop-blur-md mb-6">
-                <span class="text-amber-300 font-semibold text-sm tracking-wide">🚧 BUILDING TOWARDS: ENTERPRISE SOLUTIONS</span>
-            </div>
-            <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
-                Educational Institutions<br>
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400">Corporate Travel</span>
-            </h2>
-            <p class="text-xl text-gray-100 max-w-3xl mx-auto">
-                Our vision: empowering educational institutions and corporate environments with comprehensive travel safety solutions. 
-                <span class="text-amber-400 font-semibold">Currently building the foundation</span> with our e-card demo platform.
+<!-- Solution Section: The Card -->
+<div class="py-32 relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-20 animate-on-scroll">
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">Celio Speaks for You</h2>
+            <p class="text-xl text-neutral-400 max-w-2xl mx-auto">
+                Instantly generate a professional, culturally accurate dietary card in Portuguese (or 100+ other
+                languages).
             </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Multinational Corporations -->
-            <div class="bg-black/30 backdrop-blur-md rounded-2xl p-8 border border-white/30 hover:border-blue-400/50 transition-all duration-300 shadow-xl">
-                <div class="flex justify-center mb-6">
-                    <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-300">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+        <!-- The Card Demo -->
+        <div class="relative max-w-md mx-auto perspective-1000 animate-on-scroll delay-200">
+            <div
+                class="absolute -inset-1 bg-gradient-to-r from-teal-400 to-blue-500 rounded-2xl blur opacity-30 animate-pulse">
+            </div>
+
+            <!-- Interactive Tilt Card -->
+            <div id="demo-card"
+                class="relative bg-white text-neutral-900 rounded-xl shadow-2xl overflow-hidden tilt-card cursor-pointer transform transition-transform duration-500 hover:scale-105">
+                <!-- Card Header -->
+                <div class="bg-teal-600 p-6 text-white tilt-card-content">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-2xl font-bold">Eu tenho Doença Celíaca</h3>
+                            <p class="text-teal-100 text-sm mt-1">I have Celiac Disease</p>
+                        </div>
+                        <svg class="w-8 h-8 text-teal-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
                         </svg>
                     </div>
                 </div>
-                <h3 class="text-white font-semibold text-xl mb-4">Multinational Corporations</h3>
-                <p class="text-gray-100 text-base mb-6 leading-relaxed">
-                    <span class="text-amber-400 font-medium">Potential use case:</span> Providing Celio access to employees for business travel, ensuring dietary safety and seamless communication across global operations.
-                </p>
-                <div class="space-y-3">
-                    <div class="flex items-center text-sm text-gray-100">
-                        <div class="w-2 h-2 bg-blue-400 rounded-full mr-3 flex-shrink-0"></div>
-                        Global employee safety protocols
+                <!-- Card Body -->
+                <div class="p-6 space-y-4 tilt-card-content">
+                    <p class="font-medium leading-relaxed">
+                        Por favor, ajude-me a comer com segurança. Eu não posso comer nenhum alimento que contenha
+                        glúten (trigo, centeio, cevada ou aveia).
+                    </p>
+                    <div class="bg-red-50 p-4 rounded-lg border border-red-100">
+                        <p class="text-red-800 text-sm font-bold mb-2 flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                            PERIGO / DANGER
+                        </p>
+                        <ul class="text-sm text-red-700 space-y-1 list-disc list-inside">
+                            <li>Farinha de trigo (Wheat flour)</li>
+                            <li>Pão / Massas (Bread / Pasta)</li>
+                            <li>Molhos com farinha (Sauces with flour)</li>
+                        </ul>
                     </div>
-                    <div class="flex items-center text-sm text-gray-100">
-                        <div class="w-2 h-2 bg-blue-400 rounded-full mr-3 flex-shrink-0"></div>
-                        Business continuity assurance
-                    </div>
-                    <div class="flex items-center text-sm text-gray-100">
-                        <div class="w-2 h-2 bg-blue-400 rounded-full mr-3 flex-shrink-0"></div>
-                        Cross-cultural communication
-                    </div>
-                </div>
-            </div>
-
-            <!-- Airlines Integration -->
-            <div class="bg-black/30 backdrop-blur-md rounded-2xl p-8 border border-white/30 hover:border-blue-400/50 transition-all duration-300 shadow-xl">
-                <div class="flex justify-center mb-6">
-                    <div class="w-16 h-16 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-300">
-                        <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
-                        </svg>
-                    </div>
-                </div>
-                <h3 class="text-white font-semibold text-xl mb-4">Airlines Integration</h3>
-                <p class="text-gray-100 text-base mb-6 leading-relaxed">
-                    <span class="text-amber-400 font-medium">Potential use case:</span> Airlines could integrate Celio into their special meal request systems, providing comprehensive dietary communication for passengers.
-                </p>
-                <div class="space-y-3">
-                    <div class="flex items-center text-sm text-gray-100">
-                        <div class="w-2 h-2 bg-indigo-400 rounded-full mr-3 flex-shrink-0"></div>
-                        Special meal system integration
-                    </div>
-                    <div class="flex items-center text-sm text-gray-100">
-                        <div class="w-2 h-2 bg-indigo-400 rounded-full mr-3 flex-shrink-0"></div>
-                        Enhanced passenger experience
-                    </div>
-                    <div class="flex items-center text-sm text-gray-100">
-                        <div class="w-2 h-2 bg-indigo-400 rounded-full mr-3 flex-shrink-0"></div>
-                        Destination preparation tools
-                    </div>
-                </div>
-            </div>
-
-            <!-- Corporate Relocation -->
-            <div class="bg-black/30 backdrop-blur-md rounded-2xl p-8 border border-white/30 hover:border-blue-400/50 transition-all duration-300 shadow-xl">
-                <div class="flex justify-center mb-6">
-                    <div class="w-16 h-16 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-300">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        </svg>
-                    </div>
-                </div>
-                <h3 class="text-white font-semibold text-xl mb-4">Corporate Relocation</h3>
-                <p class="text-gray-100 text-base mb-6 leading-relaxed">
-                    <span class="text-amber-400 font-medium">Potential use case:</span> Corporate relocation services could include dietary communication cards as part of comprehensive international assignment support.
-                </p>
-                <div class="space-y-3">
-                    <div class="flex items-center text-sm text-gray-100">
-                        <div class="w-2 h-2 bg-cyan-400 rounded-full mr-3 flex-shrink-0"></div>
-                        Comprehensive relocation packages
-                    </div>
-                    <div class="flex items-center text-sm text-gray-100">
-                        <div class="w-2 h-2 bg-cyan-400 rounded-full mr-3 flex-shrink-0"></div>
-                        Cultural adaptation support
-                    </div>
-                    <div class="flex items-center text-sm text-gray-100">
-                        <div class="w-2 h-2 bg-cyan-400 rounded-full mr-3 flex-shrink-0"></div>
-                        Long-term settlement assistance
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Hospitality & Tourism Section -->
-<div class="bg-gradient-to-br from-emerald-900/60 to-teal-900/70 py-20 relative overflow-hidden">
-    <!-- Background Glass Effect -->
-    <div class="absolute inset-0 bg-gradient-to-l from-black/10 to-transparent backdrop-blur-sm"></div>
-    
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="text-center mb-16">
-            <div class="inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-400/30 backdrop-blur-md mb-6">
-                <span class="text-amber-300 font-semibold text-sm tracking-wide">🎯 POTENTIAL PARTNERSHIPS</span>
-            </div>
-            <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
-                Hospitality & Tourism<br>
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400">Premium Services</span>
-            </h2>
-            <p class="text-xl text-neutral-300 max-w-3xl mx-auto">
-                Our vision for elevating guest experiences in hospitality and tourism. 
-                <span class="text-amber-400 font-semibold">These represent potential use cases</span> we're exploring as we develop our platform.
-            </p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Hotel Chains -->
-            <div class="bg-black/30 backdrop-blur-md rounded-2xl p-8 border border-white/30 hover:border-emerald-400/50 transition-all duration-300 shadow-xl">
-                <div class="flex justify-center mb-6">
-                    <div class="w-16 h-16 bg-gradient-to-br from-emerald-400 to-green-500 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-300">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                        </svg>
-                    </div>
-                </div>
-                <h3 class="text-white font-semibold text-xl mb-4">Hotel Chains</h3>
-                <p class="text-gray-100 text-base mb-6 leading-relaxed">
-                    <span class="text-amber-400 font-medium">Potential use case:</span> Hotel chains could integrate Celio as a premium service for guests with dietary restrictions, enhancing their hospitality experience.
-                </p>
-                <div class="space-y-3">
-                    <div class="flex items-center text-sm text-gray-100">
-                        <div class="w-2 h-2 bg-emerald-400 rounded-full mr-3 flex-shrink-0"></div>
-                        Premium guest services
-                    </div>
-                    <div class="flex items-center text-sm text-gray-100">
-                        <div class="w-2 h-2 bg-emerald-400 rounded-full mr-3 flex-shrink-0"></div>
-                        Dietary restriction support
-                    </div>
-                    <div class="flex items-center text-sm text-gray-100">
-                        <div class="w-2 h-2 bg-emerald-400 rounded-full mr-3 flex-shrink-0"></div>
-                        Enhanced hospitality experience
-                    </div>
-                </div>
-            </div>
-
-            <!-- Travel Agencies -->
-            <div class="bg-black/30 backdrop-blur-md rounded-2xl p-8 border border-white/30 hover:border-emerald-400/50 transition-all duration-300 shadow-xl">
-                <div class="flex justify-center mb-6">
-                    <div class="w-16 h-16 bg-gradient-to-br from-teal-400 to-cyan-500 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-300">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                        </svg>
-                    </div>
-                </div>
-                <h3 class="text-white font-semibold text-xl mb-4">Accessible Tourism</h3>
-                <p class="text-gray-100 text-base mb-6 leading-relaxed">
-                    <span class="text-amber-400 font-medium">Potential use case:</span> Travel agencies specializing in accessible tourism could bundle Celio with their packages, ensuring inclusive travel experiences.
-                </p>
-                <div class="space-y-3">
-                    <div class="flex items-center text-sm text-gray-100">
-                        <div class="w-2 h-2 bg-teal-400 rounded-full mr-3 flex-shrink-0"></div>
-                        Accessible travel packages
-                    </div>
-                    <div class="flex items-center text-sm text-gray-100">
-                        <div class="w-2 h-2 bg-teal-400 rounded-full mr-3 flex-shrink-0"></div>
-                        Inclusive tourism solutions
-                    </div>
-                    <div class="flex items-center text-sm text-gray-100">
-                        <div class="w-2 h-2 bg-teal-400 rounded-full mr-3 flex-shrink-0"></div>
-                        Specialized travel support
-                    </div>
-                </div>
-            </div>
-
-            <!-- Cruise Lines -->
-            <div class="bg-black/30 backdrop-blur-md rounded-2xl p-8 border border-white/30 hover:border-emerald-400/50 transition-all duration-300 shadow-xl">
-                <div class="flex justify-center mb-6">
-                    <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-indigo-600 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-300">
-                        <svg class="w-10 h-10" viewBox="0 0 24 24" fill="none">
-                            <defs>
-                                <linearGradient id="cruiseGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
-                                    <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
-                                </linearGradient>
-                            </defs>
-                            <!-- Ship hull -->
-                            <path d="M3 18c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-2H3v2z" fill="url(#cruiseGradient)"/>
-                            <!-- Ship body -->
-                            <path d="M4 16h16V8c0-1.1-.9-2-2-2H6c-1.1 0-2 .9-2 2v8z" fill="url(#cruiseGradient)" opacity="0.8"/>
-                            <!-- Upper deck -->
-                            <path d="M6 8h12V5c0-.6-.4-1-1-1H7c-.6 0-1 .4-1 1v3z" fill="url(#cruiseGradient)" opacity="0.6"/>
-                            <!-- Windows -->
-                            <circle cx="8" cy="10" r="0.5" fill="white" opacity="0.8"/>
-                            <circle cx="10" cy="10" r="0.5" fill="white" opacity="0.8"/>
-                            <circle cx="12" cy="10" r="0.5" fill="white" opacity="0.8"/>
-                            <circle cx="14" cy="10" r="0.5" fill="white" opacity="0.8"/>
-                            <circle cx="16" cy="10" r="0.5" fill="white" opacity="0.8"/>
-                            <!-- Smokestacks -->
-                            <rect x="9" y="2" width="1" height="3" fill="url(#cruiseGradient)"/>
-                            <rect x="14" y="2" width="1" height="3" fill="url(#cruiseGradient)"/>
-                            <!-- Waves -->
-                            <path d="M1 20c1-1 2-1 3 0s2 1 3 0 2-1 3 0 2 1 3 0 2-1 3 0 2 1 3 0 2-1 3 0" stroke="#4299e1" stroke-width="1" fill="none" opacity="0.6"/>
-                        </svg>
-                    </div>
-                </div>
-                <h3 class="text-white font-semibold text-xl mb-4">Cruise Lines</h3>
-                <p class="text-gray-100 text-base mb-6 leading-relaxed">
-                    <span class="text-amber-400 font-medium">Potential use case:</span> Cruise lines could use Celio for passenger safety during international port stops, ensuring seamless dining experiences worldwide.
-                </p>
-                <div class="space-y-3">
-                    <div class="flex items-center text-sm text-gray-100">
-                        <div class="w-2 h-2 bg-blue-400 rounded-full mr-3 flex-shrink-0"></div>
-                        International port safety
-                    </div>
-                    <div class="flex items-center text-sm text-gray-100">
-                        <div class="w-2 h-2 bg-blue-400 rounded-full mr-3 flex-shrink-0"></div>
-                        Passenger communication tools
-                    </div>
-                    <div class="flex items-center text-sm text-gray-100">
-                        <div class="w-2 h-2 bg-blue-400 rounded-full mr-3 flex-shrink-0"></div>
-                        Global dining experiences
-                    </div>
+                    <p class="text-sm text-neutral-600 italic border-t pt-4 mt-4">
+                        Obrigado pela sua ajuda e compreensão!
+                    </p>
                 </div>
             </div>
         </div>
 
-        <!-- Call to Action -->
-        <div class="text-center mt-16">
-            <div class="bg-black/30 backdrop-blur-md rounded-3xl p-8 border border-white/30 shadow-2xl">
-                <h3 class="text-2xl font-bold text-white mb-4">Building the Future of Inclusive Travel</h3>
-                <p class="text-neutral-300 mb-6 max-w-2xl mx-auto">
-                    We're developing solutions for the future of inclusive travel and hospitality. 
-                    <span class="text-amber-400 font-semibold">Try our current demo</span> and follow our journey toward these potential industry applications.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-6 justify-center">
-                    <a href="{% url 'message_cards:unified_card_management' %}" class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white px-8 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg">
-                        Explore Solutions
-                    </a>
-                    <a href="#features" class="border border-emerald-400/30 text-emerald-300 hover:bg-emerald-400/10 px-8 py-3 rounded-xl font-semibold transition-all duration-300 backdrop-blur-sm">
-                        Learn More
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- 2025 Mobile App Roadmap Section -->
-<div class="bg-gradient-to-br from-slate-900/95 via-purple-900/90 to-indigo-900/95 py-20 relative overflow-hidden">
-    <!-- Premium Background Effects -->
-    <div class="absolute inset-0 overflow-hidden">
-        <div class="absolute top-20 left-20 w-64 h-64 bg-gradient-to-br from-purple-500/20 to-pink-500/10 rounded-full blur-3xl animate-pulse"></div>
-        <div class="absolute bottom-20 right-20 w-80 h-80 bg-gradient-to-tr from-cyan-500/20 to-blue-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-    </div>
-    
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="text-center mb-16">
-            <div class="inline-flex items-center px-8 py-4 rounded-full bg-gradient-to-r from-purple-500/30 to-pink-500/30 border border-purple-400/50 backdrop-blur-md mb-8">
-                <span class="text-purple-200 font-bold text-lg tracking-wide">🚀 MOBILE APP ROADMAP 2025</span>
-            </div>
-            <h2 class="text-5xl md:text-6xl font-bold text-white mb-8">
-                Building the Future of <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400">Travel Tech</span>
-            </h2>
-            <p class="text-xl text-neutral-300 max-w-4xl mx-auto leading-relaxed">
-                While you can experience our core e-card functionality today on this demo site, these are potential features we're exploring for our upcoming mobile app. Here's our vision for transforming travel accessibility.
-            </p>
-        </div>
-
-        <!-- Carousel Container -->
-        <div class="relative max-w-6xl mx-auto mb-16">
-            <!-- Carousel Wrapper -->
-            <div class="overflow-hidden">
-                <div id="techCarousel" class="flex transition-transform duration-500 ease-in-out">
-                    <!-- Slide 1: AI Assistant Sage -->
-                    <div class="w-full flex-shrink-0 px-4">
-                        <div class="group bg-gradient-to-br from-black/40 to-purple-900/30 backdrop-blur-md rounded-3xl p-8 border border-purple-400/30 hover:border-purple-400/60 transition-all duration-500 shadow-2xl hover:shadow-purple-500/20 transform hover:scale-105 max-w-md mx-auto">
-                            <div class="flex justify-center mb-6">
-                                <div class="w-20 h-20 bg-gradient-to-br from-purple-400 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                            <h3 class="text-white font-bold text-2xl mb-4 text-center">AI Assistant Sage</h3>
-                            <p class="text-gray-200 text-center mb-6 leading-relaxed">
-                                Potential feature: Meet Sage, your intelligent travel companion. Could provide personalized recommendations, real-time assistance, and smart suggestions tailored to your dietary needs and travel preferences.
-                            </p>
-                            <div class="space-y-3">
-                                <div class="flex items-center text-sm text-purple-200">
-                                    <div class="w-2 h-2 bg-purple-400 rounded-full mr-3 animate-pulse"></div>
-                                    Personalized travel recommendations
-                                </div>
-                                <div class="flex items-center text-sm text-purple-200">
-                                    <div class="w-2 h-2 bg-purple-400 rounded-full mr-3 animate-pulse"></div>
-                                    Smart dietary suggestions
-                                </div>
-                                <div class="flex items-center text-sm text-purple-200">
-                                    <div class="w-2 h-2 bg-purple-400 rounded-full mr-3 animate-pulse"></div>
-                                    24/7 intelligent support
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 2: Audio Translations -->
-                    <div class="w-full flex-shrink-0 px-4">
-                        <div class="group bg-gradient-to-br from-black/40 to-cyan-900/30 backdrop-blur-md rounded-3xl p-8 border border-cyan-400/30 hover:border-cyan-400/60 transition-all duration-500 shadow-2xl hover:shadow-cyan-500/20 transform hover:scale-105 max-w-md mx-auto">
-                            <div class="flex justify-center mb-6">
-                                <div class="w-20 h-20 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                            <h3 class="text-white font-bold text-2xl mb-4 text-center">Audio Translations</h3>
-                            <p class="text-gray-200 text-center mb-6 leading-relaxed">
-                                Potential feature: Your cards could speak! We're exploring real-time audio translations in over 100 languages with perfect pronunciation, natural voice, and instant communication anywhere in the world.
-                            </p>
-                            <div class="space-y-3">
-                                <div class="flex items-center text-sm text-cyan-200">
-                                    <div class="w-2 h-2 bg-cyan-400 rounded-full mr-3 animate-pulse"></div>
-                                    100+ languages supported
-                                </div>
-                                <div class="flex items-center text-sm text-cyan-200">
-                                    <div class="w-2 h-2 bg-cyan-400 rounded-full mr-3 animate-pulse"></div>
-                                    Natural voice synthesis
-                                </div>
-                                <div class="flex items-center text-sm text-cyan-200">
-                                    <div class="w-2 h-2 bg-cyan-400 rounded-full mr-3 animate-pulse"></div>
-                                    Offline audio playback
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 3: Geolocation Integration -->
-                    <div class="w-full flex-shrink-0 px-4">
-                        <div class="group bg-gradient-to-br from-black/40 to-orange-900/30 backdrop-blur-md rounded-3xl p-8 border border-orange-400/30 hover:border-orange-400/60 transition-all duration-500 shadow-2xl hover:shadow-orange-500/20 transform hover:scale-105 max-w-md mx-auto">
-                            <div class="flex justify-center mb-6">
-                                <div class="w-20 h-20 bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                            <h3 class="text-white font-bold text-2xl mb-4 text-center">Geolocation Integration</h3>
-                            <p class="text-gray-200 text-center mb-6 leading-relaxed">
-                                Potential feature: Could help find safe dining options nearby with location-based restaurant discovery and dietary compatibility ratings.
-                            </p>
-                            <div class="space-y-3">
-                                <div class="flex items-center text-sm text-orange-200">
-                                    <div class="w-2 h-2 bg-orange-400 rounded-full mr-3 animate-pulse"></div>
-                                    Location-based restaurant finder
-                                </div>
-                                <div class="flex items-center text-sm text-orange-200">
-                                    <div class="w-2 h-2 bg-orange-400 rounded-full mr-3 animate-pulse"></div>
-                                    Dietary compatibility ratings
-                                </div>
-                                <div class="flex items-center text-sm text-orange-200">
-                                    <div class="w-2 h-2 bg-orange-400 rounded-full mr-3 animate-pulse"></div>
-                                    Real-time availability
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 4: Community Features -->
-                    <div class="w-full flex-shrink-0 px-4">
-                        <div class="group bg-gradient-to-br from-black/40 to-pink-900/30 backdrop-blur-md rounded-3xl p-8 border border-pink-400/30 hover:border-pink-400/60 transition-all duration-500 shadow-2xl hover:shadow-pink-500/20 transform hover:scale-105 max-w-md mx-auto">
-                            <div class="flex justify-center mb-6">
-                                <div class="w-20 h-20 bg-gradient-to-br from-pink-400 to-rose-500 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                            <h3 class="text-white font-bold text-2xl mb-4 text-center">Community Features</h3>
-                            <p class="text-gray-200 text-center mb-6 leading-relaxed">
-                                Potential feature: Could connect fellow travelers through user reviews and crowdsourced safety information from the community.
-                            </p>
-                            <div class="space-y-3">
-                                <div class="flex items-center text-sm text-pink-200">
-                                    <div class="w-2 h-2 bg-pink-400 rounded-full mr-3 animate-pulse"></div>
-                                    User reviews and ratings
-                                </div>
-                                <div class="flex items-center text-sm text-pink-200">
-                                    <div class="w-2 h-2 bg-pink-400 rounded-full mr-3 animate-pulse"></div>
-                                    Crowdsourced safety info
-                                </div>
-                                <div class="flex items-center text-sm text-pink-200">
-                                    <div class="w-2 h-2 bg-pink-400 rounded-full mr-3 animate-pulse"></div>
-                                    Community recommendations
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 5: Enterprise Integrations -->
-                    <div class="w-full flex-shrink-0 px-4">
-                        <div class="group bg-gradient-to-br from-black/40 to-emerald-900/30 backdrop-blur-md rounded-3xl p-8 border border-emerald-400/30 hover:border-emerald-400/60 transition-all duration-500 shadow-2xl hover:shadow-emerald-500/20 transform hover:scale-105 max-w-md mx-auto">
-                            <div class="flex justify-center mb-6">
-                                <div class="w-20 h-20 bg-gradient-to-br from-emerald-400 to-green-500 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                            <h3 class="text-white font-bold text-2xl mb-4 text-center">Enterprise Vision</h3>
-                            <p class="text-gray-200 text-center mb-6 leading-relaxed">
-                                We're building toward enterprise-grade integrations with corporate travel systems and advanced analytics. Our goal is to scale Celio across organizations worldwide.
-                            </p>
-                            <div class="space-y-3">
-                                <div class="flex items-center text-sm text-emerald-200">
-                                    <div class="w-2 h-2 bg-emerald-400 rounded-full mr-3 animate-pulse"></div>
-                                    Corporate travel system APIs
-                                </div>
-                                <div class="flex items-center text-sm text-emerald-200">
-                                    <div class="w-2 h-2 bg-emerald-400 rounded-full mr-3 animate-pulse"></div>
-                                    Advanced analytics dashboard
-                                </div>
-                                <div class="flex items-center text-sm text-emerald-200">
-                                    <div class="w-2 h-2 bg-emerald-400 rounded-full mr-3 animate-pulse"></div>
-                                    SSO and security compliance
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Navigation Arrows - Mobile Friendly -->
-            <button id="techPrevBtn" class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/30 backdrop-blur-sm hover:bg-black/50 text-white p-2 rounded-full border border-white/20 hover:border-white/40 transition-all duration-300 z-10 md:left-4 md:p-3">
-                <svg class="w-4 h-4 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        <div class="text-center mt-16 animate-on-scroll delay-300">
+            <a href="{% url 'message_cards:unified_card_management' %}"
+                class="inline-flex items-center gap-2 text-teal-400 hover:text-teal-300 font-medium transition-colors group">
+                Try it yourself
+                <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none"
+                    stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
-            </button>
-            <button id="techNextBtn" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/30 backdrop-blur-sm hover:bg-black/50 text-white p-2 rounded-full border border-white/20 hover:border-white/40 transition-all duration-300 z-10 md:right-4 md:p-3">
-                <svg class="w-4 h-4 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                </svg>
-            </button>
+            </a>
+        </div>
+    </div>
+</div>
 
-            <!-- Dots Indicator -->
-            <div class="flex justify-center mt-8 space-x-2">
-                <button class="tech-carousel-dot w-3 h-3 rounded-full bg-white/30 hover:bg-white/50 transition-all duration-300" data-slide="0"></button>
-                <button class="tech-carousel-dot w-3 h-3 rounded-full bg-white/30 hover:bg-white/50 transition-all duration-300" data-slide="1"></button>
-                <button class="tech-carousel-dot w-3 h-3 rounded-full bg-white/30 hover:bg-white/50 transition-all duration-300" data-slide="2"></button>
-                <button class="tech-carousel-dot w-3 h-3 rounded-full bg-white/30 hover:bg-white/50 transition-all duration-300" data-slide="3"></button>
-                <button class="tech-carousel-dot w-3 h-3 rounded-full bg-white/30 hover:bg-white/50 transition-all duration-300" data-slide="4"></button>
+<!-- Tech Stack / Recruiter Note -->
+<div class="py-20 border-t border-white/5 bg-neutral-900/30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <p class="text-sm text-neutral-500 uppercase tracking-widest mb-8 animate-on-scroll">Built with Modern Standards
+        </p>
+        <div
+            class="flex flex-wrap justify-center gap-8 md:gap-16 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500 animate-on-scroll delay-200">
+            <!-- Django -->
+            <div class="flex flex-col items-center gap-2 group">
+                <span class="text-white font-bold text-xl group-hover:text-teal-400 transition-colors">Django 5</span>
+            </div>
+            <!-- HTMX -->
+            <div class="flex flex-col items-center gap-2 group">
+                <span class="text-white font-bold text-xl group-hover:text-teal-400 transition-colors">HTMX</span>
+            </div>
+            <!-- Tailwind -->
+            <div class="flex flex-col items-center gap-2 group">
+                <span class="text-white font-bold text-xl group-hover:text-teal-400 transition-colors">Tailwind
+                    CSS</span>
+            </div>
+            <!-- PostgreSQL -->
+            <div class="flex flex-col items-center gap-2 group">
+                <span class="text-white font-bold text-xl group-hover:text-teal-400 transition-colors">PostgreSQL</span>
             </div>
         </div>
+    </div>
+</div>
 
-        <!-- Tech Carousel JavaScript -->
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const techCarousel = document.getElementById('techCarousel');
-                const techPrevBtn = document.getElementById('techPrevBtn');
-                const techNextBtn = document.getElementById('techNextBtn');
-                const techDots = document.querySelectorAll('.tech-carousel-dot');
-                let techCurrentSlide = 0;
-                const techTotalSlides = 5;
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
 
-                function updateTechCarousel() {
-                    const translateX = -techCurrentSlide * 100;
-                    techCarousel.style.transform = `translateX(${translateX}%)`;
-                    
-                    // Update dots
-                    techDots.forEach((dot, index) => {
-                        if (index === techCurrentSlide) {
-                            dot.classList.remove('bg-white/30');
-                            dot.classList.add('bg-white/80');
-                        } else {
-                            dot.classList.remove('bg-white/80');
-                            dot.classList.add('bg-white/30');
-                        }
-                    });
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target); // Only animate once
                 }
-
-                function techNextSlide() {
-                    techCurrentSlide = (techCurrentSlide + 1) % techTotalSlides;
-                    updateTechCarousel();
-                }
-
-                function techPrevSlide() {
-                    techCurrentSlide = (techCurrentSlide - 1 + techTotalSlides) % techTotalSlides;
-                    updateTechCarousel();
-                }
-
-                function techGoToSlide(slideIndex) {
-                    techCurrentSlide = slideIndex;
-                    updateTechCarousel();
-                }
-
-                // Event listeners
-                techNextBtn.addEventListener('click', techNextSlide);
-                techPrevBtn.addEventListener('click', techPrevSlide);
-                
-                techDots.forEach((dot, index) => {
-                    dot.addEventListener('click', () => techGoToSlide(index));
-                });
-
-                // Auto-play
-                setInterval(techNextSlide, 6000);
-
-                // Initialize
-                updateTechCarousel();
             });
-        </script>
+        }, observerOptions);
 
-        <!-- Premium CTA -->
-        <div class="text-center">
-            <div class="bg-gradient-to-r from-black/50 to-purple-900/30 backdrop-blur-md rounded-3xl p-12 border border-purple-400/30 shadow-2xl">
-                <h3 class="text-3xl font-bold text-white mb-6">Experience Celio Today, Shape Tomorrow</h3>
-                <p class="text-xl text-neutral-300 mb-8 max-w-3xl mx-auto">
-                    Try our current e-card functionality on this demo site now, and join our development journey as we build these advanced features for the mobile app launching in 2025.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-6 justify-center">
-                    <a href="{% url 'core:early_access' %}" class="group relative bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-500 hover:from-purple-400 hover:via-pink-400 hover:to-cyan-400 text-white px-12 py-4 rounded-2xl font-bold text-lg transition-all duration-500 shadow-2xl hover:shadow-purple-500/30 transform hover:scale-105 overflow-hidden">
-                        <div class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-                        <span class="relative flex items-center justify-center">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                            </svg>
-                            Get Early Access
-                        </span>
-                    </a>
-                    <a href="#features" class="group border-2 border-purple-400/40 hover:border-purple-400/70 text-purple-300 hover:bg-gradient-to-r hover:from-purple-500/10 hover:to-pink-500/10 px-12 py-4 rounded-2xl font-semibold text-lg transition-all duration-300 backdrop-blur-sm">
-                        <span class="flex items-center justify-center">
-                            <svg class="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            Learn More
-                        </span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
 
-<!-- Footer -->
+        // 3D Tilt Effect for Card
+        const card = document.getElementById('demo-card');
+        if (card) {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
 
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                const rotateX = ((y - centerY) / centerY) * -5; // Max 5deg rotation
+                const rotateY = ((x - centerX) / centerX) * 5;
+
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+            });
+        }
+
+        // Mouse Glow Effect
+        const glow = document.getElementById('mouse-glow');
+        if (glow) {
+            document.addEventListener('mousemove', (e) => {
+                glow.style.left = e.clientX + 'px';
+                glow.style.top = e.clientY + 'px';
+            });
+        }
+    });
+</script>
 
 {% endblock %}

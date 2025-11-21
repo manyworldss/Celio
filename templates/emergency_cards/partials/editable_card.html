@@ -1,968 +1,355 @@
 {% load static %}
 {% load message_card_filters %}
 
-{# Use preview_theme if provided (from AJAX request), otherwise use card's theme with celio as default #}
+{# Use preview_theme if provided, otherwise use card's theme with celio as default #}
 {% firstof preview_theme card.theme 'celio' as current_theme %}
-{% with current_theme=current_theme %}
 
 <style>
-/* Font rendering improvements */
-* {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
-}
-
-/* Theme Styles */
-.card-celio {
-    background: linear-gradient(135deg, #0f766e 0%, #064e3b 100%);
-    color: white;
-    border-color: rgba(20, 184, 166, 0.3);
-    box-shadow: 0 25px 50px -12px rgba(20, 184, 166, 0.25);
-}
-.card-celio .card-header {
-    background: rgba(20, 50, 42, 0.9);
-    border-color: rgba(20, 184, 166, 0.2);
-}
-.card-celio .profile-photo {
-    background: rgba(20, 50, 42, 0.8);
-    border-color: rgba(45, 212, 191, 0.5);
-}
-.card-celio .field-input {
-    background: rgba(20, 50, 42, 0.2);
-    border-color: rgba(20, 184, 166, 0.4);
-    color: white;
-}
-.card-celio .field-input::placeholder {
-    color: rgba(255, 255, 255, 0.6);
-}
-.card-celio .action-btn {
-    background: rgba(20, 184, 166, 0.2);
-    color: white;
-    border: 1px solid rgba(20, 184, 166, 0.3);
-}
-.card-celio .action-btn:hover {
-    background: rgba(20, 184, 166, 0.3);
-}
-.card-celio .theme-btn {
-    padding: 4px;
-    border: 2px solid transparent;
-    border-radius: 8px;
-    transition: all 0.2s;
-}
-.card-celio .theme-btn:hover {
-    border-color: rgba(20, 184, 166, 0.5);
-}
-
-.card-light {
-    background: linear-gradient(135deg, #f8fafc, #e2e8f0, #cbd5e1);
-    color: #1e293b;
-    border-color: rgba(148, 163, 184, 0.3);
-    box-shadow: 0 25px 50px -12px rgba(148, 163, 184, 0.25);
-}
-.card-light .card-header {
-    background: linear-gradient(90deg, #e2e8f0, #cbd5e1);
-    border-color: rgba(148, 163, 184, 0.2);
-    color: #1e293b;
-}
-.card-light .profile-photo {
-    background: linear-gradient(135deg, #94a3b8, #64748b);
-    border-color: rgba(148, 163, 184, 0.5);
-    color: white;
-}
-.card-light .field-input {
-    background: #f1f5f9;
-    border-color: rgba(148, 163, 184, 0.4);
-    color: #1e293b;
-}
-.card-light .field-input::placeholder {
-    color: rgba(30, 41, 59, 0.6);
-}
-.card-light .action-btn {
-    background: rgba(148, 163, 184, 0.2);
-    color: #1e293b;
-    border: 1px solid rgba(148, 163, 184, 0.3);
-}
-.card-light .action-btn:hover {
-    background: rgba(148, 163, 184, 0.4);
-}
-.card-light .theme-btn {
-    padding: 4px;
-    border: 2px solid transparent;
-    border-radius: 8px;
-    transition: all 0.2s;
-}
-.card-light .theme-btn:hover {
-    border-color: rgba(148, 163, 184, 0.5);
-}
-.card-light .text-white {
-    color: #1e293b !important;
-}
-
-.card-dark {
-    background: linear-gradient(135deg, #1a0b3d 0%, #0f0f23 100%);
-    color: white;
-    border-color: rgba(147, 51, 234, 0.3);
-    box-shadow: 0 25px 50px -12px rgba(147, 51, 234, 0.25);
-}
-.card-dark .card-header {
-    background: rgba(26, 11, 61, 0.9);
-    border-color: rgba(147, 51, 234, 0.2);
-}
-.card-dark .profile-photo {
-    background: rgba(26, 11, 61, 0.8);
-    border-color: rgba(196, 181, 253, 0.5);
-}
-.card-dark .field-input {
-    background: rgba(26, 11, 61, 0.8); /* Dark theme background */
-    border-color: rgba(147, 51, 234, 0.4);
-    color: white;
-}
-.card-dark .field-input::placeholder {
-    color: rgba(255, 255, 255, 0.6);
-}
-
-.theme-dark .field-input,
-.theme-dark .field-input:focus {
-    background-color: rgba(26, 11, 61, 0.8) !important;
-    color: white !important;
-    border: 1px solid rgba(147, 51, 234, 0.4) !important;
-    transition: none !important;
-    opacity: 1 !important;
-}
-
-.theme-dark .field-input::placeholder {
-    color: rgba(255, 255, 255, 0.7) !important;
-}
-
-.card-dark .action-btn {
-    background: rgba(26, 11, 61, 0.6); /* Dark theme background */
-    color: white;
-    border: 1px solid rgba(147, 51, 234, 0.3);
-}
-.card-dark .action-btn:hover {
-    background: rgba(26, 11, 61, 0.8); /* Darker on hover */
-}
-.card-dark .theme-btn {
-    padding: 4px;
-    border: 2px solid transparent;
-    border-radius: 8px;
-    transition: all 0.2s;
-}
-.card-dark .theme-btn:hover {
-    border-color: rgba(147, 51, 234, 0.5);
-}
-
-.card-purple {
-    background: linear-gradient(135deg, #6b46c1 0%, #553c9a 100%);
-    color: white;
-    border-color: rgba(107, 70, 193, 0.3);
-    box-shadow: 0 25px 50px -12px rgba(107, 70, 193, 0.25);
-}
-.card-purple .card-header {
-    background: rgba(107, 70, 193, 0.9);
-    border-color: rgba(107, 70, 193, 0.2);
-}
-.card-purple .profile-photo {
-    background: rgba(107, 70, 193, 0.8);
-    border-color: rgba(139, 92, 246, 0.5);
-}
-.card-purple .field-input {
-    background: rgba(107, 70, 193, 0.8); /* Purple theme background */
-    border-color: rgba(107, 70, 193, 0.4);
-    color: white;
-}
-.card-purple .field-input::placeholder {
-    color: rgba(255, 255, 255, 0.6);
-}
-.card-purple .action-btn {
-    background: rgba(107, 70, 193, 0.6); /* Purple theme background */
-    color: white;
-    border: 1px solid rgba(107, 70, 193, 0.3);
-}
-.card-purple .action-btn:hover {
-    background: rgba(107, 70, 193, 0.8); /* Darker on hover */
-}
-.card-purple .theme-btn {
-    padding: 4px;
-    border: 2px solid transparent;
-    border-radius: 8px;
-    transition: all 0.2s;
-}
-.card-purple .theme-btn:hover {
-    border-color: rgba(107, 70, 193, 0.5);
-}
-
-/* Active theme button */
-.theme-btn.active {
-    border-color: currentColor !important;
-    transform: scale(1.1);
-}
-
-/* Modular Section Styles */
-.form-section {
-    border-radius: 8px;
-    transition: all 0.2s ease;
-}
-
-.section-header {
-    padding: 8px 0;
-    border-radius: 6px;
-    transition: all 0.2s ease;
-}
-
-.section-header:hover {
-    background: rgba(255, 255, 255, 0.05);
-    padding-left: 8px;
-    padding-right: 8px;
-}
-
-.section-content {
-    transition: all 0.3s ease;
-    overflow: hidden;
-}
-
-.section-chevron {
-    transition: transform 0.2s ease;
-}
-
-/* Theme Option Buttons */
-.theme-option {
-    background: rgba(255, 255, 255, 0.05);
-    transition: all 0.2s ease;
-    cursor: pointer;
-}
-
-.theme-option:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateY(-1px);
-}
-
-.theme-option.active {
-    border-color: currentColor !important;
-    background: rgba(255, 255, 255, 0.15);
-    transform: scale(1.02);
-}
-
-/* Mobile Responsive Improvements */
-@media (max-width: 480px) {
-    .editable-card {
-        width: 100% !important;
-        max-width: 380px;
+    /* Mobile-First Design */
+    .mobile-card {
+        width: 100%;
+        max-width: 480px;
         margin: 0 auto;
+        border-radius: 24px;
+        overflow: hidden;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        position: relative;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        transition: all 0.5s ease;
     }
-    
-    .card-header {
-        padding: 12px 16px;
+
+    /* Themes */
+    .theme-celio {
+        background: linear-gradient(180deg, #0f766e 0%, #115e59 100%);
+        color: white;
     }
-    
-    .card-body {
+
+    .theme-light {
+        background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+        color: #1e293b;
+    }
+
+    .theme-dark {
+        background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+        color: white;
+    }
+
+    .theme-purple {
+        background: linear-gradient(180deg, #7c3aed 0%, #6d28d9 100%);
+        color: white;
+    }
+
+    /* Dynamic Text Colors based on Theme */
+    .theme-light .text-dynamic {
+        color: #334155;
+    }
+
+    .theme-light .text-dynamic-dim {
+        color: #64748b;
+    }
+
+    .theme-light .border-dynamic {
+        border-color: rgba(0, 0, 0, 0.1);
+    }
+
+    .theme-light .bg-dynamic {
+        background: rgba(255, 255, 255, 0.6);
+    }
+
+    .theme-celio .text-dynamic,
+    .theme-dark .text-dynamic,
+    .theme-purple .text-dynamic {
+        color: white;
+    }
+
+    .theme-celio .text-dynamic-dim,
+    .theme-dark .text-dynamic-dim,
+    .theme-purple .text-dynamic-dim {
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .theme-celio .border-dynamic,
+    .theme-dark .border-dynamic,
+    .theme-purple .border-dynamic {
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .theme-celio .bg-dynamic,
+    .theme-dark .bg-dynamic,
+    .theme-purple .bg-dynamic {
+        background: rgba(0, 0, 0, 0.2);
+    }
+
+    .section-card {
+        border-radius: 16px;
         padding: 16px;
-        max-height: 380px !important;
+        margin-bottom: 12px;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
     }
-    
-    .action-btn {
-        padding: 8px;
+
+    .btn-action {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        cursor: pointer;
     }
-    
-    .profile-upload-btn {
-        width: 36px;
-        height: 36px;
+
+    .btn-action:hover {
+        transform: scale(1.05);
     }
-    
-    .field-input {
-        padding: 12px !important;
-        font-size: 16px; /* Prevents zoom on iOS */
+
+    .avatar-circle {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
     }
-    
-    .theme-option {
-        padding: 8px;
+
+    .input-clean {
+        background: transparent;
+        border: none;
+        width: 100%;
+        padding: 8px 0;
+        font-size: 1rem;
+        outline: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s;
     }
-    
-    .section-header h3 {
-        font-size: 13px;
+
+    .input-clean:focus {
+        border-bottom-color: currentColor;
     }
-}
 
-/* Touch-friendly improvements */
-@media (hover: none) and (pointer: coarse) {
-    .section-header {
-        padding: 12px 8px;
+    /* Accordion Styles */
+    .accordion-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out, opacity 0.3s ease-out, padding 0.3s ease;
+        opacity: 0;
     }
-    
-    .action-btn {
-        padding: 12px;
-        min-width: 44px;
-        min-height: 44px;
+
+    .accordion-open .accordion-content {
+        max-height: 500px;
+        /* Arbitrary large height */
+        opacity: 1;
+        padding-top: 12px;
     }
-    
-    .theme-option {
-        padding: 12px 8px;
-        min-height: 60px;
+
+    .chevron {
+        transition: transform 0.3s ease;
     }
-}
 
-/* Card Container Enhancements */
-.editable-card {
-    position: relative;
-    width: 100%;
-    max-width: 450px;
-    margin: 0 auto;
-    border-radius: 12px;
-    overflow: hidden;
-    background-color: #e8f5e8;
-    display: flex;
-    flex-direction: column;
-    transition: all 0.3s ease;
-}
+    .accordion-open .chevron {
+        transform: rotate(180deg);
+    }
 
-/* Ensure card has proper boundaries */
-.card-id-container {
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-}
+    /* Scrollbar hiding */
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
 
-/* Light theme specific border */
-.card-light.card-id-container {
-    border: 2px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-}
-
-/* Smooth scrolling for card body */
-.card-body {
-    scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
-}
-
-.card-body::-webkit-scrollbar {
-    width: 4px;
-}
-
-.card-body::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.card-body::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 2px;
-}
-
-.card-body::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.5);
-}
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
 </style>
 
-<!-- E-Card with Dynamic Themes -->
-<div class="editable-card card-id-container card-{{ current_theme }}" data-theme="{{ current_theme }}" style="border: 2px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
-    
-    <!-- Header with Centered Logo, Top-Left Buttons, and Top-Right Profile -->
-    <div class="card-header p-4 border-b">
-        <!-- Top Row: Action Buttons Left, Profile Picture Right -->
-        <div class="flex justify-between items-start mb-3">
-            <!-- Action Buttons - Top Left -->
-            <div class="flex space-x-2">
-                <button class="action-btn p-2 rounded-lg transition-all duration-200" title="Share">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"/>
+<div class="mobile-card theme-{{ current_theme }}" x-data="{ 
+    activeSection: 'message',
+    toggle(section) { this.activeSection = this.activeSection === section ? null : section }
+}">
+
+    <!-- Form wrapping the card for live updates -->
+    <form hx-post="{% url 'message_cards:unified_card_management' %}"
+        hx-trigger="change delay:500ms, keyup delay:500ms changed" hx-target="#card-preview-container"
+        hx-swap="innerHTML">
+
+        {% csrf_token %}
+        <input type="hidden" name="preview_theme" value="{{ current_theme }}">
+
+        <!-- Top Action Bar -->
+        <div class="flex justify-between items-center p-5">
+            <div class="flex gap-3">
+                <button type="button" class="btn-action bg-dynamic border-dynamic text-dynamic">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
                     </svg>
                 </button>
-                <button class="action-btn p-2 rounded-lg transition-all duration-200" title="Download">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                <button type="button" class="btn-action bg-dynamic border-dynamic text-dynamic">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                 </button>
-                <button class="action-btn p-2 rounded-lg transition-all duration-200" title="Print" onclick="window.print()">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+                <button type="button" class="btn-action bg-dynamic border-dynamic text-dynamic">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
                     </svg>
                 </button>
             </div>
-            
-            <!-- Profile Picture - Top Right -->
-            <button class="profile-upload-btn w-10 h-10 rounded-full border-2 border-white/30 hover:border-white/60 transition-all duration-200 flex items-center justify-center cursor-pointer" title="Upload Profile Picture">
-                <svg class="w-5 h-5 text-white/80" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            <div class="avatar-circle bg-dynamic border-dynamic text-dynamic">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                        clip-rule="evenodd" />
                 </svg>
-            </button>
+            </div>
         </div>
-        
-        <!-- Centered Logo with Gluten Free Passport -->
-        <div class="flex justify-center">
-            <div class="flex flex-col items-center">
-                <div class="flex items-start mb-1">
-                    <span class="text-white font-black text-xl tracking-tight">Celio</span>
-                    <div class="relative ml-1 mt-1 w-3 h-3 rounded-full flex items-center justify-center" style="background-color: #14b8a6;">
-                        <svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                        </svg>
+
+        <!-- Header -->
+        <div class="text-center px-5 pb-6">
+            <h1 class="text-3xl font-bold flex items-center justify-center text-dynamic">
+                Celio
+                <span class="ml-2 flex items-center justify-center w-5 h-5 rounded-full bg-teal-400 text-white">
+                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </span>
+            </h1>
+            <p class="text-dynamic-dim text-sm font-medium uppercase tracking-wider mt-1">
+                {% if current_lang == 'en' %}Gluten-Free Passport
+                {% elif current_lang == 'pt' %}Passaporte Sem Glúten
+                {% elif current_lang == 'es' %}Pasaporte Sin Gluten
+                {% elif current_lang == 'fr' %}Passeport Sans Gluten
+                {% elif current_lang == 'de' %}Glutenfreier Pass
+                {% elif current_lang == 'it' %}Passaporto Senza Glutine
+                {% else %}Gluten-Free Passport{% endif %}
+            </p>
+        </div>
+
+        <!-- Content Area with Accordions -->
+        <div class="px-5 pb-8 space-y-3">
+
+            <!-- 1. Message Section (Default Open) -->
+            <div class="section-card bg-dynamic" :class="{ 'accordion-open': activeSection === 'message' }">
+                <div class="flex justify-between items-center cursor-pointer" @click="toggle('message')">
+                    <h3 class="font-bold text-dynamic">Safety Message</h3>
+                    <svg class="w-5 h-5 text-dynamic chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </div>
+                <div class="accordion-content">
+                    <textarea name="message_text" rows="4"
+                        class="w-full bg-transparent border border-dynamic rounded-lg p-3 text-dynamic placeholder-white/50 focus:ring-2 focus:ring-teal-400 focus:outline-none resize-none"
+                        placeholder="Enter your safety message...">{{ card.get_message }}</textarea>
+                    <p class="text-xs text-dynamic-dim mt-2">This message is shown to servers.</p>
+                </div>
+            </div>
+
+            <!-- 2. Essential Info Section -->
+            <div class="section-card bg-dynamic" :class="{ 'accordion-open': activeSection === 'info' }">
+                <div class="flex justify-between items-center cursor-pointer" @click="toggle('info')">
+                    <h3 class="font-bold text-dynamic">Essential Information</h3>
+                    <svg class="w-5 h-5 text-dynamic chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </div>
+                <div class="accordion-content space-y-4">
+                    <div>
+                        <label class="block text-xs uppercase tracking-wider text-dynamic-dim mb-1">Full Name</label>
+                        <input type="text" name="user_name" value="{{ card.user_name|default:'' }}"
+                            class="input-clean text-dynamic" placeholder="Your Name">
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase tracking-wider text-dynamic-dim mb-1">Condition</label>
+                        <select name="condition" class="input-clean text-dynamic bg-transparent">
+                            <option value="celiac" {% if card.condition=='celiac' %}selected{% endif %}
+                                class="text-black">Celiac Disease</option>
+                            <option value="sensitivity" {% if card.condition=='sensitivity' %}selected{% endif %}
+                                class="text-black">Gluten Sensitivity</option>
+                            <option value="allergy" {% if card.condition=='allergy' %}selected{% endif %}
+                                class="text-black">Wheat Allergy</option>
+                        </select>
                     </div>
                 </div>
-                <div class="text-xs font-medium opacity-90">Gluten-Free Passport</div>
             </div>
-        </div>
-    </div>
-    
-    <!-- Card Body -->
-    <div class="card-body p-4 overflow-y-auto" style="max-height: 420px;">
-        <!-- Essential Info Section -->
-        <div class="form-section mb-4">
-            <div class="section-header flex items-center justify-between cursor-pointer" data-section="essential">
-                <h3 class="text-sm font-semibold opacity-90">Essential Information</h3>
-                <svg class="w-4 h-4 transition-transform duration-200 section-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                </svg>
-            </div>
-            <div class="section-content mt-3 space-y-3" data-content="essential">
-                <!-- Name Field -->
-                <div class="form-field">
-                    <label class="block text-xs font-medium mb-1 text-left opacity-80">Full Name</label>
-                    <input type="text" class="field-input w-full p-2.5 rounded-lg border text-sm" value="John Traveler" placeholder="Enter your full name">
+
+            <!-- 3. Customization Section (Language & Theme) -->
+            <div class="section-card bg-dynamic" :class="{ 'accordion-open': activeSection === 'custom' }">
+                <div class="flex justify-between items-center cursor-pointer" @click="toggle('custom')">
+                    <h3 class="font-bold text-dynamic">Customization</h3>
+                    <svg class="w-5 h-5 text-dynamic chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
                 </div>
-                
-                <!-- Condition Field -->
-                <div class="form-field">
-                    <label class="block text-xs font-medium mb-1 text-left opacity-80">Medical Condition</label>
-                    <select class="field-input w-full p-2.5 rounded-lg border text-sm" id="condition-select">
-                        <option value="Celiac Disease">Celiac Disease</option>
-                        <option value="Wheat Allergy">Wheat Allergy</option>
-                        <option value="Gluten Intolerance">Gluten Intolerance</option>
-                        <option value="Other">Other (Custom)</option>
-                    </select>
-                    <input type="text" class="field-input w-full p-2.5 rounded-lg border mt-2 hidden text-sm" id="custom-condition" placeholder="Enter custom condition">
-                </div>
-            </div>
-        </div>
-        
-        <!-- Message Section -->
-        <div class="form-section mb-4">
-            <div class="section-header flex items-center justify-between cursor-pointer" data-section="message">
-                <h3 class="text-sm font-semibold opacity-90">Message</h3>
-                <svg class="w-4 h-4 transition-transform duration-200 section-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                </svg>
-            </div>
-            <div class="section-content mt-3" data-content="message">
-                <div class="form-field">
-                    <textarea class="field-input w-full p-2.5 rounded-lg border text-sm resize-none" rows="3" id="custom-message" placeholder="Add instructions or additional information...">I have severe celiac disease and require 100% gluten-free food preparation. Even trace amounts can cause serious reactions.</textarea>
-                    <div class="text-xs opacity-60 mt-1">This message will be displayed prominently on your card</div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Customization Section -->
-        <div class="form-section">
-            <div class="section-header flex items-center justify-between cursor-pointer" data-section="customization">
-                <h3 class="text-sm font-semibold opacity-90">Customization</h3>
-                <svg class="w-4 h-4 transition-transform duration-200 section-chevron rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                </svg>
-            </div>
-            <div class="section-content mt-3 space-y-3 hidden" data-content="customization">
-                <!-- Language Selection -->
-                <div class="form-field">
-                    <label class="block text-xs font-medium mb-1 text-left opacity-80">Card Language</label>
-                    <select class="field-input w-full p-2.5 rounded-lg border text-sm" id="language-select">
-                        <option value="en">🇺🇸 English</option>
-                        <option value="es">🇪🇸 Español</option>
-                        <option value="fr">🇫🇷 Français</option>
-                        <option value="de">🇩🇪 Deutsch</option>
-                        <option value="it">🇮🇹 Italiano</option>
-                        <option value="pt">🇵🇹 Português</option>
-                        <option value="ja">🇯🇵 日本語</option>
-                        <option value="ko">🇰🇷 한국어</option>
-                        <option value="zh">🇨🇳 中文</option>
-                        <option value="ar">🇸🇦 العربية</option>
-                        <option value="ru">🇷🇺 Русский</option>
-                        <option value="hi">🇮🇳 हिन्दी</option>
-                    </select>
-                </div>
-                
-                <!-- Theme Selection -->
-                <div class="form-field">
-                    <label class="block text-xs font-medium mb-1 text-left opacity-80">Visual Theme</label>
-                    <div class="grid grid-cols-4 gap-2">
-                        <button class="theme-option p-2 rounded-lg border-2 border-transparent transition-all duration-200 active" data-theme="celio">
-                            <div class="w-full h-6 rounded bg-gradient-to-r from-teal-600 to-emerald-600 mb-1"></div>
-                            <div class="text-xs font-medium">Celio</div>
-                        </button>
-                        <button class="theme-option p-2 rounded-lg border-2 border-transparent transition-all duration-200" data-theme="light">
-                            <div class="w-full h-6 rounded bg-gradient-to-r from-gray-200 to-gray-300 mb-1"></div>
-                            <div class="text-xs font-medium">Light</div>
-                        </button>
-                        <button class="theme-option p-2 rounded-lg border-2 border-transparent transition-all duration-200" data-theme="dark">
-                            <div class="w-full h-6 rounded bg-gradient-to-r from-gray-800 to-gray-900 mb-1"></div>
-                            <div class="text-xs font-medium">Dark</div>
-                        </button>
-                        <button class="theme-option p-2 rounded-lg border-2 border-transparent transition-all duration-200" data-theme="purple">
-                            <div class="w-full h-6 rounded bg-gradient-to-r from-purple-600 to-purple-700 mb-1"></div>
-                            <div class="text-xs font-medium">Purple</div>
-                        </button>
+                <div class="accordion-content space-y-5">
+                    <!-- Language Selector -->
+                    <div>
+                        <label class="block text-xs uppercase tracking-wider text-dynamic-dim mb-2">Card
+                            Language</label>
+                        <select name="language" hx-post="{% url 'message_cards:unified_card_management' %}"
+                            hx-target="#card-preview-container"
+                            class="w-full bg-black/20 border border-dynamic rounded-lg px-3 py-2 text-dynamic focus:outline-none focus:ring-2 focus:ring-teal-400">
+                            {% for code, name in language_choices %}
+                            <option value="{{ code }}" {% if current_lang==code %}selected{% endif %}
+                                class="text-black">
+                                {{ name }}
+                            </option>
+                            {% endfor %}
+                        </select>
                     </div>
-                    <select class="field-input w-full p-2.5 rounded-lg border text-sm hidden" id="theme-select">
-                        <option value="celio">Celio (Teal/Emerald)</option>
-                        <option value="light">Light (Gray/White)</option>
-                        <option value="dark">Dark (Gray/Black)</option>
-                        <option value="purple">Purple (Deep Purple)</option>
-                    </select>
+
+                    <!-- Theme Selector -->
+                    <div>
+                        <label class="block text-xs uppercase tracking-wider text-dynamic-dim mb-2">Visual Theme</label>
+                        <div class="grid grid-cols-4 gap-2">
+                            <!-- Celio Theme -->
+                            <button type="button" hx-post="{% url 'message_cards:unified_card_management' %}"
+                                hx-vals='{"preview_theme": "celio"}' hx-target="#card-preview-container"
+                                class="h-12 rounded-lg bg-gradient-to-br from-teal-700 to-teal-900 border-2 {% if current_theme == 'celio' %}border-white shadow-lg scale-105{% else %}border-transparent opacity-70 hover:opacity-100{% endif %} transition-all">
+                            </button>
+                            <!-- Light Theme -->
+                            <button type="button" hx-post="{% url 'message_cards:unified_card_management' %}"
+                                hx-vals='{"preview_theme": "light"}' hx-target="#card-preview-container"
+                                class="h-12 rounded-lg bg-gradient-to-br from-slate-100 to-slate-300 border-2 {% if current_theme == 'light' %}border-teal-500 shadow-lg scale-105{% else %}border-transparent opacity-70 hover:opacity-100{% endif %} transition-all">
+                            </button>
+                            <!-- Dark Theme -->
+                            <button type="button" hx-post="{% url 'message_cards:unified_card_management' %}"
+                                hx-vals='{"preview_theme": "dark"}' hx-target="#card-preview-container"
+                                class="h-12 rounded-lg bg-gradient-to-br from-slate-800 to-slate-950 border-2 {% if current_theme == 'dark' %}border-white shadow-lg scale-105{% else %}border-transparent opacity-70 hover:opacity-100{% endif %} transition-all">
+                            </button>
+                            <!-- Purple Theme -->
+                            <button type="button" hx-post="{% url 'message_cards:unified_card_management' %}"
+                                hx-vals='{"preview_theme": "purple"}' hx-target="#card-preview-container"
+                                class="h-12 rounded-lg bg-gradient-to-br from-violet-600 to-violet-900 border-2 {% if current_theme == 'purple' %}border-white shadow-lg scale-105{% else %}border-transparent opacity-70 hover:opacity-100{% endif %} transition-all">
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
+
         </div>
-    </div>
-    
-    <!-- QR Code Section -->
-    {% if qr_code_url %}
-    <div class="qr-code-section p-3 border-t text-center">
-        <h4 class="text-xs font-semibold opacity-90 mb-2">Scan for Digital Card</h4>
-        <img src="{{ qr_code_url }}" alt="QR Code" class="mx-auto" style="width: 80px; height: 80px;">
-        <p class="text-xs opacity-70 mt-1">Scan to view online</p>
-    </div>
-    {% endif %}
-    
-    <!-- Footer with Logo -->
-     <div class="card-footer p-3 border-t text-center">
-         <div class="flex items-center justify-center">
-             <span class="font-black text-sm tracking-tight mr-1">Celio</span>
-             <div class="w-2 h-2 rounded-full flex items-center justify-center" style="background-color: #14b8a6;">
-                 <svg class="w-1 h-1 text-white" fill="currentColor" viewBox="0 0 20 20">
-                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                 </svg>
-             </div>
-         </div>
-         <div class="text-xs opacity-70 mt-1">E-Card</div>
-     </div>
- </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const card = document.querySelector('.editable-card');
-    const actionButtons = document.querySelectorAll('.action-btn');
-    const nameInput = document.querySelector('input[placeholder="Enter your full name"]');
-    const conditionSelect = document.getElementById('condition-select');
-    const customConditionInput = document.getElementById('custom-condition');
-    const languageSelect = document.getElementById('language-select');
-    const messageTextarea = document.getElementById('custom-message');
-    const themeSelect = document.getElementById('theme-select');
-    const themeOptions = document.querySelectorAll('.theme-option');
-    const sectionHeaders = document.querySelectorAll('.section-header');
-    
-    // Collapsible sections functionality
-    sectionHeaders.forEach(header => {
-        header.addEventListener('click', function() {
-            const sectionName = this.dataset.section;
-            const content = document.querySelector(`[data-content="${sectionName}"]`);
-            const chevron = this.querySelector('.section-chevron');
-            
-            if (content.classList.contains('hidden')) {
-                content.classList.remove('hidden');
-                chevron.classList.remove('rotate-180');
-            } else {
-                content.classList.add('hidden');
-                chevron.classList.add('rotate-180');
-            }
-        });
-    });
-    
-    // Theme selection with visual buttons
-    themeOptions.forEach(option => {
-        option.addEventListener('click', function() {
-            const theme = this.dataset.theme;
-            
-            // Update visual selection
-            themeOptions.forEach(opt => opt.classList.remove('active'));
-            this.classList.add('active');
-            
-            // Update hidden select and card theme
-            themeSelect.value = theme;
-
-            // Remove all possible theme classes
-            const themes = ['celio', 'light', 'dark', 'purple', 'pastel', 'medical', 'luxury'];
-            themes.forEach(t => {
-                card.classList.remove(`message-card-theme-${t}`);
-                card.classList.remove(`card-${t}`);
-            });
-
-            // Add the new theme class
-            card.classList.add(`card-${theme}`);
-            card.dataset.theme = theme;
-            
-            // Update card border and shadow based on theme
-            if (theme === 'light') {
-                card.style.border = '2px solid rgba(0, 0, 0, 0.1)';
-                card.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.1)';
-            } else {
-                card.style.border = '2px solid rgba(255, 255, 255, 0.2)';
-                card.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.3)';
-            }
-        });
-    });
-    
-    // Profile elements removed for space optimization
-    
-    // Language translations for messages
-    const translations = {
-        en: {
-            'gluten-free-passport': 'Gluten-Free Passport',
-            'e-card': 'E-Card',
-            'medical-card': 'E-Card',
-            'celiac-message': 'I have severe celiac disease and require 100% gluten-free food preparation. Even trace amounts can cause serious reactions.',
-            'wheat-allergy-message': 'I have a severe wheat allergy. Please ensure no wheat products or cross-contamination with wheat.',
-            'gluten-intolerance-message': 'I have gluten intolerance and require gluten-free food preparation to avoid digestive issues.',
-            'allergy-message': 'I have severe food allergies. Please ensure no cross-contamination with allergens.',
-            'contact': 'Contact',
-            'medical-alert': 'MEDICAL ALERT'
-        },
-        es: {
-            'gluten-free-passport': 'Pasaporte Sin Gluten',
-            'e-card': 'Tarjeta-E',
-            'medical-card': 'Tarjeta Médica',
-            'celiac-message': 'Tengo enfermedad celíaca severa y requiero preparación 100% libre de gluten. Incluso cantidades mínimas pueden causar reacciones graves.',
-            'wheat-allergy-message': 'Tengo alergia severa al trigo. Por favor asegúrese de que no haya productos de trigo o contaminación cruzada con trigo.',
-            'gluten-intolerance-message': 'Tengo intolerancia al gluten y requiero preparación libre de gluten para evitar problemas digestivos.',
-            'allergy-message': 'Tengo alergias alimentarias severas. Por favor asegúrese de que no haya contaminación cruzada con alérgenos.',
-            'contact': 'Contacto',
-            'medical-alert': 'ALERTA MÉDICA'
-        },
-        fr: {
-            'gluten-free-passport': 'Passeport Sans Gluten',
-            'e-card': 'Carte-E',
-            'medical-card': 'Carte Médicale',
-            'celiac-message': 'J\'ai une maladie cœliaque sévère et j\'ai besoin d\'une préparation 100% sans gluten. Même des traces peuvent causer des réactions graves.',
-            'wheat-allergy-message': 'J\'ai une allergie sévère au blé. Veuillez vous assurer qu\'il n\'y a pas de produits de blé ou de contamination croisée avec le blé.',
-            'gluten-intolerance-message': 'J\'ai une intolérance au gluten et j\'ai besoin d\'une préparation sans gluten pour éviter les problèmes digestifs.',
-            'allergy-message': 'J\'ai des allergies alimentaires sévères. Veuillez vous assurer qu\'il n\'y a pas de contamination croisée avec des allergènes.',
-            'contact': 'Contact',
-            'medical-alert': 'ALERTE MÉDICALE'
-        },
-        de: {
-            'gluten-free-passport': 'Glutenfreier Pass',
-            'e-card': 'E-Karte',
-            'medical-card': 'Medizinkarte',
-            'celiac-message': 'Ich habe schwere Zöliakie und benötige 100% glutenfreie Zubereitung. Selbst Spuren können schwere Reaktionen verursachen.',
-            'wheat-allergy-message': 'Ich habe eine schwere Weizenallergie. Bitte stellen Sie sicher, dass keine Weizenprodukte oder Kreuzkontamination mit Weizen vorhanden sind.',
-            'gluten-intolerance-message': 'Ich habe eine Glutenunverträglichkeit und benötige glutenfreie Zubereitung, um Verdauungsprobleme zu vermeiden.',
-            'allergy-message': 'Ich habe schwere Nahrungsmittelallergien. Bitte stellen Sie sicher, dass keine Kreuzkontamination mit Allergenen stattfindet.',
-            'contact': 'Kontakt',
-            'medical-alert': 'MEDIZINISCHER ALARM'
-        },
-        it: {
-            'gluten-free-passport': 'Passaporto Senza Glutine',
-            'e-card': 'E-Card',
-            'medical-card': 'Carta Medica',
-            'celiac-message': 'Ho la celiachia grave e richiedo preparazione 100% senza glutine. Anche tracce possono causare reazioni gravi.',
-            'wheat-allergy-message': 'Ho un\'allergia grave al grano. Si prega di assicurarsi che non ci siano prodotti di grano o contaminazione incrociata con il grano.',
-            'gluten-intolerance-message': 'Ho intolleranza al glutine e richiedo preparazione senza glutine per evitare problemi digestivi.',
-            'allergy-message': 'Ho allergie alimentari gravi. Si prega di assicurarsi che non ci sia contaminazione incrociata con allergeni.',
-            'contact': 'Contatto',
-            'medical-alert': 'ALLERTA MEDICA'
-        },
-        pt: {
-            'gluten-free-passport': 'Passaporte Sem Glúten',
-            'e-card': 'Cartão-E',
-            'medical-card': 'Cartão Médico',
-            'celiac-message': 'Tenho doença celíaca grave e preciso de preparação 100% sem glúten. Mesmo quantidades mínimas podem causar reações graves.',
-            'wheat-allergy-message': 'Tenho alergia grave ao trigo. Por favor, certifique-se de que não há produtos de trigo ou contaminação cruzada com trigo.',
-            'gluten-intolerance-message': 'Tenho intolerância ao glúten e preciso de preparação sem glúten para evitar problemas digestivos.',
-            'allergy-message': 'Tenho alergias alimentares graves. Por favor, certifique-se de que não há contaminação cruzada com alérgenos.',
-            'contact': 'Contato',
-            'medical-alert': 'ALERTA MÉDICO'
-        },
-        ja: {
-            'gluten-free-passport': 'グルテンフリーパスポート',
-            'e-card': 'Eカード',
-            'medical-card': '医療カード',
-            'celiac-message': '重度のセリアック病があり、100%グルテンフリーの調理が必要です。微量でも重篤な反応を起こす可能性があります。',
-            'wheat-allergy-message': '重度の小麦アレルギーがあります。小麦製品や小麦との交差汚染がないことを確認してください。',
-            'gluten-intolerance-message': 'グルテン不耐症があり、消化器系の問題を避けるためにグルテンフリーの調理が必要です。',
-            'allergy-message': '重度の食物アレルギーがあります。アレルゲンとの交差汚染がないことを確認してください。',
-            'contact': '連絡先',
-            'medical-alert': '医療警告'
-        },
-        zh: {
-            'gluten-free-passport': '无麸质护照',
-            'e-card': '电子卡',
-            'medical-card': '医疗卡',
-            'celiac-message': '我患有严重的乳糜泻，需要100%无麸质食物制备。即使微量也可能引起严重反应。',
-            'wheat-allergy-message': '我有严重的小麦过敏。请确保没有小麦产品或与小麦的交叉污染。',
-            'gluten-intolerance-message': '我有麸质不耐受，需要无麸质制备以避免消化问题。',
-            'allergy-message': '我有严重的食物过敏。请确保没有过敏原交叉污染。',
-            'contact': '联系人',
-            'medical-alert': '医疗警报'
-        },
-        ko: {
-            'gluten-free-passport': '글루텐 프리 여권',
-            'e-card': '전자 카드',
-            'medical-card': '의료 카드',
-            'celiac-message': '저는 심각한 셀리악병을 앓고 있어서 100% 글루텐 프리 조리가 필요합니다. 미량이라도 심각한 반응을 일으킬 수 있습니다.',
-            'wheat-allergy-message': '저는 심각한 밀 알레르기가 있습니다. 밀 제품이나 밀과의 교차 오염이 없도록 해주세요.',
-            'gluten-intolerance-message': '저는 글루텐 불내증이 있어서 소화 문제를 피하기 위해 글루텐 프리 조리가 필요합니다.',
-            'allergy-message': '저는 심각한 음식 알레르기가 있습니다. 알레르겐과의 교차 오염이 없도록 해주세요.',
-            'contact': '연락처',
-            'medical-alert': '의료 경보'
-        },
-        ar: {
-            'gluten-free-passport': 'جواز سفر خالي من الغلوتين',
-            'e-card': 'بطاقة إلكترونية',
-            'medical-card': 'بطاقة طبية',
-            'celiac-message': 'أعاني من مرض السيلياك الشديد وأحتاج إلى تحضير خالي من الغلوتين بنسبة 100%. حتى الكميات الضئيلة يمكن أن تسبب ردود فعل شديدة.',
-            'wheat-allergy-message': 'لدي حساسية شديدة من القمح. يرجى التأكد من عدم وجود منتجات القمح أو التلوث المتبادل مع القمح.',
-            'gluten-intolerance-message': 'لدي عدم تحمل للغلوتين وأحتاج إلى تحضير خالي من الغلوتين لتجنب مشاكل الهضم.',
-            'allergy-message': 'لدي حساسية غذائية شديدة. يرجى التأكد من عدم وجود تلوث متبادل مع مسببات الحساسية.',
-            'contact': 'جهة الاتصال',
-            'medical-alert': 'تنبيه طبي'
-        },
-        ru: {
-            'gluten-free-passport': 'Безглютеновый паспорт',
-            'e-card': 'Электронная карта',
-            'medical-card': 'Медицинская карта',
-            'celiac-message': 'У меня тяжелая целиакия, и мне требуется 100% безглютеновое приготовление. Даже следы могут вызвать серьезные реакции.',
-            'wheat-allergy-message': 'У меня тяжелая аллергия на пшеницу. Пожалуйста, убедитесь, что нет продуктов из пшеницы или перекрестного загрязнения пшеницей.',
-            'gluten-intolerance-message': 'У меня непереносимость глютена, и мне нужно безглютеновое приготовление, чтобы избежать проблем с пищеварением.',
-            'allergy-message': 'У меня тяжелые пищевые аллергии. Пожалуйста, убедитесь, что нет перекрестного загрязнения аллергенами.',
-            'contact': 'Контакт',
-            'medical-alert': 'МЕДИЦИНСКОЕ ПРЕДУПРЕЖДЕНИЕ'
-        },
-        hi: {
-            'gluten-free-passport': 'ग्लूटेन-फ्री पासपोर्ट',
-            'e-card': 'ई-कार्ड',
-            'medical-card': 'मेडिकल कार्ड',
-            'celiac-message': 'मुझे गंभीर सीलिएक रोग है और मुझे 100% ग्लूटेन-फ्री तैयारी की आवश्यकता है। थोड़ी मात्रा भी गंभीर प्रतिक्रिया का कारण बन सकती है।',
-            'wheat-allergy-message': 'मुझे गंभीर गेहूं एलर्जी है। कृपया सुनिश्चित करें कि कोई गेहूं उत्पाद या गेहूं के साथ क्रॉस-संदूषण न हो।',
-            'gluten-intolerance-message': 'मुझे ग्लूटेन असहनशीलता है और पाचन समस्याओं से बचने के लिए ग्लूटेन-फ्री तैयारी की आवश्यकता है।',
-            'allergy-message': 'मुझे गंभीर खाद्य एलर्जी है। कृपया सुनिश्चित करें कि एलर्जेन के साथ कोई क्रॉस-संदूषण न हो।',
-            'contact': 'संपर्क',
-            'medical-alert': 'चिकित्सा चेतावनी'
-        }
-    };
-    
-    // Set initial theme and ensure visual consistency
-    const currentTheme = card.dataset.theme || 'celio';
-    themeSelect.value = currentTheme;
-    
-    // Apply initial theme class to the card
-    card.classList.add(`message-card-theme-${currentTheme}`);
-
-    // Initialize visual theme selection
-    themeOptions.forEach(opt => opt.classList.remove('active'));
-    const initialThemeOption = document.querySelector(`[data-theme="${currentTheme}"]`);
-    if (initialThemeOption) initialThemeOption.classList.add('active');
-    
-    // Initialize with current language and condition
-    updateAllTextElements();
-    
-    // Set up initial textarea height
-    messageTextarea.style.height = 'auto';
-    messageTextarea.style.height = messageTextarea.scrollHeight + 'px';
-    
-    // Add CSS transitions for smooth animations
-    const style = document.createElement('style');
-    style.textContent = `
-        .field-input {
-            transition: all 0.2s ease !important;
-        }
-        .editable-card {
-            transition: all 0.3s ease !important;
-        }
-        .card-header .text-xs,
-        .card-footer .text-xs {
-            transition: opacity 0.2s ease !important;
-        }
-        #custom-message {
-            transition: opacity 0.2s ease, height 0.2s ease !important;
-        }
-    `;
-    document.head.appendChild(style);
-    
-    // Define condition-to-language mapping based on awareness and support
-    const conditionLanguageMapping = {
-        'Celiac Disease': 'pt', // Portugal has excellent celiac awareness and gluten-free support
-        'Wheat Allergy': 'en', // English-speaking countries have good allergy awareness
-        'Gluten Intolerance': 'es' // Spain has good gluten-free support (4/5)
-    };
-    
-    // Function to update all text elements dynamically
-    function updateAllTextElements() {
-        const selectedLang = languageSelect.value;
-        const trans = translations[selectedLang] || translations.en;
-        
-        // Update card text elements with smooth transitions
-        const passportText = document.querySelector('.card-header .text-xs');
-        const footerText = document.querySelector('.card-footer .text-xs');
-        
-        if (passportText) {
-            passportText.style.opacity = '0.5';
-            setTimeout(() => {
-                passportText.textContent = trans['gluten-free-passport'];
-                passportText.style.opacity = '1';
-            }, 100);
-        }
-        
-        if (footerText) {
-            footerText.style.opacity = '0.5';
-            setTimeout(() => {
-                footerText.textContent = trans['e-card'];
-                footerText.style.opacity = '1';
-            }, 100);
-        }
-        
-        // Update message based on current condition
-        updateMessageForCondition();
-    }
-    
-    // Function to update message based on condition and language
-    function updateMessageForCondition() {
-        const condition = conditionSelect.value;
-        const selectedLang = languageSelect.value;
-        const trans = translations[selectedLang] || translations.en;
-        
-        let newMessage = '';
-        if (condition === 'Celiac Disease') {
-            newMessage = trans['celiac-message'];
-        } else if (condition === 'Wheat Allergy') {
-            newMessage = trans['wheat-allergy-message'];
-        } else if (condition === 'Gluten Intolerance') {
-            newMessage = trans['gluten-intolerance-message'];
-        } else if (condition === 'Other') {
-            newMessage = trans['allergy-message'];
-        }
-        
-        if (newMessage && messageTextarea.value !== newMessage) {
-            // Smooth transition for message update
-            messageTextarea.style.opacity = '0.5';
-            setTimeout(() => {
-                messageTextarea.value = newMessage;
-                messageTextarea.style.opacity = '1';
-                // Auto-resize textarea
-                messageTextarea.style.height = 'auto';
-                messageTextarea.style.height = messageTextarea.scrollHeight + 'px';
-            }, 150);
-        }
-    }
-    
-    // Handle custom condition input with live updates
-    conditionSelect.addEventListener('change', function() {
-        if (this.value === 'Other') {
-            customConditionInput.classList.remove('hidden');
-            customConditionInput.focus();
-        } else {
-            customConditionInput.classList.add('hidden');
-            
-            // Instantly update message for new condition
-            updateMessageForCondition();
-            
-            // Optional: Suggest language based on condition (but don't force it)
-            const suggestedLang = conditionLanguageMapping[this.value];
-            if (suggestedLang && languageSelect.value !== suggestedLang) {
-                console.log(`Suggestion: ${this.value} is commonly supported in ${suggestedLang} regions`);
-            }
-        }
-    });
-    
-    // Handle custom condition input with live updates
-    customConditionInput.addEventListener('input', function() {
-        if (conditionSelect.value === 'Other') {
-            // Update message for custom condition instantly
-            updateMessageForCondition();
-        }
-    });
-    
-    // Theme switching with smooth transitions
-    themeSelect.addEventListener('change', function() {
-        const newTheme = this.value;
-        
-        // Add transition effect
-        card.style.transition = 'all 0.3s ease';
-        
-        // Remove old theme classes
-        const themes = ['celio', 'light', 'dark', 'purple'];
-        themes.forEach(t => card.classList.remove(`card-${t}`));
-        
-        // Add new theme class
-        card.classList.add(`card-${newTheme}`);
-        card.dataset.theme = newTheme;
-        
-        // Update visual theme selection
-        themeOptions.forEach(opt => opt.classList.remove('active'));
-        const selectedOption = document.querySelector(`[data-theme="${newTheme}"]`);
-        if (selectedOption) selectedOption.classList.add('active');
-    });
-    
-    // Enhanced language switching with live updates
-    languageSelect.addEventListener('change', function() {
-        // Instantly update all text elements
-        updateAllTextElements();
-    });
-    
-    // Add live textarea auto-resize
-    messageTextarea.addEventListener('input', function() {
-        this.style.height = 'auto';
-        this.style.height = this.scrollHeight + 'px';
-    });
-    
-    // Add smooth transitions to all form elements
-    const formElements = document.querySelectorAll('.field-input');
-    formElements.forEach(element => {
-        element.style.transition = 'all 0.2s ease';
-        
-        element.addEventListener('focus', function() {
-            this.style.transform = 'scale(1.02)';
-            this.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
-        });
-        
-        element.addEventListener('blur', function() {
-            this.style.transform = 'scale(1)';
-            this.style.boxShadow = 'none';
-        });
-    });
-    
-    // Profile display elements removed for space optimization
-    
-    // Action button handlers
-    actionButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const title = this.getAttribute('title');
-            
-            switch(title) {
-                case 'Share':
-                    if (navigator.share) {
-                        navigator.share({
-                            title: 'My E-Card',
-                            text: 'Check out my Celio E-Card',
-                            url: window.location.href
-                        });
-                    } else {
-                        navigator.clipboard.writeText(window.location.href).then(() => {
-                            alert('Link copied to clipboard!');
-                        });
-                    }
-                    break;
-                    
-                case 'Download':
-                    // Create mobile-friendly download URL
-                    const currentLang = languageSelect.value;
-                    const currentTheme = card.dataset.theme;
-                    
-                    // Build download URL for mobile format
-                    const downloadUrl = new URL('{% url "message_cards:download_card" %}', window.location.origin);
-                    downloadUrl.searchParams.set('format', 'mobile');
-                    downloadUrl.searchParams.set('lang', currentLang);
-                    downloadUrl.searchParams.set('theme', currentTheme);
-                    
-                    // Create a temporary link element for auto-download
-                    const link = document.createElement('a');
-                    link.href = downloadUrl.toString();
-                    link.download = `celio-card-${currentLang}-${currentTheme}.html`;
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    break;
-                    
-
-            }
-        });
-    });
-    
-
-});
-</script>
-
-{% endwith %}
+        <!-- Footer -->
+        <div class="text-center py-6 border-t border-dynamic">
+            <h3 class="font-bold flex items-center justify-center text-dynamic">
+                Celio <span
+                    class="ml-2 flex items-center justify-center w-4 h-4 rounded-full bg-teal-400 text-white"><svg
+                        class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clip-rule="evenodd" />
+                    </svg></span>
+            </h3>
+            <p class="text-xs text-dynamic-dim mt-1 uppercase tracking-widest">
+                {% if current_lang == 'en' %}E-Card
+                {% elif current_lang == 'pt' %}Cartão-E
+                {% elif current_lang == 'es' %}Tarjeta-E
+                {% elif current_lang == 'fr' %}Carte-E
+                {% elif current_lang == 'de' %}E-Karte
+                {% else %}E-Card{% endif %}
+            </p>
+        </div>
+    </form>
+</div>
