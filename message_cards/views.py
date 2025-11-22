@@ -353,8 +353,21 @@ def switch_language(request):
     # Make sure requested language exists in translations
     if upper_lang in available_langs:
         language = available_langs[upper_lang]  # Use original case from card
-    elif card.translations:
-        language = next(iter(card.translations.keys()))
+    else:
+        # If the requested language isn't in translations, we might need to translate it
+        # Check if it's a valid language choice
+        valid_lang_codes = [choice[0] for choice in EmergencyCard.LANGUAGE_CHOICES]
+        if language.lower() in valid_lang_codes:
+            # It's a valid language, let's try to auto-translate the custom note
+            current_note = card.custom_note
+            if current_note:
+                # Translate the note
+                translated_note = translate_text(current_note, language.lower(), card.preferred_language)
+                # Save the translation
+                card.set_custom_note(language.lower(), translated_note)
+                card.save()
+        elif card.translations:
+             language = next(iter(card.translations.keys()))
     
     # get message in requested language
     message = card.get_message(language)

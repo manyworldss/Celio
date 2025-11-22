@@ -5,351 +5,292 @@
 {% firstof preview_theme card.theme 'celio' as current_theme %}
 
 <style>
-    /* Mobile-First Design */
-    .mobile-card {
+    /* Scoped styles for the card preview */
+    .card-container {
+        perspective: 1000px;
         width: 100%;
-        max-width: 480px;
+        max-width: 400px;
+        /* Match standard mobile width */
         margin: 0 auto;
-        border-radius: 24px;
-        overflow: hidden;
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    .card-inner {
         position: relative;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        width: 100%;
+        min-height: 600px;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
         transition: all 0.5s ease;
+        display: flex;
+        flex-direction: column;
     }
 
-    /* Themes */
+    /* Theme Styles */
     .theme-celio {
-        background: linear-gradient(180deg, #0f766e 0%, #115e59 100%);
+        background: linear-gradient(135deg, #0f766e 0%, #115e59 100%);
         color: white;
     }
 
-    .theme-light {
-        background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
-        color: #1e293b;
-    }
-
-    .theme-dark {
-        background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+    .theme-celio .input-field {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
         color: white;
     }
 
-    .theme-purple {
-        background: linear-gradient(180deg, #7c3aed 0%, #6d28d9 100%);
-        color: white;
+    .theme-celio .input-field::placeholder {
+        color: rgba(255, 255, 255, 0.6);
     }
 
-    /* Dynamic Text Colors based on Theme */
-    .theme-light .text-dynamic {
-        color: #334155;
+    .theme-celio .label-text {
+        color: rgba(255, 255, 255, 0.9);
     }
 
-    .theme-light .text-dynamic-dim {
-        color: #64748b;
-    }
-
-    .theme-light .border-dynamic {
-        border-color: rgba(0, 0, 0, 0.1);
-    }
-
-    .theme-light .bg-dynamic {
-        background: rgba(255, 255, 255, 0.6);
-    }
-
-    .theme-celio .text-dynamic,
-    .theme-dark .text-dynamic,
-    .theme-purple .text-dynamic {
-        color: white;
-    }
-
-    .theme-celio .text-dynamic-dim,
-    .theme-dark .text-dynamic-dim,
-    .theme-purple .text-dynamic-dim {
-        color: rgba(255, 255, 255, 0.7);
-    }
-
-    .theme-celio .border-dynamic,
-    .theme-dark .border-dynamic,
-    .theme-purple .border-dynamic {
+    .theme-celio .divider {
         border-color: rgba(255, 255, 255, 0.2);
     }
 
-    .theme-celio .bg-dynamic,
-    .theme-dark .bg-dynamic,
-    .theme-purple .bg-dynamic {
+    .theme-light {
+        background: #f8fafc;
+        color: #1e293b;
+    }
+
+    .theme-light .input-field {
+        background: white;
+        border: 1px solid #e2e8f0;
+        color: #1e293b;
+    }
+
+    .theme-light .input-field::placeholder {
+        color: #94a3b8;
+    }
+
+    .theme-light .label-text {
+        color: #475569;
+    }
+
+    .theme-light .divider {
+        border-color: #e2e8f0;
+    }
+
+    .theme-dark {
+        background: #1e293b;
+        color: white;
+    }
+
+    .theme-dark .input-field {
         background: rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: white;
     }
 
-    .section-card {
-        border-radius: 16px;
-        padding: 16px;
-        margin-bottom: 12px;
-        backdrop-filter: blur(10px);
-        transition: all 0.3s ease;
+    .theme-dark .input-field::placeholder {
+        color: rgba(255, 255, 255, 0.4);
     }
 
-    .btn-action {
-        width: 44px;
-        height: 44px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s;
-        cursor: pointer;
+    .theme-dark .label-text {
+        color: rgba(255, 255, 255, 0.8);
     }
 
-    .btn-action:hover {
-        transform: scale(1.05);
+    .theme-dark .divider {
+        border-color: rgba(255, 255, 255, 0.1);
     }
 
-    .avatar-circle {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
+    .theme-purple {
+        background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+        color: white;
     }
 
-    .input-clean {
-        background: transparent;
-        border: none;
+    .theme-purple .input-field {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+    }
+
+    .theme-purple .input-field::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .theme-purple .label-text {
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .theme-purple .divider {
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Common Elements */
+    .input-field {
         width: 100%;
-        padding: 8px 0;
-        font-size: 1rem;
+        padding: 12px 16px;
+        border-radius: 12px;
+        font-size: 0.95rem;
         outline: none;
-        border-bottom: 1px solid transparent;
-        transition: border-color 0.2s;
+        transition: all 0.2s;
     }
 
-    .input-clean:focus {
-        border-bottom-color: currentColor;
+    .input-field:focus {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
-    /* Accordion Styles */
-    .accordion-content {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease-out, opacity 0.3s ease-out, padding 0.3s ease;
-        opacity: 0;
+    .card-header {
+        padding: 24px;
+        text-align: center;
+        position: relative;
     }
 
-    .accordion-open .accordion-content {
-        max-height: 500px;
-        /* Arbitrary large height */
-        opacity: 1;
-        padding-top: 12px;
+    .profile-image {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        margin: 0 auto 16px;
+        background: rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 3px solid rgba(255, 255, 255, 0.3);
     }
 
-    .chevron {
-        transition: transform 0.3s ease;
+    .card-body {
+        padding: 0 24px 24px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
     }
 
-    .accordion-open .chevron {
-        transform: rotate(180deg);
+    .theme-selector-btn {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        transition: transform 0.2s;
     }
 
-    /* Scrollbar hiding */
-    .no-scrollbar::-webkit-scrollbar {
-        display: none;
+    .theme-selector-btn:hover {
+        transform: scale(1.1);
     }
 
-    .no-scrollbar {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
+    .theme-selector-btn.active {
+        border-color: white;
+        transform: scale(1.1);
+        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
     }
 </style>
 
-<div class="mobile-card theme-{{ current_theme }}" x-data="{ 
-    activeSection: 'message',
-    toggle(section) { this.activeSection = this.activeSection === section ? null : section }
-}">
+<div class="card-container">
+    <div class="card-inner theme-{{ current_theme }}">
 
-    <!-- Form wrapping the card for live updates -->
-    <form hx-post="{% url 'message_cards:unified_card_management' %}"
-        hx-trigger="change delay:500ms, keyup delay:500ms changed" hx-target="#card-preview-container"
-        hx-swap="innerHTML">
+        <!-- Form for Live Updates -->
+        <form hx-post="{% url 'message_cards:unified_card_management' %}"
+            hx-trigger="change delay:500ms, keyup delay:500ms changed" hx-target="#card-preview-container"
+            hx-swap="innerHTML" class="h-full flex flex-col">
 
-        {% csrf_token %}
-        <input type="hidden" name="preview_theme" value="{{ current_theme }}">
+            {% csrf_token %}
+            <input type="hidden" name="preview_theme" value="{{ current_theme }}">
 
-        <!-- Top Action Bar -->
-        <div class="flex justify-between items-center p-5">
-            <div class="flex gap-3">
-                <button type="button" class="btn-action bg-dynamic border-dynamic text-dynamic">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-                    </svg>
-                </button>
-                <button type="button" class="btn-action bg-dynamic border-dynamic text-dynamic">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                </button>
-                <button type="button" class="btn-action bg-dynamic border-dynamic text-dynamic">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-                    </svg>
-                </button>
-            </div>
-            <div class="avatar-circle bg-dynamic border-dynamic text-dynamic">
-                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                        clip-rule="evenodd" />
-                </svg>
-            </div>
-        </div>
-
-        <!-- Header -->
-        <div class="text-center px-5 pb-6">
-            <h1 class="text-3xl font-bold flex items-center justify-center text-dynamic">
-                Celio
-                <span class="ml-2 flex items-center justify-center w-5 h-5 rounded-full bg-teal-400 text-white">
-                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd"
-                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+            <!-- Header Section -->
+            <div class="card-header">
+                <div class="profile-image">
+                    <svg class="w-10 h-10 opacity-80" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
                             clip-rule="evenodd" />
                     </svg>
-                </span>
-            </h1>
-            <p class="text-dynamic-dim text-sm font-medium uppercase tracking-wider mt-1">
-                {% if current_lang == 'en' %}Gluten-Free Passport
-                {% elif current_lang == 'pt' %}Passaporte Sem Glúten
-                {% elif current_lang == 'es' %}Pasaporte Sin Gluten
-                {% elif current_lang == 'fr' %}Passeport Sans Gluten
-                {% elif current_lang == 'de' %}Glutenfreier Pass
-                {% elif current_lang == 'it' %}Passaporto Senza Glutine
-                {% else %}Gluten-Free Passport{% endif %}
-            </p>
-        </div>
-
-        <!-- Content Area with Accordions -->
-        <div class="px-5 pb-8 space-y-3">
-
-            <!-- 1. Message Section (Default Open) -->
-            <div class="section-card bg-dynamic" :class="{ 'accordion-open': activeSection === 'message' }">
-                <div class="flex justify-between items-center cursor-pointer" @click="toggle('message')">
-                    <h3 class="font-bold text-dynamic">Safety Message</h3>
-                    <svg class="w-5 h-5 text-dynamic chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                    </svg>
                 </div>
-                <div class="accordion-content">
-                    <textarea name="message_text" rows="4"
-                        class="w-full bg-transparent border border-dynamic rounded-lg p-3 text-dynamic placeholder-white/50 focus:ring-2 focus:ring-teal-400 focus:outline-none resize-none"
-                        placeholder="Enter your safety message...">{{ card.get_message }}</textarea>
-                    <p class="text-xs text-dynamic-dim mt-2">This message is shown to servers.</p>
-                </div>
+                <h1 class="text-2xl font-bold tracking-tight">E-Card</h1>
+                <p class="text-sm opacity-80 mt-1">
+                    {% if current_lang == 'en' %}Gluten-Free
+                    {% elif current_lang == 'pt' %}Sem Glúten
+                    {% elif current_lang == 'es' %}Sin Gluten
+                    {% elif current_lang == 'fr' %}Sans Gluten
+                    {% elif current_lang == 'de' %}Glutenfrei
+                    {% else %}Gluten-Free{% endif %}
+                </p>
             </div>
 
-            <!-- 2. Essential Info Section -->
-            <div class="section-card bg-dynamic" :class="{ 'accordion-open': activeSection === 'info' }">
-                <div class="flex justify-between items-center cursor-pointer" @click="toggle('info')">
-                    <h3 class="font-bold text-dynamic">Essential Information</h3>
-                    <svg class="w-5 h-5 text-dynamic chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                    </svg>
-                </div>
-                <div class="accordion-content space-y-4">
-                    <div>
-                        <label class="block text-xs uppercase tracking-wider text-dynamic-dim mb-1">Full Name</label>
-                        <input type="text" name="user_name" value="{{ card.user_name|default:'' }}"
-                            class="input-clean text-dynamic" placeholder="Your Name">
-                    </div>
-                    <div>
-                        <label class="block text-xs uppercase tracking-wider text-dynamic-dim mb-1">Condition</label>
-                        <select name="condition" class="input-clean text-dynamic bg-transparent">
-                            <option value="celiac" {% if card.condition == 'celiac' %}selected{% endif %}
-                                class="text-black">Celiac Disease</option>
-                            <option value="sensitivity" {% if card.condition == 'sensitivity' %}selected{% endif %}
-                                class="text-black">Gluten Sensitivity</option>
-                            <option value="allergy" {% if card.condition == 'allergy' %}selected{% endif %}
-                                class="text-black">Wheat Allergy</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
+            <!-- Body Section -->
+            <div class="card-body">
 
-            <!-- 3. Customization Section (Language & Theme) -->
-            <div class="section-card bg-dynamic" :class="{ 'accordion-open': activeSection === 'custom' }">
-                <div class="flex justify-between items-center cursor-pointer" @click="toggle('custom')">
-                    <h3 class="font-bold text-dynamic">Customization</h3>
-                    <svg class="w-5 h-5 text-dynamic chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                    </svg>
-                </div>
-                <div class="accordion-content space-y-5">
-                    <!-- Language Selector -->
+                <!-- Personal Info -->
+                <div class="space-y-4">
                     <div>
-                        <label class="block text-xs uppercase tracking-wider text-dynamic-dim mb-2">Card
-                            Language</label>
-                        <select name="language" hx-post="{% url 'message_cards:unified_card_management' %}"
-                            hx-target="#card-preview-container"
-                            class="w-full bg-black/20 border border-dynamic rounded-lg px-3 py-2 text-dynamic focus:outline-none focus:ring-2 focus:ring-teal-400">
-                            {% for code, name in language_choices %}
-                            <option value="{{ code }}" {% if current_lang == code %}selected{% endif %}
-                                class="text-black">
-                                {{ name }}
-                            </option>
-                            {% endfor %}
-                        </select>
+                        <label
+                            class="block text-xs font-semibold uppercase tracking-wider label-text mb-1.5">Name</label>
+                        <input type="text" name="user_name" value="{{ card.user_name|default:'' }}" class="input-field"
+                            placeholder="Your Name">
                     </div>
 
-                    <!-- Theme Selector -->
                     <div>
-                        <label class="block text-xs uppercase tracking-wider text-dynamic-dim mb-2">Visual Theme</label>
-                        <div class="grid grid-cols-4 gap-2">
-                            <!-- Celio Theme -->
-                            <button type="button" hx-post="{% url 'message_cards:unified_card_management' %}"
-                                hx-vals='{"preview_theme": "celio"}' hx-target="#card-preview-container"
-                                class="h-12 rounded-lg bg-gradient-to-br from-teal-700 to-teal-900 border-2 {% if current_theme == 'celio' %}border-white shadow-lg scale-105{% else %}border-transparent opacity-70 hover:opacity-100{% endif %} transition-all">
-                            </button>
-                            <!-- Light Theme -->
-                            <button type="button" hx-post="{% url 'message_cards:unified_card_management' %}"
-                                hx-vals='{"preview_theme": "light"}' hx-target="#card-preview-container"
-                                class="h-12 rounded-lg bg-gradient-to-br from-slate-100 to-slate-300 border-2 {% if current_theme == 'light' %}border-teal-500 shadow-lg scale-105{% else %}border-transparent opacity-70 hover:opacity-100{% endif %} transition-all">
-                            </button>
-                            <!-- Dark Theme -->
-                            <button type="button" hx-post="{% url 'message_cards:unified_card_management' %}"
-                                hx-vals='{"preview_theme": "dark"}' hx-target="#card-preview-container"
-                                class="h-12 rounded-lg bg-gradient-to-br from-slate-800 to-slate-950 border-2 {% if current_theme == 'dark' %}border-white shadow-lg scale-105{% else %}border-transparent opacity-70 hover:opacity-100{% endif %} transition-all">
-                            </button>
-                            <!-- Purple Theme -->
-                            <button type="button" hx-post="{% url 'message_cards:unified_card_management' %}"
-                                hx-vals='{"preview_theme": "purple"}' hx-target="#card-preview-container"
-                                class="h-12 rounded-lg bg-gradient-to-br from-violet-600 to-violet-900 border-2 {% if current_theme == 'purple' %}border-white shadow-lg scale-105{% else %}border-transparent opacity-70 hover:opacity-100{% endif %} transition-all">
-                            </button>
+                        <label
+                            class="block text-xs font-semibold uppercase tracking-wider label-text mb-1.5">Condition</label>
+                        <div class="relative">
+                            <select name="condition" class="input-field appearance-none">
+                                <option value="celiac" {% if card.condition == 'celiac' %}selected{% endif %}>Celiac
+                                    Disease</option>
+                                <option value="sensitivity" {% if card.condition == 'sensitivity' %}selected{% endif %}>
+                                    Gluten Sensitivity</option>
+                                <option value="allergy" {% if card.condition == 'allergy' %}selected{% endif %}>Wheat
+                                    Allergy</option>
+                            </select>
+                            <div
+                                class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none opacity-60">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <div class="divider border-t my-2"></div>
+
+                <!-- Message Area -->
+                <div class="flex-1">
+                    <label class="block text-xs font-semibold uppercase tracking-wider label-text mb-1.5">Safety
+                        Message</label>
+                    <textarea name="message_text" rows="6" class="input-field resize-none h-full"
+                        placeholder="Enter your safety message...">{{ card.get_message }}</textarea>
+                </div>
+
+                <!-- Controls -->
+                <div class="grid grid-cols-2 gap-4 mt-auto pt-4">
+                    <!-- Language -->
+                    <div class="relative">
+                        <select name="language" class="input-field appearance-none py-2 text-sm">
+                            {% for code, name in language_choices %}
+                            <option value="{{ code }}" {% if current_lang == code %}selected{% endif %}>{{ name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none opacity-60">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Theme Toggles -->
+                    <div class="flex items-center justify-end gap-2">
+                        <button type="button" hx-post="{% url 'message_cards:unified_card_management' %}"
+                            hx-vals='{"preview_theme": "celio"}' hx-target="#card-preview-container"
+                            class="theme-selector-btn bg-teal-700 {% if current_theme == 'celio' %}active{% endif %}"></button>
+                        <button type="button" hx-post="{% url 'message_cards:unified_card_management' %}"
+                            hx-vals='{"preview_theme": "light"}' hx-target="#card-preview-container"
+                            class="theme-selector-btn bg-slate-200 {% if current_theme == 'light' %}active{% endif %}"></button>
+                        <button type="button" hx-post="{% url 'message_cards:unified_card_management' %}"
+                            hx-vals='{"preview_theme": "dark"}' hx-target="#card-preview-container"
+                            class="theme-selector-btn bg-slate-800 {% if current_theme == 'dark' %}active{% endif %}"></button>
+                        <button type="button" hx-post="{% url 'message_cards:unified_card_management' %}"
+                            hx-vals='{"preview_theme": "purple"}' hx-target="#card-preview-container"
+                            class="theme-selector-btn bg-violet-600 {% if current_theme == 'purple' %}active{% endif %}"></button>
+                    </div>
+                </div>
+
             </div>
-
-        </div>
-
-        <!-- Footer -->
-        <div class="text-center py-6 border-t border-dynamic">
-            <h3 class="font-bold flex items-center justify-center text-dynamic">
-                Celio <span
-                    class="ml-2 flex items-center justify-center w-4 h-4 rounded-full bg-teal-400 text-white"><svg
-                        class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd"
-                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                            clip-rule="evenodd" />
-                    </svg></span>
-            </h3>
-            <p class="text-xs text-dynamic-dim mt-1 uppercase tracking-widest">
-                {% if current_lang == 'en' %}E-Card
-                {% elif current_lang == 'pt' %}Cartão-E
-                {% elif current_lang == 'es' %}Tarjeta-E
-                {% elif current_lang == 'fr' %}Carte-E
-                {% elif current_lang == 'de' %}E-Karte
-                {% else %}E-Card{% endif %}
-            </p>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
