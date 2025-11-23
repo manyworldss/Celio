@@ -35,8 +35,8 @@
     .theme-celio .input-field,
     .theme-celio textarea.input-field,
     .theme-celio select.input-field {
-        background: rgba(255, 255, 255, 0.1) !important;
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.15) !important;
+        border: 1px solid rgba(255, 255, 255, 0.3);
         color: white !important;
     }
 
@@ -235,11 +235,11 @@
                             class="block text-xs font-semibold uppercase tracking-wider label-text mb-1.5">Condition</label>
                         <div class="relative">
                             <select name="condition" class="input-field appearance-none">
-                                <option value="celiac" {% if card.condition == 'celiac' %}selected{% endif %}>Celiac
+                                <option value="celiac" {% if card.condition=='celiac' %}selected{% endif %}>Celiac
                                     Disease</option>
-                                <option value="sensitivity" {% if card.condition == 'sensitivity' %}selected{% endif %}>
+                                <option value="sensitivity" {% if card.condition=='sensitivity' %}selected{% endif %}>
                                     Gluten Sensitivity</option>
-                                <option value="allergy" {% if card.condition == 'allergy' %}selected{% endif %}>Wheat
+                                <option value="allergy" {% if card.condition=='allergy' %}selected{% endif %}>Wheat
                                     Allergy</option>
                             </select>
                             <div
@@ -269,7 +269,7 @@
                     <div class="relative">
                         <select name="language" class="input-field appearance-none py-2 text-sm">
                             {% for code, name in language_choices %}
-                            <option value="{{ code }}" {% if current_lang == code %}selected{% endif %}>{{ name }}
+                            <option value="{{ code }}" {% if current_lang==code %}selected{% endif %}>{{ name }}
                             </option>
                             {% endfor %}
                         </select>
