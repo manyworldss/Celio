@@ -113,9 +113,9 @@ class EmergencyCardForm(forms.ModelForm):
         emergency_contact_phone = cleaned_data.get('emergency_contact_phone')
         emergency_contact_relationship = cleaned_data.get('emergency_contact_relationship')
 
-        # If any contact field is filled, validate the combination
-        if not emergency_contact_name and not emergency_contact_phone:
-            raise forms.ValidationError('You must provide either a contact name or phone number.')
+        # Relaxed validation for demo mode
+        # if not emergency_contact_name and not emergency_contact_phone:
+        #     raise forms.ValidationError('You must provide either a contact name or phone number.')
 
         # If name is provided, relationship should also be provided
         if emergency_contact_name and not emergency_contact_relationship:
@@ -126,3 +126,19 @@ class EmergencyCardForm(forms.ModelForm):
             raise forms.ValidationError('Contact name is too short.')
 
         return cleaned_data
+
+
+class SimpleEmergencyCardForm(forms.ModelForm):
+    """Simplified form for the E-Card view with only essential fields."""
+    class Meta:
+        model = EmergencyCard
+        fields = [
+            'user_name',
+            'condition',
+            'custom_note',
+            'theme',
+            'preferred_language',
+        ]
+        widgets = {
+            'custom_note': forms.Textarea(attrs={'rows': 4}),
+        }

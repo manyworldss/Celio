@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.urls import reverse
 from .models import EmergencyCard
-from .forms import EmergencyCardForm
+from .forms import EmergencyCardForm, SimpleEmergencyCardForm
 import qrcode
 import base64
 # For PDF generation
@@ -960,7 +960,8 @@ def unified_card_management(request):
             # If the card doesn't exist or the UUID is invalid, create a new one
             card = None
     else:
-        card = None
+        # Create a default demo card if none exists
+        card = create_default_demo_card(request)
     
     def prepare_preview_context(request, card, current_lang):
         """
@@ -1049,8 +1050,10 @@ def unified_card_management(request):
         if request.POST.get('preview_theme'):
             preview_theme = request.POST.get('preview_theme')
             
-            # Update the card's theme if a card exists
-            if card:
+            # Use SimpleEmergencyCardForm to handle basic field updates
+            form = SimpleEmergencyCardForm(request.POST, instance=card)
+            if form.is_valid():
+                card = form.save(commit=False)
                 card.theme = preview_theme
                 card.save()
             
