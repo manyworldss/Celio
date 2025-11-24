@@ -1140,7 +1140,7 @@ def unified_card_management(request):
                 translation.activate(lang_code)
                 
                 # Render the template with the activated language
-                response = render(request, 'emergency_cards/partials/clean_preview.html', preview_context)
+                response = render(request, 'emergency_cards/partials/editable_card.html', preview_context)
                 
                 # Set the language cookie
                 response.set_cookie(settings.LANGUAGE_COOKIE_NAME, lang_code)
