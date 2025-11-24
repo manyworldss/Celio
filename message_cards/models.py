@@ -4,15 +4,17 @@ import uuid
 from .constants import PREDEFINED_MESSAGES, MEDICAL_INFO_BULLETS
 
 class EmergencyCard(models.Model):
-    # Theme choices - simplified to 3 essential themes
-    THEME_PURPLE = 'purple'
+    # Theme choices - simplified to 4 essential themes
+    THEME_CELIO = 'celio'
     THEME_LIGHT = 'light'
     THEME_DARK = 'dark'
+    THEME_PURPLE = 'purple'
 
     THEME_CHOICES = [
+        (THEME_CELIO, 'Celio'),
         (THEME_LIGHT, 'Light'),
-        (THEME_PURPLE, 'Dark'),
-        (THEME_DARK, 'Purple'),
+        (THEME_DARK, 'Dark'),
+        (THEME_PURPLE, 'Purple'),
     ]
 
     LANGUAGE_CHOICES = [
