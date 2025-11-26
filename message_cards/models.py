@@ -4,15 +4,17 @@ import uuid
 from .constants import PREDEFINED_MESSAGES, MEDICAL_INFO_BULLETS
 
 class EmergencyCard(models.Model):
-    # Theme choices - simplified to 3 essential themes
-    THEME_PURPLE = 'purple'
+    # Theme choices - simplified to 4 essential themes
+    THEME_CELIO = 'celio'
     THEME_LIGHT = 'light'
     THEME_DARK = 'dark'
+    THEME_PURPLE = 'purple'
 
     THEME_CHOICES = [
+        (THEME_CELIO, 'Celio'),
         (THEME_LIGHT, 'Light'),
-        (THEME_PURPLE, 'Dark'),
-        (THEME_DARK, 'Purple'),
+        (THEME_DARK, 'Dark'),
+        (THEME_PURPLE, 'Purple'),
     ]
 
     LANGUAGE_CHOICES = [
@@ -74,7 +76,7 @@ class EmergencyCard(models.Model):
                                          help_text='The primary language for your card interface')
     profile_picture = models.ImageField(upload_to='message_cards/', null=True, blank=True)
     show_profile_pic = models.BooleanField(default=True, verbose_name='Show Profile Picture')
-    theme = models.CharField(max_length=20, choices=THEME_CHOICES, default=THEME_LIGHT)
+    theme = models.CharField(max_length=20, choices=THEME_CHOICES, default=THEME_CELIO)
     
     # Translations for multiple languages (for custom notes)
     translations = models.JSONField(default=dict, blank=True,

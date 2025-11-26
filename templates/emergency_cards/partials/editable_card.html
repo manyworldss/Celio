@@ -9,21 +9,32 @@
     .card-container {
         perspective: 1000px;
         width: 100%;
-        max-width: 400px;
-        /* Match standard mobile width */
+        max-width: 380px;
+        /* Slightly narrower for better mobile fit */
         margin: 0 auto;
+        padding: 10px;
+        /* Add padding to prevent hover cutoff */
     }
 
     .card-inner {
         position: relative;
         width: 100%;
-        min-height: 600px;
-        border-radius: 20px;
+        /* Removed min-height to allow content to dictate size */
+        border-radius: 24px;
         overflow: hidden;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-        transition: all 0.5s ease;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         display: flex;
         flex-direction: column;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+    }
+
+    /* Hover Effect */
+    .card-inner:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.4);
+        border-color: rgba(255, 255, 255, 0.25);
     }
 
     /* Theme Styles */
@@ -35,8 +46,8 @@
     .theme-celio .input-field,
     .theme-celio textarea.input-field,
     .theme-celio select.input-field {
-        background: rgba(255, 255, 255, 0.15) !important;
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        background: rgba(255, 255, 255, 0.1) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2);
         color: white !important;
     }
 
@@ -53,28 +64,29 @@
     }
 
     .theme-light {
-        background: #f8fafc;
-        color: #1e293b;
+        background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+        /* Cerulean / Sky Blue */
+        color: white;
     }
 
     .theme-light .input-field,
     .theme-light textarea.input-field,
     .theme-light select.input-field {
-        background: white !important;
-        border: 1px solid #e2e8f0;
-        color: #1e293b !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white !important;
     }
 
     .theme-light .input-field::placeholder {
-        color: #94a3b8;
+        color: rgba(255, 255, 255, 0.6);
     }
 
     .theme-light .label-text {
-        color: #475569;
+        color: rgba(255, 255, 255, 0.9);
     }
 
     .theme-light .divider {
-        border-color: #e2e8f0;
+        border-color: rgba(255, 255, 255, 0.2);
     }
 
     .theme-dark {
@@ -143,29 +155,34 @@
     }
 
     .card-header {
-        padding: 24px;
+        padding: 24px 24px 16px;
+        /* Increased padding for breathing room */
         text-align: center;
         position: relative;
     }
 
     .profile-image {
-        width: 80px;
-        height: 80px;
+        width: 64px;
+        /* Slightly larger for balance */
+        height: 64px;
         border-radius: 50%;
-        margin: 0 auto 16px;
+        margin: 0 auto 12px;
+        /* Increased bottom margin */
         background: rgba(255, 255, 255, 0.2);
         display: flex;
         align-items: center;
         justify-content: center;
-        border: 3px solid rgba(255, 255, 255, 0.3);
+        border: 2px solid rgba(255, 255, 255, 0.4);
     }
 
     .card-body {
-        padding: 0 24px 24px;
+        padding: 0 24px 28px;
+        /* Increased padding */
         flex: 1;
         display: flex;
         flex-direction: column;
         gap: 16px;
+        /* Increased gap to fix crammed look */
     }
 
     .theme-selector-btn {
@@ -186,21 +203,147 @@
         transform: scale(1.1);
         box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
     }
+
+    .action-btn {
+        padding: 8px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        transition: all 0.2s;
+        cursor: pointer;
+    }
+
+    .action-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-1px);
+    }
+
+    .theme-light .action-btn {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.2);
+        color: white;
+    }
+
+    .theme-light .action-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* --- CRITICAL: Input Visibility Overrides (Bulletproof) --- */
+    /* Using !important on everything to override any Tailwind or browser defaults */
+
+    /* Base Input Styles */
+    .input-field,
+    textarea.input-field,
+    select.input-field {
+        transition: all 0.2s ease-in-out;
+    }
+
+    /* CELIO THEME (Dark Teal) */
+    .theme-celio .input-field,
+    .theme-celio textarea.input-field,
+    .theme-celio select.input-field {
+        background-color: rgba(255, 255, 255, 0.15) !important;
+        color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    }
+
+    .theme-celio .input-field::placeholder {
+        color: rgba(255, 255, 255, 0.7) !important;
+        -webkit-text-fill-color: rgba(255, 255, 255, 0.7) !important;
+    }
+
+    /* LIGHT THEME (Now Cerulean Blue) */
+    .theme-light .input-field,
+    .theme-light textarea.input-field,
+    .theme-light select.input-field {
+        background-color: rgba(255, 255, 255, 0.15) !important;
+        color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    }
+
+    .theme-light .input-field::placeholder {
+        color: rgba(255, 255, 255, 0.7) !important;
+        -webkit-text-fill-color: rgba(255, 255, 255, 0.7) !important;
+    }
+
+    /* DARK THEME (Dark Slate) */
+    .theme-dark .input-field,
+    .theme-dark textarea.input-field,
+    .theme-dark select.input-field {
+        background-color: rgba(0, 0, 0, 0.4) !important;
+        color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    }
+
+    .theme-dark .input-field::placeholder {
+        color: rgba(255, 255, 255, 0.5) !important;
+        -webkit-text-fill-color: rgba(255, 255, 255, 0.5) !important;
+    }
+
+    /* PURPLE THEME (Violet) */
+    .theme-purple .input-field,
+    .theme-purple textarea.input-field,
+    .theme-purple select.input-field {
+        background-color: rgba(255, 255, 255, 0.15) !important;
+        color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    }
+
+    .theme-purple .input-field::placeholder {
+        color: rgba(255, 255, 255, 0.7) !important;
+        -webkit-text-fill-color: rgba(255, 255, 255, 0.7) !important;
+    }
 </style>
 
-<div class="card-container">
-    <div class="card-inner theme-{{ current_theme }}">
+<div class="card-container" x-data="eCardComponent()">
+    <!-- Dynamic Theme Class -->
+    <div class="card-inner" :class="'theme-' + theme">
 
-        <!-- Form for Live Updates -->
-        <form hx-post="{% url 'message_cards:unified_card_management' %}"
-            hx-trigger="change delay:500ms, keyup delay:500ms changed" hx-target="#card-preview-container"
-            hx-swap="innerHTML" class="h-full flex flex-col">
-
+        <!-- Form for Background Saving (Hidden HTMX) -->
+        <form id="card-form" hx-post="{% url 'message_cards:unified_card_management' %}" hx-trigger="submit"
+            hx-swap="none" class="h-full flex flex-col">
             {% csrf_token %}
-            <input type="hidden" name="preview_theme" value="{{ current_theme }}">
+            <!-- Hidden inputs to sync Alpine state with form for saving -->
+            <input type="hidden" name="user_name" :value="userName">
+            <input type="hidden" name="condition" :value="condition">
+            <input type="hidden" name="active_language" :value="language">
+            <input type="hidden" name="preview_theme" :value="theme">
+            <input type="hidden" name="custom_note" :value="customNote">
+            <!-- Force language update flag -->
+            <input type="hidden" name="force_language_update" value="true">
+            <input type="hidden" name="switch_language" value="true">
+            <input type="hidden" name="previous_language" :value="language">
+
 
             <!-- Header Section -->
             <div class="card-header">
+                <!-- Action Buttons (Absolute Top Left) -->
+                <div class="absolute top-4 left-4 flex gap-2 z-10">
+                    <button type="button" class="action-btn" title="Share" @click="shareCard()">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
+                        </svg>
+                    </button>
+                    <button type="button" class="action-btn" title="Download" @click="downloadCard()">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    </button>
+                    <button type="button" class="action-btn" title="Print" onclick="window.print()">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                        </svg>
+                    </button>
+                </div>
+
                 <div class="profile-image">
                     <svg class="w-10 h-10 opacity-80" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
@@ -208,14 +351,7 @@
                     </svg>
                 </div>
                 <h1 class="text-2xl font-bold tracking-tight">E-Card</h1>
-                <p class="text-sm opacity-80 mt-1">
-                    {% if current_lang == 'en' %}Gluten-Free
-                    {% elif current_lang == 'pt' %}Sem Glúten
-                    {% elif current_lang == 'es' %}Sin Gluten
-                    {% elif current_lang == 'fr' %}Sans Gluten
-                    {% elif current_lang == 'de' %}Glutenfrei
-                    {% else %}Gluten-Free{% endif %}
-                </p>
+                <p class="text-sm opacity-80 mt-1">Gluten-Free</p>
             </div>
 
             <!-- Body Section -->
@@ -226,7 +362,7 @@
                     <div>
                         <label
                             class="block text-xs font-semibold uppercase tracking-wider label-text mb-1.5">Name</label>
-                        <input type="text" name="user_name" value="{{ card.user_name|default:'' }}" class="input-field"
+                        <input type="text" x-model="userName" @input.debounce.1000ms="saveCard()" class="input-field"
                             placeholder="Your Name">
                     </div>
 
@@ -234,13 +370,10 @@
                         <label
                             class="block text-xs font-semibold uppercase tracking-wider label-text mb-1.5">Condition</label>
                         <div class="relative">
-                            <select name="condition" class="input-field appearance-none">
-                                <option value="celiac" {% if card.condition=='celiac' %}selected{% endif %}>Celiac
-                                    Disease</option>
-                                <option value="sensitivity" {% if card.condition=='sensitivity' %}selected{% endif %}>
-                                    Gluten Sensitivity</option>
-                                <option value="allergy" {% if card.condition=='allergy' %}selected{% endif %}>Wheat
-                                    Allergy</option>
+                            <select x-model="condition" @change="saveCard()" class="input-field appearance-none">
+                                <option value="CEL">Celiac Disease</option>
+                                <option value="SEN">Gluten Sensitivity</option>
+                                <option value="ALL">Wheat Allergy</option>
                             </select>
                             <div
                                 class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none opacity-60">
@@ -256,21 +389,31 @@
                 <div class="divider border-t my-2"></div>
 
                 <!-- Message Area -->
-                <div class="flex-1">
-                    <label class="block text-xs font-semibold uppercase tracking-wider label-text mb-1.5">Safety
-                        Message</label>
-                    <textarea name="message_text" rows="6" class="input-field resize-none h-full"
-                        placeholder="Enter your safety message...">{{ card.get_message }}</textarea>
+                <div class="relative">
+                    <div class="flex justify-between items-center mb-1.5">
+                        <label class="block text-xs font-semibold uppercase tracking-wider label-text">Safety
+                            Message</label>
+                        <button type="button" class="p-1.5 rounded-full hover:bg-white/10 transition-colors"
+                            title="Play Audio" @click="playAudio()">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <textarea x-model="customNote" @input.debounce.1000ms="saveCard()"
+                        class="input-field resize-none w-full" rows="6"
+                        placeholder="Enter your safety message..."></textarea>
                 </div>
 
                 <!-- Controls -->
                 <div class="grid grid-cols-2 gap-4 mt-auto pt-4">
                     <!-- Language -->
                     <div class="relative">
-                        <select name="language" class="input-field appearance-none py-2 text-sm">
+                        <select x-model="language" @change="saveCard()"
+                            class="input-field appearance-none py-2 text-sm">
                             {% for code, name in language_choices %}
-                            <option value="{{ code }}" {% if current_lang==code %}selected{% endif %}>{{ name }}
-                            </option>
+                            <option value="{{ code }}">{{ name }}</option>
                             {% endfor %}
                         </select>
                         <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none opacity-60">
@@ -283,18 +426,14 @@
 
                     <!-- Theme Toggles -->
                     <div class="flex items-center justify-end gap-2">
-                        <button type="button" hx-post="{% url 'message_cards:unified_card_management' %}"
-                            hx-vals='{"preview_theme": "celio"}' hx-target="#card-preview-container"
-                            class="theme-selector-btn bg-teal-700 {% if current_theme == 'celio' %}active{% endif %}"></button>
-                        <button type="button" hx-post="{% url 'message_cards:unified_card_management' %}"
-                            hx-vals='{"preview_theme": "light"}' hx-target="#card-preview-container"
-                            class="theme-selector-btn bg-slate-200 {% if current_theme == 'light' %}active{% endif %}"></button>
-                        <button type="button" hx-post="{% url 'message_cards:unified_card_management' %}"
-                            hx-vals='{"preview_theme": "dark"}' hx-target="#card-preview-container"
-                            class="theme-selector-btn bg-slate-800 {% if current_theme == 'dark' %}active{% endif %}"></button>
-                        <button type="button" hx-post="{% url 'message_cards:unified_card_management' %}"
-                            hx-vals='{"preview_theme": "purple"}' hx-target="#card-preview-container"
-                            class="theme-selector-btn bg-violet-600 {% if current_theme == 'purple' %}active{% endif %}"></button>
+                        <button type="button" @click="setTheme('celio')" class="theme-selector-btn bg-teal-700"
+                            :class="{ 'active': theme === 'celio' }"></button>
+                        <button type="button" @click="setTheme('light')" class="theme-selector-btn bg-sky-500"
+                            :class="{ 'active': theme === 'light' }"></button>
+                        <button type="button" @click="setTheme('dark')" class="theme-selector-btn bg-slate-800"
+                            :class="{ 'active': theme === 'dark' }"></button>
+                        <button type="button" @click="setTheme('purple')" class="theme-selector-btn bg-violet-600"
+                            :class="{ 'active': theme === 'purple' }"></button>
                     </div>
                 </div>
 
@@ -302,3 +441,155 @@
         </form>
     </div>
 </div>
+
+<script>
+    function eCardComponent() {
+        // Parse the JSON data injected from the view
+        const initialData = JSON.parse('{{ card_data_json|escapejs }}');
+
+        return {
+            userName: initialData.userName,
+            condition: initialData.condition,
+            language: initialData.language,
+            theme: initialData.theme,
+            customNote: initialData.customNote,
+            translations: initialData.translations || {},
+            commonTranslations: initialData.commonTranslations,
+            defaultMessages: initialData.defaultMessages,
+
+            init() {
+                console.log('Alpine E-Card Initialized', this.language, this.theme);
+
+                // Watch for changes to language
+                this.$watch('language', (newLang, oldLang) => {
+                    this.switchLanguage(newLang, oldLang);
+                });
+
+                // Watch for changes to condition
+                this.$watch('condition', (newCondition, oldCondition) => {
+                    this.switchCondition(newCondition, oldCondition);
+                });
+            },
+
+            setTheme(newTheme) {
+                this.theme = newTheme;
+                this.saveCard();
+            },
+
+            getHeaderText() {
+                return this.commonTranslations.header[this.language] || 'Gluten-Free';
+            },
+
+            getTranslation(key) {
+                // Try to get translation for the current language
+                if (this.commonTranslations[key] && this.commonTranslations[key][this.language]) {
+                    return this.commonTranslations[key][this.language];
+                }
+                // Fallback to English
+                return this.commonTranslations[key]['en'] || key;
+            },
+
+            switchLanguage(newLang, oldLang) {
+                // 1. Save the current note to translations for the old language
+                // This ensures that if the user switches back, their custom text is preserved
+                if (oldLang) {
+                    this.translations[oldLang] = this.customNote;
+                }
+
+                // 2. Try to find a saved translation for the new language
+                const savedTranslation = this.translations[newLang];
+
+                if (savedTranslation && savedTranslation.trim() !== '') {
+                    // If we have a saved translation, use it
+                    this.customNote = savedTranslation;
+                } else {
+                    // 3. Fallback to default message for the new language and current condition
+                    const defaults = this.defaultMessages[this.condition] || {};
+                    this.customNote = defaults[newLang] || '';
+                }
+            },
+
+            switchCondition(newCondition, oldCondition) {
+                // When condition changes, we generally want to update the message to the new condition's default.
+                // However, if the user has written a completely custom note that ISN'T a standard message,
+                // we might want to be careful. 
+                // BUT, usually changing condition means the medical need changed, so the old message is likely wrong.
+
+                // Let's check if the current note matches ANY default message (in any language/condition)
+                // If it does, we definitely update.
+                // If it's custom, we still update because the medical condition is paramount.
+                // The user can always re-type their name/details.
+
+                // To be safe and "smart":
+                // If the current note is empty or matches a default, update it.
+                // If it's custom, we'll STILL update it because safety first - a Celiac card shouldn't say "Allergy".
+
+                const defaults = this.defaultMessages[newCondition] || {};
+                this.customNote = defaults[this.language] || '';
+
+                // Also update the translation for the current language so it's saved
+                this.translations[this.language] = this.customNote;
+            },
+
+            saveCard() {
+                // Update the translation for the current language before saving
+                this.translations[this.language] = this.customNote;
+
+                // Trigger HTMX request to save data in background
+                const form = document.getElementById('card-form');
+                htmx.trigger(form, 'submit');
+                console.log('Saving card data...', {
+                    name: this.userName,
+                    condition: this.condition,
+                    lang: this.language,
+                    theme: this.theme
+                });
+            },
+
+            playAudio() {
+                const message = this.customNote;
+                const lang = this.language;
+
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                    const utterance = new SpeechSynthesisUtterance(message);
+                    utterance.lang = lang;
+
+                    // Try to find a matching voice
+                    const voices = window.speechSynthesis.getVoices();
+                    const matchingVoice = voices.find(voice => voice.lang.startsWith(lang));
+                    if (matchingVoice) {
+                        utterance.voice = matchingVoice;
+                    }
+
+                    window.speechSynthesis.speak(utterance);
+                } else {
+                    alert('Text-to-speech not supported');
+                }
+            },
+
+            shareCard() {
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'My E-Card',
+                        text: 'Check out my Celio E-Card',
+                        url: window.location.href
+                    });
+                } else {
+                    navigator.clipboard.writeText(window.location.href);
+                    alert('Link copied!');
+                }
+            },
+
+            downloadCard() {
+                const url = `{% url "message_cards:download_card" %}?format=mobile&lang=${this.language}&theme=${this.theme}`;
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `celio-card-${this.language}.html`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+    }
+</script>

@@ -309,14 +309,14 @@ def create_default_demo_card(request):
     """
     # Create a default demo card
     card = EmergencyCard.objects.create(
-        user_name="Demo User",
-        condition="CEL",  # Celiac Disease
+        condition='CEL',
+        language='en',
+        theme='celio',
+        user_name='Demo User',
         emergency_contact_name="Emergency Contact",
         emergency_contact_relationship="Family",
         emergency_contact_phone="+1-555-123-4567",
         preferred_language="en",
-        language="en",
-        theme="medical"
     )
     
     # Set a default custom note
@@ -978,9 +978,16 @@ def unified_card_management(request):
         # Ensure current_lang is lowercase for consistency
         current_lang = current_lang.lower()
         
+        # VALIDATE THEME: If card has a legacy theme (e.g. 'medical'), force update to 'celio'
+        valid_themes = ['celio', 'light', 'dark', 'purple']
+        if card and card.theme not in valid_themes:
+            print(f"DEBUG: Migrating invalid theme '{card.theme}' to 'celio'")
+            card.theme = 'celio'
+            card.save(update_fields=['theme'])
+
         # Default theme if card doesn't exist
-        preview_theme = request.POST.get('preview_theme', card.theme if card else 'minimal')
-        
+        preview_theme = request.POST.get('preview_theme', card.theme if card else 'celio')
+    
         # If no card, return default empty context
         if not card:
             return {
@@ -1076,6 +1083,9 @@ def unified_card_management(request):
             
             previous_lang = request.POST.get('previous_language', 'en').lower()
             print(f"DEBUG: Switch language - from {previous_lang} to {current_lang}")
+            print(f"DEBUG: Full POST keys: {list(request.POST.keys())}")
+            print(f"DEBUG: Condition in POST: {request.POST.get('condition')}")
+            print(f"DEBUG: User Name in POST: {request.POST.get('user_name')}")
             
             # Check if we have an updated custom note from the form
             custom_note_field_name = f'custom_note_{previous_lang}'
@@ -1087,6 +1097,28 @@ def unified_card_management(request):
                 if card and custom_note_from_form:
                     card.set_custom_note(previous_lang, custom_note_from_form)
                     card.save()
+            
+            # --- CRITICAL FIX: Save other form fields (Name, Condition) ---
+            if card:
+                # Update user name if provided
+                user_name = request.POST.get('user_name')
+                if user_name is not None:
+                    card.user_name = user_name
+                
+                # Update condition if provided
+                condition = request.POST.get('condition')
+                if condition:
+                    card.condition = condition
+                
+                # Also check for the generic 'custom_note' field which might contain the latest edit
+                # This is important because the textarea name is just 'custom_note'
+                generic_custom_note = request.POST.get('custom_note')
+                if generic_custom_note is not None:
+                    # Save it for the PREVIOUS language since that's what was just edited
+                    card.set_custom_note(previous_lang, generic_custom_note)
+                
+                card.save()
+            # -----------------------------------------------------------
             
             # Handle translation of custom note to the current language
             if card:
@@ -1114,14 +1146,12 @@ def unified_card_management(request):
             # Update card's preferred language
             if card:
                 card.preferred_language = current_lang
-                
-                # Force save language selection and reset any language cookies if requested
-                if request.POST.get('force_language_update') == 'true':
-                    # Explicitly set language to ensure it takes precedence
-                    card.language = current_lang
+                # ALWAYS update the main language field to match preferred_language during a switch
+                # This ensures consistency across reloads and different views
+                card.language = current_lang
                     
                 card.save(update_fields=['preferred_language', 'language'])
-                print(f"DEBUG: Updated card preferred language during AJAX to: {card.preferred_language}")
+                print(f"DEBUG: Updated card language to: {card.language}")
             
             # Prepare context for preview
             preview_context = prepare_preview_context(request, card, current_lang)
@@ -1140,7 +1170,7 @@ def unified_card_management(request):
                 translation.activate(lang_code)
                 
                 # Render the template with the activated language
-                response = render(request, 'emergency_cards/partials/clean_preview.html', preview_context)
+                response = render(request, 'emergency_cards/partials/editable_card.html', preview_context)
                 
                 # Set the language cookie
                 response.set_cookie(settings.LANGUAGE_COOKIE_NAME, lang_code)
@@ -1243,6 +1273,30 @@ def unified_card_management(request):
     
     # Get preview theme from request or use card's theme or default
     preview_theme = request.POST.get('preview_theme') or request.GET.get('preview_theme')
+    
+    # VALIDATE THEME: If card has a legacy theme (e.g. 'medical'), force update to 'celio'
+    valid_themes = ['celio', 'light', 'dark', 'purple']
+    if card and card.theme not in valid_themes:
+        print(f"DEBUG: Migrating invalid theme '{card.theme}' to 'celio' in unified view")
+        card.theme = 'celio'
+        card.save(update_fields=['theme'])
+        
+    # VALIDATE CONDITION: Migrate legacy condition codes to new standard
+    # This fixes the bug where language switching fails for legacy cards
+    legacy_conditions = {
+        'celiac': 'CEL',
+        'sensitivity': 'SEN', 
+        'gluten_sensitivity': 'SEN',
+        'allergy': 'ALL',
+        'wheat_allergy': 'ALL'
+    }
+    
+    if card and card.condition in legacy_conditions:
+        new_code = legacy_conditions[card.condition]
+        print(f"DEBUG: Migrating legacy condition '{card.condition}' to '{new_code}'")
+        card.condition = new_code
+        card.save(update_fields=['condition'])
+        
     if not preview_theme:
         preview_theme = card.theme if card else 'celio'
     
@@ -1284,6 +1338,88 @@ def unified_card_management(request):
             print(f"DEBUG: Error generating QR code: {str(e)}")
             qr_code_url = None
     
+    # Prepare card data for Alpine.js
+    card_data = {
+        'userName': card.user_name if card else '',
+        'condition': card.condition if card else 'CEL',
+        'language': current_lang,
+        'theme': preview_theme,
+        'customNote': card.get_custom_note(current_lang) if card else '',
+        'translations': card.translations if card else {},
+        # Pre-populate common translations if empty (fallback)
+        'commonTranslations': {
+            'celiac': {
+                'en': 'Celiac Disease', 'es': 'Enfermedad Celíaca', 'fr': 'Maladie Cœliaque', 
+                'de': 'Zöliakie', 'it': 'Celiachia', 'pt': 'Doença Celíaca', 
+                'zh': '乳糜泻', 'ja': 'セリアック病', 'ko': '셀리악 병', 'ar': 'مرض السيلياك'
+            },
+            'sensitivity': {
+                'en': 'Gluten Sensitivity', 'es': 'Sensibilidad al Gluten', 'fr': 'Sensibilité au Gluten',
+                'de': 'Glutenunverträglichkeit', 'it': 'Sensibilità al Glutine', 'pt': 'Sensibilidade ao Glúten',
+                'zh': '麸质敏感', 'ja': 'グルテン過敏症', 'ko': '글루텐 민감증', 'ar': 'حساسية الغلوتين'
+            },
+            'allergy': {
+                'en': 'Wheat Allergy', 'es': 'Alergia al Trigo', 'fr': 'Allergie au Blé',
+                'de': 'Weizenallergie', 'it': 'Allergia al Grano', 'pt': 'Alergia ao Trigo',
+                'zh': '小麦过敏', 'ja': '小麦アレルギー', 'ko': '밀 알레르기', 'ar': 'حساسية القمح'
+            },
+            'header': {
+                'en': 'Gluten-Free', 'es': 'Sin Gluten', 'fr': 'Sans Gluten', 'de': 'Glutenfrei',
+                'it': 'Senza Glutine', 'pt': 'Sem Glúten', 'zh': '无麸质', 'ja': 'グルテンフリー',
+                'ko': '글루텐 프리', 'ar': 'خالي من الغلوتين'
+            },
+            'safetyMessage': {
+                'en': 'Safety Message', 'es': 'Mensaje de Seguridad', 'fr': 'Message de Sécurité',
+                'de': 'Sicherheitshinweis', 'it': 'Messaggio di Sicurezza', 'pt': 'Mensagem de Segurança',
+                'zh': '安全信息', 'ja': '安全メッセージ', 'ko': '안전 메시지', 'ar': 'رسالة أمان'
+            }
+        },
+        'defaultMessages': {
+            'CEL': {
+                'en': "I have Celiac Disease. Please ensure my food is completely gluten-free. No wheat, barley, rye, or oats.",
+                'es': "Tengo enfermedad celíaca. Por favor, asegúrese de que mi comida sea completamente sin gluten. Sin trigo, cebada, centeno o avena.",
+                'fr': "J'ai la maladie cœliaque. S'il vous plaît, assurez-vous que ma nourriture est complètement sans gluten. Pas de blé, d'orge, de seigle ou d'avoine.",
+                'de': "Ich habe Zöliakie. Bitte stellen Sie sicher, dass mein Essen komplett glutenfrei ist. Kein Weizen, Gerste, Roggen oder Hafer.",
+                'it': "Ho la celiachia. Per favore assicuratevi che il mio cibo sia completamente senza glutine. Niente grano, orzo, segale o avena.",
+                'pt': "Tenho doença celíaca. Por favor, certifique-se de que minha comida é completamente sem glúten. Sem trigo, cevada, centeio ou aveia.",
+                'zh': "我有乳糜泻。请确保我的食物完全不含麸质。没有小麦、大麦、黑麦或燕麦。",
+                'ja': "私はセリアック病です。私の食事が完全にグルテンフリーであることを確認してください。小麦、大麦、ライ麦、オート麦はダメです。",
+                'ko': "저는 셀리악 병이 있습니다. 제 음식이 완전히 글루텐 프리인지 확인해 주세요. 밀, 보리, 호밀 또는 귀리는 안 됩니다.",
+                'ar': "لدي مرض السيلياك. يرجى التأكد من أن طعامي خالٍ تمامًا من الغلوتين. لا قمح أو شعير أو جاودار أو شوفان.",
+                'ru': "У меня целиакия. Пожалуйста, убедитесь, что моя еда полностью безглютеновая. Никакой пшеницы, ячменя, ржи или овса.",
+                'hi': "मुझे सीलिएक रोग है। कृपया सुनिश्चित करें कि मेरा भोजन पूरी तरह से ग्लूटेन-मुक्त हो। कोई गेहूं, जौ, राई, या जई नहीं।"
+            },
+            'SEN': {
+                'en': "I have a gluten sensitivity. Please avoid wheat, barley, and rye.",
+                'es': "Tengo sensibilidad al gluten. Por favor evite el trigo, la cebada y el centeno.",
+                'fr': "J'ai une sensibilité au gluten. S'il vous plaît éviter le blé, l'orge et le seigle.",
+                'de': "Ich habe eine Glutenunverträglichkeit. Bitte vermeiden Sie Weizen, Gerste und Roggen.",
+                'it': "Ho una sensibilità al glutine. Si prega di evitare grano, orzo e segale.",
+                'pt': "Tenho sensibilidade ao glúten. Por favor, evite trigo, cevada e centeio.",
+                'zh': "我对麸质敏感。请避免小麦、大麦和黑麦。",
+                'ja': "私はグルテン過敏症です。小麦、大麦、ライ麦は避けてください。",
+                'ko': "저는 글루텐 민감증이 있습니다. 밀, 보리, 호밀은 피해 주세요.",
+                'ar': "لدي حساسية من الغلوتين. يرجى تجنب القمح والشعير والجاودار.",
+                'ru': "У меня чувствительность к глютену. Пожалуйста, избегайте пшеницы, ячменя и ржи.",
+                'hi': "मुझे ग्लूटेन संवेदनशीलता है। कृपया गेहूं, जौ और राई से बचें।"
+            },
+            'ALL': {
+                'en': "I have a severe wheat allergy. Please ensure no wheat is present in my food.",
+                'es': "Tengo una alergia severa al trigo. Por favor, asegúrese de que no haya trigo en mi comida.",
+                'fr': "J'ai une allergie grave au blé. S'il vous plaît, assurez-vous qu'il n'y a pas de blé dans ma nourriture.",
+                'de': "Ich habe eine schwere Weizenallergie. Bitte stellen Sie sicher, dass kein Weizen in meinem Essen ist.",
+                'it': "Ho una grave allergia al grano. Si prega di assicurarsi che non ci sia grano nel mio cibo.",
+                'pt': "Tenho uma alergia grave ao trigo. Por favor, certifique-se de que não há trigo na minha comida.",
+                'zh': "我有严重的小麦过敏。请确保我的食物中没有小麦。",
+                'ja': "私は重度の小麦アレルギーです。私の食事に小麦が含まれていないことを確認してください。",
+                'ko': "저는 심각한 밀 알레르기가 있습니다. 제 음식에 밀이 없는지 확인해 주세요.",
+                'ar': "لدي حساسية شديدة من القمح. يرجى التأكد من عدم وجود قمح في طعامي.",
+                'ru': "У меня сильная аллергия на пшеницу. Пожалуйста, убедитесь, что в моей еде нет пшеницы.",
+                'hi': "मुझे गेहूं से गंभीर एलर्जी है। कृपया सुनिश्चित करें कि मेरे भोजन में कोई गेहूं न हो।"
+            }
+        }
+    }
+    
     # Prepare context for template rendering
     context = {
         'form': form,
@@ -1296,6 +1432,7 @@ def unified_card_management(request):
         'translations': card.translations if card else {},
         'preview_theme': preview_theme,
         'qr_code_url': qr_code_url,
+        'card_data_json': json.dumps(card_data), # Pass as JSON string
     }
     
     # Activate Django translation for this request
