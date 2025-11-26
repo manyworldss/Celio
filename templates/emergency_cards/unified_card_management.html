@@ -7,6 +7,39 @@
 {% block extra_head %}
 <script src="https://unpkg.com/htmx.org@1.9.10"></script>
 <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<style>
+    .masked-text {
+        display: inline-block;
+        /* Important for background clip and animation */
+        color: transparent;
+        background-size: 200% auto;
+        background-position: 0 50%;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: animate-background 3s infinite alternate linear;
+    }
+
+    .gradient-teal {
+        background-image: linear-gradient(to right, #2dd4bf, #34d399, #22d3ee);
+        /* teal-400, emerald-400, cyan-400 */
+    }
+
+    .gradient-purple {
+        background-image: linear-gradient(to right, #c084fc, #f472b6, #fb7185);
+        /* purple-400, pink-400, rose-400 */
+    }
+
+    @keyframes animate-background {
+        0% {
+            background-position: 0 50%;
+        }
+
+        100% {
+            background-position: 100% 50%;
+        }
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -35,10 +68,8 @@
                     Live Demo
                 </div>
                 <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-tight">
-                    Speak <span
-                        class="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 via-emerald-400 to-cyan-400">Fluently</span><br>
-                    Eat <span
-                        class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-rose-400">Safely</span>
+                    Speak <span class="masked-text gradient-teal">Fluently</span><br>
+                    Eat <span class="masked-text gradient-purple">Safely</span>
                 </h1>
                 <p class="text-lg text-neutral-300 leading-relaxed">
                     Your digital food safety passport. Instantly translate your dietary needs into the local language,
@@ -112,31 +143,14 @@
                 <div
                     class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-gradient-to-tr from-teal-500/20 via-purple-500/20 to-blue-500/20 blur-[60px] -z-10 rounded-full opacity-70 group-hover:opacity-100 transition-opacity duration-700">
                 </div>
-                <div
-                    class="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent rounded-[32px] -z-10 border border-white/10">
-                </div>
+                <!-- Removed Extra Layer Border Div -->
 
                 <div id="card-preview-container"
                     class="transform transition-all duration-500 hover:scale-[1.01] hover:-translate-y-1">
                     {% include "emergency_cards/partials/editable_card.html" %}
                 </div>
 
-                <div class="mt-8 flex justify-center gap-6 text-sm text-neutral-500">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
-                            </path>
-                        </svg>
-                        <span>Offline Ready</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
-                        </svg>
-                        <span>Mobile Optimized</span>
-                    </div>
-                </div>
+                <!-- Removed Footer Text (Offline Ready / Mobile Optimized) -->
             </div>
         </div>
 

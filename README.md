@@ -91,6 +91,14 @@ The application follows a modern web architecture pattern combining server-side 
 - Built robust session recovery for interrupted card creation workflows
 - Managed multilingual content persistence across user sessions
 
+**Client-Side State Management (Alpine.js Migration):**
+- **Problem:** Initial server-side rendering with HTMX caused noticeable UI stutter and full-page refreshes during high-frequency interactions (e.g., toggling themes, switching languages).
+- **Solution:** Migrated interactive card state to **Alpine.js** for instant, client-side reactivity.
+- **Hybrid Approach:** 
+    - **Alpine.js** handles the immediate UI updates (text changes, class toggles) for a premium, app-like feel.
+    - **HTMX** operates in the background, debounced, to persist state to the server without interrupting the user flow.
+    - **Result:** Zero-latency interactions with robust server-side persistence.
+
 ---
 
 ### What I learned

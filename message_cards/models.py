@@ -76,7 +76,7 @@ class EmergencyCard(models.Model):
                                          help_text='The primary language for your card interface')
     profile_picture = models.ImageField(upload_to='message_cards/', null=True, blank=True)
     show_profile_pic = models.BooleanField(default=True, verbose_name='Show Profile Picture')
-    theme = models.CharField(max_length=20, choices=THEME_CHOICES, default=THEME_LIGHT)
+    theme = models.CharField(max_length=20, choices=THEME_CHOICES, default=THEME_CELIO)
     
     # Translations for multiple languages (for custom notes)
     translations = models.JSONField(default=dict, blank=True,
