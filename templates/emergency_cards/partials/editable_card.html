@@ -30,11 +30,10 @@
         backdrop-filter: blur(10px);
     }
 
-    /* Hover Effect */
+    /* Hover Effect - Subtle lighting only, no scaling */
     .card-inner:hover {
-        transform: translateY(-5px) scale(1.02);
-        box-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.4);
-        border-color: rgba(255, 255, 255, 0.25);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4), 0 0 40px rgba(45, 212, 191, 0.15);
+        border-color: rgba(255, 255, 255, 0.3);
     }
 
     /* Theme Styles */
@@ -297,6 +296,25 @@
     .theme-purple .input-field::placeholder {
         color: rgba(255, 255, 255, 0.7) !important;
         -webkit-text-fill-color: rgba(255, 255, 255, 0.7) !important;
+    }
+
+    /* CRITICAL: Fix dropdown option visibility */
+    /* Browser dropdown menus have white backgrounds, so options need dark text */
+    select.input-field option,
+    .input-field option {
+        background-color: #ffffff !important;
+        color: #1f2937 !important;
+        -webkit-text-fill-color: #1f2937 !important;
+    }
+
+    /* Hover/selected state for options */
+    select.input-field option:hover,
+    select.input-field option:checked,
+    .input-field option:hover,
+    .input-field option:checked {
+        background-color: #0f766e !important;
+        color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
     }
 </style>
 
