@@ -3,9 +3,12 @@
 
 **Multilingual E-Cards for Celiac Disease**
 
-![Screenshot 2025-07-08 171654](https://github.com/user-attachments/assets/b891d1ef-be56-4533-b480-76687eaa0cbb)
 
-*A comprehensive demo web application showcasing modern full-stack development, designed to become a mobile app later in 2025.*
+<img width="1324" height="773" alt="Screenshot 2025-12-01 at 1 06 49 PM" src="https://github.com/user-attachments/assets/bf3bbc51-0517-4c8f-b5c9-9ffbf3b2c0fd" />
+
+
+
+*A comprehensive demo web application showcasing modern full-stack development, designed to become a mobile app later in 2026.*
 
 
 
@@ -19,7 +22,7 @@ This tool creates a downloadable card that explains your condition in multiple l
 
 ### What it does
 
-- Translates celiac safety info into 6+ languages
+- Translates celiac safety info into 6+ languages (audio or text)
 - Generates an emergency card you can save or print
 - Doesn’t need an account or any login
 - Works on your phone or laptop
@@ -63,7 +66,7 @@ The application follows a modern web architecture pattern combining server-side 
 1. **Dynamic Card Creation**: Users input their medical condition and personal details
 2. **Real-time Translation**: Custom translation engine converts medical information into 11+ languages
 3. **Live Preview**: HTMX enables instant updates without page refreshes
-4. **Theme Customization**: Multiple visual themes (Teal, Light, Dark, Purple) with CSS custom properties
+4. **Theme Customization**: Multiple visual themes (Teal, Blue, Dark, Purple) with CSS custom properties
 5. **Export Options**: Cards can be downloaded as HTML, PDF, or shared via QR codes
 6. **Accessibility First**: WCAG 2.1 AA compliant with keyboard navigation and screen reader support
 
@@ -77,7 +80,7 @@ The application follows a modern web architecture pattern combining server-side 
 - Handled medical terminology accuracy across cultural contexts
 
 **Real-time Preview System:**
-- Integrated HTMX for seamless form updates without JavaScript complexity
+- Integrated HTMX for seamless form updates without JavaScript complexity (Switched to alpine.js for persistence of translations)
 - Managed complex state synchronization between form inputs and card preview
 - Optimized for mobile performance with minimal network requests
 
@@ -161,26 +164,24 @@ Rapheal Suber — UX Designer & Full-Stack Developer passionate about creating t
 
 ## Screenshots
 
+
 Card Creation
 
-![Screenshot 2025-07-08 122102](https://github.com/user-attachments/assets/97ddf50e-e474-4011-9b9c-ea69d97925bf)
-![Screenshot 2025-07-08 122132](https://github.com/user-attachments/assets/8219939c-1a93-4fcc-81a5-c8d03888c25c)
 
-![Screenshot 2025-07-08 122036](https://github.com/user-attachments/assets/d68a354c-b6c2-4ed1-ac3a-f40a73a00748)
-![Screenshot 2025-07-08 121949](https://github.com/user-attachments/assets/3fc86239-f5d1-4c92-873b-ce9ac8b3eee1)
-![Screenshot 2025-07-08 122153](https://github.com/user-attachments/assets/1dab4b89-1c8b-4d03-a710-14931fcc9c04)
+<img width="1436" height="811" alt="Screenshot 2025-12-07 at 3 02 28 AM" src="https://github.com/user-attachments/assets/fe7ed4b3-38c4-4d49-aeb2-09b9d58d98d3" />
+
+<img width="1440" height="817" alt="Screenshot 2025-12-07 at 3 03 27 AM" src="https://github.com/user-attachments/assets/4d563363-59df-428e-b29e-83d1fcb76028" />
 
  
 
-Travel Guides
-![Screenshot 2025-07-08 164954](https://github.com/user-attachments/assets/e02b106f-2ca9-4b4b-b877-ed80acc4bdd1)
-![Screenshot 2025-07-08 164938](https://github.com/user-attachments/assets/c0f95c8a-19c9-4330-b0ac-b16a0f11291e)
-![Screenshot 2025-07-08 165042](https://github.com/user-attachments/assets/dc768051-8799-408c-90fb-9fba87557f2a)
+Sage AI
+
+<img width="1408" height="724" alt="Screenshot 2025-12-07 at 2 59 14 AM" src="https://github.com/user-attachments/assets/2d007fcc-139e-4b83-bf97-c4c573a7610a" />
 
 
+<img width="1398" height="737" alt="Screenshot 2025-12-07 at 3 00 19 AM" src="https://github.com/user-attachments/assets/7dec9a72-5d44-49c6-856b-075fb1e93952" />
 
-Sage Assistant
-![Screenshot 2025-07-08 122309](https://github.com/user-attachments/assets/c59dc3f3-c1e2-4fbb-a4b9-2a09c7a310ed)
+
 
 
 
