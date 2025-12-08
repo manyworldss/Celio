@@ -19,7 +19,7 @@
     }
 
     body {
-        background-color: #000000;
+        background: linear-gradient(135deg, #0a0014 0%, #0d0520 50%, #08001a 100%);
         color: #ffffff;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         overflow-x: hidden;
@@ -33,7 +33,7 @@
         right: 0;
         bottom: 0;
         z-index: -1;
-        background: #000000;
+        background: linear-gradient(135deg, #0a0014 0%, #0d0520 50%, #08001a 100%);
     }
 
     .sage-bg::before {
@@ -156,11 +156,11 @@
 
     /* Glass Panel */
     .glass-panel {
-        background: rgba(124, 58, 237, 0.02);
+        background: rgba(124, 58, 237, 0.08);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(124, 58, 237, 0.08);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(124, 58, 237, 0.25);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
     }
 
     /* Message Bubbles */
@@ -182,8 +182,8 @@
     }
 
     .message-bubble.assistant {
-        background: rgba(124, 58, 237, 0.08);
-        border: 1px solid rgba(124, 58, 237, 0.2);
+        background: rgba(124, 58, 237, 0.12);
+        border: 1px solid rgba(124, 58, 237, 0.35);
         border-radius: 20px 20px 20px 4px;
         padding: 16px 20px;
         color: #ffffff;
@@ -213,8 +213,8 @@
 
     /* Input Area */
     .chat-input-wrapper {
-        background: rgba(124, 58, 237, 0.05);
-        border: 1px solid rgba(124, 58, 237, 0.2);
+        background: rgba(124, 58, 237, 0.08);
+        border: 1px solid rgba(124, 58, 237, 0.3);
         border-radius: 14px;
         padding: 4px;
         transition: all 0.3s ease;
@@ -300,19 +300,19 @@
     }
 
     .conversation-item:hover {
-        background: rgba(124, 58, 237, 0.05);
-        border-color: rgba(124, 58, 237, 0.2);
-    }
-
-    .conversation-item.active {
         background: rgba(124, 58, 237, 0.1);
         border-color: rgba(124, 58, 237, 0.3);
     }
 
+    .conversation-item.active {
+        background: rgba(124, 58, 237, 0.15);
+        border-color: rgba(124, 58, 237, 0.4);
+    }
+
     /* Travel Guide Cards */
     .travel-card {
-        background: rgba(255, 255, 255, 0.02);
-        border: 1px solid rgba(124, 58, 237, 0.2);
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(124, 58, 237, 0.3);
         border-radius: 16px;
         overflow: hidden;
         transition: all 0.3s ease;
@@ -321,8 +321,8 @@
 
     .travel-card:hover {
         transform: translateY(-4px);
-        border-color: rgba(124, 58, 237, 0.4);
-        box-shadow: 0 20px 40px rgba(124, 58, 237, 0.2);
+        border-color: rgba(124, 58, 237, 0.6);
+        box-shadow: 0 20px 40px rgba(124, 58, 237, 0.25);
     }
 
     @keyframes slideInUp {
@@ -339,8 +339,8 @@
 
     /* Welcome Cards */
     .welcome-card {
-        background: rgba(255, 255, 255, 0.02);
-        border: 1px solid rgba(124, 58, 237, 0.15);
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(124, 58, 237, 0.25);
         border-radius: 16px;
         padding: 24px;
         transition: all 0.3s ease;
@@ -348,10 +348,10 @@
     }
 
     .welcome-card:hover {
-        background: rgba(124, 58, 237, 0.05);
-        border-color: rgba(124, 58, 237, 0.4);
+        background: rgba(124, 58, 237, 0.1);
+        border-color: rgba(124, 58, 237, 0.5);
         transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(124, 58, 237, 0.15);
+        box-shadow: 0 8px 24px rgba(124, 58, 237, 0.2);
     }
 
     /* Page Layout */
