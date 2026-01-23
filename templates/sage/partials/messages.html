@@ -48,174 +48,90 @@
 {% endfor %}
 {% else %}
 <!-- Welcome Screen -->
-<div class="max-w-4xl mx-auto text-center py-12">
-    <div class="flex justify-center mb-6">
+<div class="max-w-3xl mx-auto text-center py-20 flex flex-col items-center justify-center min-h-[60vh]">
+    <div
+        class="w-24 h-24 rounded-3xl bg-gradient-to-br from-violet-600 to-violet-900 flex items-center justify-center shadow-2xl mb-8 relative group">
         <div
-            class="w-20 h-20 rounded-2xl bg-gradient-to-br from-violet-600 to-violet-800 flex items-center justify-center shadow-2xl">
-            <svg class="w-10 h-10" viewBox="0 -6 96 96" xmlns="http://www.w3.org/2000/svg" fill="none">
-                <g stroke-linecap="round" stroke-linejoin="round">
-                    <g transform="translate(-434 -708)">
-                        <path
-                            d="M449,730v19a15,15,0,0,0,9,13.744V780a10,10,0,0,0,10,10h28a10,10,0,0,0,10-10V762.744A15,15,0,0,0,515,749V730Z"
-                            fill="currentColor" class="text-violet-900/50" stroke="currentColor" class="text-white"
-                            stroke-width="4"></path>
-                        <path d="M459,764h-1v16a10,10,0,0,0,10,10h1V774A10,10,0,0,0,459,764Z" fill="currentColor"
-                            class="text-violet-950" stroke="currentColor" class="text-white" stroke-width="4"></path>
-                        <path d="M505,764h1v16a10,10,0,0,1-10,10h-1V774A10,10,0,0,1,505,764Z" fill="currentColor"
-                            class="text-violet-950" stroke="currentColor" class="text-white" stroke-width="4"></path>
-                        <circle cx="11" cy="11" r="11" transform="translate(482 731)" fill="currentColor"
-                            class="text-white" stroke="currentColor" class="text-white" stroke-width="4"></circle>
-                        <circle cx="11" cy="11" r="11" transform="translate(460 731)" fill="currentColor"
-                            class="text-white" stroke="currentColor" class="text-white" stroke-width="4"></circle>
-                        <path
-                            d="M523,710H504v2a9.973,9.973,0,0,1-4.016,8l.016,0h-.018a9.942,9.942,0,0,1-5.64,1.983l-.015.017H469.673l-.015-.017a9.942,9.942,0,0,1-5.64-1.983H464l.016,0A9.973,9.973,0,0,1,460,712v-2H441a5,5,0,0,0,0,10h6a5,5,0,0,0,0,10h11.222a26.6,26.6,0,0,0,3.278,0A15.5,15.5,0,0,1,477,745.5c0,.506-.028,1.006-.076,1.5H477v13.7a5,5,0,0,0,10,0V747h.076c-.048-.494-.076-.994-.076-1.5A15.5,15.5,0,0,1,502.5,730a26.6,26.6,0,0,0,3.278,0H517a5,5,0,0,0,0-10h6a5,5,0,0,0,0-10Z"
-                            fill="currentColor" class="text-violet-800" stroke="currentColor" class="text-white"
-                            stroke-width="4"></path>
-                        <rect width="10" height="21" rx="5" transform="translate(477 744)" fill="currentColor"
-                            class="text-violet-950" stroke="currentColor" class="text-white" stroke-width="4"></rect>
-                    </g>
+            class="absolute inset-0 bg-violet-500/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+        </div>
+        <svg class="w-12 h-12 text-white relative z-10" viewBox="0 -6 96 96" xmlns="http://www.w3.org/2000/svg"
+            fill="none">
+            <g stroke-linecap="round" stroke-linejoin="round">
+                <g transform="translate(-434 -708)">
+                    <path
+                        d="M449,730v19a15,15,0,0,0,9,13.744V780a10,10,0,0,0,10,10h28a10,10,0,0,0,10-10V762.744A15,15,0,0,0,515,749V730Z"
+                        fill="currentColor" class="text-violet-900/50" stroke="currentColor" stroke-width="4"></path>
+                    <path d="M459,764h-1v16a10,10,0,0,0,10,10h1V774A10,10,0,0,0,459,764Z" fill="currentColor"
+                        class="text-violet-950" stroke="currentColor" stroke-width="4"></path>
+                    <path d="M505,764h1v16a10,10,0,0,1-10,10h-1V774A10,10,0,0,1,505,764Z" fill="currentColor"
+                        class="text-violet-950" stroke="currentColor" stroke-width="4"></path>
+                    <circle cx="11" cy="11" r="11" transform="translate(482 731)" fill="currentColor"
+                        stroke="currentColor" stroke-width="4"></circle>
+                    <circle cx="11" cy="11" r="11" transform="translate(460 731)" fill="currentColor"
+                        stroke="currentColor" stroke-width="4"></circle>
+                    <path
+                        d="M523,710H504v2a9.973,9.973,0,0,1-4.016,8l.016,0h-.018a9.942,9.942,0,0,1-5.64,1.983l-.015.017H469.673l-.015-.017a9.942,9.942,0,0,1-5.64-1.983H464l.016,0A9.973,9.973,0,0,1,460,712v-2H441a5,5,0,0,0,0,10h6a5,5,0,0,0,0,10h11.222a26.6,26.6,0,0,0,3.278,0A15.5,15.5,0,0,1,477,745.5c0,.506-.028,1.006-.076,1.5H477v13.7a5,5,0,0,0,10,0V747h.076c-.048-.494-.076-.994-.076-1.5A15.5,15.5,0,0,1,502.5,730a26.6,26.6,0,0,0,3.278,0H517a5,5,0,0,0,0-10h6a5,5,0,0,0,0-10Z"
+                        fill="currentColor" class="text-violet-800" stroke="currentColor" stroke-width="4"></path>
+                    <rect width="10" height="21" rx="5" transform="translate(477 744)" fill="currentColor"
+                        class="text-violet-950" stroke="currentColor" stroke-width="4"></rect>
+                </g>
+            </g>
+        </svg>
+    </div>
+
+    <h2 class="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight">How can I help you today?</h2>
+    <p class="text-lg text-violet-200/60 mb-12 max-w-xl mx-auto font-light">
+        Ask about travel safety, gluten-free dining, or cultural tips for your next trip.
+    </p>
+
+    <!-- Quick Actions Pills -->
+    <div class="flex flex-wrap justify-center gap-3 max-w-2xl mx-auto">
+        <button onclick="sendMessage('Tell me about traveling to Italy')"
+            class="group px-5 py-2.5 rounded-full bg-white/5 border border-white/10 hover:bg-violet-600/20 hover:border-violet-500/50 hover:scale-105 transition-all duration-300 text-sm font-medium text-violet-100 flex items-center gap-2">
+            <svg class="w-4 h-4 rounded-sm overflow-hidden" viewBox="0 0 640 480">
+                <g fill-rule="evenodd" stroke-width="1pt">
+                    <path fill="#fff" d="M0 0h640v480H0z" />
+                    <path fill="#009246" d="M0 0h213.3v480H0z" />
+                    <path fill="#ce2b37" d="M426.7 0h213.3v480H426.7z" />
                 </g>
             </svg>
-        </div>
-    </div>
-
-    <h2 class="text-4xl font-bold text-white mb-3">Hello, I'm Sage</h2>
-    <p class="text-lg text-white/60 mb-4 max-w-2xl mx-auto leading-relaxed">
-        Your personal celiac assistant for travel guides, dining tips, and gluten-free lifestyle support
-    </p>
-
-    <!-- Demo Notice Removed -->
-
-    <!-- Quick Actions Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mx-auto mb-10">
-        <!-- Italy Travel -->
-        <button class="welcome-card group text-left" onclick="sendMessage('Tell me about traveling to Italy')">
-            <div class="flex items-start gap-4">
-                <div
-                    class="w-12 h-12 rounded-lg bg-gradient-to-br from-emerald-600 to-emerald-800 flex items-center justify-center flex-shrink-0">
-                    <span class="text-white font-bold text-sm">IT</span>
-                </div>
-                <div class="flex-1">
-                    <h3 class="text-white font-semibold text-lg mb-1">Italy Travel Guide</h3>
-                    <p class="text-white/50 text-sm leading-relaxed">Paradise for celiacs with exceptional awareness</p>
-                </div>
-                <svg class="w-5 h-5 text-violet-400 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 mt-1"
-                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-            </div>
+            Italy Travel Guide
         </button>
-
-        <!-- Dining Tips -->
-        <button class="welcome-card group text-left" onclick="sendMessage('How do I eat safely at restaurants?')">
-            <div class="flex items-start gap-4">
-                <div
-                    class="w-12 h-12 rounded-lg bg-gradient-to-br from-violet-600 to-violet-800 flex items-center justify-center flex-shrink-0">
-                    <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                    </svg>
-                </div>
-                <div class="flex-1">
-                    <h3 class="text-white font-semibold text-lg mb-1">Restaurant Safety</h3>
-                    <p class="text-white/50 text-sm leading-relaxed">Essential tips for dining out with celiac disease
-                    </p>
-                </div>
-                <svg class="w-5 h-5 text-violet-400 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 mt-1"
-                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-            </div>
+        <button onclick="sendMessage('How do I eat safely at restaurants?')"
+            class="group px-5 py-2.5 rounded-full bg-white/5 border border-white/10 hover:bg-violet-600/20 hover:border-violet-500/50 hover:scale-105 transition-all duration-300 text-sm font-medium text-violet-100 flex items-center gap-2">
+            <svg class="w-4 h-4 text-violet-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+            Restaurant Tips
         </button>
-
-        <!-- France Travel -->
-        <button class="welcome-card group text-left" onclick="sendMessage('Tell me about France')">
-            <div class="flex items-start gap-4">
-                <div
-                    class="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center flex-shrink-0">
-                    <span class="text-white font-bold text-sm">FR</span>
-                </div>
-                <div class="flex-1">
-                    <h3 class="text-white font-semibold text-lg mb-1">France Travel Guide</h3>
-                    <p class="text-white/50 text-sm leading-relaxed">Growing awareness with helpful resources</p>
-                </div>
-                <svg class="w-5 h-5 text-violet-400 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 mt-1"
-                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-            </div>
+        <button onclick="sendMessage('Tell me about France')"
+            class="group px-5 py-2.5 rounded-full bg-white/5 border border-white/10 hover:bg-violet-600/20 hover:border-violet-500/50 hover:scale-105 transition-all duration-300 text-sm font-medium text-violet-100 flex items-center gap-2">
+            <svg class="w-4 h-4 rounded-sm overflow-hidden" viewBox="0 0 640 480">
+                <g fill-rule="evenodd" stroke-width="1pt">
+                    <path fill="#fff" d="M0 0h640v480H0z" />
+                    <path fill="#002395" d="M0 0h213.3v480H0z" />
+                    <path fill="#ed2939" d="M426.7 0h213.3v480H426.7z" />
+                </g>
+            </svg>
+            France Guide
         </button>
-
-        <!-- Japan Travel -->
-        <button class="welcome-card group text-left" onclick="sendMessage('Tell me about Japan')">
-            <div class="flex items-start gap-4">
-                <div
-                    class="w-12 h-12 rounded-lg bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center flex-shrink-0">
-                    <span class="text-white font-bold text-sm">JP</span>
-                </div>
-                <div class="flex-1">
-                    <h3 class="text-white font-semibold text-lg mb-1">Japan Travel Guide</h3>
-                    <p class="text-white/50 text-sm leading-relaxed">Challenging but doable with preparation</p>
-                </div>
-                <svg class="w-5 h-5 text-violet-400 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 mt-1"
-                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-            </div>
+        <button onclick="sendMessage('What foods should I avoid?')"
+            class="group px-5 py-2.5 rounded-full bg-white/5 border border-white/10 hover:bg-violet-600/20 hover:border-violet-500/50 hover:scale-105 transition-all duration-300 text-sm font-medium text-violet-100 flex items-center gap-2">
+            <svg class="w-4 h-4 text-rose-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+            </svg>
+            Unsafe Foods
         </button>
-
-        <!-- Food Safety -->
-        <button class="welcome-card group text-left" onclick="sendMessage('What foods should I avoid?')">
-            <div class="flex items-start gap-4">
-                <div
-                    class="w-12 h-12 rounded-lg bg-gradient-to-br from-teal-600 to-teal-800 flex items-center justify-center flex-shrink-0">
-                    <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </div>
-                <div class="flex-1">
-                    <h3 class="text-white font-semibold text-lg mb-1">Food Safety Guide</h3>
-                    <p class="text-white/50 text-sm leading-relaxed">Complete guide to safe and unsafe foods</p>
-                </div>
-                <svg class="w-5 h-5 text-violet-400 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 mt-1"
-                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-            </div>
-        </button>
-
-        <!-- Cross-Contamination -->
-        <button class="welcome-card group text-left" onclick="sendMessage('How do I prevent cross-contamination?')">
-            <div class="flex items-start gap-4">
-                <div
-                    class="w-12 h-12 rounded-lg bg-gradient-to-br from-indigo-600 to-indigo-800 flex items-center justify-center flex-shrink-0">
-                    <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                </div>
-                <div class="flex-1">
-                    <h3 class="text-white font-semibold text-lg mb-1">Kitchen Safety</h3>
-                    <p class="text-white/50 text-sm leading-relaxed">Prevent cross-contamination at home</p>
-                </div>
-                <svg class="w-5 h-5 text-violet-400 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 mt-1"
-                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-            </div>
+        <button onclick="sendMessage('Explain cross-contamination')"
+            class="group px-5 py-2.5 rounded-full bg-white/5 border border-white/10 hover:bg-violet-600/20 hover:border-violet-500/50 hover:scale-105 transition-all duration-300 text-sm font-medium text-violet-100 flex items-center gap-2">
+            <svg class="w-4 h-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            Cross-Contamination
         </button>
     </div>
-
-    <!-- Hint -->
-    <p class="text-sm text-white/30 flex items-center justify-center gap-2">
-        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd"
-                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                clip-rule="evenodd" />
-        </svg>
-        Click any card above or type your own question
-    </p>
 </div>
 
 <script>
@@ -223,7 +139,11 @@
         const textarea = document.querySelector('textarea[name="message"]');
         if (textarea) {
             textarea.value = message;
-            textarea.form.requestSubmit();
+            // Dispatch input event to resize if needed
+            textarea.dispatchEvent(new Event('input', { bubbles: true }));
+            // Submit form
+            const form = textarea.closest('form');
+            if (form) form.requestSubmit();
         }
     }
 </script>

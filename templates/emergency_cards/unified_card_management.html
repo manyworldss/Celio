@@ -1,4 +1,4 @@
-{% extends base_template %}
+{% extends 'base.html' %}
 {% load static %}
 {% load message_card_filters %}
 
@@ -35,9 +35,64 @@
             background-position: 0 50%;
         }
 
-        100% {
+        50% {
             background-position: 100% 50%;
         }
+
+        100% {
+            background-position: 0 50%;
+        }
+    }
+
+    /* Entrance Animations */
+    @keyframes slideInLeft {
+        from {
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-slide-in-left {
+        animation: slideInLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .animate-slide-in-up {
+        animation: slideInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        opacity: 0;
+        /* Start invisible */
+    }
+
+    .delay-100 {
+        animation-delay: 100ms;
+    }
+
+    .delay-200 {
+        animation-delay: 200ms;
+    }
+
+    .delay-300 {
+        animation-delay: 300ms;
+    }
+
+    .delay-400 {
+        animation-delay: 400ms;
     }
 </style>
 {% endblock %}
@@ -60,23 +115,10 @@
         <!-- Left Column: Info & Instructions (5 cols) -->
         <div class="lg:col-span-5 space-y-10 lg:sticky lg:top-24">
 
-            <!-- Celio Logo -->
-            <div class="mb-4">
-                <a href="/" class="flex items-center gap-2 group">
-                    <div
-                        class="w-10 h-10 rounded-full flex items-center justify-center bg-teal-500 shadow-[0_0_10px_rgba(20,184,166,0.3)]">
-                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd"
-                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                clip-rule="evenodd" />
-                        </svg>
-                    </div>
-                    <span class="text-white font-black text-2xl tracking-tight leading-none">Celio</span>
-                </a>
-            </div>
+            <!-- Celio Logo Removed -->
 
             <!-- Hero Section -->
-            <div class="space-y-6">
+            <div class="space-y-6 animate-slide-in-left">
                 <div
                     class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-400 text-xs font-medium uppercase tracking-wider">
                     <span class="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></span>
@@ -94,19 +136,34 @@
 
             <!-- Simple Instructions -->
             <div class="space-y-4 pt-4">
-                <div class="flex items-center gap-4">
+                <div class="flex items-center gap-4 animate-slide-in-up delay-100">
                     <div
                         class="w-8 h-8 rounded-full bg-teal-500/20 flex items-center justify-center text-teal-400 font-bold border border-teal-500/30 flex-shrink-0">
                         1</div>
                     <h3 class="text-white font-semibold">Select Condition</h3>
                 </div>
-                <div class="flex items-center gap-4">
+                <div class="flex items-center gap-4 animate-slide-in-up delay-200">
                     <div
                         class="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 font-bold border border-purple-500/30 flex-shrink-0">
                         2</div>
+                    <h3 class="text-white font-semibold">Select Translation</h3>
+                </div>
+                <!-- Added Steps -->
+                <div class="flex items-center gap-4 animate-slide-in-up delay-300">
+                    <div
+                        class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-bold border border-blue-500/30 flex-shrink-0">
+                        3</div>
                     <h3 class="text-white font-semibold">Save to Wallet</h3>
                 </div>
+                <div class="flex items-center gap-4 animate-slide-in-up delay-400">
+                    <div
+                        class="w-8 h-8 rounded-full bg-pink-500/20 flex items-center justify-center text-pink-400 font-bold border border-pink-500/30 flex-shrink-0">
+                        4</div>
+                    <h3 class="text-white font-semibold">Share</h3>
+                </div>
             </div>
+
+            <!-- Steps Removed (Integrated into Hero) -->
 
         </div>
 
@@ -115,12 +172,11 @@
             <div class="w-full max-w-md relative group">
                 <!-- Dynamic Glow Effect -->
                 <div
-                    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-gradient-to-tr from-teal-500/20 via-purple-500/20 to-blue-500/20 blur-[60px] -z-10 rounded-full opacity-70 group-hover:opacity-100 transition-opacity duration-700">
+                    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100%] h-[100%] bg-gradient-to-tr from-teal-500/10 via-purple-500/10 to-blue-500/10 blur-[90px] -z-10 rounded-full opacity-50">
                 </div>
                 <!-- Removed Extra Layer Border Div -->
 
-                <div id="card-preview-container"
-                    class="transform transition-all duration-500 hover:scale-[1.01] hover:-translate-y-1">
+                <div id="card-preview-container">
                     {% include "emergency_cards/partials/editable_card.html" %}
                 </div>
 
