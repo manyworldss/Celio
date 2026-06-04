@@ -8,15 +8,10 @@
     <title>{% block title %}Celio{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-    <!-- Space Grotesk Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap" rel="stylesheet">
 
-    <script src="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/js/shepherd.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/css/shepherd.css" />
-    <!-- Spline Runtime -->
-    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.28/build/spline-viewer.js"></script>
     <script src="{% static 'js/main.js' %}"></script>
     <link rel="stylesheet" href="{% static 'css/primary_accent_theme.css' %}">
     {% block extra_head %}{% endblock %}
@@ -48,8 +43,15 @@
 
         body {
             background-color: black;
+            --blue-green: #14746F;
+            --font-family: 'Inter', sans-serif;
+            --font-family-heading: 'Space Grotesk', sans-serif;
             color: var(--off-white);
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: var(--font-family);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-family-heading);
         }
 
         /* Glassmorphism Utilities */
@@ -136,8 +138,9 @@
     </div>
 
     <!-- Demo Banner -->
-
-
+    <div class="bg-gradient-to-r from-teal-600 to-teal-500 text-white text-center py-2 px-4 text-sm font-medium tracking-wide">
+        Note: This is a beta demo site. The full Celio mobile app will be released in 2026!
+    </div>
 
     <!-- Navigation -->
     {% block navbar %}
@@ -148,17 +151,8 @@
                 <!-- Desktop Navigation -->
                 <div class="hidden lg:flex w-full justify-between items-center">
                     <!-- Logo Section (Left) -->
-                    <a href="/" class="flex items-start group gap-1">
-                        <span
-                            class="text-white font-bold text-2xl tracking-tight group-hover:text-teal-400 transition-colors leading-none">Celio</span>
-                        <div
-                            class="w-4 h-4 rounded-full flex items-center justify-center bg-teal-500 group-hover:bg-teal-400 transition-colors shadow-[0_0_8px_rgba(20,184,166,0.3)] -mt-0.5">
-                            <svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </div>
+                    <a href="/" class="flex items-center">
+                        <img src="{% static 'images/celio_logo.png' %}" alt="Celio" style="height:34px;width:auto;display:block">
                     </a>
 
                     <!-- Navigation Items (Right) -->
@@ -219,20 +213,8 @@
                 <!-- Mobile Navigation -->
                 <div class="lg:hidden flex w-full justify-between items-center">
                     <!-- Mobile Logo -->
-                    <a href="/" class="flex flex-col items-start group">
-                        <div class="relative inline-flex items-start">
-                            <span class="text-white font-bold text-xl tracking-tight">Celio</span>
-                            <div class="relative -mt-0.5 ml-1">
-                                <div
-                                    class="w-3 h-3 rounded-full flex items-center justify-center bg-teal-500 shadow-[0_0_5px_rgba(20,184,166,0.4)]">
-                                    <svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd"
-                                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
+                    <a href="/" class="flex items-center">
+                        <img src="{% static 'images/celio_logo.png' %}" alt="Celio" style="height:28px;width:auto;display:block">
                     </a>
 
                     <!-- Mobile menu button -->
@@ -439,16 +421,8 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
                 <!-- Brand column -->
                 <div class="col-span-1 md:col-span-1">
-                    <a href="/" class="flex items-center gap-2 mb-4">
-                        <span class="text-white font-bold text-xl tracking-tight">Celio</span>
-                        <div
-                            class="w-5 h-5 rounded-full flex items-center justify-center bg-teal-500 shadow-[0_0_10px_rgba(20,184,166,0.3)]">
-                            <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </div>
+                    <a href="/" class="flex items-center mb-4">
+                        <img src="{% static 'images/celio_logo.png' %}" alt="Celio" style="height:34px;width:auto;display:block">
                     </a>
                     <p class="text-neutral-400 text-sm leading-relaxed">
                         Empowering celiac travelers to explore the world with confidence and safety.

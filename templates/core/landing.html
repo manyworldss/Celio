@@ -1,860 +1,819 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block title %}Celio: Your Gluten-Free Passport{% endblock %}
+
+{% block extra_head %}
+{# Inline style runs before any CSS/JS — no !important, inline style already wins the cascade #}
+<script>
+  var h=document.documentElement,b=document.body;
+  h.style.background='#000'; h.style.overscrollBehavior='none';
+  if(b){b.style.background='#000'; b.style.overscrollBehavior='none';}
+</script>
+<style>
+  html,body,main { background:#000; overscroll-behavior:none; }
+  .celio-logo-img { display:block; vertical-align:middle; }
+</style>
+<link rel="stylesheet" href="{% static 'css/landing_v2.css' %}">
+{% endblock %}
+
+{# ── Nav ── #}
 {% block navbar %}
-<nav class="absolute top-0 w-full z-50" x-data="{ mobileMenuOpen: false, showSageModal: false }">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-32 relative">
-            <!-- Logo Section (Absolute Left) -->
-            <div class="flex-shrink-0 z-50">
-                <a href="/" class="flex items-start group gap-1">
-                    <span
-                        class="text-white font-black text-4xl tracking-tight group-hover:text-teal-400 transition-colors leading-none">Celio</span>
-                    <div
-                        class="w-5 h-5 rounded-full flex items-center justify-center bg-teal-500 group-hover:bg-teal-400 transition-colors shadow-[0_0_10px_rgba(20,184,166,0.3)] -mt-1">
-                        <svg class="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd"
-                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                clip-rule="evenodd" />
-                        </svg>
-                    </div>
-                </a>
-            </div>
-
-            <!-- Centered Floating Navigation (Desktop) -->
-            <div class="hidden lg:flex absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                <div
-                    class="flex items-center gap-2 p-1.5 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full shadow-2xl">
-                    <a href="/"
-                        class="px-6 py-2.5 text-sm font-medium text-white hover:bg-white/10 rounded-full transition-all">
-                        Home
-                    </a>
-
-                    <a href="{% url 'message_cards:unified_card_management' %}"
-                        class="px-6 py-2.5 text-sm font-medium text-white hover:bg-white/10 rounded-full transition-all">
-                        E-Card
-                    </a>
-
-                    <a href="{% url 'sage:assistant' %}"
-                        class="pl-6 pr-2 py-2 text-sm font-medium text-white bg-white/5 hover:bg-white/10 border border-white/10 hover:border-violet-500/30 rounded-full transition-all hover:scale-105 flex items-center gap-3 group ml-2 backdrop-blur-sm">
-                        Sage AI
-                        <div
-                            class="w-8 h-8 rounded-full bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors border border-violet-500/20">
-                            <!-- Violet Owl SVG -->
-                            <svg class="w-5 h-5" viewBox="0 -6 96 96" xmlns="http://www.w3.org/2000/svg" fill="none">
-                                <g stroke-linecap="round" stroke-linejoin="round">
-                                    <g transform="translate(-434 -708)">
-                                        <path
-                                            d="M449,730v19a15,15,0,0,0,9,13.744V780a10,10,0,0,0,10,10h28a10,10,0,0,0,10-10V762.744A15,15,0,0,0,515,749V730Z"
-                                            fill="currentColor" class="text-violet-900/50" stroke="currentColor"
-                                            class="text-white" stroke-width="4"></path>
-                                        <path d="M459,764h-1v16a10,10,0,0,0,10,10h1V774A10,10,0,0,0,459,764Z"
-                                            fill="currentColor" class="text-violet-950" stroke="currentColor"
-                                            class="text-white" stroke-width="4"></path>
-                                        <path d="M505,764h1v16a10,10,0,0,1-10,10h-1V774A10,10,0,0,1,505,764Z"
-                                            fill="currentColor" class="text-violet-950" stroke="currentColor"
-                                            class="text-white" stroke-width="4"></path>
-                                        <circle cx="11" cy="11" r="11" transform="translate(482 731)"
-                                            fill="currentColor" class="text-white" stroke="currentColor"
-                                            class="text-white" stroke-width="4"></circle>
-                                        <circle cx="11" cy="11" r="11" transform="translate(460 731)"
-                                            fill="currentColor" class="text-white" stroke="currentColor"
-                                            class="text-white" stroke-width="4"></circle>
-                                        <path
-                                            d="M523,710H504v2a9.973,9.973,0,0,1-4.016,8l.016,0h-.018a9.942,9.942,0,0,1-5.64,1.983l-.015.017H469.673l-.015-.017a9.942,9.942,0,0,1-5.64-1.983H464l.016,0A9.973,9.973,0,0,1,460,712v-2H441a5,5,0,0,0,0,10h6a5,5,0,0,0,0,10h11.222a26.6,26.6,0,0,0,3.278,0A15.5,15.5,0,0,1,477,745.5c0,.506-.028,1.006-.076,1.5H477v13.7a5,5,0,0,0,10,0V747h.076c-.048-.494-.076-.994-.076-1.5A15.5,15.5,0,0,1,502.5,730a26.6,26.6,0,0,0,3.278,0H517a5,5,0,0,0,0-10h6a5,5,0,0,0,0-10Z"
-                                            fill="currentColor" class="text-violet-600" stroke="currentColor"
-                                            class="text-white" stroke-width="4"></path>
-                                        <rect width="10" height="21" rx="5" transform="translate(477 744)"
-                                            fill="currentColor" class="text-violet-950" stroke="currentColor"
-                                            class="text-white" stroke-width="4"></rect>
-                                    </g>
-                                </g>
-                            </svg>
-                        </div>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Mobile Navigation Toggle (Right) -->
-            <div class="lg:hidden flex items-center z-50">
-                <button type="button" @click="mobileMenuOpen = !mobileMenuOpen"
-                    class="relative inline-flex items-center justify-center p-3 rounded-xl text-neutral-300 hover:text-white hover:bg-gradient-to-r hover:from-accent-600/20 hover:to-primary-600/20 focus:outline-none focus:ring-2 focus:ring-accent-500/50 transition-all duration-300 transform hover:scale-105 border border-neutral-700/50 hover:border-accent-500/30">
-                    <span class="sr-only">Open main menu</span>
-                    <div class="relative w-6 h-6">
-                        <svg x-show="!mobileMenuOpen" x-transition:enter="transition ease-in-out duration-200"
-                            x-transition:enter-start="opacity-0 rotate-180"
-                            x-transition:enter-end="opacity-100 rotate-0"
-                            x-transition:leave="transition ease-in-out duration-200"
-                            x-transition:leave-start="opacity-100 rotate-0"
-                            x-transition:leave-end="opacity-0 rotate-180" class="absolute inset-0 h-6 w-6"
-                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                        <svg x-show="mobileMenuOpen" x-transition:enter="transition ease-in-out duration-200"
-                            x-transition:enter-start="opacity-0 rotate-180"
-                            x-transition:enter-end="opacity-100 rotate-0"
-                            x-transition:leave="transition ease-in-out duration-200"
-                            x-transition:leave-start="opacity-100 rotate-0"
-                            x-transition:leave-end="opacity-0 rotate-180" class="absolute inset-0 h-6 w-6"
-                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </div>
-                </button>
-            </div>
-        </div>
+<nav id="cl-nav" class="cl-nav"
+     x-data="{ scrolled: false, mobileOpen: false, mobileMenuOpen: false, showSageModal: false }"
+     x-init="window.addEventListener('scroll', () => { scrolled = window.scrollY > 20; })"
+     :class="{ 'scrolled': scrolled }">
+  <div class="cl-nav-inner">
+    <a href="/" style="display:flex;align-items:center;line-height:0;transform:translateY(1px)">
+      <img src="{% static 'images/celio_logo.png' %}" alt="Celio" class="celio-logo-img" style="height:32px;width:auto;display:block">
+    </a>
+    <div class="cl-nav-links">
+      <a class="cl-nav-link" href="#find">Find</a>
+      <a class="cl-nav-link" href="#speak">E-Card</a>
+      <a class="cl-nav-link" href="{% url 'sage:assistant' %}">Sage AI</a>
+      <a class="cl-nav-link" href="#ios">iOS App</a>
     </div>
-
-    <!-- Mobile Navigation Menu -->
-    <div x-show="mobileMenuOpen" x-transition:enter="transition ease-out duration-300 transform"
-        x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
-        x-transition:leave="transition ease-in duration-200 transform"
-        x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2"
-        class="lg:hidden absolute top-full left-0 right-0 z-50" id="mobile-menu">
-        <div
-            class="mx-4 mt-2 bg-gradient-to-br from-neutral-900/98 to-neutral-800/98 backdrop-blur-xl rounded-2xl border border-neutral-700/50 shadow-2xl overflow-hidden">
-            <!-- Menu Header -->
-            <div class="px-6 py-4 border-b border-neutral-700/30">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-lg font-semibold text-white">Navigation</h3>
-                    <div class="w-8 h-1 bg-gradient-to-r from-accent-500 to-primary-500 rounded-full"></div>
-                </div>
-            </div>
-
-            <!-- Menu Items -->
-            <div class="px-4 py-4 space-y-2">
-                <a href="/" @click="mobileMenuOpen = false"
-                    class="group flex items-center px-4 py-4 text-base font-medium text-neutral-200 hover:bg-gradient-to-r hover:from-accent-600/10 hover:to-primary-600/10 hover:text-white rounded-xl transition-all duration-300 {% if request.path == '/' %}bg-gradient-to-r from-accent-600/20 to-primary-600/20 text-white border border-accent-500/30{% else %}border border-transparent{% endif %}">
-                    <div class="flex items-center justify-between w-full">
-                        <div class="flex items-center">
-                            <svg class="w-5 h-5 mr-3 text-accent-400" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
-                                </path>
-                            </svg>
-                            <span>Home</span>
-                        </div>
-                        <svg class="w-4 h-4 text-neutral-400 group-hover:text-accent-400 transition-colors" fill="none"
-                            stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
-                            </path>
-                        </svg>
-                    </div>
-                </a>
-
-                <a href="{% url 'message_cards:unified_card_management' %}" @click="mobileMenuOpen = false"
-                    class="group flex items-center px-4 py-4 text-base font-medium text-neutral-200 hover:bg-gradient-to-r hover:from-accent-600/10 hover:to-primary-600/10 hover:text-white rounded-xl transition-all duration-300 {% if 'message_cards' in request.path or 'm_cards' in request.path %}bg-gradient-to-r from-accent-600/20 to-primary-600/20 text-white border border-accent-500/30{% else %}border border-transparent{% endif %}">
-                    <div class="flex items-center justify-between w-full">
-                        <div class="flex items-center">
-                            <svg class="w-5 h-5 mr-3 text-accent-400" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2m-9 0h10m-10 0a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V6a2 2 0 00-2-2">
-                                </path>
-                            </svg>
-                            <div>
-                                <span>E-Card</span>
-                                <span
-                                    class="ml-2 text-xs bg-accent-600/30 text-accent-300 px-2 py-0.5 rounded-full">Demo</span>
-                            </div>
-                        </div>
-                        <svg class="w-4 h-4 text-neutral-400 group-hover:text-accent-400 transition-colors" fill="none"
-                            stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
-                            </path>
-                        </svg>
-                    </div>
-                </a>
-
-                <a href="{% url 'sage:assistant' %}" @click="mobileMenuOpen = false"
-                    class="group flex items-center px-4 py-4 text-base font-medium text-neutral-200 hover:bg-gradient-to-r hover:from-accent-600/10 hover:to-primary-600/10 hover:text-white rounded-xl transition-all duration-300 {% if 'sage' in request.path %}bg-gradient-to-r from-accent-600/20 to-primary-600/20 text-white border border-accent-500/30{% else %}border border-transparent{% endif %}">
-                    <div class="flex items-center justify-between w-full">
-                        <div class="flex items-center">
-                            <svg class="w-5 h-5 mr-3 text-accent-400" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                            </svg>
-                            <div class="flex flex-col">
-                                <div class="flex items-center">
-                                    <span>Sage AI Assistant</span>
-                                    <span
-                                        class="ml-2 text-xs bg-accent-600/30 text-accent-300 px-2 py-0.5 rounded-full">Beta</span>
-                                </div>
-                                <p class="text-sm text-neutral-400 mt-0.5">AI assistant for celiac travelers</p>
-                            </div>
-                        </div>
-                        <svg class="w-4 h-4 text-neutral-400 group-hover:text-accent-400 transition-colors" fill="none"
-                            stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
-                            </path>
-                        </svg>
-                    </div>
-                </a>
-            </div>
-
-            <!-- Social Links -->
-            <div
-                class="px-6 py-4 border-t border-neutral-700/30 bg-gradient-to-r from-neutral-800/50 to-neutral-700/50">
-                <div class="flex items-center justify-between">
-                    <span class="text-sm font-medium text-neutral-400">Connect with us</span>
-                    <div class="flex space-x-4">
-                        <a href="https://www.linkedin.com/in/raphealsuber/" target="_blank"
-                            class="p-2 text-neutral-400 hover:text-accent-300 hover:bg-accent-600/10 rounded-lg transition-all duration-300">
-                            <span class="sr-only">LinkedIn</span>
-                            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path
-                                    d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                            </svg>
-                        </a>
-                        <a href="https://github.com/manyworldss" target="_blank"
-                            class="p-2 text-neutral-400 hover:text-accent-300 hover:bg-accent-600/10 rounded-lg transition-all duration-300">
-                            <span class="sr-only">GitHub</span>
-                            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path fill-rule="evenodd"
-                                    d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="cl-nav-right">
+      <a class="btn btn-primary btn-sm" href="#ios">
+        <span class="cl-nav-cta-text">Get early access</span>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+      </a>
+      <button class="cl-nav-burger" @click="mobileOpen = !mobileOpen" aria-label="Menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/></svg>
+      </button>
     </div>
+  </div>
+  <div class="cl-nav-mobile" x-show="mobileOpen" x-transition:enter="transition ease-out duration-200"
+       x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
+       x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+       style="display:none">
+    <a href="#find" @click="mobileOpen=false">Find safe eats</a>
+    <a href="#speak" @click="mobileOpen=false">E-Card demo</a>
+    <a href="{% url 'sage:assistant' %}" @click="mobileOpen=false">Sage AI</a>
+    <a href="#ios" @click="mobileOpen=false">iOS App</a>
+    <a href="{% url 'message_cards:unified_card_management' %}" @click="mobileOpen=false">Create my card</a>
+  </div>
 </nav>
 {% endblock %}
 
+{# ── Content ── #}
 {% block content %}
 
-<style>
-    /* Animation Utilities */
-    .animate-on-scroll {
-        opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        will-change: opacity, transform;
-    }
-
-    .animate-on-scroll.is-visible {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    /* Stagger Delays */
-    .delay-100 {
-        transition-delay: 100ms;
-    }
-
-    .delay-200 {
-        transition-delay: 200ms;
-    }
-
-    .delay-300 {
-        transition-delay: 300ms;
-    }
-
-    .delay-400 {
-        transition-delay: 400ms;
-    }
-
-    .delay-500 {
-        transition-delay: 500ms;
-    }
-
-    .delay-700 {
-        transition-delay: 700ms;
-    }
-
-    /* Custom Animations */
-    @keyframes float {
-
-        0%,
-        100% {
-            transform: translateY(0);
-        }
-
-        50% {
-            transform: translateY(-20px);
-        }
-    }
-
-    .animate-float {
-        animation: float 6s ease-in-out infinite;
-    }
-
-    .animate-float-delayed {
-        animation: float 8s ease-in-out infinite;
-        animation-delay: 2s;
-    }
-
-    /* Slow Blob Animation */
-    @keyframes blob {
-        0% {
-            transform: translate(0px, 0px) scale(1);
-        }
-
-        33% {
-            transform: translate(30px, -50px) scale(1.1);
-        }
-
-        66% {
-            transform: translate(-20px, 20px) scale(0.9);
-        }
-
-        100% {
-            transform: translate(0px, 0px) scale(1);
-        }
-    }
-
-    .animate-blob {
-        animation: blob 20s infinite;
-    }
-
-    .animation-delay-2000 {
-        animation-delay: 2s;
-    }
-
-    .animation-delay-4000 {
-        animation-delay: 4s;
-    }
-
-    /* 3D Card Tilt Effect */
-    .tilt-card {
-        transition: transform 0.1s ease;
-        transform-style: preserve-3d;
-    }
-
-    .tilt-card-content {
-        transform: translateZ(20px);
-    }
-
-    /* Conversation Bubble Animation */
-    @keyframes popIn {
-        0% {
-            opacity: 0;
-            transform: scale(0.8) translateY(10px);
-        }
-
-        100% {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-        }
-    }
-
-    .bubble-pop {
-        opacity: 0;
-    }
-
-    .is-visible .bubble-pop {
-        animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-    }
-
-    /* Mouse Glow Effect */
-    #mouse-glow {
-        position: fixed;
-        width: 600px;
-        height: 600px;
-        background: radial-gradient(circle, rgba(45, 212, 191, 0.15) 0%, rgba(45, 212, 191, 0) 70%);
-        border-radius: 50%;
-        pointer-events: none;
-        transform: translate(-50%, -50%);
-        z-index: 0;
-        transition: opacity 0.5s ease;
-        mix-blend-mode: screen;
-    }
-</style>
-
-<!-- Mouse Glow Element -->
-<div id="mouse-glow"></div>
-
-<!-- Hero Section -->
-<div class="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-32">
-    <!-- Background Elements -->
-    <!-- Background Elements (Handled globally in base.html) -->
-
-    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h1 class="text-6xl md:text-8xl font-bold mb-8 tracking-tight animate-on-scroll is-visible">
-            <span class="block text-white mb-2">Your Gluten-Free</span>
-            <span
-                class="block text-transparent bg-clip-text bg-gradient-to-r from-teal-400 via-teal-200 to-teal-400 animate-gradient-x bg-[length:200%_auto]">Passport</span>
-        </h1>
-        <p
-            class="text-xl md:text-2xl text-neutral-300 max-w-3xl mx-auto mb-12 font-light leading-relaxed animate-on-scroll is-visible delay-200">
-            Travel with confidence. Communicate your dietary needs clearly in any language, anywhere in the world.
-        </p>
-        <div class="flex flex-col sm:flex-row gap-6 justify-center items-center animate-on-scroll is-visible delay-400">
-            <a href="{% url 'message_cards:unified_card_management' %}"
-                class="px-8 py-4 rounded-full bg-teal-500 text-white font-bold text-lg shadow-[0_0_20px_rgba(20,184,166,0.3)] hover:shadow-[0_0_30px_rgba(20,184,166,0.5)] hover:bg-teal-400 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2">
-                Create Your Card
-            </a>
-            <a href="#scenario"
-                class="px-8 py-4 rounded-full bg-white/5 border border-white/10 text-white font-medium text-lg backdrop-blur-sm hover:bg-white/10 hover:border-white/20 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 group">
-                See how it works
-            </a>
-        </div>
-    </div>
+{# Atmosphere #}
+<div class="cl-atmos" aria-hidden="true">
+  <div class="cl-orb cl-orb-1"></div>
+  <div class="cl-orb cl-orb-2"></div>
+  <div class="cl-orb cl-orb-3"></div>
 </div>
-<div id="scenario" class="py-32 relative bg-neutral-900/50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-            <!-- Visual Side -->
-            <div class="relative animate-on-scroll">
-                <div
-                    class="absolute -inset-4 bg-gradient-to-r from-teal-500/20 to-blue-500/20 rounded-2xl blur-xl opacity-75 animate-pulse">
-                </div>
-                <div
-                    class="relative glass-card rounded-2xl p-8 overflow-hidden min-h-[400px] flex flex-col justify-center group">
-                    <!-- Background Image -->
-                    <div class="absolute inset-0 z-0">
-                        <img src="{% static 'images/lisbon_restaurant.png' %}" alt="Lisbon Restaurant"
-                            class="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-t from-neutral-900 via-neutral-900/80 to-neutral-900/40">
-                        </div>
-                    </div>
+<div class="cl-grid" aria-hidden="true"></div>
+<div class="cl-cursor" id="cl-cursor" aria-hidden="true"></div>
 
-                    <!-- Content Container -->
-                    <div class="relative z-10">
-                        <!-- Abstract Representation of a Menu/Waiter -->
-                        <div class="space-y-8">
-                            <!-- Location Badge -->
-                            <div class="flex items-center gap-4 mb-8 bubble-pop" style="animation-delay: 0.2s;">
-                                <div
-                                    class="w-12 h-12 rounded-full bg-neutral-800 flex items-center justify-center border border-white/10">
-                                    <svg class="w-6 h-6 text-teal-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h3 class="text-white font-medium">Lisbon, Portugal</h3>
-                                    <p class="text-neutral-400 text-sm">Dinner at a local Tasca</p>
-                                </div>
-                            </div>
+<div class="cl-shell" style="background:#000">
 
-                            <!-- Waiter Interaction -->
-                            <div class="bg-neutral-800/50 rounded-xl p-6 border border-white/5 space-y-8 bubble-pop"
-                                style="animation-delay: 0.5s;">
-                                <!-- Waiter Speech -->
-                                <div class="flex gap-4 items-start">
-                                    <div
-                                        class="w-10 h-10 rounded-full bg-neutral-700 flex-shrink-0 flex items-center justify-center border border-white/10">
-                                        <svg class="w-5 h-5 text-neutral-400" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                        </svg>
-                                    </div>
-                                    <div class="space-y-2 w-full max-w-[80%]">
-                                        <div class="bg-neutral-700 rounded-2xl rounded-tl-none p-4 relative">
-                                            <p class="text-neutral-200 text-sm italic">"Olá, boa noite. O nosso
-                                                prato
-                                                especial hoje é Bacalhau com Natas."</p>
-                                        </div>
-                                        <p class="text-xs text-neutral-500 ml-1">Waiter (Portuguese)</p>
-                                    </div>
-                                </div>
-
-                                <!-- User Thought (The Doubt) -->
-                                <div class="flex gap-4 items-start justify-end">
-                                    <div class="space-y-2 w-full max-w-[80%] flex flex-col items-end">
-                                        <div
-                                            class="bg-teal-900/30 border border-teal-500/30 rounded-2xl rounded-tr-none p-4 animate-pulse relative">
-                                            <div class="flex items-center gap-2 text-teal-200 text-sm font-medium">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                </svg>
-                                                <span>Cross-contamination?</span>
-                                            </div>
-                                        </div>
-                                        <p class="text-xs text-neutral-500 mr-1">You</p>
-                                    </div>
-                                    <div
-                                        class="w-10 h-10 rounded-full bg-teal-900/50 flex-shrink-0 flex items-center justify-center border border-teal-500/30">
-                                        <svg class="w-5 h-5 text-teal-400" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- The Problem -->
-                            <div class="p-4 bg-red-500/10 border border-red-500/20 rounded-lg bubble-pop"
-                                style="animation-delay: 0.8s;">
-                                <div class="flex items-start gap-3">
-                                    <svg class="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                    </svg>
-                                    <div>
-                                        <p class="text-red-200 text-sm italic font-medium">"Tem glúten?"</p>
-                                        <p class="text-neutral-500 text-xs mt-1">Does the waiter understand the
-                                            severity?
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Narrative Side -->
-            <div class="animate-on-scroll delay-200">
-                <h2 class="text-4xl md:text-5xl font-bold text-white mb-8 leading-tight">
-                    Imagine you're in <span class="text-teal-400">Portugal</span>.
-                </h2>
-                <div class="space-y-6 text-lg text-neutral-300 font-light">
-                    <p>
-                        You've just sat down at a beautiful restaurant in Lisbon. The menu is entirely in
-                        Portuguese.
-                        The waiter approaches, friendly but speaking only basic English.
-                    </p>
-                    <p>
-                        You have Celiac disease. A simple miscommunication here isn't just awkward—it's a health
-                        risk.
-                    </p>
-                    <p class="text-white font-medium pt-4 border-l-4 border-teal-500 pl-4">
-                        How do you explain "cross-contamination" when you don't speak the language?
-                    </p>
-                </div>
-            </div>
+{# ── 1. HERO ── #}
+<header class="cl-hero" id="top">
+  <div class="cl-wrap cl-hero-grid">
+    <div class="cl-hero-copy">
+      <div class="cl-hero-badge r in">
+        <span class="tag">NEW</span>
+        <span><b>Sage AI</b> now runs on-device</span>
+      </div>
+      <h1>
+        <span class="line"><span>Your <span style="white-space: nowrap;">gluten-free</span></span></span>
+        <span class="line"><span class="grad">passport.</span></span>
+      </h1>
+      <p class="cl-hero-sub">Travel anywhere with confidence. Find safe places to eat, speak your dietary needs in any language, and ask Sage: your private AI companion.</p>
+      <div class="cl-hero-cta">
+        <a class="btn btn-primary" href="#speak">
+          See your card speak
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="#find">How it works</a>
+      </div>
+      <div class="cl-hero-proof">
+        <div class="langs">
+          <span>PT</span><span>ES</span><span>日</span><span>FR</span><span>+</span>
         </div>
+        <span>Communicates clearly in <b style="color:var(--n-300)">12 languages</b></span>
+      </div>
     </div>
-</div>
 
-<!-- Solution Section: The Card -->
-<div class="py-32 relative overflow-hidden">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-20 animate-on-scroll">
-            <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">Celio Speaks for You</h2>
-            <p class="text-xl text-neutral-400 max-w-2xl mx-auto">
-                Instantly generate a professional, culturally accurate dietary card in Portuguese (or 100+ other
-                languages).
+    <div class="cl-hero-visual">
+      <div class="cl-hero-glow"></div>
+      {# Real Celio E-Card — matches the actual /m_cards/ design #}
+      <div class="cl-hcard floaty">
+        <div style="background:linear-gradient(135deg,#0f766e 0%,#115e59 100%);border-radius:22px;overflow:hidden;color:#fff;width:100%;">
+          {# Header #}
+          <div style="padding:22px 20px 14px;text-align:center;position:relative;">
+            <div style="position:absolute;top:12px;left:12px;display:flex;gap:6px;">
+              <span style="width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z"/></svg>
+              </span>
+              <span style="width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
+              </span>
+            </div>
+            <div style="width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.4);margin:0 auto 10px;display:flex;align-items:center;justify-content:center;">
+              <svg width="28" height="28" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/></svg>
+            </div>
+            <h3 style="font-size:1.4rem;font-weight:700;letter-spacing:-.01em">E-Card</h3>
+            <p style="font-size:12px;opacity:.8;margin-top:3px">Gluten-Free · Português</p>
+          </div>
+          {# Body #}
+          <div style="padding:0 20px 20px;">
+            <p style="font-size:12.5px;line-height:1.6;background:rgba(255,255,255,.1);border-radius:12px;padding:12px 14px;border:1px solid rgba(255,255,255,.2);margin-bottom:14px;">
+              Por favor, ajude-me a comer com segurança. Nao posso comer gluten: trigo, centeio, cevada ou aveia.
             </p>
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <span style="font-size:11px;background:rgba(255,255,255,.12);padding:3px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.2);opacity:.9">Português</span>
+              <div style="display:flex;gap:5px;">
+                <span style="width:18px;height:18px;border-radius:50%;background:#0f766e;border:2px solid #fff;box-shadow:0 0 0 1px rgba(255,255,255,.3)"></span>
+                <span style="width:18px;height:18px;border-radius:50%;background:#0ea5e9;border:2px solid rgba(255,255,255,.3)"></span>
+                <span style="width:18px;height:18px;border-radius:50%;background:#1e293b;border:2px solid rgba(255,255,255,.3)"></span>
+                <span style="width:18px;height:18px;border-radius:50%;background:#7c3aed;border:2px solid rgba(255,255,255,.3)"></span>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
+    </div>
+  </div>
+</header>
 
-        <!-- The Card Demo -->
-        <div class="relative max-w-md mx-auto perspective-1000 animate-on-scroll delay-200">
-            <div
-                class="absolute -inset-1 bg-gradient-to-r from-teal-400 to-blue-500 rounded-2xl blur opacity-30 animate-pulse">
+{# ── 2. LOOP ── #}
+<section class="cl-sec cl-loop">
+  <div class="cl-wrap">
+    <div class="cl-sec-head">
+      <span class="eyebrow r">The Celio loop</span>
+      <h2 class="sec-h r r-1">Everything a celiac traveler<br>needs around a single meal.</h2>
+      <p class="sec-sub r r-2" style="text-align:center">Three tools, one calm flow. From finding the restaurant to ordering safely once you're at the table.</p>
+    </div>
+    <div class="cl-loop-grid">
+      <a class="cl-pillar pc-teal r r-1" href="#find">
+        <div class="cl-pillar-top">
+          <span class="cl-pillar-ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg></span>
+          <span class="cl-pillar-n">01</span>
+        </div>
+        <div class="cl-pillar-verb">Find</div>
+        <h3 class="cl-pillar-title">Safe places to eat &amp; shop</h3>
+        <p class="cl-pillar-body">A live map of celiac-friendly restaurants and gluten-free groceries, wherever you land.</p>
+        <span class="cl-pillar-link">Explore <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></span>
+        <span class="cl-pillar-step"></span>
+      </a>
+      <a class="cl-pillar pc-cyan r r-2" href="#speak">
+        <div class="cl-pillar-top">
+          <span class="cl-pillar-ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg></span>
+          <span class="cl-pillar-n">02</span>
+        </div>
+        <div class="cl-pillar-verb">Speak</div>
+        <h3 class="cl-pillar-title">Your needs, any language</h3>
+        <p class="cl-pillar-body">Generate a professional dietary E-Card that translates your safety message into 12 languages.</p>
+        <span class="cl-pillar-link">Explore <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></span>
+        <span class="cl-pillar-step"></span>
+      </a>
+      <a class="cl-pillar pc-violet r r-3" href="{% url 'sage:assistant' %}">
+        <div class="cl-pillar-top">
+          <span class="cl-pillar-ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12a9 9 0 01-9 9 9.75 9.75 0 01-4.6-1.12L3 21l1.12-4.4A9.75 9.75 0 013 12a9 9 0 1118 0z"/></svg></span>
+          <span class="cl-pillar-n">03</span>
+        </div>
+        <div class="cl-pillar-verb">Ask</div>
+        <h3 class="cl-pillar-title">A private AI companion</h3>
+        <p class="cl-pillar-body">Sage answers dish-by-dish questions and cultural dining tips, running entirely on your device.</p>
+        <span class="cl-pillar-link">Explore <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></span>
+        <span class="cl-pillar-step"></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+{# ── 3. MAP ── #}
+<section class="cl-sec" id="find">
+  <div class="cl-wrap">
+    <div class="cl-find-grid">
+      <div class="cl-find-left" x-data="mapSection()">
+        <span class="eyebrow r">01 · Find</span>
+        <h2 class="sec-h r r-1" style="margin-top:16px">Safe tables and<br>shelves, <span class="grad">nearby.</span></h2>
+        <p class="sec-sub r r-2" style="margin-top:18px">A living map of celiac-friendly restaurants and gluten-free groceries. Verified, rated, and ready the moment you arrive.</p>
+        <div class="cl-find-filters r r-3">
+          <button class="cl-fchip" :class="{ on: filter === 'all' }" @click="filter = 'all'">All</button>
+          <button class="cl-fchip" :class="{ on: filter === 'restaurant' }" @click="filter = 'restaurant'">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg>
+            Restaurants
+          </button>
+          <button class="cl-fchip" :class="{ on: filter === 'grocery' }" @click="filter = 'grocery'">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.75c0 .415.336.75.75.75z"/></svg>
+            Groceries
+          </button>
+          <button class="cl-fchip" :class="{ on: filter === 'gf' }" @click="filter = 'gf'">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12.75L11.25 15 15 9.75M21 12c0 5.25-3.75 8.25-8.46 9.6a1.2 1.2 0 01-.67 0C7.5 20.25 3 17.25 3 12V6.3a1.2 1.2 0 01.8-1.13l8-2.9a1.2 1.2 0 01.82 0l8 2.9A1.2 1.2 0 0121 6.3z"/></svg>
+            100% GF
+          </button>
+        </div>
+        <div class="cl-find-list r r-4">
+          <template x-for="p in shownPlaces" :key="p.id">
+            <div class="cl-place">
+              <span class="cl-place-ic" :class="p.type">
+                <template x-if="p.type === 'restaurant'">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg>
+                </template>
+                <template x-if="p.type !== 'restaurant'">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.75c0 .415.336.75.75.75z"/></svg>
+                </template>
+              </span>
+              <div class="cl-place-info">
+                <div class="cl-place-top">
+                  <b x-text="p.name"></b>
+                  <span class="cl-place-gf" x-show="p.gf">100% GF</span>
+                </div>
+                <i x-text="p.tag"></i>
+              </div>
+              <div class="cl-place-meta">
+                <span class="cl-place-rating">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg>
+                  <span x-text="p.rating"></span>
+                </span>
+                <span x-text="p.dist"></span>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+
+      <div class="cl-find-right r r-2" x-data="mapSection()">
+        <div class="cl-map">
+          <div class="cl-map-tiles"></div>
+          <div class="cl-map-park" style="top:12%; left:58%; width:30%; height:34%"></div>
+          <div class="cl-map-water" style="bottom:-6%; left:-6%; width:60%; height:40%"></div>
+          <div class="cl-map-search">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            <span>Lisbon, Portugal</span>
+            <span class="cl-map-search-live"><i></i>5 nearby</span>
+          </div>
+          <div class="cl-map-you" style="left:48%; top:50%"><span></span></div>
+          <template x-for="(p, i) in allPlaces" :key="p.id">
+            <div class="cl-mappin" :class="[p.type, 'on']"
+                 :style="`left:${p.x}%; top:${p.y}%; animation-delay:${i*0.12}s`">
+              <span class="cl-mappin-dot">
+                <template x-if="p.type === 'restaurant'">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg>
+                </template>
+                <template x-if="p.type !== 'restaurant'">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.75c0 .415.336.75.75.75z"/></svg>
+                </template>
+              </span>
+              <span class="cl-mappin-ring" x-show="p.gf"></span>
+            </div>
+          </template>
+          <div class="cl-map-grad"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ── 4. CARD DEMO ── #}
+<section class="cl-sec cl-speak" id="speak" x-data="cardDemo()">
+  <div class="cl-wrap cl-speak-grid">
+    <div class="cl-speak-left">
+      <span class="eyebrow r">02 · Speak</span>
+      <h2 class="sec-h r r-1" style="margin-top:16px">Watch your card<br>speak <span class="grad">any language.</span></h2>
+      <p class="sec-sub r r-2" style="margin-top:18px">This is the real Celio E-Card. Pick a language or theme and it rebuilds your safety message instantly, with the danger list a kitchen actually needs to see.</p>
+
+      <div class="cl-ctrl r r-3">
+        <div class="cl-ctrl-label">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 01-3.827-5.802"/></svg>
+          Language
+          <span class="cl-live" x-show="auto"><i></i>auto-cycling</span>
+        </div>
+        <div class="cl-pills">
+          <template x-for="(lang, i) in langs" :key="lang.code">
+            <button class="cl-pill" :class="{ on: i === li }" @click="setLang(i)" x-text="lang.code"></button>
+          </template>
+        </div>
+      </div>
+
+      <div class="cl-ctrl r r-4" style="margin-top:26px">
+        <div class="cl-ctrl-label">Theme</div>
+        <div class="cl-theme-pills">
+          <button class="cl-theme-pill" :class="{ on: theme === 'celio' }" @click="setTheme('celio')">
+            <span class="cl-theme-pill-dot" style="background:linear-gradient(135deg,#0f766e,#2dd4bf)"></span>Teal
+          </button>
+          <button class="cl-theme-pill" :class="{ on: theme === 'sky' }" @click="setTheme('sky')">
+            <span class="cl-theme-pill-dot" style="background:linear-gradient(135deg,#0ea5e9,#38bdf8)"></span>Sky
+          </button>
+          <button class="cl-theme-pill" :class="{ on: theme === 'dark' }" @click="setTheme('dark')">
+            <span class="cl-theme-pill-dot" style="background:#1e293b;border:1px solid rgba(255,255,255,.2)"></span>Dark
+          </button>
+          <button class="cl-theme-pill" :class="{ on: theme === 'purple' }" @click="setTheme('purple')">
+            <span class="cl-theme-pill-dot" style="background:linear-gradient(135deg,#7c3aed,#a78bfa)"></span>Purple
+          </button>
+        </div>
+      </div>
+
+      <div class="cl-speak-actions r r-5">
+        <a class="btn btn-primary btn-sm" href="{% url 'message_cards:unified_card_management' %}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
+          Create my card
+        </a>
+        <a class="cl-wallet-btn" href="{% url 'message_cards:unified_card_management' %}">
+          <svg width="18" height="14" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="1" width="20" height="14" rx="3" stroke="white" stroke-width="1.6"/>
+            <path d="M1 6h20" stroke="white" stroke-width="1.6"/>
+            <rect x="3.5" y="9" width="5" height="3" rx="1" fill="white" opacity=".9"/>
+          </svg>
+          Add to Wallet
+        </a>
+      </div>
+      <p class="r r-5" style="margin-top:12px;font-size:12px;color:var(--n-500);display:flex;align-items:center;gap:6px;">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
+        Works offline. Saves to Apple Wallet or Google Wallet.
+      </p>
+    </div>
+
+    {# Right: iPhone mockup with real E-Card #}
+    <div class="cl-speak-right r r-2">
+      <div class="cl-speak-phone-wrap">
+        <div class="cl-speak-phone-glow"></div>
+        <div class="cl-speak-phone floaty" style="animation-duration:7s">
+          <div class="cl-speak-phone-notch"></div>
+          <div class="cl-speak-phone-screen">
+
+            {# Status bar #}
+            <div class="cl-speak-phone-statusbar">
+              <span>9:41</span>
+              <div style="display:flex;align-items:center;gap:5px">
+                <svg width="15" height="11" viewBox="0 0 17 12" fill="white"><rect x="0" y="3" width="3" height="9" rx="1" opacity=".4"/><rect x="4.5" y="2" width="3" height="10" rx="1" opacity=".6"/><rect x="9" y="0" width="3" height="12" rx="1"/><rect x="14" y="1" width="2.5" height="10" rx="1.25" fill="none" stroke="white" stroke-width="1"/><rect x="14.5" y="3.5" width="1.5" height="5" rx=".75"/></svg>
+                <svg width="15" height="11" viewBox="0 0 24 12" fill="none" stroke="white" stroke-width="1.8"><path d="M1 6C2.5 2 5.5 0 8.5 0s5.5 2 7 4.5c1.3-1.8 3.5-3 6-3" opacity=".4"/><path d="M3.5 6C5 3.5 6.8 2 9 2s4 1.5 5 3.5c1-1.5 2.5-2.5 4.5-2.5" opacity=".7"/><path d="M6 6c1-1.5 2-2.5 3.5-2.5S12 4.5 13 6c.8-1 1.8-1.5 3-1.5"/><circle cx="9.5" cy="6" r="1.5" fill="white" stroke="none"/></svg>
+                <svg width="24" height="12" viewBox="0 0 24 12" fill="none"><rect x="0.5" y="0.5" width="20" height="11" rx="3.5" stroke="white" stroke-opacity=".35"/><rect x="1.5" y="1.5" width="18" height="9" rx="2.5" fill="white"/><path d="M22 4v4a2 2 0 000-4z" fill="white" fill-opacity=".4"/></svg>
+              </div>
             </div>
 
-            <!-- Interactive Tilt Card -->
-            <div id="demo-card"
-                class="relative bg-white text-neutral-900 rounded-xl shadow-2xl overflow-hidden tilt-card cursor-pointer transform transition-transform duration-500 hover:scale-105">
-                <!-- Card Header -->
-                <div class="bg-teal-600 p-6 text-white tilt-card-content">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h3 class="text-2xl font-bold">Eu tenho Doença Celíaca</h3>
-                            <p class="text-teal-100 text-sm mt-1">I have Celiac Disease</p>
-                        </div>
-                        <svg class="w-8 h-8 text-teal-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
-                        </svg>
-                    </div>
-                </div>
-                <!-- Card Body -->
-                <div class="p-6 space-y-4 tilt-card-content">
-                    <p class="font-medium leading-relaxed">
-                        Por favor, ajude-me a comer com segurança. Eu não posso comer nenhum alimento que contenha
-                        glúten (trigo, centeio, cevada ou aveia).
-                    </p>
-                    <div class="bg-red-50 p-4 rounded-lg border border-red-100">
-                        <p class="text-red-800 text-sm font-bold mb-2 flex items-center gap-2">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                            </svg>
-                            PERIGO / DANGER
-                        </p>
-                        <ul class="text-sm text-red-700 space-y-1 list-disc list-inside">
-                            <li>Farinha de trigo (Wheat flour)</li>
-                            <li>Pão / Massas (Bread / Pasta)</li>
-                            <li>Molhos com farinha (Sauces with flour)</li>
-                        </ul>
-                    </div>
-                    <p class="text-sm text-neutral-600 italic border-t pt-4 mt-4">
-                        Obrigado pela sua ajuda e compreensão!
-                    </p>
-                </div>
+            {# App header #}
+            <div class="cl-speak-phone-nav">
+              <a href="/" style="display:flex;align-items:center;line-height:0">
+                <img src="{% static 'images/celio_logo.png' %}" alt="Celio" class="celio-logo-img" style="height:22px;width:auto;display:block">
+              </a>
+              <span style="font-size:10px;font-weight:700;letter-spacing:.1em;padding:3px 8px;border-radius:999px;background:rgba(45,212,191,.15);color:var(--teal-400);border:1px solid rgba(45,212,191,.3)">PREVIEW</span>
             </div>
+
+            {# Scrollable card #}
+            <div class="cl-speak-phone-scroll">
+              <div class="cl-real-card" :style="cardBg" :key="currentLang.code + theme">
+          {# Card header #}
+          <div style="padding:22px 20px 14px;text-align:center;position:relative;">
+            <div style="position:absolute;top:12px;left:12px;display:flex;gap:6px;z-index:2;">
+              <button @click="speak()" title="Listen"
+                style="width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;transition:background .2s;"
+                onmouseover="this.style.background='rgba(255,255,255,.32)'" onmouseout="this.style.background='rgba(255,255,255,.18)'">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z"/></svg>
+              </button>
+              <span style="width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z"/></svg>
+              </span>
+              <a href="{% url 'message_cards:unified_card_management' %}" style="width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;color:#fff;" title="Download">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
+              </a>
+            </div>
+            <div style="width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.4);margin:0 auto 10px;display:flex;align-items:center;justify-content:center;">
+              <svg width="30" height="30" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/></svg>
+            </div>
+            <h3 style="font-size:1.5rem;font-weight:700;letter-spacing:-.02em;color:#fff">E-Card</h3>
+            <p style="font-size:12px;opacity:.8;margin-top:3px;color:#fff" x-text="currentLang.name"></p>
+          </div>
+          {# Body #}
+          <div style="padding:0 20px 20px;display:flex;flex-direction:column;gap:12px;">
+            <div>
+              <p style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;opacity:.7;color:#fff;margin-bottom:6px">Condition</p>
+              <p style="font-size:14px;font-weight:600;color:#fff" x-text="currentLang.condition"></p>
+            </div>
+            <div style="border-top:1px solid rgba(255,255,255,.15);padding-top:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <p style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;opacity:.7;color:#fff">Safety Message</p>
+                <button @click="speak()" style="padding:4px 6px;border-radius:6px;background:rgba(255,255,255,.12);border:none;color:#fff;cursor:pointer;display:flex;align-items:center;gap:4px;font-size:11px;opacity:.8;" :style="speaking ? 'opacity:1;background:rgba(255,255,255,.25)' : ''">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z"/></svg>
+                  <span x-text="speaking ? 'Stop' : 'Listen'"></span>
+                </button>
+              </div>
+              <p style="font-size:13px;line-height:1.6;background:rgba(255,255,255,.1);border-radius:10px;padding:12px;border:1px solid rgba(255,255,255,.18);color:#fff" x-text="currentLang.message"></p>
+            </div>
+            {# Language + theme dots #}
+            <div style="display:flex;justify-content:space-between;align-items:center;padding-top:4px;">
+              <span style="font-size:11px;background:rgba(255,255,255,.12);padding:4px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.2);color:#fff;opacity:.9" x-text="currentLang.name"></span>
+              <div style="display:flex;gap:6px;align-items:center;">
+                <span style="width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#0f766e,#115e59);" :style="theme==='celio' ? 'border:2px solid #fff' : 'border:2px solid rgba(255,255,255,.3)'"></span>
+                <span style="width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#0ea5e9,#0284c7);" :style="theme==='sky' ? 'border:2px solid #fff' : 'border:2px solid rgba(255,255,255,.3)'"></span>
+                <span style="width:20px;height:20px;border-radius:50%;background:#1e293b;" :style="theme==='dark' ? 'border:2px solid #fff' : 'border:2px solid rgba(255,255,255,.3)'"></span>
+                <span style="width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#6d28d9);" :style="theme==='purple' ? 'border:2px solid #fff' : 'border:2px solid rgba(255,255,255,.3)'"></span>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="text-center mt-16 animate-on-scroll delay-300">
-            <a href="{% url 'message_cards:unified_card_management' %}"
-                class="inline-flex items-center gap-2 text-teal-400 hover:text-teal-300 font-medium transition-colors group">
-                Try it yourself
-                <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none"
-                    stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </div>{# end cl-speak-phone-scroll #}
+
+            {# Bottom tab bar matching real app #}
+            <div class="cl-speak-phone-tabs">
+              <div class="cl-speak-phone-tab active">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                Cards
+              </div>
+              <div class="cl-speak-phone-tab">
+                <svg width="20" height="20" viewBox="0 -6 96 96" fill="none">
+                  <g stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" stroke-width="4">
+                    <g transform="translate(-434 -708)">
+                      <path d="M449,730v19a15,15,0,0,0,9,13.744V780a10,10,0,0,0,10,10h28a10,10,0,0,0,10-10V762.744A15,15,0,0,0,515,749V730Z"/>
+                      <circle cx="11" cy="11" r="11" transform="translate(482 731)"/>
+                      <circle cx="11" cy="11" r="11" transform="translate(460 731)"/>
+                    </g>
+                  </g>
                 </svg>
-            </a>
+                Sage
+              </div>
+              <div class="cl-speak-phone-tab">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 20.25a9 9 0 100-16.5 9 9 0 000 16.5zM3 9h12M3 15h12M9 3.75v16.5"/><path d="M20.25 6.75l-3 3M20.25 17.25l-3-3"/></svg>
+                Maps
+              </div>
+              <div class="cl-speak-phone-tab">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.35 7.35 0 010 .252c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 010-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28z"/><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                Settings
+              </div>
+            </div>
+
+          </div>{# end cl-speak-phone-screen #}
+        </div>{# end cl-speak-phone #}
+      </div>{# end cl-speak-phone-wrap #}
+    </div>{# end cl-speak-right #}
+  </div>{# end cl-speak-grid #}
+</section>
+
+{# ── 5. SAGE ── #}
+<section class="cl-sec cl-sage" id="ask">
+  <div class="cl-wrap cl-sage-grid">
+    <div class="cl-sage-phone-wrap r r-1">
+      <div class="cl-phone floaty">
+        <div class="cl-phone-notch"></div>
+        <div class="cl-phone-screen">
+          <div class="cl-sage-head">
+            <span class="cl-sage-head-owl">
+              <svg width="26" height="26" viewBox="0 -6 96 96" fill="none">
+                <g stroke-linecap="round" stroke-linejoin="round" stroke="#fff" stroke-width="4">
+                  <g transform="translate(-434 -708)">
+                    <path d="M449,730v19a15,15,0,0,0,9,13.744V780a10,10,0,0,0,10,10h28a10,10,0,0,0,10-10V762.744A15,15,0,0,0,515,749V730Z" fill="#3b0a64"/>
+                    <path d="M459,764h-1v16a10,10,0,0,0,10,10h1V774A10,10,0,0,0,459,764Z" fill="#2e1065"/>
+                    <path d="M505,764h1v16a10,10,0,0,1-10,10h-1V774A10,10,0,0,1,505,764Z" fill="#2e1065"/>
+                    <circle cx="11" cy="11" r="11" transform="translate(482 731)" fill="#fff"/>
+                    <circle cx="11" cy="11" r="11" transform="translate(460 731)" fill="#fff"/>
+                    <path d="M523,710H504v2a9.973,9.973,0,0,1-4.016,8l.016,0h-.018a9.942,9.942,0,0,1-5.64,1.983l-.015.017H469.673l-.015-.017a9.942,9.942,0,0,1-5.64-1.983H464l.016,0A9.973,9.973,0,0,1,460,712v-2H441a5,5,0,0,0,0,10h6a5,5,0,0,0,0,10h11.222a26.6,26.6,0,0,0,3.278,0A15.5,15.5,0,0,1,477,745.5c0,.506-.028,1.006-.076,1.5H477v13.7a5,5,0,0,0,10,0V747h.076c-.048-.494-.076-.994-.076-1.5A15.5,15.5,0,0,1,502.5,730a26.6,26.6,0,0,0,3.278,0H517a5,5,0,0,0,0-10h6a5,5,0,0,0,0-10Z" fill="#7c3aed"/>
+                    <rect width="10" height="21" rx="5" transform="translate(477 744)" fill="#2e1065"/>
+                  </g>
+                </g>
+              </svg>
+            </span>
+            <div>
+              <b>Sage</b>
+              <i>
+                <span class="cl-ondev">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
+                  On-device
+                </span>
+              </i>
+            </div>
+          </div>
+          <div class="cl-sage-thread">
+            <div class="cl-bubble-row user"><div class="cl-bubble user">Is bacalhau à brás safe for celiacs?</div></div>
+            <div class="cl-bubble-row sage">
+              <div class="cl-bubble sage">
+                Usually yes. It's cod, eggs, potatoes and onion. The risk is the fried potato sticks (batata palha), which can share fryer oil with breaded foods.
+                <div class="cl-bubble-chips">
+                  <span>Ask if fried separately</span>
+                  <span>Show me the phrase</span>
+                </div>
+              </div>
+            </div>
+            <div class="cl-bubble-row user"><div class="cl-bubble user">How do I ask that in Portuguese?</div></div>
+            <div class="cl-bubble-row sage">
+              <div class="cl-bubble sage">
+                Say: "As batatas sao fritas no mesmo oleo que alimentos panados?" I've added it to your phrasebook.
+                <div class="cl-bubble-phrase">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 01-3.827-5.802"/></svg>
+                  Added to phrasebook
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="cl-sage-input">
+            <span>Ask Sage anything…</span>
+            <span class="cl-sage-send">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+            </span>
+          </div>
         </div>
+      </div>
+      <div class="cl-sage-phone-glow"></div>
     </div>
-</div>
 
-<!-- Bento-Box Features Section -->
-<div class="py-32 relative overflow-hidden">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16 animate-on-scroll">
-            <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">Everything You Need</h2>
-            <p class="text-xl text-neutral-400 max-w-2xl mx-auto">
-                Two powerful tools working together to make your travels seamless and stress-free.
-            </p>
+    <div class="cl-sage-copy">
+      <span class="eyebrow r" style="color:var(--violet-300)">03 · Ask</span>
+      <h2 class="sec-h r r-1" style="margin-top:16px">Meet Sage, your<br><span class="grad-violet">private</span> travel companion.</h2>
+      <p class="sec-sub r r-2" style="margin-top:18px">Ask about any dish, ingredient, or menu. Sage knows celiac-safe dining across cultures and answers in seconds.</p>
+      <div class="cl-sage-feats r r-3">
+        <div class="cl-sage-feat">
+          <span class="cl-sage-feat-ic">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
+          </span>
+          <div>
+            <b>Runs entirely on your iPhone</b>
+            <i>Powered by an on-device LLM. Your questions never leave your phone, and it works in airplane mode.</i>
+          </div>
         </div>
-
-        <!-- Bento Grid - Authentic Asymmetric Layout -->
-        <div class="grid grid-cols-1 md:grid-cols-4 md:grid-rows-3 gap-6 animate-on-scroll delay-200 max-w-6xl mx-auto">
-
-            <!-- E-Card - Large Feature (Top Left, 2x2) -->
-            <div
-                class="col-span-1 md:col-span-2 md:row-span-2 bg-gradient-to-br from-neutral-900 to-neutral-800 rounded-3xl p-8 border border-white/10 group hover:border-teal-500/30 transition-all duration-500 relative overflow-hidden">
-                <!-- Decorative Background -->
-                <div
-                    class="absolute top-0 right-0 w-64 h-64 bg-teal-500/5 rounded-full blur-3xl -mr-16 -mt-16 transition-opacity duration-500 group-hover:opacity-70">
-                </div>
-
-                <div class="relative z-10 h-full flex flex-col">
-                    <div class="flex items-start justify-between mb-8">
-                        <div
-                            class="w-14 h-14 rounded-2xl bg-teal-500/10 flex items-center justify-center border border-teal-500/20 group-hover:scale-110 transition-transform duration-500">
-                            <svg class="w-7 h-7 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                            </svg>
-                        </div>
-                        <span
-                            class="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-neutral-400">Core
-                            Feature</span>
-                    </div>
-
-                    <h3 class="text-3xl font-bold text-white mb-3 group-hover:text-teal-400 transition-colors">
-                        Digital
-                        E-Card</h3>
-                    <p class="text-neutral-400 mb-8 leading-relaxed">Your essential dietary passport. Communicate
-                        your
-                        needs clearly in over 100 languages with a professionally translated card.</p>
-
-                    <div class="grid grid-cols-2 gap-4 mt-auto">
-                        <div class="flex items-center gap-3 text-neutral-300">
-                            <div class="w-1.5 h-1.5 rounded-full bg-teal-500"></div>
-                            <span class="text-sm">Offline Ready</span>
-                        </div>
-                        <div class="flex items-center gap-3 text-neutral-300">
-                            <div class="w-1.5 h-1.5 rounded-full bg-teal-500"></div>
-                            <span class="text-sm">100+ Languages</span>
-                        </div>
-                        <div class="flex items-center gap-3 text-neutral-300">
-                            <div class="w-1.5 h-1.5 rounded-full bg-teal-500"></div>
-                            <span class="text-sm">Custom Themes</span>
-                        </div>
-                        <div class="flex items-center gap-3 text-neutral-300">
-                            <div class="w-1.5 h-1.5 rounded-full bg-teal-500"></div>
-                            <span class="text-sm">Instant Sharing</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Sage AI - Top Right (Tall, 2 rows) -->
-            <div
-                class="col-span-1 md:col-span-2 md:row-span-2 bg-gradient-to-br from-neutral-900 to-neutral-800 rounded-3xl p-8 border border-white/10 group hover:border-teal-500/30 transition-all duration-500 relative overflow-hidden">
-                <!-- Decorative Background -->
-                <div
-                    class="absolute inset-0 bg-gradient-to-b from-teal-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                </div>
-
-                <div
-                    class="absolute top-0 right-0 w-64 h-64 bg-violet-500/5 rounded-full blur-3xl -mr-16 -mt-16 transition-opacity duration-500 group-hover:opacity-70">
-                </div>
-
-                <div class="relative z-10 flex flex-col h-full items-center text-center justify-center">
-                    <div
-                        class="w-20 h-20 rounded-full bg-violet-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500 shadow-lg shadow-violet-500/10 border border-violet-500/20">
-                        <!-- Violet Owl SVG -->
-                        <svg class="w-10 h-10" viewBox="0 -6 96 96" xmlns="http://www.w3.org/2000/svg" fill="none">
-                            <g stroke-linecap="round" stroke-linejoin="round">
-                                <g transform="translate(-434 -708)">
-                                    <path
-                                        d="M449,730v19a15,15,0,0,0,9,13.744V780a10,10,0,0,0,10,10h28a10,10,0,0,0,10-10V762.744A15,15,0,0,0,515,749V730Z"
-                                        fill="currentColor" class="text-violet-900/50" stroke="currentColor"
-                                        class="text-white" stroke-width="4"></path>
-                                    <path d="M459,764h-1v16a10,10,0,0,0,10,10h1V774A10,10,0,0,0,459,764Z"
-                                        fill="currentColor" class="text-violet-950" stroke="currentColor"
-                                        class="text-white" stroke-width="4"></path>
-                                    <path d="M505,764h1v16a10,10,0,0,1-10,10h-1V774A10,10,0,0,1,505,764Z"
-                                        fill="currentColor" class="text-violet-950" stroke="currentColor"
-                                        class="text-white" stroke-width="4"></path>
-                                    <circle cx="11" cy="11" r="11" transform="translate(482 731)" fill="currentColor"
-                                        class="text-white" stroke="currentColor" class="text-white" stroke-width="4">
-                                    </circle>
-                                    <circle cx="11" cy="11" r="11" transform="translate(460 731)" fill="currentColor"
-                                        class="text-white" stroke="currentColor" class="text-white" stroke-width="4">
-                                    </circle>
-                                    <path
-                                        d="M523,710H504v2a9.973,9.973,0,0,1-4.016,8l.016,0h-.018a9.942,9.942,0,0,1-5.64,1.983l-.015.017H469.673l-.015-.017a9.942,9.942,0,0,1-5.64-1.983H464l.016,0A9.973,9.973,0,0,1,460,712v-2H441a5,5,0,0,0,0,10h6a5,5,0,0,0,0,10h11.222a26.6,26.6,0,0,0,3.278,0A15.5,15.5,0,0,1,477,745.5c0,.506-.028,1.006-.076,1.5H477v13.7a5,5,0,0,0,10,0V747h.076c-.048-.494-.076-.994-.076-1.5A15.5,15.5,0,0,1,502.5,730a26.6,26.6,0,0,0,3.278,0H517a5,5,0,0,0,0-10h6a5,5,0,0,0,0-10Z"
-                                        fill="currentColor" class="text-violet-600" stroke="currentColor"
-                                        class="text-white" stroke-width="4"></path>
-                                    <rect width="10" height="21" rx="5" transform="translate(477 744)"
-                                        fill="currentColor" class="text-violet-950" stroke="currentColor"
-                                        class="text-white" stroke-width="4">
-                                    </rect>
-                                </g>
-                            </g>
-                        </svg>
-                    </div>
-
-                    <h3 class="text-3xl font-bold text-white mb-3 group-hover:text-violet-400 transition-colors">
-                        Sage AI
-                    </h3>
-                    <p class="text-neutral-400 mb-8 max-w-xs mx-auto leading-relaxed">Your intelligent travel
-                        companion.
-                        Ask about local dishes, find safe restaurants, and get cultural dining tips.</p>
-
-                    <a href="{% url 'sage:assistant' %}"
-                        class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/5 border border-white/10 text-white font-medium hover:bg-violet-600 hover:border-violet-600 hover:scale-105 transition-all duration-300">
-                        Chat with Sage
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                        </svg>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Live Translation - Bottom Bar (Full Width) -->
-            <div
-                class="col-span-1 md:col-span-4 md:row-span-1 bg-neutral-900 rounded-3xl p-8 border border-white/10 group hover:border-teal-500/30 transition-all duration-500 relative overflow-hidden flex items-center">
-                <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20">
-                </div>
-                <div class="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-teal-900/20 to-transparent">
-                </div>
-
-                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between w-full gap-6">
-                    <div class="flex items-center gap-6">
-                        <div
-                            class="w-16 h-16 rounded-2xl bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center shadow-lg shadow-teal-500/20 group-hover:rotate-3 transition-transform duration-500">
-                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                    d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
-                            </svg>
-                        </div>
-                        <div class="text-center md:text-left">
-                            <h3 class="text-2xl font-bold text-white mb-1">Live Translation</h3>
-                            <p class="text-neutral-400">Break down language barriers instantly.</p>
-                        </div>
-                    </div>
-
-                    <div
-                        class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
-                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                        <span class="text-sm font-medium text-neutral-300">Active System</span>
-                    </div>
-                </div>
-            </div>
+        <div class="cl-sage-feat">
+          <span class="cl-sage-feat-ic">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21a9 9 0 100-18 9 9 0 000 18zM3.6 9h16.8M3.6 15h16.8M12 3a13.5 13.5 0 000 18M12 3a13.5 13.5 0 010 18"/></svg>
+          </span>
+          <div>
+            <b>Knows the local table</b>
+            <i>Region-aware dish breakdowns, hidden-gluten warnings, and the exact phrase to say to your waiter.</i>
+          </div>
         </div>
+      </div>
+      <a class="btn btn-violet r r-4" href="{% url 'sage:assistant' %}">
+        <svg width="18" height="18" viewBox="0 -6 96 96" fill="none">
+          <g stroke-linecap="round" stroke-linejoin="round" stroke="#fff" stroke-width="4">
+            <g transform="translate(-434 -708)">
+              <path d="M449,730v19a15,15,0,0,0,9,13.744V780a10,10,0,0,0,10,10h28a10,10,0,0,0,10-10V762.744A15,15,0,0,0,515,749V730Z" fill="#3b0a64"/>
+              <path d="M459,764h-1v16a10,10,0,0,0,10,10h1V774A10,10,0,0,0,459,764Z" fill="#2e1065"/>
+              <path d="M505,764h1v16a10,10,0,0,1-10,10h-1V774A10,10,0,0,1,505,764Z" fill="#2e1065"/>
+              <circle cx="11" cy="11" r="11" transform="translate(482 731)" fill="#fff"/>
+              <circle cx="11" cy="11" r="11" transform="translate(460 731)" fill="#fff"/>
+              <path d="M523,710H504v2a9.973,9.973,0,0,1-4.016,8l.016,0h-.018a9.942,9.942,0,0,1-5.64,1.983l-.015.017H469.673l-.015-.017a9.942,9.942,0,0,1-5.64-1.983H464l.016,0A9.973,9.973,0,0,1,460,712v-2H441a5,5,0,0,0,0,10h6a5,5,0,0,0,0,10h11.222a26.6,26.6,0,0,0,3.278,0A15.5,15.5,0,0,1,477,745.5c0,.506-.028,1.006-.076,1.5H477v13.7a5,5,0,0,0,10,0V747h.076c-.048-.494-.076-.994-.076-1.5A15.5,15.5,0,0,1,502.5,730a26.6,26.6,0,0,0,3.278,0H517a5,5,0,0,0,0-10h6a5,5,0,0,0,0-10Z" fill="#7c3aed"/>
+              <rect width="10" height="21" rx="5" transform="translate(477 744)" fill="#2e1065"/>
+            </g>
+          </g>
+        </svg>
+        Chat with Sage
+      </a>
     </div>
-</div>
+  </div>
+</section>
 
-<!-- Tech Stack / Recruiter Note -->
-<div class="py-20 border-t border-white/5 bg-neutral-900/30">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <p class="text-sm text-neutral-500 uppercase tracking-widest mb-8 animate-on-scroll">Built with Modern
-            Standards
-        </p>
-        <div
-            class="flex flex-wrap justify-center gap-8 md:gap-16 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500 animate-on-scroll delay-200">
-            <!-- Django -->
-            <div class="flex flex-col items-center gap-2 group">
-                <span class="text-white font-bold text-xl group-hover:text-teal-400 transition-colors">Django
-                    5</span>
-            </div>
-            <!-- Alpine.js -->
-            <div class="flex flex-col items-center gap-2 group">
-                <span class="text-white font-bold text-xl group-hover:text-teal-400 transition-colors">Alpine.js</span>
-            </div>
-            <!-- Tailwind -->
-            <div class="flex flex-col items-center gap-2 group">
-                <span class="text-white font-bold text-xl group-hover:text-teal-400 transition-colors">Tailwind
-                    CSS</span>
-            </div>
-            <!-- PostgreSQL -->
-            <div class="flex flex-col items-center gap-2 group">
-                <span class="text-white font-bold text-xl group-hover:text-teal-400 transition-colors">PostgreSQL</span>
-            </div>
+{# ── 6. EARLY ACCESS ── #}
+<section class="cl-sec" id="ios" x-data="{ email: '', sent: false }">
+  <div class="cl-wrap">
+    <div class="cl-ios-card r">
+      <div class="cl-ios-glow"></div>
+      <div class="cl-ios-inner">
+        <span class="cl-ios-badge">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M16.365 1.43c0 1.14-.493 2.27-1.177 3.08-.744.9-1.99 1.57-2.987 1.57-.12 0-.23-.02-.3-.03-.01-.06-.04-.22-.04-.39 0-1.15.572-2.27 1.206-2.98.804-.94 2.142-1.64 3.248-1.68.03.13.05.28.05.43zm4.565 15.71c-.03.07-.463 1.58-1.518 3.12-.945 1.34-1.94 2.71-3.43 2.71-1.517 0-1.9-.88-3.63-.88-1.698 0-2.302.91-3.67.91-1.377 0-2.332-1.26-3.428-2.8-1.287-1.82-2.323-4.63-2.323-7.28 0-4.28 2.797-6.55 5.552-6.55 1.448 0 2.675.95 3.6.95.865 0 2.222-1.01 3.902-1.01.613 0 2.886.06 4.374 2.19-.13.09-2.383 1.37-2.383 4.19 0 3.26 2.854 4.42 2.955 4.45z"/></svg>
+          Coming to iOS · 2026
+        </span>
+        <h2 class="cl-ios-h">Your passport,<br><span class="grad">in your pocket.</span></h2>
+        <p class="cl-ios-sub">Be first to travel with Celio on iPhone. The E-Card, the map, and on-device Sage, all offline-ready. Join the early-access list.</p>
+        <template x-if="!sent">
+          <form class="cl-ios-form" @submit.prevent="if(email.trim()) sent = true">
+            <input type="email" required placeholder="you@email.com" x-model="email">
+            <button class="btn btn-primary" type="submit">
+              Get early access
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+            </button>
+          </form>
+        </template>
+        <template x-if="sent">
+          <div class="cl-ios-done">
+            <span class="cl-ios-check">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.75l6 6 9-13.5"/></svg>
+            </span>
+            You're on the list. We'll be in touch.
+          </div>
+        </template>
+        <div class="cl-ios-meta">
+          <span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
+            Private by design
+          </span>
+          <span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5z"/></svg>
+            Works offline
+          </span>
+          <span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12.75L11.25 15 15 9.75M21 12c0 5.25-3.75 8.25-8.46 9.6a1.2 1.2 0 01-.67 0C7.5 20.25 3 17.25 3 12V6.3a1.2 1.2 0 01.8-1.13l8-2.9a1.2 1.2 0 01.82 0l8 2.9A1.2 1.2 0 0121 6.3z"/></svg>
+            Built by a celiac
+          </span>
         </div>
+      </div>
     </div>
-</div>
+  </div>
+</section>
 
+</div>{# end cl-shell #}
+{% endblock %}
+
+{# ── Footer ── #}
+{% block footer %}
+<footer class="cl-footer">
+  <div class="cl-wrap">
+    <div class="cl-footer-grid">
+      <div class="cl-footer-brand">
+        <a href="/" style="display:flex;align-items:center;line-height:0">
+          <img src="{% static 'images/celio_logo.png' %}" alt="Celio" class="celio-logo-img" style="height:44px;width:auto;display:block">
+        </a>
+        <p>Travel with confidence. Communicate your dietary needs clearly in any language, anywhere in the world.</p>
+      </div>
+      <div class="cl-footer-col">
+        <h4>Product</h4>
+        <a href="#find">Find safe eats</a>
+        <a href="#speak">E-Card</a>
+        <a href="{% url 'sage:assistant' %}">Sage AI</a>
+        <a href="#ios">iOS app</a>
+      </div>
+      <div class="cl-footer-col">
+        <h4>Company</h4>
+        <a href="https://www.linkedin.com/in/raphealsuber/" target="_blank">LinkedIn</a>
+        <a href="https://github.com/manyworldss" target="_blank">GitHub</a>
+        <a href="{% url 'message_cards:unified_card_management' %}">Try E-Card</a>
+      </div>
+    </div>
+    <div class="cl-footer-bottom">
+      <span>© 2026 Celio. All rights reserved.</span>
+      <span>Designed with ♥ for travelers</span>
+    </div>
+  </div>
+</footer>
+{% endblock %}
+
+{% block extra_scripts %}
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Intersection Observer for scroll animations
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.1
-        };
-
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                    observer.unobserve(entry.target); // Only animate once
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.animate-on-scroll').forEach(el => {
-            observer.observe(el);
-        });
-
-        // 3D Tilt Effect for Card
-        const card = document.getElementById('demo-card');
-        if (card) {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-
-                const rotateX = ((y - centerY) / centerY) * -5; // Max 5deg rotation
-                const rotateY = ((x - centerX) / centerX) * 5;
-
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
-            });
-
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
-            });
-        }
-
-        // Mouse Glow Effect
-        const glow = document.getElementById('mouse-glow');
-        if (glow) {
-            document.addEventListener('mousemove', (e) => {
-                glow.style.left = e.clientX + 'px';
-                glow.style.top = e.clientY + 'px';
-            });
-        }
-    });
+/* background already set in <head> script above DOMContentLoaded */
 </script>
+<script>
+const CARD_LANGS = [
+  { code:"EN", name:"English", native:"English",
+    condition:"I have Celiac Disease",
+    message:"Please help me eat safely. I cannot eat any food containing gluten: wheat, rye, barley, or oats. Even a small amount can make me seriously ill.",
+    dangerH:"DANGER: Contains Gluten",
+    danger:["Wheat flour","Bread & pasta","Soy sauce","Sauces with flour"],
+    safeH:"Safe for me",
+    safe:["Rice","Grilled fish & meat","Fresh vegetables"],
+    thanks:"Thank you for your help and understanding!" },
+  { code:"PT", name:"Português", native:"Portuguese",
+    condition:"Eu tenho Doença Celíaca",
+    message:"Por favor, ajude-me a comer com segurança. Não posso comer alimentos com glúten: trigo, centeio, cevada ou aveia. Mesmo uma pequena quantidade pode deixar-me muito doente.",
+    dangerH:"PERIGO: Contém Glúten",
+    danger:["Farinha de trigo","Pão e massas","Molho de soja","Molhos com farinha"],
+    safeH:"Seguro para mim",
+    safe:["Arroz","Peixe e carne grelhados","Legumes frescos"],
+    thanks:"Obrigado pela sua ajuda e compreensão!" },
+  { code:"ES", name:"Español", native:"Spanish",
+    condition:"Tengo Enfermedad Celíaca",
+    message:"Por favor, ayúdeme a comer de forma segura. No puedo comer alimentos con gluten: trigo, centeno, cebada o avena. Incluso una pequeña cantidad puede enfermarme gravemente.",
+    dangerH:"PELIGRO: Contiene Gluten",
+    danger:["Harina de trigo","Pan y pasta","Salsa de soja","Salsas con harina"],
+    safeH:"Seguro para mí",
+    safe:["Arroz","Pescado y carne a la parrilla","Verduras frescas"],
+    thanks:"¡Gracias por su ayuda y comprensión!" },
+  { code:"FR", name:"Français", native:"French",
+    condition:"J'ai la Maladie Cœliaque",
+    message:"Aidez-moi à manger en toute sécurité. Je ne peux pas manger d'aliments contenant du gluten: blé, seigle, orge ou avoine. Même une petite quantité peut me rendre très malade.",
+    dangerH:"DANGER: Contient du Gluten",
+    danger:["Farine de blé","Pain et pâtes","Sauce soja","Sauces à la farine"],
+    safeH:"Sans danger pour moi",
+    safe:["Riz","Poisson et viande grillés","Légumes frais"],
+    thanks:"Merci de votre aide et de votre compréhension !" },
+  { code:"IT", name:"Italiano", native:"Italian",
+    condition:"Ho la Malattia Celiaca",
+    message:"Per favore, aiutatemi a mangiare in sicurezza. Non posso mangiare cibi con glutine: grano, segale, orzo o avena. Anche una piccola quantità può farmi stare molto male.",
+    dangerH:"PERICOLO: Contiene Glutine",
+    danger:["Farina di grano","Pane e pasta","Salsa di soia","Salse con farina"],
+    safeH:"Sicuro per me",
+    safe:["Riso","Pesce e carne alla griglia","Verdure fresche"],
+    thanks:"Grazie per il vostro aiuto e la vostra comprensione!" },
+  { code:"DE", name:"Deutsch", native:"German",
+    condition:"Ich habe Zöliakie",
+    message:"Bitte helfen Sie mir, sicher zu essen. Ich kann keine glutenhaltigen Lebensmittel essen: Weizen, Roggen, Gerste oder Hafer. Schon eine kleine Menge kann mich schwer krank machen.",
+    dangerH:"GEFAHR: Enthält Gluten",
+    danger:["Weizenmehl","Brot & Nudeln","Sojasauce","Mit Mehl gebundene Saucen"],
+    safeH:"Sicher für mich",
+    safe:["Reis","Gegrillter Fisch & Fleisch","Frisches Gemüse"],
+    thanks:"Danke für Ihre Hilfe und Ihr Verständnis!" },
+  { code:"JA", name:"日本語", native:"Japanese",
+    condition:"私はセリアック病です",
+    message:"安全に食事ができるようお手伝いください。グルテン（小麦・ライ麦・大麦・オーツ麦）を含む食品は食べられません。少量でも重い症状が出ます。",
+    dangerH:"危険: グルテンを含む",
+    danger:["小麦粉","パン・パスタ","醤油","小麦のソース"],
+    safeH:"食べられるもの",
+    safe:["米","焼き魚・焼き肉","新鮮な野菜"],
+    thanks:"ご協力とご理解に感謝します！" },
+  { code:"ZH", name:"中文", native:"Chinese",
+    condition:"我患有乳糜泻",
+    message:"请帮助我安全饮食。我不能食用含麸质的食物: 小麦、黑麦、大麦或燕麦。即使少量也会让我严重不适。",
+    dangerH:"危险: 含麸质",
+    danger:["小麦面粉","面包和面食","酱油","用面粉勾芡的酱汁"],
+    safeH:"我可以吃",
+    safe:["米饭","烤鱼和烤肉","新鲜蔬菜"],
+    thanks:"感谢您的帮助和理解！" },
+];
 
+const LANG_BCP47 = { EN:'en-US', PT:'pt-PT', ES:'es-ES', FR:'fr-FR', IT:'it-IT', DE:'de-DE', JA:'ja-JP', ZH:'zh-CN' };
+
+const MAP_PLACES = [
+  { id:1, name:"Tasca do Mar",   type:"restaurant", tag:"Dedicated GF kitchen",   dist:"280 m", rating:"4.9", gf:true,  x:38, y:42 },
+  { id:2, name:"Mercado Bio",    type:"grocery",    tag:"GF aisle · fresh bakery", dist:"450 m", rating:"4.7", gf:false, x:64, y:30 },
+  { id:3, name:"Pizzeria Senza", type:"restaurant", tag:"Certified gluten-free",   dist:"600 m", rating:"4.8", gf:true,  x:54, y:62 },
+  { id:4, name:"Casa Verde",     type:"grocery",    tag:"Organic · GF staples",    dist:"800 m", rating:"4.6", gf:false, x:24, y:70 },
+  { id:5, name:"Café Aurora",    type:"restaurant", tag:"GF menu on request",      dist:"1.1 km",rating:"4.5", gf:false, x:78, y:56 },
+];
+
+const THEME_BG = {
+  celio:  'linear-gradient(135deg,#0f766e 0%,#115e59 100%)',
+  sky:    'linear-gradient(135deg,#0ea5e9 0%,#0284c7 100%)',
+  dark:   '#1e293b',
+  purple: 'linear-gradient(135deg,#7c3aed 0%,#6d28d9 100%)',
+};
+
+document.addEventListener('alpine:init', () => {
+  Alpine.data('cardDemo', () => ({
+    langs: CARD_LANGS,
+    li: 1,
+    theme: 'celio',
+    auto: true,
+    speaking: false,
+    _timer: null,
+
+    init() { this._startTimer(); },
+    destroy() { clearInterval(this._timer); if ('speechSynthesis' in window) window.speechSynthesis.cancel(); },
+
+    _startTimer() {
+      clearInterval(this._timer);
+      if (!this.auto) return;
+      this._timer = setInterval(() => { this.li = (this.li + 1) % this.langs.length; }, 2800);
+    },
+
+    get currentLang() { return this.langs[this.li]; },
+    get cardBg() { return 'background:' + (THEME_BG[this.theme] || THEME_BG.celio); },
+
+    setLang(i) { this.li = i; this.auto = false; clearInterval(this._timer); },
+    setTheme(t) { this.theme = t; this.auto = false; clearInterval(this._timer); },
+
+    speak() {
+      if (!('speechSynthesis' in window)) return;
+      if (this.speaking) { window.speechSynthesis.cancel(); this.speaking = false; return; }
+      const bcp = LANG_BCP47[this.currentLang.code] || 'en-US';
+      const u = new SpeechSynthesisUtterance(this.currentLang.message);
+      u.lang = bcp;
+      u.rate = 0.88;
+      u.pitch = 1.0;
+      // Pick the best available voice — prefer neural/Google/Apple enhanced
+      const pickVoice = () => {
+        const all = window.speechSynthesis.getVoices();
+        const langBase = bcp.split('-')[0];
+        const candidates = all.filter(v => v.lang.startsWith(langBase));
+        if (!candidates.length) return null;
+        const score = v =>
+          (v.name.includes('Google') ? 20 : 0) +
+          (v.name.includes('Microsoft') && v.name.includes('Neural') ? 18 : 0) +
+          (v.name.includes('Microsoft') ? 10 : 0) +
+          (v.name.toLowerCase().includes('enhanced') ? 12 : 0) +
+          (v.name.toLowerCase().includes('premium') ? 14 : 0) +
+          (!v.localService ? 8 : 0) +
+          (v.lang === bcp ? 4 : 0) +
+          (v.name.toLowerCase().includes('eSpeak'.toLowerCase()) ? -50 : 0);
+        return candidates.sort((a,b) => score(b) - score(a))[0] || null;
+      };
+      const trySpeak = () => {
+        const best = pickVoice();
+        if (best) u.voice = best;
+        this.speaking = true;
+        u.onend = () => { this.speaking = false; };
+        u.onerror = () => { this.speaking = false; };
+        window.speechSynthesis.speak(u);
+      };
+      if (window.speechSynthesis.getVoices().length) { trySpeak(); }
+      else { window.speechSynthesis.onvoiceschanged = trySpeak; }
+    },
+  }));
+
+  Alpine.data('mapSection', () => ({
+    filter: 'all',
+    allPlaces: MAP_PLACES,
+    get shownPlaces() {
+      return this.allPlaces.filter(p =>
+        this.filter === 'all' ||
+        (this.filter === 'gf' ? p.gf : p.type === this.filter)
+      );
+    },
+    isOn(p) {
+      return this.filter === 'all' || (this.filter === 'gf' ? p.gf : p.type === this.filter);
+    },
+  }));
+});
+
+/* Cursor glow removed — mousemove listener on document hurts scroll performance */
+
+/* Scroll reveal */
+(function() {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+  }, { threshold: 0.14 });
+  document.querySelectorAll('.r:not(.in)').forEach(el => obs.observe(el));
+})();
+</script>
 {% endblock %}
