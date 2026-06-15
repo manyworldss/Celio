@@ -28,6 +28,8 @@
         flex-direction: column;
         border: 1px solid rgba(255, 255, 255, 0.15);
         backdrop-filter: blur(10px);
+        transform: translateZ(0);
+        backface-visibility: hidden;
     }
 
     /* Hover Effect - Subtle lighting only, no scaling */
@@ -412,10 +414,19 @@
                         <label class="block text-xs font-semibold uppercase tracking-wider label-text">Safety
                             Message</label>
                         <button type="button" class="p-1.5 rounded-full hover:bg-white/10 transition-colors"
-                            title="Play Audio" @click="playAudio()">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            :class="speaking ? 'bg-white/20 text-teal-400' : ''"
+                            :title="speaking ? 'Stop Audio' : 'Play Audio'" @click="playAudio()">
+                            <!-- Play Icon -->
+                            <svg x-show="!speaking" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                            </svg>
+                            <!-- Stop Icon -->
+                            <svg x-show="speaking" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: none;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 10h6v4H9z" />
                             </svg>
                         </button>
                     </div>
@@ -474,6 +485,7 @@
             translations: initialData.translations || {},
             commonTranslations: initialData.commonTranslations,
             defaultMessages: initialData.defaultMessages,
+            speaking: false,
 
             init() {
                 console.log('Alpine E-Card Initialized', this.language, this.theme);
@@ -569,18 +581,67 @@
                 const lang = this.language;
 
                 if ('speechSynthesis' in window) {
-                    window.speechSynthesis.cancel();
-                    const utterance = new SpeechSynthesisUtterance(message);
-                    utterance.lang = lang;
-
-                    // Try to find a matching voice
-                    const voices = window.speechSynthesis.getVoices();
-                    const matchingVoice = voices.find(voice => voice.lang.startsWith(lang));
-                    if (matchingVoice) {
-                        utterance.voice = matchingVoice;
+                    if (this.speaking) {
+                        window.speechSynthesis.cancel();
+                        this.speaking = false;
+                        return;
                     }
 
-                    window.speechSynthesis.speak(utterance);
+                    window.speechSynthesis.cancel();
+
+                    const langBcp = {
+                        en: 'en-US',
+                        es: 'es-ES',
+                        fr: 'fr-FR',
+                        de: 'de-DE',
+                        it: 'it-IT',
+                        pt: 'pt-PT',
+                        ja: 'ja-JP',
+                        zh: 'zh-CN',
+                        ko: 'ko-KR',
+                        ar: 'ar-SA',
+                        ru: 'ru-RU',
+                        hi: 'hi-IN'
+                    }[lang] || lang;
+
+                    const utterance = new SpeechSynthesisUtterance(message);
+                    utterance.lang = langBcp;
+                    utterance.rate = 0.88;
+                    utterance.pitch = 1.0;
+
+                    const pickVoice = () => {
+                        const all = window.speechSynthesis.getVoices();
+                        const langBase = langBcp.split('-')[0];
+                        const candidates = all.filter(v => v.lang.startsWith(langBase));
+                        if (!candidates.length) return null;
+                        const score = v =>
+                            (v.name.includes('Google') ? 20 : 0) +
+                            (v.name.includes('Microsoft') && v.name.includes('Neural') ? 18 : 0) +
+                            (v.name.includes('Microsoft') ? 10 : 0) +
+                            (v.name.toLowerCase().includes('enhanced') ? 12 : 0) +
+                            (v.name.toLowerCase().includes('premium') ? 14 : 0) +
+                            (!v.localService ? 8 : 0) +
+                            (v.lang === langBcp ? 4 : 0) +
+                            (v.name.toLowerCase().includes('eSpeak'.toLowerCase()) ? -50 : 0);
+                        return candidates.sort((a,b) => score(b) - score(a))[0] || null;
+                    };
+
+                    const trySpeak = () => {
+                        const best = pickVoice();
+                        if (best) {
+                            utterance.voice = best;
+                        }
+                        this.speaking = true;
+                        utterance.onend = () => { this.speaking = false; };
+                        utterance.onerror = () => { this.speaking = false; };
+                        window.speechSynthesis.speak(utterance);
+                    };
+
+                    if (window.speechSynthesis.getVoices().length) {
+                        trySpeak();
+                    } else {
+                        window.speechSynthesis.onvoiceschanged = trySpeak;
+                    }
                 } else {
                     alert('Text-to-speech not supported');
                 }

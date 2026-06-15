@@ -756,6 +756,8 @@ document.addEventListener('alpine:init', () => {
     speak() {
       if (!('speechSynthesis' in window)) return;
       if (this.speaking) { window.speechSynthesis.cancel(); this.speaking = false; return; }
+      this.auto = false;
+      clearInterval(this._timer);
       const bcp = LANG_BCP47[this.currentLang.code] || 'en-US';
       const u = new SpeechSynthesisUtterance(this.currentLang.message);
       u.lang = bcp;
