@@ -24,17 +24,6 @@
     <!-- Main Title and Person Info - LARGER -->
     <div class="card-title-section px-4 py-4">
         <div class="flex items-center gap-4">
-            {% if card.profile_picture and card.show_profile_pic %}
-            <div class="avatar-circle-large">
-                <div class="w-20 h-20 md:w-24 md:h-24 overflow-hidden rounded-full border-2 border-teal-400">
-                    <img src="{{ card.profile_picture.url }}" alt="{% trans 'Profile Picture' %}" class="w-full h-full object-cover">
-                </div>
-            </div>
-            {% else %}
-            <div class="avatar-circle-large bg-gray-200 border-2 border-teal-400 flex items-center justify-center text-gray-400">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-            </div>
-            {% endif %}
             <div class="person-info">
                 <h2 class="person-name text-xl font-bold">{{ user_name }}</h2>
                 <div class="text-sm flex items-center mt-1">

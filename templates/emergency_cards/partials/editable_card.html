@@ -145,7 +145,7 @@
         width: 100%;
         padding: 12px 16px;
         border-radius: 12px;
-        font-size: 0.95rem;
+        font-size: 16px; /* 16px prevents automatic zoom on iOS */
         outline: none;
         transition: all 0.2s;
     }
@@ -156,24 +156,10 @@
     }
 
     .card-header {
-        padding: 24px 24px 16px;
+        padding: 48px 24px 16px;
         /* Increased padding for breathing room */
         text-align: center;
         position: relative;
-    }
-
-    .profile-image {
-        width: 64px;
-        /* Slightly larger for balance */
-        height: 64px;
-        border-radius: 50%;
-        margin: 0 auto 12px;
-        /* Increased bottom margin */
-        background: rgba(255, 255, 255, 0.2);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 2px solid rgba(255, 255, 255, 0.4);
     }
 
     .card-body {
@@ -364,12 +350,7 @@
                     </button>
                 </div>
 
-                <div class="profile-image">
-                    <svg class="w-10 h-10 opacity-80" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                            clip-rule="evenodd" />
-                    </svg>
-                </div>
+
                 <h1 class="text-2xl font-bold tracking-tight">E-Card</h1>
                 <p class="text-sm opacity-80 mt-1">Gluten-Free</p>
             </div>
@@ -540,19 +521,8 @@
             },
 
             switchCondition(newCondition, oldCondition) {
-                // When condition changes, we generally want to update the message to the new condition's default.
-                // However, if the user has written a completely custom note that ISN'T a standard message,
-                // we might want to be careful. 
-                // BUT, usually changing condition means the medical need changed, so the old message is likely wrong.
-
-                // Let's check if the current note matches ANY default message (in any language/condition)
-                // If it does, we definitely update.
-                // If it's custom, we still update because the medical condition is paramount.
-                // The user can always re-type their name/details.
-
-                // To be safe and "smart":
-                // If the current note is empty or matches a default, update it.
-                // If it's custom, we'll STILL update it because safety first - a Celiac card shouldn't say "Allergy".
+                // Clear translations cache so other languages get the default message for the new condition
+                this.translations = {};
 
                 const defaults = this.defaultMessages[newCondition] || {};
                 this.customNote = defaults[this.language] || '';
@@ -653,10 +623,27 @@
                         title: 'My E-Card',
                         text: 'Check out my Celio E-Card',
                         url: window.location.href
-                    });
+                    }).catch(err => console.log('Share failed:', err));
+                } else if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+                    navigator.clipboard.writeText(window.location.href)
+                        .then(() => alert('Link copied!'))
+                        .catch(err => {
+                            console.error('Failed to copy link:', err);
+                            alert('Could not copy link automatically. Please copy the URL from the browser bar: ' + window.location.href);
+                        });
                 } else {
-                    navigator.clipboard.writeText(window.location.href);
-                    alert('Link copied!');
+                    // Fallback for non-secure contexts or unsupported browsers
+                    const tempInput = document.createElement('input');
+                    tempInput.value = window.location.href;
+                    document.body.appendChild(tempInput);
+                    tempInput.select();
+                    try {
+                        document.execCommand('copy');
+                        alert('Link copied!');
+                    } catch (err) {
+                        alert('Please copy the URL from your browser address bar: ' + window.location.href);
+                    }
+                    document.body.removeChild(tempInput);
                 }
             },
 

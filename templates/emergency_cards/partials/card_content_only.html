@@ -159,17 +159,8 @@
             {% endif %}
         </div>
         
-        <!-- Card Header with Profile Pic and Name -->
-        <div class="card-header mt-10 flex items-center">
-            <!-- Profile Picture -->
-            {% if card.profile_picture and card.show_profile_pic %}
-            <div class="profile-pic-container mr-4">
-                <div class="w-16 h-16 md:w-20 md:h-20 overflow-hidden rounded-full border-2 border-teal-400">
-                    <img src="{{ card.profile_picture.url }}" alt="Profile Picture" class="w-full h-full object-cover">
-                </div>
-            </div>
-            {% endif %}
-            
+        <!-- Card Header with Name -->
+        <div class="card-header mt-12 flex items-center">
             <!-- Name and Condition -->
             <div class="user-info">
                 <h2 class="text-lg md:text-xl font-bold">{{ card.get_condition_display }}</h2>

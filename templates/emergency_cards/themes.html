@@ -92,7 +92,7 @@
     <!-- Page Header -->
     <div class="mb-8">
         <h1 class="text-2xl font-bold text-gray-900 mb-2">Travel Card Design</h1>
-<p class="text-gray-600">Customize the look of your travel card and add your profile picture.</p>
+        <p class="text-gray-600">Customize the look and theme of your travel card.</p>
     </div>
     
     <div class="flex flex-col lg:flex-row gap-8">
@@ -104,48 +104,7 @@
                     {% include 'emergency_cards/partials/card_preview.html' with message=message current_lang=current_lang %}
                 </div>
                 
-                <!-- Profile Picture Upload -->
-                <div class="mt-8">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Profile Picture</h3>
-                    <form method="POST" enctype="multipart/form-data" action="{% url 'message_cards:update_profile_picture' %}">
-                        {% csrf_token %}
-                        <div class="flex items-center">
-                            <div class="w-20 h-20 mr-4 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center border border-gray-200">
-                                {% if card.profile_picture %}
-                                    <img id="preview-img" src="{{ card.profile_picture.url }}" alt="Profile Picture" class="w-full h-full object-cover">
-                                {% else %}
-                                    <svg id="placeholder-svg" class="w-10 h-10 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                    </svg>
-                                    <img id="preview-img" src="" alt="" class="w-full h-full object-cover hidden">
-                                {% endif %}
-                            </div>
-                            <div class="flex-1">
-                                <div class="mb-2">
-                                    <label for="profile_picture" class="block text-sm font-medium text-gray-700">
-                                        {% if card.profile_picture %}
-                                            Change picture
-                                        {% else %}
-                                            Add picture
-                                        {% endif %}
-                                    </label>
-                                    <input type="file" name="profile_picture" id="profile_picture" class="mt-1 text-sm" onchange="previewImage(this)">
-                                </div>
-                                
-                                <div class="flex items-center mt-2">
-                                    <input type="checkbox" id="show_profile_pic" name="show_profile_pic" {% if card.show_profile_pic %}checked{% endif %} class="h-4 w-4 text-deep-teal focus:ring-deep-teal border-gray-300 rounded">
-                                    <label for="show_profile_pic" class="ml-2 block text-sm text-gray-700">
-                                        Show on card
-                                    </label>
-                                </div>
-                                
-                                <button type="submit" class="mt-3 inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-deep-teal hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-deep-teal">
-                                    Save Changes
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+
             </div>
         </div>
         
