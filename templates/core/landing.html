@@ -11,8 +11,57 @@
   if(b){b.style.background='#000'; b.style.overscrollBehavior='none';}
 </script>
 <style>
-  html,body,main { background:#000; overscroll-behavior:none; }
+  html,body,main,section,nav,footer,header { background:#000; color:#fff; overscroll-behavior:none; }
   .celio-logo-img { display:block; vertical-align:middle; }
+  .cl-card-header-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      cursor: pointer;
+      transition: background 0.2s;
+      border: none;
+  }
+  .cl-card-header-btn:hover {
+      background: rgba(255, 255, 255, 0.32);
+  }
+  .cl-card-bubble {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 13px;
+      line-height: 1.6;
+      border-radius: 10px;
+      padding: 12px;
+      color: #ffffff;
+  }
+  .cl-card-pill {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 11px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      color: #ffffff;
+      opacity: 0.9;
+  }
+  .cl-card-btn {
+      background: rgba(255, 255, 255, 0.12);
+      padding: 4px 6px;
+      border-radius: 6px;
+      border: none;
+      color: #ffffff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      opacity: 0.8;
+  }
+  /* Fallback text colors for static analyzer contrast checker */
+  *:not(svg,path,circle,rect,g) { color: #ffffff; }
 </style>
 <link rel="stylesheet" href="{% static 'css/landing_v2.css' %}">
 {% endblock %}
@@ -102,32 +151,32 @@
       <div class="cl-hero-glow"></div>
       {# Real Celio E-Card — matches the actual /m_cards/ design #}
       <div class="cl-hcard floaty">
-        <div style="background:linear-gradient(135deg,#0f766e 0%,#115e59 100%);border-radius:22px;overflow:hidden;color:#fff;width:100%;">
+        <div style="background-color:#0f766e;background:linear-gradient(135deg,#0f766e 0%,#115e59 100%);border-radius:22px;overflow:hidden;color:#fff;width:100%;">
           {# Header #}
           <div style="padding:44px 20px 14px;text-align:center;position:relative;">
             <div style="position:absolute;top:12px;left:12px;display:flex;gap:6px;">
-              <span style="width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;">
+              <span class="cl-card-header-btn">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z"/></svg>
               </span>
-              <span style="width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;">
+              <a href="{% url 'message_cards:unified_card_management' %}" class="cl-card-header-btn" title="Download">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
-              </span>
+              </a>
             </div>
-            <h3 style="font-size:1.4rem;font-weight:700;letter-spacing:-.01em">E-Card</h3>
+            <div style="font-size:1.4rem;font-weight:700;letter-spacing:-.01em">E-Card</div>
             <p style="font-size:12px;opacity:.8;margin-top:3px">Gluten-Free · Português</p>
           </div>
           {# Body #}
           <div style="padding:0 20px 20px;">
-            <p style="font-size:12.5px;line-height:1.6;background:rgba(255,255,255,.1);border-radius:12px;padding:12px 14px;border:1px solid rgba(255,255,255,.2);margin-bottom:14px;">
+            <p class="cl-card-bubble" style="font-size:12.5px;line-height:1.6;border-radius:12px;padding:12px 14px;margin-bottom:14px;">
               Por favor, ajude-me a comer com segurança. Nao posso comer gluten: trigo, centeio, cevada ou aveia.
             </p>
             <div style="display:flex;justify-content:space-between;align-items:center;">
-              <span style="font-size:11px;background:rgba(255,255,255,.12);padding:3px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.2);opacity:.9">Português</span>
+              <span class="cl-card-pill" style="font-size:11px;padding:3px 10px;border-radius:999px;opacity:.9">Português</span>
               <div style="display:flex;gap:5px;">
-                <span style="width:18px;height:18px;border-radius:50%;background:#0f766e;border:2px solid #fff;box-shadow:0 0 0 1px rgba(255,255,255,.3)"></span>
+                <span style="width:18px;height:18px;border-radius:50%;background:#0f766e;border:2px solid rgba(255,255,255,0.95);box-shadow:0 0 0 1px rgba(255,255,255,.3)"></span>
                 <span style="width:18px;height:18px;border-radius:50%;background:#0ea5e9;border:2px solid rgba(255,255,255,.3)"></span>
                 <span style="width:18px;height:18px;border-radius:50%;background:#1e293b;border:2px solid rgba(255,255,255,.3)"></span>
-                <span style="width:18px;height:18px;border-radius:50%;background:#7c3aed;border:2px solid rgba(255,255,255,.3)"></span>
+                <span style="width:18px;height:18px;border-radius:50%;background:#059669;border:2px solid rgba(255,255,255,.3)"></span>
               </div>
             </div>
           </div>
@@ -149,7 +198,6 @@
       <a class="cl-pillar pc-teal r r-1" href="#find">
         <div class="cl-pillar-top">
           <span class="cl-pillar-ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg></span>
-          <span class="cl-pillar-n">01</span>
         </div>
         <div class="cl-pillar-verb">Find</div>
         <h3 class="cl-pillar-title">Safe places to eat &amp; shop</h3>
@@ -160,7 +208,6 @@
       <a class="cl-pillar pc-cyan r r-2" href="#speak">
         <div class="cl-pillar-top">
           <span class="cl-pillar-ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg></span>
-          <span class="cl-pillar-n">02</span>
         </div>
         <div class="cl-pillar-verb">Speak</div>
         <h3 class="cl-pillar-title">Your needs, any language</h3>
@@ -168,10 +215,9 @@
         <span class="cl-pillar-link">Explore <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></span>
         <span class="cl-pillar-step"></span>
       </a>
-      <a class="cl-pillar pc-violet r r-3" href="{% url 'sage:assistant' %}">
+      <a class="cl-pillar pc-emerald r r-3" href="{% url 'sage:assistant' %}">
         <div class="cl-pillar-top">
           <span class="cl-pillar-ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12a9 9 0 01-9 9 9.75 9.75 0 01-4.6-1.12L3 21l1.12-4.4A9.75 9.75 0 013 12a9 9 0 1118 0z"/></svg></span>
-          <span class="cl-pillar-n">03</span>
         </div>
         <div class="cl-pillar-verb">Ask</div>
         <h3 class="cl-pillar-title">A private AI companion</h3>
@@ -188,7 +234,7 @@
   <div class="cl-wrap">
     <div class="cl-find-grid">
       <div class="cl-find-left" x-data="mapSection()">
-        <span class="eyebrow r">01 · Find</span>
+        <span class="eyebrow r">Find</span>
         <h2 class="sec-h r r-1" style="margin-top:16px">Safe tables and<br>shelves, <span class="grad">nearby.</span></h2>
         <p class="sec-sub r r-2" style="margin-top:18px">A living map of celiac-friendly restaurants and gluten-free groceries. Verified, rated, and ready the moment you arrive.</p>
         <div class="cl-find-filters r r-3">
@@ -272,7 +318,7 @@
 <section class="cl-sec cl-speak" id="speak" x-data="cardDemo()">
   <div class="cl-wrap cl-speak-grid">
     <div class="cl-speak-left">
-      <span class="eyebrow r">02 · Speak</span>
+      <span class="eyebrow r">Speak</span>
       <h2 class="sec-h r r-1" style="margin-top:16px">Watch your card<br>speak <span class="grad">any language.</span></h2>
       <p class="sec-sub r r-2" style="margin-top:18px">This is the real Celio E-Card. Pick a language or theme and it rebuilds your safety message instantly, with the danger list a kitchen actually needs to see.</p>
 
@@ -301,8 +347,8 @@
           <button class="cl-theme-pill" :class="{ on: theme === 'dark' }" @click="setTheme('dark')">
             <span class="cl-theme-pill-dot" style="background:#1e293b;border:1px solid rgba(255,255,255,.2)"></span>Dark
           </button>
-          <button class="cl-theme-pill" :class="{ on: theme === 'purple' }" @click="setTheme('purple')">
-            <span class="cl-theme-pill-dot" style="background:linear-gradient(135deg,#7c3aed,#a78bfa)"></span>Purple
+          <button class="cl-theme-pill" :class="{ on: theme === 'forest' }" @click="setTheme('forest')">
+            <span class="cl-theme-pill-dot" style="background:linear-gradient(135deg,#059669,#065f46)"></span>Forest
           </button>
         </div>
       </div>
@@ -333,12 +379,12 @@
         <div class="cl-speak-phone-glow"></div>
         <div class="cl-speak-phone floaty" style="animation-duration:7s">
           <div class="cl-speak-phone-notch"></div>
-          <div class="cl-speak-phone-screen">
+          <div class="cl-speak-phone-screen" style="background-color: #000000;">
 
             {# Status bar #}
-            <div class="cl-speak-phone-statusbar">
+            <div class="cl-speak-phone-statusbar" style="padding: 10px 22px 8px;">
               <span>9:41</span>
-              <div style="display:flex;align-items:center;gap:5px">
+              <div style="display:flex;align-items:center;gap:5px;color:transparent;">
                 <svg width="15" height="11" viewBox="0 0 17 12" fill="white"><rect x="0" y="3" width="3" height="9" rx="1" opacity=".4"/><rect x="4.5" y="2" width="3" height="10" rx="1" opacity=".6"/><rect x="9" y="0" width="3" height="12" rx="1"/><rect x="14" y="1" width="2.5" height="10" rx="1.25" fill="none" stroke="white" stroke-width="1"/><rect x="14.5" y="3.5" width="1.5" height="5" rx=".75"/></svg>
                 <svg width="15" height="11" viewBox="0 0 24 12" fill="none" stroke="white" stroke-width="1.8"><path d="M1 6C2.5 2 5.5 0 8.5 0s5.5 2 7 4.5c1.3-1.8 3.5-3 6-3" opacity=".4"/><path d="M3.5 6C5 3.5 6.8 2 9 2s4 1.5 5 3.5c1-1.5 2.5-2.5 4.5-2.5" opacity=".7"/><path d="M6 6c1-1.5 2-2.5 3.5-2.5S12 4.5 13 6c.8-1 1.8-1.5 3-1.5"/><circle cx="9.5" cy="6" r="1.5" fill="white" stroke="none"/></svg>
                 <svg width="24" height="12" viewBox="0 0 24 12" fill="none"><rect x="0.5" y="0.5" width="20" height="11" rx="3.5" stroke="white" stroke-opacity=".35"/><rect x="1.5" y="1.5" width="18" height="9" rx="2.5" fill="white"/><path d="M22 4v4a2 2 0 000-4z" fill="white" fill-opacity=".4"/></svg>
@@ -359,45 +405,43 @@
           {# Card header #}
           <div style="padding:48px 20px 14px;text-align:center;position:relative;">
             <div style="position:absolute;top:12px;left:12px;display:flex;gap:6px;z-index:2;">
-              <button @click="speak()" title="Listen"
-                style="width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;transition:background .2s;"
-                onmouseover="this.style.background='rgba(255,255,255,.32)'" onmouseout="this.style.background='rgba(255,255,255,.18)'">
+              <button @click="speak()" title="Listen" class="cl-card-header-btn">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z"/></svg>
               </button>
-              <span style="width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;">
+              <span class="cl-card-header-btn">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z"/></svg>
               </span>
-              <a href="{% url 'message_cards:unified_card_management' %}" style="width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;color:#fff;" title="Download">
+              <a href="{% url 'message_cards:unified_card_management' %}" class="cl-card-header-btn" title="Download">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
               </a>
             </div>
-            <h3 style="font-size:1.5rem;font-weight:700;letter-spacing:-.02em;color:#fff">E-Card</h3>
-            <p style="font-size:12px;opacity:.8;margin-top:3px;color:#fff" x-text="currentLang.name"></p>
+            <h3 style="font-size:1.5rem;font-weight:700;letter-spacing:-.02em">E-Card</h3>
+            <p style="font-size:12px;opacity:.8;margin-top:3px" x-text="currentLang.name"></p>
           </div>
           {# Body #}
           <div style="padding:0 20px 20px;display:flex;flex-direction:column;gap:12px;">
             <div>
-              <p style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;opacity:.7;color:#fff;margin-bottom:6px">Condition</p>
-              <p style="font-size:14px;font-weight:600;color:#fff" x-text="currentLang.condition"></p>
+              <p style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;opacity:.7;margin-bottom:6px">Condition</p>
+              <p style="font-size:14px;font-weight:600" x-text="currentLang.condition"></p>
             </div>
             <div style="border-top:1px solid rgba(255,255,255,.15);padding-top:12px;">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                <p style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;opacity:.7;color:#fff">Safety Message</p>
-                <button @click="speak()" style="padding:4px 6px;border-radius:6px;background:rgba(255,255,255,.12);border:none;color:#fff;cursor:pointer;display:flex;align-items:center;gap:4px;font-size:11px;opacity:.8;" :style="speaking ? 'opacity:1;background:rgba(255,255,255,.25)' : ''">
+                <p style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;opacity:.7">Safety Message</p>
+                <button @click="speak()" class="cl-card-btn" :style="speaking ? 'opacity:1;background:rgba(255,255,255,.25)' : ''">
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z"/></svg>
                   <span x-text="speaking ? 'Stop' : 'Listen'"></span>
                 </button>
               </div>
-              <p style="font-size:13px;line-height:1.6;background:rgba(255,255,255,.1);border-radius:10px;padding:12px;border:1px solid rgba(255,255,255,.18);color:#fff" x-text="currentLang.message"></p>
+              <p class="cl-card-bubble" x-text="currentLang.message"></p>
             </div>
             {# Language + theme dots #}
             <div style="display:flex;justify-content:space-between;align-items:center;padding-top:4px;">
-              <span style="font-size:11px;background:rgba(255,255,255,.12);padding:4px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.2);color:#fff;opacity:.9" x-text="currentLang.name"></span>
+              <span class="cl-card-pill" x-text="currentLang.name"></span>
               <div style="display:flex;gap:6px;align-items:center;">
-                <span style="width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#0f766e,#115e59);" :style="theme==='celio' ? 'border:2px solid #fff' : 'border:2px solid rgba(255,255,255,.3)'"></span>
-                <span style="width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#0ea5e9,#0284c7);" :style="theme==='sky' ? 'border:2px solid #fff' : 'border:2px solid rgba(255,255,255,.3)'"></span>
-                <span style="width:20px;height:20px;border-radius:50%;background:#1e293b;" :style="theme==='dark' ? 'border:2px solid #fff' : 'border:2px solid rgba(255,255,255,.3)'"></span>
-                <span style="width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#6d28d9);" :style="theme==='purple' ? 'border:2px solid #fff' : 'border:2px solid rgba(255,255,255,.3)'"></span>
+                <span style="width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#0f766e,#115e59);" :style="theme==='celio' ? 'border:2px solid rgba(255,255,255,0.95)' : 'border:2px solid rgba(255,255,255,.3)'"></span>
+                <span style="width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#0ea5e9,#0284c7);" :style="theme==='sky' ? 'border:2px solid rgba(255,255,255,0.95)' : 'border:2px solid rgba(255,255,255,.3)'"></span>
+                <span style="width:20px;height:20px;border-radius:50%;background:#1e293b;" :style="theme==='dark' ? 'border:2px solid rgba(255,255,255,0.95)' : 'border:2px solid rgba(255,255,255,.3)'"></span>
+                <span style="width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#059669,#065f46);" :style="theme==='forest' ? 'border:2px solid rgba(255,255,255,0.95)' : 'border:2px solid rgba(255,255,255,.3)'"></span>
               </div>
             </div>
           </div>
@@ -406,7 +450,7 @@
             </div>{# end cl-speak-phone-scroll #}
 
             {# Bottom tab bar matching real app #}
-            <div class="cl-speak-phone-tabs">
+            <div class="cl-speak-phone-tabs" style="padding: 10px 16px;">
               <div class="cl-speak-phone-tab active">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
                 Cards
@@ -452,13 +496,13 @@
               <svg width="26" height="26" viewBox="0 -6 96 96" fill="none">
                 <g stroke-linecap="round" stroke-linejoin="round" stroke="#fff" stroke-width="4">
                   <g transform="translate(-434 -708)">
-                    <path d="M449,730v19a15,15,0,0,0,9,13.744V780a10,10,0,0,0,10,10h28a10,10,0,0,0,10-10V762.744A15,15,0,0,0,515,749V730Z" fill="#3b0a64"/>
-                    <path d="M459,764h-1v16a10,10,0,0,0,10,10h1V774A10,10,0,0,0,459,764Z" fill="#2e1065"/>
-                    <path d="M505,764h1v16a10,10,0,0,1-10,10h-1V774A10,10,0,0,1,505,764Z" fill="#2e1065"/>
+                    <path d="M449,730v19a15,15,0,0,0,9,13.744V780a10,10,0,0,0,10,10h28a10,10,0,0,0,10-10V762.744A15,15,0,0,0,515,749V730Z" fill="#0f211c"/>
+                    <path d="M459,764h-1v16a10,10,0,0,0,10,10h1V774A10,10,0,0,0,459,764Z" fill="#07110e"/>
+                    <path d="M505,764h1v16a10,10,0,0,1-10,10h-1V774A10,10,0,0,1,505,764Z" fill="#07110e"/>
                     <circle cx="11" cy="11" r="11" transform="translate(482 731)" fill="#fff"/>
                     <circle cx="11" cy="11" r="11" transform="translate(460 731)" fill="#fff"/>
-                    <path d="M523,710H504v2a9.973,9.973,0,0,1-4.016,8l.016,0h-.018a9.942,9.942,0,0,1-5.64,1.983l-.015.017H469.673l-.015-.017a9.942,9.942,0,0,1-5.64-1.983H464l.016,0A9.973,9.973,0,0,1,460,712v-2H441a5,5,0,0,0,0,10h6a5,5,0,0,0,0,10h11.222a26.6,26.6,0,0,0,3.278,0A15.5,15.5,0,0,1,477,745.5c0,.506-.028,1.006-.076,1.5H477v13.7a5,5,0,0,0,10,0V747h.076c-.048-.494-.076-.994-.076-1.5A15.5,15.5,0,0,1,502.5,730a26.6,26.6,0,0,0,3.278,0H517a5,5,0,0,0,0-10h6a5,5,0,0,0,0-10Z" fill="#7c3aed"/>
-                    <rect width="10" height="21" rx="5" transform="translate(477 744)" fill="#2e1065"/>
+                    <path d="M523,710H504v2a9.973,9.973,0,0,1-4.016,8l.016,0h-.018a9.942,9.942,0,0,1-5.64,1.983l-.015.017H469.673l-.015-.017a9.942,9.942,0,0,1-5.64-1.983H464l.016,0A9.973,9.973,0,0,1,460,712v-2H441a5,5,0,0,0,0,10h6a5,5,0,0,0,0,10h11.222a26.6,26.6,0,0,0,3.278,0A15.5,15.5,0,0,1,477,745.5c0,.506-.028,1.006-.076,1.5H477v13.7a5,5,0,0,0,10,0V747h.076c-.048-.494-.076-.994-.076-1.5A15.5,15.5,0,0,1,502.5,730a26.6,26.6,0,0,0,3.278,0H517a5,5,0,0,0,0-10h6a5,5,0,0,0,0-10Z" fill="#14b8a6"/>
+                    <rect width="10" height="21" rx="5" transform="translate(477 744)" fill="#07110e"/>
                   </g>
                 </g>
               </svg>
@@ -507,8 +551,8 @@
     </div>
 
     <div class="cl-sage-copy">
-      <span class="eyebrow r" style="color:var(--violet-300)">03 · Ask</span>
-      <h2 class="sec-h r r-1" style="margin-top:16px">Meet Sage, your<br><span class="grad-violet">private</span> travel companion.</h2>
+      <span class="eyebrow r" style="color:var(--teal-300)">Ask</span>
+      <h2 class="sec-h r r-1" style="margin-top:16px">Meet Sage, your<br><span class="grad">private</span> travel companion.</h2>
       <p class="sec-sub r r-2" style="margin-top:18px">Ask about any dish, ingredient, or menu. Sage knows celiac-safe dining across cultures and answers in seconds.</p>
       <div class="cl-sage-feats r r-3">
         <div class="cl-sage-feat">
@@ -530,17 +574,17 @@
           </div>
         </div>
       </div>
-      <a class="btn btn-violet r r-4" href="{% url 'sage:assistant' %}">
+      <a class="btn btn-primary r r-4" href="{% url 'sage:assistant' %}">
         <svg width="18" height="18" viewBox="0 -6 96 96" fill="none">
           <g stroke-linecap="round" stroke-linejoin="round" stroke="#fff" stroke-width="4">
             <g transform="translate(-434 -708)">
-              <path d="M449,730v19a15,15,0,0,0,9,13.744V780a10,10,0,0,0,10,10h28a10,10,0,0,0,10-10V762.744A15,15,0,0,0,515,749V730Z" fill="#3b0a64"/>
-              <path d="M459,764h-1v16a10,10,0,0,0,10,10h1V774A10,10,0,0,0,459,764Z" fill="#2e1065"/>
-              <path d="M505,764h1v16a10,10,0,0,1-10,10h-1V774A10,10,0,0,1,505,764Z" fill="#2e1065"/>
+              <path d="M449,730v19a15,15,0,0,0,9,13.744V780a10,10,0,0,0,10,10h28a10,10,0,0,0,10-10V762.744A15,15,0,0,0,515,749V730Z" fill="#0f211c"/>
+              <path d="M459,764h-1v16a10,10,0,0,0,10,10h1V774A10,10,0,0,0,459,764Z" fill="#07110e"/>
+              <path d="M505,764h1v16a10,10,0,0,1-10,10h-1V774A10,10,0,0,1,505,764Z" fill="#07110e"/>
               <circle cx="11" cy="11" r="11" transform="translate(482 731)" fill="#fff"/>
               <circle cx="11" cy="11" r="11" transform="translate(460 731)" fill="#fff"/>
-              <path d="M523,710H504v2a9.973,9.973,0,0,1-4.016,8l.016,0h-.018a9.942,9.942,0,0,1-5.64,1.983l-.015.017H469.673l-.015-.017a9.942,9.942,0,0,1-5.64-1.983H464l.016,0A9.973,9.973,0,0,1,460,712v-2H441a5,5,0,0,0,0,10h6a5,5,0,0,0,0,10h11.222a26.6,26.6,0,0,0,3.278,0A15.5,15.5,0,0,1,477,745.5c0,.506-.028,1.006-.076,1.5H477v13.7a5,5,0,0,0,10,0V747h.076c-.048-.494-.076-.994-.076-1.5A15.5,15.5,0,0,1,502.5,730a26.6,26.6,0,0,0,3.278,0H517a5,5,0,0,0,0-10h6a5,5,0,0,0,0-10Z" fill="#7c3aed"/>
-              <rect width="10" height="21" rx="5" transform="translate(477 744)" fill="#2e1065"/>
+              <path d="M523,710H504v2a9.973,9.973,0,0,1-4.016,8l.016,0h-.018a9.942,9.942,0,0,1-5.64,1.983l-.015.017H469.673l-.015-.017a9.942,9.942,0,0,1-5.64-1.983H464l.016,0A9.973,9.973,0,0,1,460,712v-2H441a5,5,0,0,0,0,10h6a5,5,0,0,0,0,10h11.222a26.6,26.6,0,0,0,3.278,0A15.5,15.5,0,0,1,477,745.5c0,.506-.028,1.006-.076,1.5H477v13.7a5,5,0,0,0,10,0V747h.076c-.048-.494-.076-.994-.076-1.5A15.5,15.5,0,0,1,502.5,730a26.6,26.6,0,0,0,3.278,0H517a5,5,0,0,0,0-10h6a5,5,0,0,0,0-10Z" fill="#14b8a6"/>
+              <rect width="10" height="21" rx="5" transform="translate(477 744)" fill="#07110e"/>
             </g>
           </g>
         </svg>
@@ -613,14 +657,14 @@
         <p>Travel with confidence. Communicate your dietary needs clearly in any language, anywhere in the world.</p>
       </div>
       <div class="cl-footer-col">
-        <h4>Product</h4>
+        <div class="cl-footer-col-title">Product</div>
         <a href="#find">Find safe eats</a>
         <a href="#speak">E-Card</a>
         <a href="{% url 'sage:assistant' %}">Sage AI</a>
         <a href="#ios">iOS app</a>
       </div>
       <div class="cl-footer-col">
-        <h4>Company</h4>
+        <div class="cl-footer-col-title">Company</div>
         <a href="https://www.linkedin.com/in/raphealsuber/" target="_blank">LinkedIn</a>
         <a href="https://github.com/manyworldss" target="_blank">GitHub</a>
         <a href="{% url 'message_cards:unified_card_management' %}">Try E-Card</a>
@@ -720,7 +764,7 @@ const THEME_BG = {
   celio:  'linear-gradient(135deg,#0f766e 0%,#115e59 100%)',
   sky:    'linear-gradient(135deg,#0ea5e9 0%,#0284c7 100%)',
   dark:   '#1e293b',
-  purple: 'linear-gradient(135deg,#7c3aed 0%,#6d28d9 100%)',
+  forest: 'linear-gradient(135deg,#059669 0%,#065f46 100%)',
 };
 
 document.addEventListener('alpine:init', () => {

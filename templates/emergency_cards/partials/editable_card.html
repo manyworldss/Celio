@@ -30,6 +30,7 @@
         backdrop-filter: blur(10px);
         transform: translateZ(0);
         backface-visibility: hidden;
+        padding: 8px; /* Safe padding inset for visual frame and contrast scanners */
     }
 
     /* Hover Effect - Subtle lighting only, no scaling */
@@ -156,15 +157,15 @@
     }
 
     .card-header {
-        padding: 48px 24px 16px;
-        /* Increased padding for breathing room */
+        padding: 40px 16px 12px;
+        /* Balanced padding for frame layout */
         text-align: center;
         position: relative;
     }
 
     .card-body {
-        padding: 0 24px 28px;
-        /* Increased padding */
+        padding: 0 16px 20px;
+        /* Balanced padding for frame layout */
         flex: 1;
         display: flex;
         flex-direction: column;

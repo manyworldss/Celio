@@ -420,7 +420,8 @@
     }
 
     .dynamic-island {
-        background: rgba(20, 20, 20, 0.8);
+        background: #141414;
+        color: #ffffff;
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
         border: 1px solid rgba(124, 58, 237, 0.2);
@@ -439,7 +440,7 @@
     }
 
     .dynamic-island:hover {
-        background: rgba(30, 30, 30, 0.95);
+        background: #1e1e1e;
         border-color: rgba(124, 58, 237, 0.4);
         box-shadow: 0 12px 40px rgba(124, 58, 237, 0.2);
         padding: 5px 32px 5px 5px;
@@ -461,7 +462,7 @@
 
     /* Menu Label (Flex Item) */
     .menu-label {
-        color: rgba(255, 255, 255, 0.9);
+        color: #ffffff;
         font-size: 0.95rem;
         font-weight: 600;
         white-space: nowrap;
@@ -505,7 +506,7 @@
     }
 
     .island-link {
-        color: rgba(255, 255, 255, 0.6);
+        color: #cccccc;
         text-decoration: none;
         font-size: 0.9rem;
         font-weight: 500;
@@ -558,7 +559,7 @@
 <div class="dynamic-island-container">
     <div class="dynamic-island">
         <div class="island-logo">
-            <svg class="w-5 h-5 text-white" viewBox="0 -6 96 96" xmlns="http://www.w3.org/2000/svg" fill="none">
+            <svg class="w-5 h-5 text-white" style="color: #ffffff;" viewBox="0 -6 96 96" xmlns="http://www.w3.org/2000/svg" fill="none">
                 <g stroke-linecap="round" stroke-linejoin="round">
                     <g transform="translate(-434 -708)">
                         <path
@@ -583,15 +584,15 @@
                 </g>
             </svg>
         </div>
-        <span class="menu-label">Menu</span>
+        <span class="menu-label" style="color: #ffffff;">Menu</span>
         <div class="island-content">
-            <a href="{% url 'core:landing' %}" class="island-link">Home</a>
-            <a href="{% url 'message_cards:unified_card_management' %}" class="island-link">My Card</a>
-            <a href="{% url 'sage:assistant' %}" class="island-link active">Sage AI</a>
+            <a href="{% url 'core:landing' %}" class="island-link" style="color: #cccccc;">Home</a>
+            <a href="{% url 'message_cards:unified_card_management' %}" class="island-link" style="color: #cccccc;">My Card</a>
+            <a href="{% url 'sage:assistant' %}" class="island-link active" style="color: #ffffff;">Sage AI</a>
             {% if user.is_authenticated %}
             <form method="post" action="{% url 'logout' %}" class="inline-block">
                 {% csrf_token %}
-                <button type="submit" class="island-link text-red-400 hover:text-red-300">Sign Out</button>
+                <button type="submit" class="island-link text-red-400 hover:text-red-300" style="color: #f87171;">Sign Out</button>
             </form>
             {% endif %}
         </div>
@@ -664,12 +665,12 @@
                     hx-indicator="#typing-indicator">
                     {% csrf_token %}
 
-                    <div class="chat-input-wrapper">
-                        <textarea name="message" class="chat-input custom-scrollbar" placeholder="Message Sage..."
+                    <div class="chat-input-wrapper" style="background-color: #14141e; color: #ffffff;">
+                        <textarea name="message" class="chat-input custom-scrollbar" style="color: #ffffff;" placeholder="Message Sage..."
                             rows="1"
                             oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"></textarea>
 
-                        <button type="submit" class="send-btn">
+                        <button type="submit" class="send-btn" style="color: #ffffff;">
                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />

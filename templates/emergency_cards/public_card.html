@@ -38,7 +38,7 @@
                 {% for lang_code, lang_name in card.LANGUAGE_CHOICES %}
                     {% if lang_code in card.translations %}
                         <a href="?lang={{ lang_code }}"
-                           class="inline-flex items-center px-4 py-2 text-sm font-medium border {% if current_lang == lang_code %}bg-purple-100 text-purple-700 border-purple-300 z-10{% else %}bg-white text-gray-700 border-gray-300 hover:bg-gray-50{% endif %} {% if forloop.first %}rounded-l-lg{% elif forloop.last %}rounded-r-lg{% endif %}">
+                           class="inline-flex items-center px-4 py-2 text-sm font-medium border {% if current_lang == lang_code %}bg-teal-100 text-teal-700 border-teal-300 z-10{% else %}bg-white text-gray-700 border-gray-300 hover:bg-gray-50{% endif %} {% if forloop.first %}rounded-l-lg{% elif forloop.last %}rounded-r-lg{% endif %}">
                             {{ lang_code }}
                         </a>
                     {% endif %}
@@ -50,7 +50,7 @@
     <!-- Card Preview - With theme styling -->
     <div class="rounded-lg shadow-lg overflow-hidden border mb-8
                 {% if card.theme == 'classic' %}bg-white border-gray-100{% endif %}
-                {% if card.theme == 'modern' %}bg-gradient-to-br from-purple-500 to-indigo-600 text-white border-purple-300{% endif %}
+                {% if card.theme == 'modern' %}bg-gradient-to-br from-teal-500 to-emerald-600 text-white border-teal-300{% endif %}
                 {% if card.theme == 'minimal' %}bg-gray-50 border-gray-200{% endif %}">
         
         <!-- Card Header with condition -->
