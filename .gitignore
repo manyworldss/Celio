@@ -1,16 +1,5 @@
-# Python
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-
-# Environment
+.DS_Store
 .env
 .env.*
-
-# IDE / Editor
 .idea/
 .vscode/
-
-# Other
-.vercel
