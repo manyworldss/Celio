@@ -149,7 +149,7 @@ em { font-style: italic; }
 #soon .ascii pre { font-size: 11px; line-height: 11px; color: var(--mint); opacity: .16; }
 #soon h2 { margin: 0 auto; max-width: 980px; font: 400 clamp(52px, 7.6vw, 116px)/.9 var(--serif); letter-spacing: -.025em; }
 #soon h2 em { color: var(--mint); }
-#soon .lede { margin: 30px auto 0; max-width: 480px; font-size: 18px; color: var(--mist); }
+#soon .lede { margin: 30px auto 0; max-width: 560px; font-size: 18px; color: var(--mist); }
 .status-pill { margin-top: 34px; display: inline-flex; align-items: center; height: 56px; padding: 0 26px; border-radius: 999px; font: 500 15px var(--mono); }
 .next { margin: 56px auto 0; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: center; }
 .next .label { font: 500 12px var(--mono); letter-spacing: .06em; color: var(--mint); margin-right: 6px; }

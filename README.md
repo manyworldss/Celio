@@ -2,7 +2,7 @@
 
 Celio is an iPhone app that helps people with celiac disease explain what they need to the person cooking their food, in that person's language, and hear back. It works at a restaurant, at a dinner party, or on a delivery order. No account, and it works offline.
 
-The app is in TestFlight and coming to the App Store soon. This repository holds its marketing site.
+The app is in a closed TestFlight beta with 50+ testers in 3+ countries. It isn't going to the App Store. An app that deals with a medical condition should have clinical review behind it, and I'm not a medical professional, so Celio stays a beta. This repository holds its marketing site.
 
 ## The site
 
